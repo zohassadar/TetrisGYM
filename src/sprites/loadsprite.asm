@@ -79,6 +79,13 @@ oamContentLookup:
         .addr   spriteReady ; $20
         .addr   spriteCustomLevelCursor ; $21
         .addr   spriteIngameHeart ; $22
+        .addr   sprite23TPieceUpsideDown
+        .addr   sprite24SPieceUpsideDown
+        .addr   sprite25ZPieceUpsideDown
+        .addr   sprite26JPieceUpsideDown
+        .addr   sprite27LPieceUpsideDown
+
+
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
 sprite00LevelSelectCursor:
@@ -154,3 +161,23 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
+sprite23TPieceUpsideDown:
+        .byte   $08,$7B,$02,$FC,$00,$7B,$02,$04
+        .byte   $08,$7B,$02,$0C,$08,$7B,$02,$04
+        .byte   $FF
+sprite24SPieceUpsideDown:
+        .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
+        .byte   $08,$7D,$02,$04,$08,$7D,$02,$0C
+        .byte   $FF
+sprite25ZPieceUpsideDown:
+        .byte   $00,$7C,$02,$04,$00,$7C,$02,$0C
+        .byte   $08,$7C,$02,$FC,$08,$7C,$02,$04
+        .byte   $FF
+sprite26JPieceUpsideDown:
+        .byte   $08,$7D,$02,$FC,$08,$7D,$02,$04
+        .byte   $00,$7D,$02,$0C,$08,$7D,$02,$0C
+        .byte   $FF
+sprite27LPieceUpsideDown:
+        .byte   $00,$7C,$02,$FC,$08,$7C,$02,$FC
+        .byte   $08,$7C,$02,$04,$08,$7C,$02,$0C
+        .byte   $FF

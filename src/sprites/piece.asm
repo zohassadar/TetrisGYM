@@ -57,7 +57,7 @@ tileModifierForCurrentPiece:
 stageSpriteForCurrentPiece_actual:
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
-        beq stageSpriteForCurrentPiece_return
+        beq stageSpriteReturnLayover
         asl a
         asl a
         asl a
@@ -83,6 +83,13 @@ stageSpriteForCurrentPiece_actual:
         ldy oamStagingLength
         lda #$04
         sta generalCounter2
+
+; There has to be a better way to do this
+        jmp afterStageSpriteReturnLayover
+stageSpriteReturnLayover:
+        jmp stageSpriteForCurrentPiece_return
+afterStageSpriteReturnLayover:
+
 @stageMino:  
         lda orientationTable,x
         asl a
@@ -90,6 +97,18 @@ stageSpriteForCurrentPiece_actual:
         asl a
         clc
         adc generalCounter4
+        sta tmp2
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda #$F6
+        sec
+        sbc tmp2
+        jmp @endUpsideDown
+@notUpsideDown:
+        lda tmp2
+
+        lda tmp2
+@endUpsideDown:
         sta oamStaging,y
         sta originalY
         inc oamStagingLength
@@ -103,9 +122,17 @@ stageSpriteForCurrentPiece_actual:
         inx
         lda #$02
         sta oamStaging,y
+        lda upsideDownFlag
+        beq @notUpsideDown2
         lda originalY
-        cmp #$2F
+        cmp #$C8 ; Maximum value in upside down mode
+        bcc @validYCoordinate
+        jmp @endUpsideDown2
+@notUpsideDown2:
+        lda originalY
+        cmp #$2F ; Minimum value in normal mode
         bcs @validYCoordinate
+@endUpsideDown2:
         inc oamStagingLength
         dey
         lda #$FF
@@ -147,7 +174,13 @@ stageSpriteForNextPiece:
         lda #$77
         sta spriteYOffset
         ldx nextPiece
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda orientationToSpriteTableUpsideDown,x
+        jmp @endUpsideDown
+@notUpsideDown:
         lda orientationToSpriteTable,x
+@endUpsideDown:
         sta spriteIndexInOamContentLookup
         jmp loadSpriteIntoOamStaging
 @ret:   rts

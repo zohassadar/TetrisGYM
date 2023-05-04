@@ -82,6 +82,16 @@ practiseGameHUD:
         asl
         adc #$34
         sta tmpY
+        ; Shift the qty info down 133 pixels
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda tmpY
+        adc #$85
+        sta tmpY
+        jmp @endUpsideDown
+@notUpsideDown:
+        lda tmpY
+@endUpsideDown:
         sta oamStaging, x
         inx
         lda tqtyCurrent, y

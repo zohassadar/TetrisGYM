@@ -80,8 +80,9 @@ MODE_LINECAP := 27
 MODE_DASONLY := 28
 MODE_QUAL := 29
 MODE_PAL := 30
+MODE_UPSIDE_DOWN := 31
 
-MODE_QUANTITY := 31
+MODE_QUANTITY := 32
 MODE_GAME_QUANTITY := 19
 
 SCORING_CLASSIC := 0 ; for scoringModifier
@@ -104,7 +105,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
-.define MENUSIZES $0, $0, $0, $0, $F, $7, $8, $C, $F, $20, $10, $1F, $8, $4, $12, $10, $0, $0, $0, $0, $4, $1, $1, $1, $1, $1, $1, $1, $1, $1, $1
+.define MENUSIZES $0, $0, $0, $0, $F, $7, $8, $C, $F, $20, $10, $1F, $8, $4, $12, $10, $0, $0, $0, $0, $4, $1, $1, $1, $1, $1, $1, $1, $1, $1, $1, $1
 
 .macro MODENAMES
     .byte   "TETRIS"

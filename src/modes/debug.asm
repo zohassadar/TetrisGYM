@@ -74,6 +74,16 @@ debugDrawPieces:
         asl
         clc
         adc #$2F
+        sta tmp3
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda #$F6
+        sec
+        sbc tmp3
+        jmp @endUpsideDown
+@notUpsideDown:
+        lda tmp3
+@endUpsideDown:
         sta spriteYOffset
 
         lda #$16

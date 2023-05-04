@@ -27,6 +27,14 @@ gameModeState_initGameBackground:
         jsr statisticsNametablePatch ; for input display
         jsr debugNametableUI
 
+; replace 5/7 tetriminos
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda hzFlag
+        bne @notUpsideDown ; Don't patch if in hz mode
+        jsr upsideDownNameTable
+@notUpsideDown:
+
         ; ingame hearts
         lda heartsAndReady
         and #$F
@@ -165,6 +173,27 @@ saveStateNametableUI:
 @endOfPpuPatching:
         rts
 
+upsideDownNameTable:
+        ldx #$00
+@nextPpuAddress:
+        lda upsidedown_nametable_patch,x
+        inx
+        sta PPUADDR
+        lda upsidedown_nametable_patch,x
+        inx
+        sta PPUADDR
+@nextPpuData:
+        lda upsidedown_nametable_patch,x
+        inx
+        cmp #$FE
+        beq @nextPpuAddress
+        cmp #$FD
+        beq @endOfPpuPatching
+        sta PPUDATA
+        jmp @nextPpuData
+@endOfPpuPatching:
+        rts
+
 statisticsNametablePatch:
         lda #$21
         sta PPUADDR
@@ -229,3 +258,20 @@ savestate_nametable_patch:
         .byte   $23,$17,$3B,$1C,$15,$18,$1D,$FF,$FF,$3C,$FE
         .byte   $23,$37,$3B,$FF,$FF,$FF,$FF,$FF,$FF,$3C,$FE
         .byte   $23,$57,$3D,$3E,$3E,$3E,$3E,$3E,$3E,$3F,$FD
+
+upsidedown_nametable_patch:
+        ; T
+        .byte   $21,$63,$A0,$A1,$A2,$FE
+        .byte   $21,$83,$B0,$B1,$B2,$FE
+        ; J
+        .byte   $21,$A3,$A9,$AA,$AB,$FE
+        .byte   $21,$C3,$B9,$BA,$BB,$FE
+        ; Z
+        .byte   $21,$E3,$A6,$A7,$A8,$FE
+        .byte   $22,$03,$B6,$B7,$B8,$FE
+        ; S
+        .byte   $22,$63,$A3,$A4,$A5,$FE
+        .byte   $22,$83,$B3,$B4,$B5,$FE
+        ; L
+        .byte   $22,$A3,$AC,$AD,$AE,$FE
+        .byte   $22,$C3,$BC,$BD,$BE,$FD

@@ -43,6 +43,7 @@
 * [DAS Only](#das-only)
 * [Qualifier Mode](#qual-mode)
 * [PAL Mode](#pal-mode)
+* [Upside Down](#upside-down)
 * [Development](#development)
 * [Resources](#resources)
 
@@ -427,6 +428,12 @@ You cannot use the Block Tool and Qual mode at the same time.
 ## PAL Mode
 
 Dictate if the NTSC or PAL gameplay mechanics should be used. Should automatically detect region, but can be manually overwritten otherwise.
+
+## Upside Down
+
+![UpsideDown](./assets/screens/upsidedown.png)
+
+Vertically mirrors the playfield/pieces.
 
 ## Development
 

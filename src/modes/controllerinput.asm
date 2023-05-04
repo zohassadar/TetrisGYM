@@ -13,8 +13,27 @@ controllerInputDisplay: ; called in events, speedtest
         lda #0
         sta tmp3
 controllerInputDisplayX:
+; swap up & down back for upside down
+        lda upsideDownFlag
+        beq @notUpsideDown  
+        lda heldButtons_player1
+        and #BUTTON_UP
+        lsr
+        sta tmp1
+        lda heldButtons_player1
+        and #BUTTON_DOWN
+        asl
+        sta tmp2
+        lda heldButtons_player1
+        and #$F3
+        ora tmp1
+        ora tmp2
+        sta tmp1
+        jmp @endUpsideDown
+@notUpsideDown:
         lda heldButtons_player1
         sta tmp1
+@endUpsideDown:
         ldy #0
 @inputLoop:
         lda tmp1
