@@ -146,6 +146,18 @@ checkLinecap: ; set linecapState
         adc #1
         sta linecapState
 
+        cmp #LINECAP_FLIP
+        bne @notFlipping
+        lda upsideDownMenuFlag
+        eor #$01
+        sta upsideDownFlag
+        lda outOfDateRenderFlags
+        ora #$08
+        sta outOfDateRenderFlags
+
+@notFlipping:
+
+        lda linecapState
         cmp #LINECAP_INVISIBLE
         bne @linecapEnd
         sta invisibleFlag

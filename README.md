@@ -398,6 +398,7 @@ The linecap effects are;
 * __Floor__ - A new unclearable row appears with each level change
 * __Inviz__ - Pieces turn invisible
 * __Halt__ - Pieces stop spawning
+* __Flip__ - Flip gameplay to upside down (or from upsidedown to rightside up)
 
 Used in the CTM Masters event.
 

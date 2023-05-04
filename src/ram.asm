@@ -74,7 +74,7 @@ stringIndexLookup:
 spriteIndexInOamContentLookup: .res 1 ; $00A2
 outOfDateRenderFlags: .res 1 ; $00A3
 ; play/demo
-; Bit 0-lines 1-level 2-score 4-hz 6-stats 7-high score entry letter
+; Bit 0-lines 1-level 2-score 3-flip 4-hz 6-stats 7-high score entry letter
 ; speedtest
 ; 0 - hz
 ; level menu
@@ -209,8 +209,9 @@ linecapState: .res 1 ; $639 ; 0 if not triggered, 1 + linecapHow otherwise, rese
 dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
+upsideDownFlag: .res 1 ; flipped when game is upside down!
 
-    .res $39
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -335,6 +336,6 @@ linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
-upsideDownFlag: .res 1
+upsideDownMenuFlag: .res 1
 
 ; ... $7FF

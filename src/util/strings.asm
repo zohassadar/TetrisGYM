@@ -92,6 +92,7 @@ stringLookup:
         .byte stringFromBelow-stringLookup
         .byte stringInviz-stringLookup
         .byte stringHalt-stringLookup
+        .byte stringFlip-stringLookup
 stringClassic:
         .byte $7,'C','L','A','S','S','I','C'
 stringLetters:
@@ -134,5 +135,7 @@ stringInviz:
         .byte $5,'I','N','V','I','Z'
 stringHalt:
         .byte $4,'H','A','L','T'
+stringFlip:
+        .byte $4,'F','L','I','P'
 stringNull:
         .byte $0

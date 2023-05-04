@@ -26,15 +26,11 @@ gameModeState_initGameBackground:
         jsr displayModeText
         jsr statisticsNametablePatch ; for input display
         jsr debugNametableUI
-
-; replace 5/7 tetriminos
-        lda upsideDownFlag
+        lda upsideDownMenuFlag
+        sta upsideDownFlag
         beq @notUpsideDown
-        lda hzFlag
-        bne @notUpsideDown ; Don't patch if in hz mode
-        jsr upsideDownNameTable
+        jsr statisticsPiecesPatch
 @notUpsideDown:
-
         ; ingame hearts
         lda heartsAndReady
         and #$F
@@ -173,18 +169,29 @@ saveStateNametableUI:
 @endOfPpuPatching:
         rts
 
-upsideDownNameTable:
-        ldx #$00
+statisticsPiecesPatch:
+; replace 5/7 tetriminos
+        lda hzFlag
+        bne @endOfPpuPatching ; Don't patch if in hz mode
+        lda upsideDownFlag
+        asl
+        tay
+        lda statsPatches,y
+        sta tmp1
+        iny
+        lda statsPatches,y
+        sta tmp2
+        ldy #$00
 @nextPpuAddress:
-        lda upsidedown_nametable_patch,x
-        inx
+        lda (tmp1),y
+        iny
         sta PPUADDR
-        lda upsidedown_nametable_patch,x
-        inx
+        lda (tmp1),y
+        iny
         sta PPUADDR
 @nextPpuData:
-        lda upsidedown_nametable_patch,x
-        inx
+        lda (tmp1),y
+        iny
         cmp #$FE
         beq @nextPpuAddress
         cmp #$FD
@@ -258,6 +265,27 @@ savestate_nametable_patch:
         .byte   $23,$17,$3B,$1C,$15,$18,$1D,$FF,$FF,$3C,$FE
         .byte   $23,$37,$3B,$FF,$FF,$FF,$FF,$FF,$FF,$3C,$FE
         .byte   $23,$57,$3D,$3E,$3E,$3E,$3E,$3E,$3E,$3F,$FD
+
+statsPatches:
+        .addr rightsideup_nametable_patch
+        .addr upsidedown_nametable_patch
+
+rightsideup_nametable_patch:
+        ; T
+        .byte   $21,$63,$40,$41,$42,$FE
+        .byte   $21,$83,$50,$51,$52,$FE
+        ; J
+        .byte   $21,$A3,$49,$4A,$4B,$FE
+        .byte   $21,$C3,$59,$5A,$5B,$FE
+        ; Z
+        .byte   $21,$E3,$46,$47,$48,$FE
+        .byte   $22,$03,$56,$57,$58,$FE
+        ; S
+        .byte   $22,$63,$43,$44,$45,$FE
+        .byte   $22,$83,$53,$54,$55,$FE
+        ; L
+        .byte   $22,$A3,$4C,$4D,$4E,$FE
+        .byte   $22,$C3,$5C,$5D,$5E,$FD
 
 upsidedown_nametable_patch:
         ; T

@@ -45,6 +45,15 @@ twoDigsToPPU:
         rts
 
 render_playfield:
+        lda outOfDateRenderFlags
+        and #$08
+        beq @dontUpdateStatistics
+        jsr statisticsPiecesPatch
+        lda outOfDateRenderFlags
+        and #$f7
+        sta outOfDateRenderFlags
+        rts
+@dontUpdateStatistics:
         lda #$04
         sta playfieldAddr+1
         jsr copyPlayfieldRowToVRAM

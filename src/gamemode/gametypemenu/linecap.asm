@@ -218,7 +218,7 @@ linecapMenuControlsHow:
         sta soundEffectSlot1Init
         inc linecapHow
         lda linecapHow
-        cmp #4
+        cmp #5
         bne @notRight
         lda #0
         sta linecapHow
@@ -233,7 +233,7 @@ linecapMenuControlsHow:
         lda linecapHow
         cmp #$FF
         bne @notLeft
-        lda #3
+        lda #4
         sta linecapHow
 @notLeft:
         rts
