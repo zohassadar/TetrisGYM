@@ -57,7 +57,9 @@ tileModifierForCurrentPiece:
 stageSpriteForCurrentPiece_actual:
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
-        beq stageSpriteReturnLayover
+        bne @notHidden
+        rts
+@notHidden:
         asl a
         asl a
         asl a
@@ -83,13 +85,6 @@ stageSpriteForCurrentPiece_actual:
         ldy oamStagingLength
         lda #$04
         sta generalCounter2
-
-; There has to be a better way to do this
-        jmp afterStageSpriteReturnLayover
-stageSpriteReturnLayover:
-        jmp stageSpriteForCurrentPiece_return
-afterStageSpriteReturnLayover:
-
 @stageMino:  
         lda orientationTable,x
         asl a
@@ -159,7 +154,6 @@ afterStageSpriteReturnLayover:
         inx
         dec generalCounter2
         bne @stageMino
-stageSpriteForCurrentPiece_return:
         rts
 
 stageSpriteForNextPiece:
