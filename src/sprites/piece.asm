@@ -9,6 +9,8 @@ stageSpriteForCurrentPiece:
         rts
 
 ghostPiece:
+        lda hardDropGhost
+        bne @noGhost
         lda playState
         cmp #3
         bpl @noGhost

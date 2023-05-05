@@ -31,6 +31,7 @@ stringSpriteAlignRight:
         lda stringLookup, x
         tax
         lda stringLookup, x
+        beq exitSpriteStaging
         inx
         sta tmpZ
         lda tmpZ
@@ -67,6 +68,7 @@ stringSpriteLoop:
         dec tmpZ
         lda tmpZ
         bne stringSpriteLoop
+exitSpriteStaging:
         rts
 
 stringLookup:
@@ -92,6 +94,9 @@ stringLookup:
         .byte stringFromBelow-stringLookup
         .byte stringInviz-stringLookup
         .byte stringHalt-stringLookup
+        .byte stringNull-stringLookup
+        .byte stringNo-stringLookup
+
 stringClassic:
         .byte $7,'C','L','A','S','S','I','C'
 stringLetters:
@@ -134,5 +139,7 @@ stringInviz:
         .byte $5,'I','N','V','I','Z'
 stringHalt:
         .byte $4,'H','A','L','T'
+stringNo:
+        .byte $2, 'N','O'
 stringNull:
         .byte $0

@@ -60,7 +60,7 @@ drawTiles(buffer, lookup, `
 #a    DAS DELAY               d#
 #a    KILLSCREEN »2           d#
 #a    INVISIBLE               d#
-#a    HARD DROP               d#
+#a    HARD DROP         GHOST d#
 #a    TAP/ROLL SPEED          d#
 #a    SCORING                 d#
 `);drawTiles(extra, lookup, `

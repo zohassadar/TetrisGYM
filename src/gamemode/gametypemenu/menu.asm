@@ -512,6 +512,8 @@ menuYTmp := tmp2
 
 @renderBool:
         lda menuCounter
+        cmp #MODE_HARDDROP
+        beq @renderGhostOption
         jsr menuItemY16Offset
         bne @boolOutOfRange
         stx spriteYOffset
@@ -523,6 +525,19 @@ menuYTmp := tmp2
         sta spriteIndexInOamContentLookup
         jsr stringSpriteAlignRight
 @boolOutOfRange:
+        jmp @loopNext
+
+@renderGhostOption:
+        lda hardDropGhost
+        clc
+        adc #$16
+        sta spriteIndexInOamContentLookup
+        lda #(MODE_HARDDROP*8) + MENU_SPRITE_Y_BASE + 1
+        sbc menuScrollY
+        sta spriteYOffset
+        lda #$bc
+        sta spriteXOffset
+        jsr stringSpriteAlignRight
         jmp @loopNext
 
 @renderScoreName:
