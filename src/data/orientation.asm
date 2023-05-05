@@ -36,12 +36,6 @@ orientationToSpriteTable:
         .byte   $08,$00,$0B,$07,$00,$00,$0A,$00
         .byte   $00,$00,$0C
 
-orientationToSpriteTableUpsideDown:
-        .byte   $00,$00,$23,$00,$00,$00,$00,$26
-        .byte   $25,$00,$0B,$24,$00,$00,$27,$00
-        .byte   $00,$00,$0C
-
-
 tetriminoTypeFromOrientation:
         .byte   $00,$00,$00,$00,$01,$01,$01,$01
         .byte   $02,$02,$03,$04,$04,$05,$05,$05

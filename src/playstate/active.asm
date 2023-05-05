@@ -19,7 +19,13 @@ playState_playerControlsActiveTetrimino_return:
 
 harddrop_tetrimino:
         lda newlyPressedButtons
+        ldy upsideDownFlag
+        beq @notUpsideDownInHardDrop
+        and #BUTTON_DOWN+BUTTON_SELECT
+        jmp @continueInHardDrop
+@notUpsideDownInHardDrop:
         and #BUTTON_UP+BUTTON_SELECT
+@continueInHardDrop:
         beq playState_playerControlsActiveTetrimino_return
         lda tetriminoY
         sta tmpY
@@ -313,7 +319,13 @@ drop_tetrimino_actual:
         lda autorepeatY
         bpl @notBeginningOfGame
         lda newlyPressedButtons
+        ldy upsideDownFlag
+        beq @notUpsideDownInDrop
+        and #BUTTON_UP
+        jmp @continueInDrop
+@notUpsideDownInDrop:
         and #BUTTON_DOWN
+@continueInDrop:
         beq @incrementAutorepeatY
         lda #$00
         sta autorepeatY
@@ -325,7 +337,13 @@ drop_tetrimino_actual:
         bne @lookupDropSpeed
         lda newlyPressedButtons
         and #$0F
+        ldy upsideDownFlag
+        beq @notUpsideDownInPlaying
+        cmp #BUTTON_UP
+        jmp @continueInPlaying
+@notUpsideDownInPlaying:
         cmp #BUTTON_DOWN
+@continueInPlaying:
         bne @lookupDropSpeed
         lda #$01
         sta autorepeatY
@@ -334,7 +352,13 @@ drop_tetrimino_actual:
 @autorepeating:
         lda heldButtons
         and #$0F
+        ldy upsideDownFlag
+        beq @notUpsideDownInRepeating
+        cmp #BUTTON_UP
+        jmp @continueInRepeating
+@notUpsideDownInRepeating:
         cmp #BUTTON_DOWN
+@continueInRepeating:
         beq @downPressed
         lda #$00
         sta autorepeatY
@@ -448,7 +472,13 @@ shift_tetrimino:
         lda tetriminoX
         sta originalY
         lda heldButtons
+        ldy upsideDownFlag
+        beq @notUpsideDownInShift
+        and #BUTTON_UP
+        jmp @continueInShift
+@notUpsideDownInShift:
         and #BUTTON_DOWN
+@continueInShift:
         bne @ret
         lda newlyPressedButtons
         and #$03

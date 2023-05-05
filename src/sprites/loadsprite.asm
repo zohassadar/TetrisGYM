@@ -84,6 +84,8 @@ oamContentLookup:
         .addr   sprite25ZPieceUpsideDown
         .addr   sprite26JPieceUpsideDown
         .addr   sprite27LPieceUpsideDown
+        .addr   sprite0BOPiece
+        .addr   sprite0CIPiece
 
 
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x

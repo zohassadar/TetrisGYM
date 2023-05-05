@@ -74,16 +74,6 @@ debugDrawPieces:
         asl
         clc
         adc #$2F
-        sta tmp3
-        lda upsideDownFlag
-        beq @notUpsideDown
-        lda #$F6
-        sec
-        sbc tmp3
-        jmp @endUpsideDown
-@notUpsideDown:
-        lda tmp3
-@endUpsideDown:
         sta spriteYOffset
 
         lda #$16
@@ -236,8 +226,15 @@ handleLevelEditor:
         rts
 
 @getPos:
-        ; multiply by 10
         ldx tetriminoY
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda #$13
+        sec
+        sbc tetriminoY
+        tax
+@notUpsideDown:
+        ; multiply by 10
         lda multBy10Table,x
 
         ; add X

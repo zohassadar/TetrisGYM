@@ -101,8 +101,6 @@ stageSpriteForCurrentPiece_actual:
         jmp @endUpsideDown
 @notUpsideDown:
         lda tmp2
-
-        lda tmp2
 @endUpsideDown:
         sta oamStaging,y
         sta originalY
@@ -168,13 +166,12 @@ stageSpriteForNextPiece:
         lda #$77
         sta spriteYOffset
         ldx nextPiece
-        lda upsideDownFlag
-        beq @notUpsideDown
-        lda orientationToSpriteTableUpsideDown,x
-        jmp @endUpsideDown
-@notUpsideDown:
         lda orientationToSpriteTable,x
-@endUpsideDown:
+        ldx upsideDownFlag
+        beq @notUpsideDown
+        clc
+        adc #$1d
+@notUpsideDown:
         sta spriteIndexInOamContentLookup
         jmp loadSpriteIntoOamStaging
 @ret:   rts

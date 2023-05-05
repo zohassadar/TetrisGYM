@@ -160,30 +160,6 @@ pollController:
         sta newlyPressedButtons_player1
 @noGoofy:
 
-; swap up & down for upside down
-        lda upsideDownFlag
-        beq @notUpsideDown  
-        lda gameModeState   ; Don't swap in menu
-        beq @notUpsideDown  ; Menu is 0 on boot.
-        cmp #$06                  
-        beq @notUpsideDown  ; Menu is 6 after
-        cmp #$03                  
-        beq @notUpsideDown  ; Don't swap in hi score
-        lda newlyPressedButtons_player1
-        and #BUTTON_UP
-        lsr
-        sta tmp2
-        lda newlyPressedButtons_player1
-        and #BUTTON_DOWN
-        asl
-        sta tmp3
-        lda newlyPressedButtons_player1
-        and #$F3
-        ora tmp2
-        ora tmp3
-        sta newlyPressedButtons_player1
-@notUpsideDown:
-
 diffOldAndNewButtons:
         ldx #$01
 @diffForPlayer:

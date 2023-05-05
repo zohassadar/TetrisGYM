@@ -69,37 +69,28 @@ vramPlayfieldRows:
         .word   $2246,$2266,$2286,$22A6
         .word   $22C6,$22E6,$2306,$2326
 
-vramPlayfieldRowsUpsideDown:
-        .word   $2326,$2306,$22E6,$22C6
-        .word   $22A6,$2286,$2266,$2246
-        .word   $2226,$2206,$21E6,$21C6
-        .word   $21A6,$2186,$2166,$2146
-        .word   $2126,$2106,$20E6,$20C6
 
-copyPlayfieldRowToVRAM:        
+copyPlayfieldRowToVRAM:  
         ldx vramRow
         cpx #$15
         bpl @ret
         lda multBy10Table,x
         tay
         txa
+        ldx upsideDownFlag
+        beq @notUpsideDown
+        lda #$13
+        sec
+        sbc vramRow
+@notUpsideDown:
         asl a
         tax
         inx
-        lda upsideDownFlag
-        beq @notUpsideDown
-        lda vramPlayfieldRowsUpsideDown,x
-        sta PPUADDR
-        dex
-        lda vramPlayfieldRowsUpsideDown,x
-        jmp @endUpsideDown
-@notUpsideDown:
         lda vramPlayfieldRows,x
         sta PPUADDR
         dex
 
         lda vramPlayfieldRows,x
-@endUpsideDown:
         clc
         adc #$06
         sta PPUADDR

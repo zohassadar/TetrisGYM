@@ -226,15 +226,15 @@ updateLineClearingAnimation:
         ldx generalCounter3
         lda completedRow,x
         beq @nextRow
+        ldy upsideDownFlag
+        beq @notUpsideDown
+        lda #$13
+        sec
+        sbc completedRow,x
+@notUpsideDown:
         asl a
         tay
-        lda upsideDownFlag
-        beq @notUpsideDown
-        lda vramPlayfieldRowsUpsideDown,y
-        jmp @endUpsideDown
-@notUpsideDown:
         lda vramPlayfieldRows,y
-@endUpsideDown:
         sta generalCounter
         lda generalCounter
         clc
@@ -242,14 +242,7 @@ updateLineClearingAnimation:
         sta generalCounter
 
         iny
-        lda upsideDownFlag
-        beq @notUpsideDown2
-        lda vramPlayfieldRowsUpsideDown,y
-        jmp @endUpsideDown2
-@notUpsideDown2:
         lda vramPlayfieldRows,y
-@endUpsideDown2:
-
         sta generalCounter2
         sta PPUADDR
         ldx rowY
