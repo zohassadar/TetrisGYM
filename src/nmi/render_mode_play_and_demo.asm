@@ -270,6 +270,11 @@ updateLineClearingAnimation:
         lda rowY
         cmp #$05
         bmi @ret
+        lda flipFlop
+        cmp #FLIPFLOP_LINE
+        bne @skipFlipFlop
+        jsr toggleFlipFlop
+@skipFlipFlop:
         inc playState
 @ret:   rts
 

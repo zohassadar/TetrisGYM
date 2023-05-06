@@ -64,6 +64,7 @@ drawTiles(buffer, lookup, `
 #a    TAP/ROLL SPEED          d#
 #a    SCORING                 d#
 `);drawTiles(extra, lookup, `
+#a    FLIPFLOP                d#
 #a    HZ DISPLAY              d#
 #a    INPUT DISPLAY           d#
 #a    DISABLE FLASH           d#
@@ -74,7 +75,6 @@ drawTiles(buffer, lookup, `
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
 #a    PAL MODE                d#
-#a    UPSIDE DOWN             d#
 #a                            d#
 #a V5                         d#
 #a                            d#

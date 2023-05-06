@@ -1,4 +1,14 @@
 playState_receiveGarbage:
+        lda flipFlop
+        cmp #FLIPFLOP_RANDOM
+        bne @skipFlipFlop
+        lda rng_seed+1
+        and #$3F
+        bne @skipFlipFlop
+        jsr toggleFlipFlop
+        lda #$0
+        sta vramRow  
+@skipFlipFlop:
         ldy pendingGarbage
         beq @ret
         lda multBy10Table,y

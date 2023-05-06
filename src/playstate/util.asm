@@ -123,3 +123,12 @@ setMusicTrack:
         sta musicTrack
 .endif
 @ret:   rts
+
+toggleFlipFlop:
+        lda upsideDownFlag
+        eor #$1
+        sta upsideDownFlag
+        lda outOfDateRenderFlags
+        ora #$8
+        sta outOfDateRenderFlags
+        rts

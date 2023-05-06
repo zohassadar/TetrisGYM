@@ -326,6 +326,7 @@ garbageModifier: .res 1
 droughtModifier: .res 1
 dasModifier: .res 1
 scoringModifier: .res 1
+flipFlop: .res 1
 hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
@@ -336,6 +337,5 @@ linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
-upsideDownMenuFlag: .res 1
 
 ; ... $7FF

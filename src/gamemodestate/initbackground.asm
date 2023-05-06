@@ -26,9 +26,12 @@ gameModeState_initGameBackground:
         jsr displayModeText
         jsr statisticsNametablePatch ; for input display
         jsr debugNametableUI
-        lda upsideDownMenuFlag
+        lda #$0
         sta upsideDownFlag
-        beq @notUpsideDown
+        lda flipFlop
+        cmp #FLIPFLOP_ON
+        bne @notUpsideDown
+        sta upsideDownFlag
         jsr statisticsPiecesPatch
 @notUpsideDown:
         ; ingame hearts

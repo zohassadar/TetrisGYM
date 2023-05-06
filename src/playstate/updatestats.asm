@@ -103,6 +103,11 @@ checkLevelUp:
         bpl @lineLoop
 
 @nextLevel:
+        lda flipFlop
+        cmp #FLIPFLOP_LEVEL
+        bne @skipFlipFlop
+        jsr toggleFlipFlop 
+@skipFlipFlop:
         inc levelNumber
         lda #$06 ; checked in floor linecap stuff, just below
         sta soundEffectSlot1Init
@@ -148,13 +153,7 @@ checkLinecap: ; set linecapState
 
         cmp #LINECAP_FLIP
         bne @notFlipping
-        lda upsideDownMenuFlag
-        eor #$01
-        sta upsideDownFlag
-        lda outOfDateRenderFlags
-        ora #$08
-        sta outOfDateRenderFlags
-
+        jsr toggleFlipFlop 
 @notFlipping:
 
         lda linecapState
