@@ -74,6 +74,16 @@ debugDrawPieces:
         asl
         clc
         adc #$2F
+        sta generalCounter5
+        lda upsideDownFlag
+        beq @notUpsideDown
+        lda #$F6
+        sec
+        sbc generalCounter5
+        jmp @endUpsideDown
+@notUpsideDown:
+        lda generalCounter5
+@endUpsideDown:
         sta spriteYOffset
 
         lda #$16
@@ -107,11 +117,21 @@ debugContinue:
         lda #BUTTON_UP
         jsr menuThrottle
         beq @notPressedUp
+        ldy upsideDownFlag
+        beq @notUpsideDownForUp
+        inc tetriminoY
+        jmp @notPressedUp
+@notUpsideDownForUp:
         dec tetriminoY
 @notPressedUp:
         lda #BUTTON_DOWN
         jsr menuThrottle
         beq @notPressedDown
+        ldy upsideDownFlag
+        beq @notUpsideDownForDown
+        dec tetriminoY
+        jmp @notPressedDown
+@notUpsideDownForDown:
         inc tetriminoY
 @notPressedDown:
         lda #BUTTON_LEFT
@@ -227,13 +247,6 @@ handleLevelEditor:
 
 @getPos:
         ldx tetriminoY
-        lda upsideDownFlag
-        beq @notUpsideDown
-        lda #$13
-        sec
-        sbc tetriminoY
-        tax
-@notUpsideDown:
         ; multiply by 10
         lda multBy10Table,x
 
