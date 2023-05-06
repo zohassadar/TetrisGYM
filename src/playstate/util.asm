@@ -124,7 +124,7 @@ setMusicTrack:
 .endif
 @ret:   rts
 
-toggleFlipFlop:
+toggleUpsideDown:
         lda upsideDownFlag
         eor #$1
         sta upsideDownFlag

@@ -326,7 +326,7 @@ garbageModifier: .res 1
 droughtModifier: .res 1
 dasModifier: .res 1
 scoringModifier: .res 1
-flipFlop: .res 1
+upsideDown: .res 1
 hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1

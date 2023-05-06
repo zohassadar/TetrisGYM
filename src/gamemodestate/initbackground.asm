@@ -28,8 +28,8 @@ gameModeState_initGameBackground:
         jsr debugNametableUI
         lda #$0
         sta upsideDownFlag
-        lda flipFlop
-        cmp #FLIPFLOP_ON
+        lda upsideDown
+        cmp #UPSIDEDOWN_ON
         bne @notUpsideDown
         sta upsideDownFlag
         jsr statisticsPiecesPatch

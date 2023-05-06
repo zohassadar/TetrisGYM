@@ -64,7 +64,7 @@ drawTiles(buffer, lookup, `
 #a    TAP/ROLL SPEED          d#
 #a    SCORING                 d#
 `);drawTiles(extra, lookup, `
-#a    FLIPFLOP                d#
+#a    UPSIDEDOWN              d#
 #a    HZ DISPLAY              d#
 #a    INPUT DISPLAY           d#
 #a    DISABLE FLASH           d#
