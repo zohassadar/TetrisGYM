@@ -54,6 +54,9 @@ tileModifierForCurrentPiece:
         lda orientationTable,x
         rts
 
+upsideDownOffset:
+        .byte $00,$F6
+
 stageSpriteForCurrentPiece_actual:
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
@@ -92,15 +95,15 @@ stageSpriteForCurrentPiece_actual:
         asl a
         clc
         adc generalCounter4
-        sta tmp2
+        sta generalCounter5
         lda upsideDownFlag
         beq @notUpsideDown
         lda #$F6
         sec
-        sbc tmp2
+        sbc generalCounter5
         jmp @endUpsideDown
 @notUpsideDown:
-        lda tmp2
+        lda generalCounter5
 @endUpsideDown:
         sta oamStaging,y
         sta originalY
