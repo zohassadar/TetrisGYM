@@ -177,29 +177,24 @@ statisticsPiecesPatch:
 ; replace 5/7 tetriminos
         lda hzFlag
         bne @endOfPpuPatching ; Don't patch if in hz mode
-        lda upsideDownFlag
-        asl
-        tay
-        lda statsPatches,y
-        sta tmp1
-        iny
-        lda statsPatches,y
-        sta tmp2
+        ldx upsideDownFlag
         ldy #$00
 @nextPpuAddress:
-        lda (tmp1),y
+        lda stats_pieces_patch,y
         iny
         sta PPUADDR
-        lda (tmp1),y
+        lda stats_pieces_patch,y
         iny
         sta PPUADDR
 @nextPpuData:
-        lda (tmp1),y
+        lda stats_pieces_patch,y
         iny
         cmp #$FE
         beq @nextPpuAddress
         cmp #$FD
         beq @endOfPpuPatching
+        clc
+        adc stats_piece_tile_offset,x
         sta PPUDATA
         jmp @nextPpuData
 @endOfPpuPatching:
@@ -270,11 +265,10 @@ savestate_nametable_patch:
         .byte   $23,$37,$3B,$FF,$FF,$FF,$FF,$FF,$FF,$3C,$FE
         .byte   $23,$57,$3D,$3E,$3E,$3E,$3E,$3E,$3E,$3F,$FD
 
-statsPatches:
-        .addr rightsideup_nametable_patch
-        .addr upsidedown_nametable_patch
+stats_piece_tile_offset:
+        .byte  $00,$60
 
-rightsideup_nametable_patch:
+stats_pieces_patch:
         ; T
         .byte   $21,$63,$40,$41,$42,$FE
         .byte   $21,$83,$50,$51,$52,$FE
@@ -290,20 +284,3 @@ rightsideup_nametable_patch:
         ; L
         .byte   $22,$A3,$4C,$4D,$4E,$FE
         .byte   $22,$C3,$5C,$5D,$5E,$FD
-
-upsidedown_nametable_patch:
-        ; T
-        .byte   $21,$63,$A0,$A1,$A2,$FE
-        .byte   $21,$83,$B0,$B1,$B2,$FE
-        ; J
-        .byte   $21,$A3,$A9,$AA,$AB,$FE
-        .byte   $21,$C3,$B9,$BA,$BB,$FE
-        ; Z
-        .byte   $21,$E3,$A6,$A7,$A8,$FE
-        .byte   $22,$03,$B6,$B7,$B8,$FE
-        ; S
-        .byte   $22,$63,$A3,$A4,$A5,$FE
-        .byte   $22,$83,$B3,$B4,$B5,$FE
-        ; L
-        .byte   $22,$A3,$AC,$AD,$AE,$FE
-        .byte   $22,$C3,$BC,$BD,$BE,$FD
