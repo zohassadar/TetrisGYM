@@ -17,6 +17,10 @@ AUTO_WIN := 0
 KEYBOARD := 0
 .endif
 
+.ifndef DARKMODE
+DARKMODE := 0
+.endif
+
 NO_MUSIC := 1
 
 ; dev flags

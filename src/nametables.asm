@@ -5,7 +5,11 @@ game_type_menu_nametable_extra: ; RLE
 level_menu_nametable: ; RLE
         .incbin "nametables/level_menu_nametable_practise.bin"
 game_nametable: ; RLE
+.if DARKMODE = 1
+        .incbin "nametables/game_nametable_practise_darkmode.bin"
+.else
         .incbin "nametables/game_nametable_practise.bin"
+.endif
 enter_high_score_nametable: ; RLE
         .incbin "nametables/enter_high_score_nametable_practise.bin"
 rocket_nametable: ; RLE
