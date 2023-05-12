@@ -264,6 +264,14 @@ updateLineClearingAnimation:
         lda rowY
         cmp #$05
         bmi @ret
+        ; Invisible line toggle should happen at the end of the line clear
+        lda invisibleMode
+        cmp #INVISIBLE_LINE
+        bne @skipInvisibleToggle
+        lda invisibleFlag
+        eor #$1
+        sta invisibleFlag
+@skipInvisibleToggle:
         inc playState
 @ret:   rts
 

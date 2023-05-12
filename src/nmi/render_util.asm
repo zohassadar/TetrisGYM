@@ -78,12 +78,20 @@ copyPlayfieldRowToVRAM:
         clc
         adc #$06
         sta PPUADDR
+.ifdef INVISIBLE_DEBUG
+        lda #$00
+        sta generalCounter
+.endif
 @copyRow:
         ldx #$0A
         lda invisibleFlag
         bne @copyRowInvisible
 @copyByte:
         lda (playfieldAddr),y
+.ifdef INVISIBLE_DEBUG
+        sec
+        sbc generalCounter
+.endif
         sta PPUDATA
         iny
         dex
@@ -98,6 +106,11 @@ copyPlayfieldRowToVRAM:
 @ret:   rts
 
 @copyRowInvisible:
+.ifdef INVISIBLE_DEBUG
+        lda #$A0
+        sta generalCounter
+        jmp @copyByte
+.endif
         lda #EMPTY_TILE
 @copyByteInvisible:
         sta PPUDATA

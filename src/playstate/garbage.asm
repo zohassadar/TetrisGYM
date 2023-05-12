@@ -1,4 +1,16 @@
 playState_receiveGarbage:
+        lda invisibleMode
+        cmp #INVISIBLE_RANDOM
+        bne @skipInvisibleToggle
+        lda rng_seed+1
+        and #$1F
+        bne @skipInvisibleToggle
+        lda invisibleFlag
+        eor #$1
+        sta invisibleFlag
+        lda #$00
+        sta vramRow
+@skipInvisibleToggle:
         ldy pendingGarbage
         beq @ret
         lda multBy10Table,y

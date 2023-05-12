@@ -211,6 +211,14 @@ harddropShift:
 @addScore:
         lda completedLines
         beq @noScore
+        ; There's no line clear animation with hard drop
+        lda invisibleMode
+        cmp #INVISIBLE_LINE
+        bne @skipInvisibleToggle
+        lda invisibleFlag
+        eor #$1
+        sta invisibleFlag
+@skipInvisibleToggle:
         jsr playState_updateLinesAndStatistics
         lda #0
         sta vramRow

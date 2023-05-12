@@ -3,16 +3,17 @@
 compile_flags=()
 
 help () {
-    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-h]"
+    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-i] [-h]"
     echo "-v  verbose"
     echo "-m  mapper"
     echo "-a  faster aeppoz + press select to end game"
     echo "-s  disable highscores/SRAM"
     echo "-k  Famicom Keyboard support"
+    echo "-i Invisible debug mode"
     echo "-h  you are here"
 }
 
-while getopts "vm:askh" flag; do
+while getopts "vm:askih" flag; do
   case "${flag}" in
     v) set -x ;;
     m)
@@ -31,6 +32,9 @@ while getopts "vm:askh" flag; do
     k)
         compile_flags+=("-D KEYBOARD=1")
         echo "KEYBOARD enabled"  ;;
+    i)
+        compile_flags+=("-D INVISIBLE_DEBUG")
+        echo "INVISIBLE_DEBUG enabled"  ;;
     h)
         help; exit ;;
     *)

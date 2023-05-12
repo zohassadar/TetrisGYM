@@ -59,10 +59,10 @@ drawTiles(buffer, lookup, `
 #a    DROUGHT                 d#
 #a    DAS DELAY               d#
 #a    KILLSCREEN »2           d#
-#a    INVISIBLE               d#
 #a    HARD DROP               d#
 #a    TAP/ROLL SPEED          d#
 #a    SCORING                 d#
+#a    INVISIBLE               d#
 `);drawTiles(extra, lookup, `
 #a    HZ DISPLAY              d#
 #a    INPUT DISPLAY           d#

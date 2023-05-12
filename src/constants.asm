@@ -69,10 +69,10 @@ MODE_GARBAGE := 13
 MODE_DROUGHT := 14
 MODE_DAS := 15
 MODE_KILLX2 := 16
-MODE_INVISIBLE := 17
-MODE_HARDDROP := 18
-MODE_SPEED_TEST := 19
-MODE_SCORE_DISPLAY := 20
+MODE_HARDDROP := 17
+MODE_SPEED_TEST := 18
+MODE_SCORE_DISPLAY := 19
+MODE_INVISIBLE := 20
 MODE_HZ_DISPLAY := 21
 MODE_INPUT_DISPLAY := 22
 MODE_DISABLE_FLASH := 23
@@ -98,6 +98,11 @@ LINECAP_FLOOR := 2
 LINECAP_INVISIBLE := 3
 LINECAP_HALT := 4
 
+INVISIBLE_ON := 1
+INVISIBLE_LEVEL := 2
+INVISIBLE_LINE := 3
+INVISIBLE_RANDOM := 4
+
 LINECAP_WHEN_STRING_OFFSET := $10
 LINECAP_HOW_STRING_OFFSET := $12
 
@@ -107,7 +112,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
-.define MENUSIZES $0, $0, $0, $0, $F, $7, $8, $C, $F, $20, $10, $1F, $8, $4, $12, $10, $0, $0, $0, $0, $4, $1, $1, $1, $1, $1, $1, $1, $1, $1, $1
+.define MENUSIZES $0, $0, $0, $0, $F, $7, $8, $C, $F, $20, $10, $1F, $8, $4, $12, $10, $0, $0, $0, $4, $4, $1, $1, $1, $1, $1, $1, $1, $1, $1, $1
 
 .macro MODENAMES
     .byte   "TETRIS"
@@ -127,6 +132,5 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte   "LOBARS"
     .byte   "DASDLY"
     .byte   "KILLX2"
-    .byte   "INVZBL"
     .byte   "HRDDRP"
 .endmacro

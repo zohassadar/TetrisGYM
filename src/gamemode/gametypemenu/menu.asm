@@ -482,6 +482,9 @@ menuYTmp := tmp2
         cmp #MODE_SCORE_DISPLAY
         beq @renderScoreName
 
+        cmp #MODE_INVISIBLE
+        beq @renderInvisibleOption
+
         ldx oamStagingLength
 
         ; get Y offset
@@ -528,6 +531,19 @@ menuYTmp := tmp2
         sta spriteIndexInOamContentLookup
         jsr stringSpriteAlignRight
 @boolOutOfRange:
+        jmp @loopNext
+
+@renderInvisibleOption:
+        lda invisibleMode
+        clc
+        adc #$16
+        sta spriteIndexInOamContentLookup
+        lda #(MODE_INVISIBLE*8) + MENU_SPRITE_Y_BASE + 2
+        sbc menuScrollY
+        sta spriteYOffset
+        lda #$e9
+        sta spriteXOffset
+        jsr stringSpriteAlignRight
         jmp @loopNext
 
 @renderScoreName:

@@ -103,6 +103,13 @@ checkLevelUp:
         bpl @lineLoop
 
 @nextLevel:
+        lda invisibleMode
+        cmp #INVISIBLE_LEVEL
+        bne @skipInvisibleToggle
+        lda invisibleFlag
+        eor #$1
+        sta invisibleFlag
+@skipInvisibleToggle:
         inc levelNumber
         lda #$06 ; checked in floor linecap stuff, just below
         sta soundEffectSlot1Init
@@ -148,6 +155,8 @@ checkLinecap: ; set linecapState
 
         cmp #LINECAP_INVISIBLE
         bne @linecapEnd
+        lda invisibleFlag
+        eor #$1
         sta invisibleFlag
 
 @linecapEnd:

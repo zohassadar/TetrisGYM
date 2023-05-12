@@ -41,8 +41,8 @@ gameModeState_initGameState:
         sta dasOnlyShiftDisabled
         sta invisibleFlag
 
-        lda practiseType
-        cmp #MODE_INVISIBLE
+        lda invisibleMode
+        cmp #INVISIBLE_ON
         bne @notInvisible
         sta invisibleFlag
 @notInvisible:
