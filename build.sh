@@ -9,7 +9,7 @@ help () {
     echo "-a  faster aeppoz + press select to end game"
     echo "-s  disable highscores/SRAM"
     echo "-k  Famicom Keyboard support"
-    echo "-i Invisible debug mode"
+    echo "-i  Invisible debug mode"
     echo "-h  you are here"
 }
 
