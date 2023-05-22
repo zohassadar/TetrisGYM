@@ -84,18 +84,16 @@ pickTetriminoPre:
         lda practiseType
         cmp #MODE_TSPINS
         beq pickTetriminoT
-        lda practiseType
-        cmp #MODE_SEED
-        beq pickTetriminoSeed
-        lda practiseType
         cmp #MODE_TAPQTY
         beq pickTetriminoLongbar
-        lda practiseType
         cmp #MODE_TAP
         beq pickTetriminoLongbar
-        lda practiseType
         cmp #MODE_PRESETS
         beq pickTetriminoPreset
+        cmp #MODE_DROUGHT
+        beq pickRandomTetrimino
+        lda seededPieces
+        bne pickTetriminoSeed
         jmp pickRandomTetrimino
 
 pickTetriminoT:

@@ -209,8 +209,9 @@ linecapState: .res 1 ; $639 ; 0 if not triggered, 1 + linecapHow otherwise, rese
 dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
+seededPieces: .res 1 ; $63C ; 0 for not seeded, 1 for seeded pieces
 
-    .res $39
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

@@ -13,14 +13,6 @@ gameModeState_initGameState:
         lda #$05
         sta tetriminoX
 
-        ; set seed init
-        lda set_seed_input
-        sta set_seed
-        lda set_seed_input+1
-        sta set_seed+1
-        lda set_seed_input+2
-        sta set_seed+2
-
         ; paceResult init
         lda #$B0
         sta paceResult

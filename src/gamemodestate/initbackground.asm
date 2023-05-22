@@ -41,8 +41,11 @@ gameModeState_initGameBackground:
         lda tmpZ
         sta PPUDATA
 @heartEnd:
-
-
+        lda #<seededPiecesGameMode
+        sta tmp1
+        lda #>seededPiecesGameMode
+        sta tmp2
+        jsr patchSeed
 .if INES_MAPPER = 3
         lda #%10011000
         sta PPUCTRL
