@@ -90,8 +90,6 @@ pickTetriminoPre:
         beq pickTetriminoLongbar
         cmp #MODE_PRESETS
         beq pickTetriminoPreset
-        cmp #MODE_DROUGHT
-        beq pickRandomTetrimino
         lda seededPieces
         bne pickTetriminoSeed
         jmp pickRandomTetrimino
