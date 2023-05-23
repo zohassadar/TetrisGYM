@@ -31,10 +31,8 @@ gameMode_levelMenu:
         jsr levelMenuLinecapInfo
 @noLinecapInfo:
         ; patch if seeded
-        lda #<seededPiecesLevelMenu
-        sta tmp1
-        lda #>seededPiecesLevelMenu
-        sta tmp2
+        ldy #$20
+        ldx #$B5
         jsr patchSeed
 
         ; render level when loading screen

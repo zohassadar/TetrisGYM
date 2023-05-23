@@ -12,7 +12,15 @@ gameModeState_initGameState:
         bne @initStatsByType
         lda #$05
         sta tetriminoX
-        jsr setSeed  ; reset seed if not entering from menu
+
+        ; set seed init
+        lda set_seed_input
+        sta set_seed
+        lda set_seed_input+1
+        sta set_seed+1
+        lda set_seed_input+2
+        sta set_seed+2
+
         ; paceResult init
         lda #$B0
         sta paceResult

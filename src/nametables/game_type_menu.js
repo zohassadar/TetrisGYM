@@ -44,6 +44,7 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a    TETRIS                  d#
 #a    T-SPINS                 d#
+#a    SEED                    d#
 #a    STACKING                d#
 #a    PACE                    d#
 #a    SETUPS                  d#
@@ -61,7 +62,6 @@ drawTiles(buffer, lookup, `
 #a    INVISIBLE               d#
 #a    HARD DROP               d#
 #a    TAP/ROLL SPEED          d#
-#a    SEED                    d#
 #a    SCORING                 d#
 `);drawTiles(extra, lookup, `
 #a    HZ DISPLAY              d#
