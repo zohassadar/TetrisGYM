@@ -92,8 +92,9 @@ sprite01GameTypeCursor:
 sprite02Blank:
         .byte   $00,$FF,$00,$00,$FF
 sprite06TPiece:
-        .byte   $00,$7B,$02,$FC,$00,$7B,$02,$04
-        .byte   $00,$7B,$02,$0C,$08,$7B,$02,$04
+        .byte   $04,$7B,$02,$FC,$04,$7B,$02,$04
+        .byte   $04,$7B,$02,$0C,$0c,$7B,$02,$04
+        .byte   $fc,$7B,$02,$04
         .byte   $FF
 sprite07SPiece:
         .byte   $00,$7D,$02,$04,$00,$7D,$02,$0C

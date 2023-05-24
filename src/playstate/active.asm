@@ -276,7 +276,7 @@ rotate_tetrimino:
 @ret:   rts
 
 rotationTable:
-        .dbyt   $0301,$0002,$0103,$0200
+        .dbyt   $0301,$0002,$0202,$0200
         .dbyt   $0705,$0406,$0507,$0604
         .dbyt   $0909,$0808,$0A0A,$0C0C
         .dbyt   $0B0B,$100E,$0D0F,$0E10

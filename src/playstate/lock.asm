@@ -76,6 +76,13 @@ playState_lockTetrimino:
         inx
         dec generalCounter3
         bne @lockSquare
+        lda currentPiece
+        cmp #$02
+        bne @notT
+        ldy generalCounter
+        lda generalCounter5
+        sta (playfieldAddr),y
+@notT:
         lda #$00
         sta lineIndex
         jsr updatePlayfield

@@ -133,7 +133,25 @@ stageSpriteForCurrentPiece_actual:
         dec generalCounter2
         bne @stageMino
 stageSpriteForCurrentPiece_return:
-        rts
+        lda     currentPiece
+        cmp     #$02
+        bne     @ret
+        lda     generalCounter4
+        sta     oamStaging,y
+        inc     oamStagingLength
+        iny
+        lda     #$7b
+        sta     oamStaging,y
+        inc     oamStagingLength
+        iny
+        lda     #$02
+        sta     oamStaging,y
+        inc     oamStagingLength
+        iny
+        lda     generalCounter3
+        sta     oamStaging,y
+        inc     oamStagingLength
+@ret:   rts
 
 stageSpriteForNextPiece:
         lda qualFlag
