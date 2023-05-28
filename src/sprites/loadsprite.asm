@@ -80,8 +80,8 @@ oamContentLookup:
         .addr   spriteCustomLevelCursor ; $21
         .addr   spriteIngameHeart ; $22
         .addr   sprite23TPieceUpsideDown
-        .addr   sprite24SPieceUpsideDown
-        .addr   sprite25ZPieceUpsideDown
+        .addr   sprite07SPiece
+        .addr   sprite08ZPiece
         .addr   sprite26JPieceUpsideDown
         .addr   sprite27LPieceUpsideDown
         .addr   sprite0BOPiece
@@ -167,19 +167,19 @@ sprite23TPieceUpsideDown:
         .byte   $08,$7B,$02,$FC,$00,$7B,$02,$04
         .byte   $08,$7B,$02,$0C,$08,$7B,$02,$04
         .byte   $FF
-sprite24SPieceUpsideDown:
-        .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
-        .byte   $08,$7D,$02,$04,$08,$7D,$02,$0C
-        .byte   $FF
-sprite25ZPieceUpsideDown:
-        .byte   $00,$7C,$02,$04,$00,$7C,$02,$0C
-        .byte   $08,$7C,$02,$FC,$08,$7C,$02,$04
-        .byte   $FF
+; sprite24SPieceUpsideDown:
+;         .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
+;         .byte   $08,$7D,$02,$04,$08,$7D,$02,$0C
+;         .byte   $FF
+; sprite25ZPieceUpsideDown:
+;         .byte   $00,$7C,$02,$04,$00,$7C,$02,$0C
+;         .byte   $08,$7C,$02,$FC,$08,$7C,$02,$04
+;         .byte   $FF
 sprite26JPieceUpsideDown:
         .byte   $08,$7D,$02,$FC,$08,$7D,$02,$04
-        .byte   $00,$7D,$02,$0C,$08,$7D,$02,$0C
+        .byte   $00,$7D,$02,$FC,$08,$7D,$02,$0C
         .byte   $FF
 sprite27LPieceUpsideDown:
-        .byte   $00,$7C,$02,$FC,$08,$7C,$02,$FC
+        .byte   $00,$7C,$02,$0C,$08,$7C,$02,$FC
         .byte   $08,$7C,$02,$04,$08,$7C,$02,$0C
         .byte   $FF

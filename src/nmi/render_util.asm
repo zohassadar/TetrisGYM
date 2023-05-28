@@ -75,14 +75,19 @@ copyPlayfieldRowToVRAM:
         cpx #$15
         bpl @ret
         lda multBy10Table,x
+        ldy upsideDownFlag
+        beq @notUpsideDownColumnModify
+        clc
+        adc #$9
+@notUpsideDownColumnModify:
         tay
         txa
         ldx upsideDownFlag
-        beq @notUpsideDown
+        beq @notUpsideDownRowModify
         lda #$13
         sec
         sbc vramRow
-@notUpsideDown:
+@notUpsideDownRowModify:
         asl a
         tax
         inx
@@ -98,6 +103,8 @@ copyPlayfieldRowToVRAM:
         ldx #$0A
         lda invisibleFlag
         bne @copyRowInvisible
+        lda upsideDownFlag
+        bne @copyByteUpsideDown
 @copyByte:
         lda (playfieldAddr),y
         sta PPUDATA
@@ -113,10 +120,20 @@ copyPlayfieldRowToVRAM:
         sta vramRow
 @ret:   rts
 
+
+
 @copyRowInvisible:
         lda #EMPTY_TILE
 @copyByteInvisible:
         sta PPUDATA
         dex
         bne @copyByteInvisible
+        jmp @rowCopied
+
+@copyByteUpsideDown:
+        lda (playfieldAddr),y
+        sta PPUDATA
+        dey
+        dex
+        bne @copyByteUpsideDown
         jmp @rowCopied

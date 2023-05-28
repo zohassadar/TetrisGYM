@@ -255,10 +255,10 @@ rotate_tetrimino:
         cmp #BUTTON_A
         bne @aNotPressed
         ; swap when upside down
-        lda upsideDownFlag
-        bne @upsideDown
+        ; lda upsideDownFlag
+        ; bne @upsideDown
         inx
-@upsideDown:
+; @upsideDown:
         lda rotationTable,x
         sta currentPiece
         jsr isPositionValid
@@ -273,10 +273,10 @@ rotate_tetrimino:
         cmp #BUTTON_B
         bne @ret
         ; swap when upside down
-        lda upsideDownFlag
-        beq @notUpsideDown
-        inx
-@notUpsideDown:
+        ; lda upsideDownFlag
+        ; beq @notUpsideDown
+        ; inx
+; @notUpsideDown:
         lda rotationTable,x
         sta currentPiece
         jsr isPositionValid
@@ -501,7 +501,13 @@ shift_tetrimino:
         lda heldButtons
         and #BUTTON_RIGHT
         beq @notPressingRight
+        lda upsideDownFlag
+        beq @notUpsideDownShiftRight
+        dec tetriminoX
+        jmp @checkPositionRight
+@notUpsideDownShiftRight:
         inc tetriminoX
+@checkPositionRight:
         jsr isPositionValid
         bne @restoreX
         lda #$03
@@ -512,7 +518,13 @@ shift_tetrimino:
         lda heldButtons
         and #BUTTON_LEFT
         beq @ret
+        lda upsideDownFlag
+        beq @notUpsideDownShiftLeft
+        inc tetriminoX
+        jmp @checkPositionLeft
+@notUpsideDownShiftLeft:
         dec tetriminoX
+@checkPositionLeft:
         jsr isPositionValid
         bne @restoreX
         lda #$03
