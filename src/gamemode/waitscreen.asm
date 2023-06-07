@@ -12,6 +12,9 @@ waitScreenLoad:
         lda #$02
         jsr changeCHRBank1
 .elseif INES_MAPPER = 3
+CNROM_BANKTABLE:
+        lda #0
+        sta CNROM_BANKTABLE+1
         lda #%10000000
         sta PPUCTRL
         sta currentPpuCtrl
@@ -25,8 +28,8 @@ waitScreenLoad:
         lda screenStage
         cmp #2
         bne @justLegal
-        jsr bulkCopyToPpu
-        .addr title_nametable_patch
+        ; jsr bulkCopyToPpu
+        ; .addr title_nametable_patch
 @justLegal:
 
         jsr waitForVBlankAndEnableNmi
