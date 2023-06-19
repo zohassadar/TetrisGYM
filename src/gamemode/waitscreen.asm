@@ -28,8 +28,8 @@ CNROM_CHR_LEGAL:
         lda screenStage
         cmp #2
         bne @justLegal
-        jsr bulkCopyToPpu
-        .addr title_nametable_patch
+        ; jsr bulkCopyToPpu
+        ; .addr title_nametable_patch
 @justLegal:
 
         jsr waitForVBlankAndEnableNmi
