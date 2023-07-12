@@ -38,8 +38,8 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a CLASSICTETRIS.ES           d#
 #a                            d#
+#a CLASSICTETRIS.ES           d#
 #a                            d#
 #a                            d#
 #a    TETRIS                  d#
