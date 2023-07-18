@@ -18,13 +18,13 @@ WXYZ-,˙>########
 #########»#####.
 ################
 ################
+##fghijkv#######
+##lmnopsy#######
 ################
 ################
 ################
 ################
-################
-################
-###############
+############tu# 
 `);
 
 const buffer = readStripe(__dirname + '/game_type_menu_nametable.bin');
@@ -35,10 +35,10 @@ printNT(buffer, lookup);
 drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
-#a                            d#
-#a                            d#
-#a                            d#
-#a                            d#
+#a  hijjjk            hijjjk  d#
+#a  fgtttv            fgtttv  d#
+#a  lmuuuy            lmuuuy  d#
+#a  noppps            noppps  d#
 #a                            d#
 #a                            d#
 #a                            d#
@@ -107,9 +107,9 @@ drawRect(extra, urlX+12, urlY, 12, 1, 0x84);
 
 drawAttrs(buffer, [`
     2222222222222222
-    2222211111122222
-    2222211111122222
-    2222211111122222
+    2000011111100002
+    2000011111100002
+    2000011111100002
     2222222222222222
     2222222222222222
     2222222222222222

@@ -5,7 +5,7 @@ game_palette:
         .byte   $10,$16,$2D,$0F,$2C,$16,$29,$0F
         .byte   $3C,$00,$30,$FF
 title_palette:
-        .byte   $3F,$00,$14,$0F,$3C,$38,$00,$0F
+        .byte   $3F,$00,$14,$0F,$12,$16,$30,$0F
         .byte   $17,$27,$37,$0F,$30,MENU_HIGHLIGHT_COLOR,$00,$0F
         .byte   $22,$2A,$28,$0F,$30,$29,$27,$FF
 menu_palette:
