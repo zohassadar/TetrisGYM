@@ -34,6 +34,10 @@ mainLoop:
 .include "nmi/pollkeyboard.asm"
 .endif
 
+.if EDLINK
+.include "nmi/edlink.asm"
+.endif
+
 .include "gamemode/branch.asm"
     ; -> playAndEnding
 .include "gamemodestate/branch.asm"

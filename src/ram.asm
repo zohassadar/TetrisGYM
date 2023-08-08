@@ -210,7 +210,13 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 
-    .res $39
+.if EDLINK
+edlinkFlag: .res 1 ; $63C Used by edlink as flag for sending data
+.else
+    .res 1
+.endif
+
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

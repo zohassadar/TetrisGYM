@@ -6,6 +6,9 @@ nmi:    pha
         lda #$00
         sta oamStagingLength
         jsr render
+.if EDLINK
+        jsr receiveEdlinkCommand
+.endif
         dec sleepCounter
         lda sleepCounter
         cmp #$FF
@@ -30,6 +33,9 @@ nmi:    pha
 .if KEYBOARD
 ; Read Family BASIC Keyboard
         jsr pollKeyboard
+.endif
+.if EDLINK
+        jsr sendEdlinkData
 .endif
         pla
         tay

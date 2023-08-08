@@ -3,16 +3,17 @@
 compile_flags=()
 
 help () {
-    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-h]"
+    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-e] [-k] [-h]"
     echo "-v  verbose"
     echo "-m  mapper"
     echo "-a  faster aeppoz + press select to end game"
     echo "-s  disable highscores/SRAM"
+    echo "-e  Edlink support"
     echo "-k  Famicom Keyboard support"
     echo "-h  you are here"
 }
 
-while getopts "vm:askh" flag; do
+while getopts "vm:asekh" flag; do
   case "${flag}" in
     v) set -x ;;
     m)
@@ -28,6 +29,9 @@ while getopts "vm:askh" flag; do
     s)
         compile_flags+=("-D SAVE_HIGHSCORES=0")
         echo "SAVE_HIGHSCORES disabled"  ;;
+    e)
+        compile_flags+=("-D EDLINK=1")
+        echo "EDLINK enabled"  ;;
     k)
         compile_flags+=("-D KEYBOARD=1")
         echo "KEYBOARD enabled"  ;;
