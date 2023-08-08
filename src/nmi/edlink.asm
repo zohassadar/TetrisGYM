@@ -5,8 +5,9 @@ EMU_UNKNOWN :=  $40
 FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 
-messageHeader: ; $2b = "+". $22 = CMD_USB_WR
-        .byte  $2b, $2b ^ $ff, $22, $22 ^ $ff
+messageHeader:
+        ; $2b = "+". $22 = CMD_USB_WR
+        .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
 
 sendEdlinkHeader:
         ldx     #$00
@@ -60,7 +61,7 @@ sendEdlinkData:
         lda     gameMode
         sta     FIFO_DATA
 
-        ; lines.  2 
+        ; lines.  2
         lda     lines
         sta     FIFO_DATA
         lda     lines+1
