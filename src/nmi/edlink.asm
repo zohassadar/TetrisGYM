@@ -31,7 +31,10 @@ receiveEdlinkCommand:
 @ret:   rts
 
 ; needed for nestrischamps:
-; gameMode 1  (will be used to determine whether to send or not)
+; gameMode 1 
+; playState 1
+; rowY 1
+; completedRow
 ; lines 2 (bcd)
 ; levelNumber 1
 ; binScore 4
@@ -41,7 +44,7 @@ receiveEdlinkCommand:
 ; tetriminoY 1 same
 ; statsByType 14
 ; playfield 200
-; Total 226/0xe2
+; Total 232/0xe8
 
 ; needed on c# side:
 ; tetriminoTypeFromOrientation
@@ -52,7 +55,7 @@ sendEdlinkData:
         cmp     #CMD_SEND_STATS
         bne     @ret
         jsr     sendEdlinkHeader
-        lda     #$e2            ; Length.  16 bit LE
+        lda     #$e8          ; Length.  16 bit LE
         sta     FIFO_DATA
         lda     #$00
         sta     FIFO_DATA
@@ -60,6 +63,23 @@ sendEdlinkData:
         ; gameMode. 1
         lda     gameMode
         sta     FIFO_DATA
+
+        ; playState. 1
+        lda     playState
+        sta     FIFO_DATA
+
+        ; rowY. 1
+        lda     rowY
+        sta     FIFO_DATA
+
+        ; completedRow.  4
+        ldx     #$00
+@completedRowLoop:
+        lda     completedRow,x
+        sta     FIFO_DATA
+        inx
+        cpx     #$04
+        bne     @completedRowLoop
 
         ; lines.  2
         lda     lines
