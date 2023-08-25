@@ -8,6 +8,10 @@ const {
     flatLookup,
 } = require('./nametables');
 
+const ines_mapper = process.env.INES_MAPPER;
+const scrolltris = (ines_mapper == 1 || ines_mapper == 5) ? [1,0] : [0,1];
+
+
 const lookup = flatLookup(`
 0123456789ABCDEF
 GHIJKLMNOPQRSTUV
@@ -68,14 +72,21 @@ drawTiles(buffer, lookup, `
 #a    INPUT DISPLAY           d#
 #a    DISABLE FLASH           d#
 #a    DISABLE PAUSE           d#
-#a    GOOFY FOOT              d#
+`+
+(scrolltris[0] ?
+`#a    SCROLLTRIS              d#
+` : `` ) +
+`#a    GOOFY FOOT              d#
 #a    BLOCK TOOL              d#
 #a    LINECAP                 d#
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
 #a    PAL MODE                d#
-#a                            d#
-#a                            d#
+`+
+(scrolltris[1] ?
+`#a                            d#
+` : `` ) + 
+`#a                            d#
 #a V5                         d#
 #a                            d#
 #a                            d#

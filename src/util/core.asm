@@ -21,11 +21,26 @@ drawBlackBGPalette:
         rts
 
 resetScroll:
+.if SUPPORTS_SCROLLTRIS
+        lda gameMode
+        cmp #$04
+        beq @checkFlag
+        lda #0
+@zeroOut:
+        sta ppuScrollX
+        sta ppuScrollY
+        beq @ret
+@checkFlag:
+        lda scrollTrisFlag
+        beq @zeroOut
+@ret:
+.else
         lda #0
         sta ppuScrollX
         sta PPUSCROLL
         sta ppuScrollY
         sta PPUSCROLL
+.endif
         rts
 
 random10:
@@ -56,6 +71,9 @@ updateAudioWaitForNmiAndResetOamStaging:
         lda #$00
         sta verticalBlankingInterval
         nop
+.if SUPPORTS_SCROLLTRIS
+        jsr applyScrolltrisUpdate
+.endif
 @checkForNmi:
         lda verticalBlankingInterval
         beq @checkForNmi
