@@ -5,6 +5,7 @@ playState_updateLinesAndStatistics:
         jmp addPoints
 
 @linesCleared:
+        inc levelNumber
         tax
         dex
         lda lineClearStatsByType,x
@@ -110,8 +111,6 @@ checkLevelUp:
         sta outOfDateRenderFlags
 @lineLoop:  dex
         bne incrementLines
-        inc levelNumber
-
 
 checkLinecap: ; set linecapState
         ; check if enabled
