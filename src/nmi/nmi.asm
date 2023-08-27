@@ -48,8 +48,8 @@ irq:    pha
         dey
         bne @burn
         lda MMC5_IRQ_STATUS
-        lda wtfCurrent
-        eor #$02
+        ldx wtfCurrent
+        lda chrCycle,x
         sta wtfCurrent
         jsr changeCHRBank0
         lda wtfCurrent
@@ -58,7 +58,7 @@ irq:    pha
         sta MMC5_IRQ_STATUS
         lda wtfNext
         clc
-        adc #$0F
+        adc #$05
         sta wtfNext
         sta MMC5_IRQ_COMPARE
         pla
@@ -67,3 +67,7 @@ irq:    pha
         tax
         pla
         rti
+
+
+chrCycle:
+        .byte    $DE,$03,$ED,$04,$05,$01

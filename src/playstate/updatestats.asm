@@ -71,47 +71,46 @@ incrementLines:
 checkLevelUp:
         jsr calcBCDLinesAndTileQueue
 
-        lda lines
-        and #$0F
-        bne @lineLoop
+;         lda lines
+;         and #$0F
+;         bne @lineLoop
 
-        lda practiseType
-        cmp #MODE_TAPQTY
-        beq @lineLoop
-        cmp #MODE_TRANSITION
-        bne @notSXTOKL
-        lda transitionModifier
-        cmp #$10
-        bne @notSXTOKL
-        jmp @nextLevel
-@notSXTOKL:
+;         lda practiseType
+;         cmp #MODE_TAPQTY
+;         beq @lineLoop
+;         cmp #MODE_TRANSITION
+;         bne @notSXTOKL
+;         lda transitionModifier
+;         cmp #$10
+;         bne @notSXTOKL
+;         jmp @nextLevel
+; @notSXTOKL:
 
-        lda lines+1
-        sta generalCounter2
-        lda lines
-        sta generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lda levelNumber
-        cmp generalCounter
-        bpl @lineLoop
+;         lda lines+1
+;         sta generalCounter2
+;         lda lines
+;         sta generalCounter
+;         lsr generalCounter2
+;         ror generalCounter
+;         lsr generalCounter2
+;         ror generalCounter
+;         lsr generalCounter2
+;         ror generalCounter
+;         lsr generalCounter2
+;         ror generalCounter
+;         lda levelNumber
+;         cmp generalCounter
+;         ; bpl @lineLoop
 
-@nextLevel:
-        inc levelNumber
+; @nextLevel:
         lda #$06 ; checked in floor linecap stuff, just below
         sta soundEffectSlot1Init
         lda outOfDateRenderFlags
         ora #$02
         sta outOfDateRenderFlags
-
 @lineLoop:  dex
         bne incrementLines
+        inc levelNumber
 
 
 checkLinecap: ; set linecapState

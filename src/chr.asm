@@ -4,6 +4,9 @@
     .incbin "chr/title_menu_tileset.chr"
     .incbin "chr/game_tileset.chr"
     .incbin "chr/rocket_tileset.chr"
+    .incbin "chr/game_tileset_wrong.chr"
+    .incbin "chr/game_tileset_wrong2.chr"
+    .incbin "chr/game_tileset_wrong3.chr"
 .elseif INES_MAPPER = 3
     .incbin "chr/rocket_tileset.chr"
     .repeat $1000
