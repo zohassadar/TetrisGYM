@@ -36,4 +36,34 @@ nmi:    pha
         pla
         tax
         pla
-irq:    rti
+        rti
+
+irq:    pha
+        txa
+        pha
+        tya
+        pha
+        ldy #$1A
+@burn:
+        dey
+        bne @burn
+        lda MMC5_IRQ_STATUS
+        lda wtfCurrent
+        eor #$02
+        sta wtfCurrent
+        jsr changeCHRBank0
+        lda wtfCurrent
+        jsr changeCHRBank1
+        lda #$80
+        sta MMC5_IRQ_STATUS
+        lda wtfNext
+        clc
+        adc #$0F
+        sta wtfNext
+        sta MMC5_IRQ_COMPARE
+        pla
+        tay
+        pla
+        tax
+        pla
+        rti

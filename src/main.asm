@@ -18,7 +18,11 @@
 initRam:
 
 .include "boot.asm"
-
+        lda #$01
+        sta wtfCurrent
+        lda #wtfFloor
+        sta wtfCounter
+        cli
 mainLoop:
         jsr branchOnGameMode
         cmp gameModeState
