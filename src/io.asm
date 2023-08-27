@@ -63,7 +63,7 @@ MMC5_CHR_BANK1 := $5127
 MMC5_IRQ_COMPARE := $5203 ; 
 MMC5_IRQ_STATUS := $5204 ; $80 - enabled
 
-wtfFloor := $F
+wtfStartingPoint := $F
 
 .macro RESET_MMC1
 .if INES_MAPPER = 1

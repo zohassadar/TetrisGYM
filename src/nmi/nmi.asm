@@ -43,23 +43,22 @@ irq:    pha
         pha
         tya
         pha
-        ldy #$1A
+        ldy #$1E
 @burn:
         dey
         bne @burn
         lda MMC5_IRQ_STATUS
-        lda wtfCurrent
+        lda wtfCurrentBank
         eor #$02
-        sta wtfCurrent
-        jsr changeCHRBank0
-        lda wtfCurrent
-        jsr changeCHRBank1
+        sta wtfCurrentBank
+        sta MMC5_CHR_BANK0
+        sta MMC5_CHR_BANK1
         lda #$80
         sta MMC5_IRQ_STATUS
-        lda wtfNext
+        lda wtfNextScanline
         clc
         adc #$0F
-        sta wtfNext
+        sta wtfNextScanline
         sta MMC5_IRQ_COMPARE
         pla
         tay

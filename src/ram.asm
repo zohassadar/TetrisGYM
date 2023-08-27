@@ -211,11 +211,11 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 
 
-wtfCurrent: .res 1 ; $63C
+wtfCurrentBank: .res 1 ; $63C
 wtfCounter: .res 1 ; $63D
-wtfNext:  .res 1 ; $63E
+wtfNextScanline:  .res 1 ; $63E
 
-    .res $37
+    .res $36
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

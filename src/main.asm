@@ -19,8 +19,8 @@ initRam:
 
 .include "boot.asm"
         lda #$01
-        sta wtfCurrent
-        lda #wtfFloor
+        sta wtfCurrentBank
+        lda #wtfStartingPoint
         sta wtfCounter
         cli
 mainLoop:
