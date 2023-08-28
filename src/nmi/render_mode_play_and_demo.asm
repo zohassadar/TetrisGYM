@@ -1,24 +1,5 @@
 render_mode_play_and_demo:
-        cli
-        lda #$01
-        sta wtfCurrent
-        jsr changeCHRBank0
-        lda wtfCurrent
-        jsr changeCHRBank1
-        lda #$80
-        sta MMC5_IRQ_STATUS
-        inc wtfCounter
-        lda wtfCounter
-        cmp #$F8
-        bne @dontReset
-        lda #wtfFloor
-        sta wtfCounter
-@dontReset:
-        lsr
-        lsr
-        lsr
-        sta MMC5_IRQ_COMPARE
-        sta wtfNext
+        jsr resetWtfScroll
         lda playState
         cmp #$04
         bne @playStateNotDisplayLineClearingAnimation

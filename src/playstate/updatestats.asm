@@ -104,8 +104,8 @@ checkLevelUp:
 ;         ; bpl @lineLoop
 
 ; @nextLevel:
-        lda #$06 ; checked in floor linecap stuff, just below
-        sta soundEffectSlot1Init
+        ; lda #$06 ; checked in floor linecap stuff, just below
+        ; sta soundEffectSlot1Init
         lda outOfDateRenderFlags
         ora #$02
         sta outOfDateRenderFlags

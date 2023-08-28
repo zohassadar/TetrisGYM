@@ -69,5 +69,29 @@ irq:    pha
         rti
 
 
+; DEAD not in use.  This is a quick way to get 1->3->4->1
 chrCycle:
-        .byte    $DE,$03,$ED,$04,$05,$01
+        .byte    $DE,$03,$ED,$04,$01
+
+resetWtfScroll:
+        cli
+        lda #$01
+        sta wtfCurrent
+        jsr changeCHRBank0
+        lda wtfCurrent
+        jsr changeCHRBank1
+        lda #$80
+        sta MMC5_IRQ_STATUS
+        inc wtfCounter
+        lda wtfCounter
+        cmp #$F8
+        bne @dontReset
+        lda #wtfFloor
+        sta wtfCounter
+@dontReset:
+        lsr
+        lsr
+        lsr
+        sta MMC5_IRQ_COMPARE
+        sta wtfNext
+        rts

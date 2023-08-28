@@ -1,4 +1,5 @@
 render_mode_pause:
+        jsr resetWtfScroll
         lda pausedOutOfDateRenderFlags
         and #$02
         beq @skipSaveSlotPatch
