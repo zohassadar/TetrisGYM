@@ -4,16 +4,17 @@ compile_flags=()
 INES_MAPPER=1
 
 help () {
-    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-h]"
+    echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-r] [-h]"
     echo "-v  verbose"
     echo "-m  mapper"
     echo "-a  faster aeppoz + press select to end game"
     echo "-s  disable highscores/SRAM"
     echo "-k  Famicom Keyboard support"
+    echo "-r  replay"
     echo "-h  you are here"
 }
 
-while getopts "vm:askh" flag; do
+while getopts "vm:askrh" flag; do
   case "${flag}" in
     v) set -x ;;
     m)
@@ -33,6 +34,12 @@ while getopts "vm:askh" flag; do
     k)
         compile_flags+=("-D KEYBOARD=1")
         echo "KEYBOARD enabled"  ;;
+    r)
+        echo "REPLAY_MODE enabled.  INES_MAPPER set to 5"
+        INES_MAPPER=5
+        REPLAY_MODE=1
+        compile_flags+=("-D INES_MAPPER=5")
+        compile_flags+=("-D REPLAY_MODE=1")   ;;
     h)
         help; exit ;;
     *)
@@ -42,7 +49,7 @@ done
 
 # build / compress nametables
 
-INES_MAPPER=$INES_MAPPER node src/nametables/build.js
+INES_MAPPER=$INES_MAPPER REPLAY_MODE=$REPLAY_MODE node src/nametables/build.js
 
 # PNG -> CHR
 

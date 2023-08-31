@@ -328,17 +328,25 @@ scoringModifier: .res 1
 hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
+.if .NOT(REPLAY_MODE)
 disablePauseFlag: .res 1
+.endif
 .if SUPPORTS_SCROLLTRIS
 scrollTrisFlag: .res 1
 .endif
 goofyFlag: .res 1
+.if .NOT(REPLAY_MODE)
 debugFlag: .res 1
+.endif
 linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
+.if REPLAY_MODE ; stash unused here
+disablePauseFlag: .res 1
+debugFlag: .res 1
+.endif
 .if .NOT(SUPPORTS_SCROLLTRIS)
-.res 1
+scrollTrisFlag: .res 1
 .endif
 ; ... $7FF

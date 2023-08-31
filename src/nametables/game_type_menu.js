@@ -13,6 +13,7 @@ const botScreenModes = 11;
 const totalModes = topScreenModes + botScreenModes;
 
 const supports_scrolltris = (process.env.INES_MAPPER == 1 || process.env.INES_MAPPER == 5);
+const replay_mode = process.env.REPLAY_MODE;
 
 var modes = [];
 modes.push("TETRIS");
@@ -39,12 +40,16 @@ modes.push("SCORING");
 modes.push("HZ DISPLAY");
 modes.push("INPUT DISPLAY");
 modes.push("DISABLE FLASH");
-modes.push("DISABLE PAUSE");
+if (!replay_mode){
+    modes.push("DISABLE PAUSE");
+};
 if (supports_scrolltris){
     modes.push("SCROLLTRIS");
-    };
+};
 modes.push("GOOFY FOOT");
-modes.push("BLOCK TOOL");
+if (!replay_mode){
+    modes.push("BLOCK TOOL");
+};
 modes.push("LINECAP");
 modes.push("DAS ONLY");
 modes.push("QUAL MODE");
