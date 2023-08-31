@@ -320,7 +320,7 @@ addLineClearPoints:
         lda #0
         sta factorA24+1
         sta factorA24+2
-        lda levelNumber
+        lda #$13
         cmp #$FF
         bne @noverflow
         lda #1
