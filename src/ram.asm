@@ -15,7 +15,9 @@ spawnID: .res 1 ; $0019
 spawnCount: .res 1 ; $001A
 pointerAddr: .res 2 ; $001B ; used in debug, harddrop
 pointerAddrB: .res 2 ; $001D ; used in harddrop
-    .res $14
+currentColorTable: .res 2 ; $001F
+
+    .res $12
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
@@ -210,7 +212,9 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 
-    .res $39
+colorTableIndex: .res 1 ; $63C
+
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -329,6 +333,8 @@ hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
 disablePauseFlag: .res 1
+prideFlag: .res 1
+glitchedColorsFlag: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
 linecapFlag: .res 1

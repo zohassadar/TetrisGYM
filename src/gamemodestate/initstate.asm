@@ -93,6 +93,7 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
+        jsr setColorTableAndIndex
 
         lda practiseType
         cmp #MODE_TRANSITION

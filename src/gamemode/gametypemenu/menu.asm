@@ -45,6 +45,9 @@ CNROM_CHR_MENU:
         lda #1
         sta CNROM_CHR_MENU+1
 .endif
+        ; set default value for glitched colors
+        lda #01
+        sta glitchedColorsFlag
         jsr waitForVBlankAndEnableNmi
         jsr updateAudioWaitForNmiAndResetOamStaging
         jsr updateAudioWaitForNmiAndEnablePpuRendering

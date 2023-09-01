@@ -104,6 +104,7 @@ checkLevelUp:
 
 @nextLevel:
         inc levelNumber
+        jsr setColorTableAndIndex
         lda #$06 ; checked in floor linecap stuff, just below
         sta soundEffectSlot1Init
         lda outOfDateRenderFlags
