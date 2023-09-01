@@ -300,6 +300,16 @@ updatePaletteForLevel:
         lda colorTable+1+1,x
         sta PPUDATA
         lda colorTable+1+1+1,x
+.ifdef DARKMODE
+        sta PPUDATA
+        lda #$0F
+        sta PPUDATA
+        lda colorTable+3,x
+        sta PPUDATA
+        lda #$00
+        sta PPUDATA
+        lda #$30
+.endif
         sta PPUDATA
         lda generalCounter
         clc
