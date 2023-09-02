@@ -173,7 +173,7 @@ render_mode_play_and_demo:
         sta PPUADDR
         lda #$0E
         sta PPUADDR
-        ldx #$00
+        ldx #$0F
         lda completedLines
         cmp #$04
         bne @setPaletteColor
@@ -300,6 +300,16 @@ updatePaletteForLevel:
         lda colorTable+1+1,x
         sta PPUDATA
         lda colorTable+1+1+1,x
+
+        sta PPUDATA
+        lda #$0F
+        sta PPUDATA
+        lda colorTable+3,x
+        sta PPUDATA
+        lda #$0F
+        sta PPUDATA
+        lda #$30
+
         sta PPUDATA
         lda generalCounter
         clc
