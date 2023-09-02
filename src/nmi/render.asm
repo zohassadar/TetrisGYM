@@ -9,6 +9,7 @@ render: lda renderMode
         .addr   render_mode_speed_test
         .addr   render_mode_level_menu
         .addr   render_mode_linecap_menu
+        .addr   render_mode_color_menu
 
 .include "render_mode_level_menu.asm"
     ; no rts / jmp

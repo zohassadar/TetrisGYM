@@ -38,6 +38,7 @@ checkSavedInit:
         rts
 
 resetSavedScores:
+        jsr initializeColorTable
         lda #$4B
         sta SRAM_hsMagic+2
         lda #$D2

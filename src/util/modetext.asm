@@ -1,4 +1,7 @@
 displayModeText:
+        lda practiseType
+        cmp #MODE_LINECAP
+        beq @rts
         ldx practiseType
         cpx #MODE_SEED
         bne @drawModeName
@@ -13,7 +16,7 @@ displayModeText:
         jsr twoDigsToPPU
         lda set_seed_input+2
         jsr twoDigsToPPU
-        rts
+@rts:   rts
 
 @drawModeName:
         ; ldx practiseType

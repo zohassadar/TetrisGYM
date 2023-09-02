@@ -310,7 +310,7 @@ updatePaletteForLevel:
         rts
 
 ; 4 bytes per level (bg, fg, c3, c4)
-colorTable:
+colorTableDefault:
         .dbyt   $0F30,$2112,$0F30,$291A,$0F30,$2414,$0F30,$2A12
         .dbyt   $0F30,$2B15,$0F30,$222B,$0F30,$0016,$0F30,$0513
         .dbyt   $0F30,$1612,$0F30,$2716,$60E6,$69A5,$69C9,$1430

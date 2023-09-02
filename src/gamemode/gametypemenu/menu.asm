@@ -1,4 +1,5 @@
 .include "linecap.asm"
+.include "color.asm"
 
 gameMode_gameTypeMenu:
 .if NO_MENU
@@ -117,7 +118,7 @@ changeGameTypeToSpeedTest:
         rts
 
 gotoLinecapMenu:
-        jmp linecapMenu
+        jmp colorMenu
 
 gameTypeLoopNext:
         jsr renderMenuVars
