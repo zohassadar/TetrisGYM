@@ -91,6 +91,8 @@ gameTypeLoopCheckStart:
         beq changeGameTypeToSpeedTest
         cmp #MODE_LINECAP
         beq gotoLinecapMenu
+        cmp #MODE_COLORS
+        beq gotoColorMenu
 
         ; check for seed of 0000XX
         cmp #MODE_SEED
@@ -118,6 +120,9 @@ changeGameTypeToSpeedTest:
         rts
 
 gotoLinecapMenu:
+        jmp linecapMenu
+
+gotoColorMenu:
         jmp colorMenu
 
 gameTypeLoopNext:
