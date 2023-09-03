@@ -8,6 +8,57 @@ const {
     flatLookup,
 } = require('./nametables');
 
+const topScreenModes = 21;
+const botScreenModes = 11;
+const totalModes = topScreenModes + botScreenModes;
+
+const supports_scrolltris = (process.env.INES_MAPPER == 1 || process.env.INES_MAPPER == 5);
+
+var modes = [];
+modes.push("TETRIS");
+// modes.push("T-SPINS");
+modes.push("SEED");
+// modes.push("STACKING");
+// modes.push("PACE");
+// modes.push("SETUPS");
+// modes.push("B-TYPE");
+modes.push("FLOOR");
+modes.push("CRUNCH");
+// modes.push("(QUICK)TAP");
+// modes.push("TRANSITION");
+// modes.push("TAP QUANTITY");
+// modes.push("CHECKERBOARD");
+modes.push("GARBAGE");
+modes.push("DROUGHT");
+// modes.push("KILLSCREEN »2");
+modes.push("INVISIBLE");
+modes.push("HARD DROP");
+modes.push("SPEED");
+modes.push("DAS DELAY");
+// modes.push("TAP/ROLL SPEED");
+modes.push("SCORING");
+modes.push("HZ DISPLAY");
+modes.push("INPUT DISPLAY");
+modes.push("DISABLE FLASH");
+modes.push("DISABLE PAUSE");
+if (supports_scrolltris){
+    modes.push("SCROLLTRIS");
+    };
+modes.push("GOOFY FOOT");
+modes.push("BLOCK TOOL");
+// modes.push("LINECAP");
+modes.push("DAS ONLY");
+// modes.push("QUAL MODE");
+modes.push("PAL MODE");
+
+if (modes.length < totalModes){
+    var padding = new Array(totalModes-modes.length).fill("");
+    modes = modes.concat(padding);
+    }
+
+modes = modes.map(str => str.padEnd(24, " "));
+
+
 const lookup = flatLookup(`
 0123456789ABCDEF
 GHIJKLMNOPQRSTUV
@@ -42,39 +93,9 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a    TETRIS                  d#
-#a    T-SPINS                 d#
-#a    SEED                    d#
-#a    STACKING                d#
-#a    PACE                    d#
-#a    SETUPS                  d#
-#a    B-TYPE                  d#
-#a    FLOOR                   d#
-#a    CRUNCH                  d#
-#a    (QUICK)TAP              d#
-#a    TRANSITION              d#
-#a    TAP QUANTITY            d#
-#a    CHECKERBOARD            d#
-#a    GARBAGE                 d#
-#a    DROUGHT                 d#
-#a    DAS DELAY               d#
-#a    KILLSCREEN »2           d#
-#a    INVISIBLE               d#
-#a    HARD DROP               d#
-#a    TAP/ROLL SPEED          d#
-#a    SCORING                 d#
+#a    ${modes.slice(0,topScreenModes).join("d#\n#a    ")}d#
 `);drawTiles(extra, lookup, `
-#a    HZ DISPLAY              d#
-#a    INPUT DISPLAY           d#
-#a    DISABLE FLASH           d#
-#a    DISABLE PAUSE           d#
-#a    GOOFY FOOT              d#
-#a    BLOCK TOOL              d#
-#a    LINECAP                 d#
-#a    DAS ONLY                d#
-#a    QUAL MODE               d#
-#a    PAL MODE                d#
-#a                            d#
+#a    ${modes.slice(topScreenModes,totalModes).join("d#\n#a    ")}d#
 #a                            d#
 #a V5                         d#
 #a                            d#

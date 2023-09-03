@@ -64,11 +64,11 @@ drawTiles(buffer, lookup, `
 #a      ╄╅╅╅╅╅╆               d#
 #a      ╇LEVEL╈               d#
 #a      ╉╊╊╊╊╊╋               d#
-#a    rtututututy             d#
-#a    f0f1f2f3f4h   rttty     d#
-#a    jbkbkbkbkbl   f   h     d#
-#a    f5f6f7f8f9h   vbbbn     d#
-#a    vbibibibibn             d#
+#a    rty                     d#
+#a    f0h                     d#
+#a    vbn                     d#
+#a                            d#
+#a                            d#
 #a                            d#
 #a                            d#
 #a rtttttttttttttttttttttttty d#

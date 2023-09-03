@@ -124,8 +124,8 @@ levelMenuCheckStartGame:
         and #BUTTON_A
         beq @noA
         lda classicLevel
-        clc
-        adc #$0A
+        ; clc
+        ; adc #$0A
         sta classicLevel
 @noA:
         lda classicLevel
@@ -372,6 +372,7 @@ levelControlNormal:
         lda newlyPressedButtons
         cmp #BUTTON_RIGHT
         bne @checkLeftPressed
+        beq @checkLeftPressed
         lda #$01
         sta soundEffectSlot1Init
         lda classicLevel
@@ -382,6 +383,7 @@ levelControlNormal:
         lda newlyPressedButtons
         cmp #BUTTON_LEFT
         bne @checkDownPressed
+        beq @checkDownPressed
         lda #$01
         sta soundEffectSlot1Init
         lda classicLevel
@@ -396,6 +398,7 @@ levelControlNormal:
         lda classicLevel
         cmp #$05
         bpl @toHearts
+        bmi @toHearts
         clc
         adc #$05
         sta classicLevel

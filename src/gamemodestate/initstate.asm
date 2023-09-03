@@ -1,3 +1,7 @@
+actualLevelsTable:
+        .byte $09,$0c,$0f,$12,$13,$1d,$ff
+
+
 gameModeState_initGameState:
         lda #$EF
         ldx #$04
@@ -10,6 +14,11 @@ gameModeState_initGameState:
         sta $03EF,x
         dex
         bne @initStatsByType
+
+        ldx speed
+        lda actualLevelsTable,x
+        sta levelUsedForSpeedAndPoints
+
         lda #$05
         sta tetriminoX
 

@@ -92,6 +92,13 @@ stringLookup:
         .byte stringFromBelow-stringLookup
         .byte stringInviz-stringLookup
         .byte stringHalt-stringLookup
+        .byte string9-stringLookup
+        .byte string12-stringLookup
+        .byte string15-stringLookup
+        .byte string18-stringLookup
+        .byte string19-stringLookup
+        .byte string29-stringLookup
+        .byte stringKSX2-stringLookup
 stringClassic:
         .byte $7,'C','L','A','S','S','I','C'
 stringLetters:
@@ -134,5 +141,17 @@ stringInviz:
         .byte $5,'I','N','V','I','Z'
 stringHalt:
         .byte $4,'H','A','L','T'
+string9:
+        .byte $1, $9
+string12:
+        .byte $2, $1, $2
+string15:
+        .byte $2, $1, $5
+string18:
+        .byte $2, $1, $8
+string19:
+        .byte $2, $1, $9
+string29:
+        .byte $2, $2, $9
 stringNull:
         .byte $0

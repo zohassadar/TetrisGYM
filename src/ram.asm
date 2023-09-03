@@ -215,7 +215,9 @@ wtfCurrent: .res 1 ; $63C
 wtfCounter: .res 1 ; $63D
 wtfNext:  .res 1 ; $63E
 
-    .res $37
+levelUsedForSpeedAndPoints: .res 1 
+
+    .res $36
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -317,17 +319,11 @@ linecapHow: .res 1
 linecapLevel: .res 1
 linecapLines: .res 2
 menuVars: ; $76E
-paceModifier: .res 1
-presetModifier: .res 1
-typeBModifier: .res 1
 floorModifier: .res 1
 crunchModifier: .res 1
-tapModifier: .res 1
-transitionModifier: .res 1
-tapqtyModifier: .res 1
-checkerModifier: .res 1
 garbageModifier: .res 1
 droughtModifier: .res 1
+speed: .res 1
 dasModifier: .res 1
 scoringModifier: .res 1
 hzFlag: .res 1
@@ -336,9 +332,16 @@ disableFlashFlag: .res 1
 disablePauseFlag: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
-linecapFlag: .res 1
 dasOnlyFlag: .res 1
-qualFlag: .res 1
 palFlag: .res 1
 
+linecapFlag: .res 1
+paceModifier: .res 1
+transitionModifier: .res 1
+tapqtyModifier: .res 1
+qualFlag: .res 1
+presetModifier: .res 1
+typeBModifier: .res 1
+tapModifier: .res 1
+checkerModifier: .res 1
 ; ... $7FF

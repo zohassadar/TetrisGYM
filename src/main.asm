@@ -22,6 +22,15 @@ initRam:
         sta wtfCurrent
         lda #wtfFloor
         sta wtfCounter
+        lda #$04
+        sta speed
+        lda #$03
+        sta linecapHow
+        lda #$00
+        sta linecapLevel
+        lda #$01
+        sta linecapFlag
+
         cli
 mainLoop:
         jsr branchOnGameMode

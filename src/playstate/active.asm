@@ -285,8 +285,9 @@ drop_tetrimino:
         lda linecapState
         cmp #LINECAP_KILLX2
         beq @killX2
-        lda practiseType
-        cmp #MODE_KILLX2
+; instead of MODE_KILLX2
+        lda levelUsedForSpeedAndPoints
+        cmp #$FF
         bne @normal
 @killX2:
         jsr lookupDropSpeed
@@ -367,8 +368,8 @@ drop_tetrimino_actual:
         jmp @ret
 
 lookupDropSpeed:
-        lda #$02
-        ldx levelNumber
+        lda #$01
+        ldx levelUsedForSpeedAndPoints
         cpx #$1D
         bcs @noTableLookup
         lda framesPerDropTableNTSC,x
@@ -380,10 +381,10 @@ lookupDropSpeed:
         rts
 
 framesPerDropTableNTSC:
-        .byte   $02,$02,$02,$02,$02,$02,$02,$02
-        .byte   $02,$02,$02,$02,$02,$02,$02,$02
-        .byte   $02,$02,$02,$02,$02,$02,$02,$02
-        .byte   $02,$02,$02,$02,$02,$02
+        .byte   $30,$2B,$26,$21,$1C,$17,$12,$0D
+        .byte   $08,$06,$05,$05,$05,$04,$04,$04
+        .byte   $03,$03,$03,$02,$02,$02,$02,$02
+        .byte   $02,$02,$02,$02,$02,$01
 framesPerDropTablePAL:
         .byte   $24,$20,$1d,$19,$16,$12,$0f,$0b
         .byte   $07,$05,$04,$04,$04,$03,$03,$03
@@ -409,9 +410,9 @@ shift_tetrimino:
         rts
 @dasOnlyEnd:
 
-        lda practiseType
-        cmp #MODE_DAS
-        bne @normalDAS
+        ; lda practiseType
+        ; cmp #MODE_DAS
+        ; bne @normalDAS
         lda dasModifier
         sta dasValueDelay
         lda palFlag

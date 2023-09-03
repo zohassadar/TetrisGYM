@@ -33,7 +33,7 @@ gameMode_bootScreen: ; boot
 
 @nonQualBoot:
         ; set start level to 8/18
-        lda #$8
+        lda #$0
         sta classicLevel
         lda #2
         sta gameMode

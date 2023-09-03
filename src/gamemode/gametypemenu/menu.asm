@@ -396,7 +396,7 @@ renderMenuVars:
 
 @seedCursor:
         clc
-        lda #MENU_SPRITE_Y_BASE + 7
+        lda #MENU_SPRITE_Y_BASE
         sbc menuScrollY
         sta spriteYOffset
         lda menuSeedCursorIndex
@@ -486,6 +486,9 @@ menuYTmp := tmp2
         cmp #MODE_SCORE_DISPLAY
         beq @renderScoreName
 
+        cmp #MODE_SPEED
+        beq @renderSpeedOption
+
         ldx oamStagingLength
 
         ; get Y offset
@@ -538,6 +541,20 @@ menuYTmp := tmp2
         lda scoringModifier
         sta spriteIndexInOamContentLookup
         lda #(MODE_SCORE_DISPLAY*8) + MENU_SPRITE_Y_BASE + 1
+        sbc menuScrollY
+        sta spriteYOffset
+        lda #$e9
+        sta spriteXOffset
+        jsr stringSpriteAlignRight
+        jmp @loopNext
+
+
+@renderSpeedOption:
+        lda speed
+        clc
+        adc #$16
+        sta spriteIndexInOamContentLookup
+        lda #(MODE_SPEED*8) + MENU_SPRITE_Y_BASE + 1
         sbc menuScrollY
         sta spriteYOffset
         lda #$e9

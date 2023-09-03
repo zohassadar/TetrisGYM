@@ -136,7 +136,7 @@ checkLinecap: ; set linecapState
 @linecapLevelCheck:
         lda levelNumber
         cmp linecapLevel
-        bcc @linecapEnd
+        bne @linecapEnd
 
 @linecapApply:
         clc
@@ -320,7 +320,7 @@ addLineClearPoints:
         lda #0
         sta factorA24+1
         sta factorA24+2
-        lda #$13
+        lda levelUsedForSpeedAndPoints
         cmp #$FF
         bne @noverflow
         lda #1
