@@ -41,6 +41,7 @@ modes.push("HZ DISPLAY");
 modes.push("INPUT DISPLAY");
 modes.push("DISABLE FLASH");
 modes.push("DISABLE PAUSE");
+modes.push("PRIDE COLORS");
 if (supports_scrolltris){
     modes.push("SCROLLTRIS");
     };
@@ -87,9 +88,9 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
+#a                            d#
 #a      ZERO FROM ZERO        d#
 #a                            d#
-#a     A TETRISGYM HACK       d#
 #a                            d#
 #a                            d#
 #a                            d#
@@ -97,7 +98,7 @@ drawTiles(buffer, lookup, `
 `);drawTiles(extra, lookup, `
 #a    ${modes.slice(topScreenModes,totalModes).join("d#\n#a    ")}d#
 #a                            d#
-#a ORIGINAL GYM BY KIRJAVA    d#
+#a BASED ON GYM BY KIRJAVA    d#
 #a V5                         d#
 #a                            d#
 #a                            d#

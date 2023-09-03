@@ -125,11 +125,15 @@ levelMenuCheckStartGame:
         lda heldButtons_player1
         and #BUTTON_A
         beq @noA
-        lda classicLevel
-        ; clc
-        ; adc #$0A
+        lda #$80
         sta classicLevel
 @noA:
+        lda heldButtons_player1
+        cmp #BUTTON_LEFT+BUTTON_UP+BUTTON_START
+        bne @noShortcut
+        lda #$F6
+        sta classicLevel
+@noShortcut:
         lda classicLevel
         sta startLevel
 @startGame:

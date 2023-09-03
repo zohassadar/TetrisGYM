@@ -1,5 +1,5 @@
 actualLevelsTable:
-        .byte $09,$0c,$0f,$12,$13,$1d,$ff
+        .byte $05,$06,$07,$08,$09,$0c,$0f,$12,$13,$1d,$ff
 
 
 gameModeState_initGameState:
@@ -102,6 +102,7 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
+        jsr setColorTableAndIndex
 
         lda practiseType
         cmp #MODE_TRANSITION

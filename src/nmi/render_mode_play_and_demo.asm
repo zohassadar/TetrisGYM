@@ -274,38 +274,42 @@ rightColumns:
         .byte   $05,$06,$07,$08,$09
 ; Set Background palette 2 and Sprite palette 2
 updatePaletteForLevel:
-        lda levelNumber
-@mod10: cmp #$0A
-        bmi @copyPalettes ; bcc fixes the colour bug
-        sec
-        sbc #$0A
-        jmp @mod10
+;         lda levelNumber
+; @mod10: cmp #$0A
+;         bmi @copyPalettes ; bcc fixes the colour bug
+;         sec
+;         sbc #$0A
+;         jmp @mod10
 
-@copyPalettes:
-        asl a
-        asl a
-        tax
+; @copyPalettes:
+;         asl a
+;         asl a
+;         tax
         lda #$00
         sta generalCounter
 @copyPalette:
+        ldy colorTableIndex
         lda #$3F
         sta PPUADDR
         lda #$08
         clc
         adc generalCounter
         sta PPUADDR
-        lda colorTable,x
+        lda (currentColorTable),y
         sta PPUDATA
-        lda colorTable+1,x
+        iny
+        lda (currentColorTable),y
         sta PPUDATA
-        lda colorTable+1+1,x
+        iny
+        lda (currentColorTable),y
         sta PPUDATA
-        lda colorTable+1+1+1,x
+        iny
+        lda (currentColorTable),y
 .ifdef DARKMODE
         sta PPUDATA
         lda #$0F
         sta PPUDATA
-        lda colorTable+3,x
+        lda (currentColorTable),y
         sta PPUDATA
         lda #$0F
         sta PPUDATA
@@ -320,17 +324,17 @@ updatePaletteForLevel:
         bne @copyPalette
         rts
 
-; 4 bytes per level (bg, fg, c3, c4)
-colorTable:
-.if PRIDE = 1
+prideColorTable:
         .dbyt   $0f30,$0021,$0f30,$001a,$0f25,$1114,$0f30,$0025
         .dbyt   $0f30,$2814,$0f30,$212b,$0f30,$2711,$0f30,$0014
         .dbyt   $0f30,$2521,$0f30,$2715
-.else
+; 4 bytes per level (bg, fg, c3, c4)
+colorTable:
         .dbyt   $0F30,$2112,$0F30,$291A,$0F30,$2414,$0F30,$2A12
         .dbyt   $0F30,$2B15,$0F30,$222B,$0F30,$0016,$0F30,$0513
         .dbyt   $0F30,$1612,$0F30,$2716
-.endif   
+        
+glitchedColorTable:
         .dbyt   $60E6,$69A5,$69C9,$1430
         .dbyt   $04A9,$2085,$69E6,$89A5,$89C9,$1430,$04A9,$2085
         .dbyt   $8960,$A549,$C920,$3056,$A5BE,$C901,$F020,$A5A4
@@ -345,6 +349,60 @@ colorTable:
         .dbyt   $A217,$A002,$2047,$ABA5,$1729,$0718,$6519,$C907
         .dbyt   $9006,$38E9,$074C,$2A99,$AABD,$4E99,$8519,$6000
         .dbyt   $0000,$0001,$0101,$0102,$0203,$0404,$0505,$0505
+
+
+; mod10noglitch:
+;         cmp #$0A
+;         bcc @ret ; bcc to fix the colour bug
+;         sec
+;         sbc #$0A
+;         jmp mod10noglitch
+; @ret:   rts
+
+mod10glitched:
+        cmp #$0A
+        bmi @ret ; bcc fixes the colour bug
+        sec
+        sbc #$0A
+        jmp mod10glitched
+@ret:   rts
+
+setColorTableAndIndex:
+        lda prideFlag
+        bne @prideColors
+; normal colors
+        lda #<colorTable
+        sta currentColorTable
+        lda #>colorTable
+        sta currentColorTable+1
+        jmp @getMod10
+@prideColors:
+        lda #<prideColorTable
+        sta currentColorTable
+        lda #>prideColorTable
+        sta currentColorTable+1
+@getMod10:
+        lda levelNumber
+;         ldy glitchedColorsFlag
+;         bne @glitched
+;         jsr mod10noglitch
+;         jmp @setIndex
+; @glitched:
+        jsr mod10glitched
+@setIndex:
+        asl a
+        asl a
+        sta colorTableIndex
+        sec
+        sbc #$28           ; subtract 40
+        bmi @ret
+        sta colorTableIndex
+        lda #<glitchedColorTable
+        sta currentColorTable
+        lda #>glitchedColorTable
+        sta currentColorTable+1
+@ret:   rts
+
 
 incrementPieceStat:
         tax

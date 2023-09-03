@@ -6,6 +6,8 @@ playState_updateLinesAndStatistics:
 
 @linesCleared:
         inc levelNumber
+        jsr setColorTableAndIndex
+        lda completedLines
         tax
         dex
         lda lineClearStatsByType,x

@@ -77,6 +77,7 @@ MODE_HZ_DISPLAY
 MODE_INPUT_DISPLAY
 MODE_DISABLE_FLASH
 MODE_DISABLE_PAUSE
+MODE_PRIDE
 .if SUPPORTS_SCROLLTRIS
 MODE_SCROLLTRIS
 .endif
@@ -144,13 +145,14 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $0    ; MODE_INVISIBLE
     ; .byte $0    ; MODE_HARDDROP
     ; .byte $0    ; MODE_SPEED_TEST
-    .byte $6    ; MODE_SPEED
+    .byte $A    ; MODE_SPEED
     .byte $10   ; MODE_DAS
     .byte $4    ; MODE_SCORE_DISPLAY
     .byte $1    ; MODE_HZ_DISPLAY
     .byte $1    ; MODE_INPUT_DISPLAY
     .byte $1    ; MODE_DISABLE_FLASH
     .byte $1    ; MODE_DISABLE_PAUSE
+    .byte $1    ; MODE_PRIDE
 .if SUPPORTS_SCROLLTRIS
     .byte $1    ; MODE_SCROLLTRIS
 .endif

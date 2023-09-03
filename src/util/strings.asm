@@ -92,6 +92,10 @@ stringLookup:
         .byte stringFromBelow-stringLookup
         .byte stringInviz-stringLookup
         .byte stringHalt-stringLookup
+        .byte string5-stringLookup
+        .byte string6-stringLookup
+        .byte string7-stringLookup
+        .byte string8-stringLookup
         .byte string9-stringLookup
         .byte string12-stringLookup
         .byte string15-stringLookup
@@ -141,6 +145,14 @@ stringInviz:
         .byte $5,'I','N','V','I','Z'
 stringHalt:
         .byte $4,'H','A','L','T'
+string5:
+        .byte $1, $5
+string6:
+        .byte $1, $6
+string7:
+        .byte $1, $7
+string8:
+        .byte $1, $8
 string9:
         .byte $1, $9
 string12:

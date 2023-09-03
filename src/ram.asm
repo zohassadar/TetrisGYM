@@ -15,7 +15,9 @@ spawnID: .res 1 ; $0019
 spawnCount: .res 1 ; $001A
 pointerAddr: .res 2 ; $001B ; used in debug, harddrop
 pointerAddrB: .res 2 ; $001D ; used in harddrop
-    .res $14
+currentColorTable: .res 2 ; $001F
+
+    .res $12
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
@@ -215,9 +217,11 @@ wtfCurrent: .res 1 ; $63C
 wtfCounter: .res 1 ; $63D
 wtfNext:  .res 1 ; $63E
 
+colorTableIndex: .res 1 ; $63F
+
 levelUsedForSpeedAndPoints: .res 1 
 
-    .res $36
+    .res $35
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -330,6 +334,7 @@ hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
 disablePauseFlag: .res 1
+prideFlag: .res 1
 .if SUPPORTS_SCROLLTRIS
 scrollTrisFlag: .res 1
 .endif

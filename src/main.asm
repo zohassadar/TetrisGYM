@@ -22,7 +22,7 @@ initRam:
         sta wtfCurrent
         lda #wtfFloor
         sta wtfCounter
-        lda #$04
+        lda #$08
         sta speed
         lda #$03
         sta linecapHow
