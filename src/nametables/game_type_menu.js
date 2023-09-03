@@ -9,7 +9,7 @@ const {
 } = require('./nametables');
 
 const topScreenModes = 21;
-const botScreenModes = 11;
+const botScreenModes = 1;
 const totalModes = topScreenModes + botScreenModes;
 
 const supports_scrolltris = (process.env.INES_MAPPER == 1 || process.env.INES_MAPPER == 5);
@@ -32,7 +32,7 @@ modes.push("GARBAGE");
 modes.push("DROUGHT");
 // modes.push("KILLSCREEN »2");
 modes.push("INVISIBLE");
-modes.push("HARD DROP");
+// modes.push("HARD DROP");
 modes.push("SPEED");
 modes.push("DAS DELAY");
 // modes.push("TAP/ROLL SPEED");
@@ -87,9 +87,9 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
+#a      ZERO FROM ZERO        d#
 #a                            d#
-#a                            d#
-#a                            d#
+#a     A TETRISGYM HACK       d#
 #a                            d#
 #a                            d#
 #a                            d#
@@ -97,8 +97,8 @@ drawTiles(buffer, lookup, `
 `);drawTiles(extra, lookup, `
 #a    ${modes.slice(topScreenModes,totalModes).join("d#\n#a    ")}d#
 #a                            d#
+#a ORIGINAL GYM BY KIRJAVA    d#
 #a V5                         d#
-#a                            d#
 #a                            d#
 #a                            d#
 #a                            d#
@@ -118,19 +118,19 @@ drawTiles(buffer, lookup, `
 `);
 
 
-drawRect(buffer, 8, 2, 10, 5, 0xB0); // draw logo
+// drawRect(buffer, 8, 2, 10, 5, 0xB0); // draw logo
 // drawRect(extra, 20, 0, 5, 5, 0x9A); // draw QR code
 
 const urlX = 3;
-const urlY = 12;
+const urlY = 3;
 drawRect(extra, urlX, urlY, 12, 1, 0x74);
 drawRect(extra, urlX+12, urlY, 12, 1, 0x84);
 
 drawAttrs(buffer, [`
     2222222222222222
-    2222211111122222
-    2222211111122222
-    2222211111122222
+    2221111111111222
+    2221111111111222
+    2222222222222222
     2222222222222222
     2222222222222222
     2222222222222222
@@ -150,12 +150,12 @@ const line = '2'.repeat(16);
 const screen = Array.from({ length: 8 }, () => line).join('\n');
 drawAttrs(extra, [`
     2222222222222222
-    2222222222222222
-    2222222222222222
-    2222222222222222
-    2222222222222222
-    2222222222222222
     2333333333333332
+    2222222222222222
+    2222222222222222
+    2222222222222222
+    2222222222222222
+    2222222222222222
     2222222222222222
 `, screen]);
 

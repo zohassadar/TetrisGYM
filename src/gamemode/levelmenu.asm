@@ -13,6 +13,8 @@ gameMode_levelMenu:
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
         lda #$00
+        sta classicLevel
+        sta levelControlMode
         jsr changeCHRBank0
         lda #$00
         jsr changeCHRBank1

@@ -69,6 +69,9 @@ mainLoop:
 .include "sprites/loadsprite.asm"
 .include "sprites/drawrect.asm"
 .include "sprites/piece.asm"
+.if SUPPORTS_SCROLLTRIS
+.include "sprites/scrolltris.asm"
+.endif
 
 .include "data/bytebcd.asm"
 .include "data/orientation.asm"

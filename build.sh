@@ -1,6 +1,7 @@
 #!/bin/bash
 
 compile_flags=()
+INES_MAPPER=1
 
 help () {
     echo "Usage: $0 [-v] [-m <1|3|4>] [-a] [-s] [-k] [-p] [-d] [-h]"
@@ -23,6 +24,7 @@ while getopts "vm:askpdh" flag; do
             exit 1
         fi
         compile_flags+=("-D INES_MAPPER=${OPTARG}")
+        INES_MAPPER=$OPTARG
         echo "INES_MAPPER set to ${OPTARG}"  ;;
     a)
         compile_flags+=("-D AUTO_WIN=1")
@@ -48,7 +50,7 @@ done
 
 # build / compress nametables
 
-node src/nametables/build.js
+INES_MAPPER=$INES_MAPPER node src/nametables/build.js
 
 # PNG -> CHR
 

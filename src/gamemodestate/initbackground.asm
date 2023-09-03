@@ -223,12 +223,12 @@ hzStats: ; stripe
         .byte $FF
 
 seven_digit_nametable:
-        .byte $20, $5F, $41, $3a ; -
-        .byte $20, $7f, $C7, $3c ; |
-        .byte $21, $5F, $41, $3F ; -
+        .byte $20, $5F, $41, $FF ; -
+        .byte $20, $7f, $C7, $FF ; |
+        .byte $21, $5F, $41, $FF ; -
         .byte $20, $7E, $C7, $FF ; |
-        .byte $20, $5E, $41, $39 ; -
-        .byte $21, $5E, $41, $3E ; -
+        .byte $20, $5E, $41, $FF ; -
+        .byte $21, $5E, $41, $FF ; -
         .byte $21, $1E, $41, $0  ; 0
         .byte $FF
 

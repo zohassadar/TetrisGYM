@@ -6,6 +6,9 @@ nmi:    pha
         lda #$00
         sta oamStagingLength
         jsr render
+.if SUPPORTS_SCROLLTRIS
+        jsr incrementScroll
+.endif
         dec sleepCounter
         lda sleepCounter
         cmp #$FF
