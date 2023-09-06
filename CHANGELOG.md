@@ -14,6 +14,7 @@
 * Added hidden score option
 * Added marathon mode
 * 0001 seeds are ignored
+* Added hidden score option
 
 ## [v5 tournament]
 * Linecap Menu (from CTM Masters September 2022)
