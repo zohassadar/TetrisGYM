@@ -8,6 +8,12 @@
 .endif
     .incbin "chr/game_tileset.chr"
     .incbin "chr/rocket_tileset.chr"
+    ; .repeat $1000
+    ; .byte $0
+    ; .endrepeat
+    ; .repeat $1000
+    ; .byte $0
+    ; .endrepeat
     .incbin "chr/game_tileset_shifted1.chr"
     .incbin "chr/game_tileset_shifted2.chr"
     .repeat $1000

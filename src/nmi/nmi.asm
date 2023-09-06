@@ -87,7 +87,7 @@ resetWtfScroll:
         sta MMC5_IRQ_STATUS
         inc wtfCounter
         lda wtfCounter
-        cmp #$F8
+        cmp #$80
         bne @dontReset
         lda #wtfFloor
         sta wtfCounter
@@ -97,4 +97,7 @@ resetWtfScroll:
         lsr
         sta MMC5_IRQ_COMPARE
         sta wtfNext
+        ; lda outOfDateRenderFlags
+        ; ora #$04
+        ; sta outOfDateRenderFlags
         rts

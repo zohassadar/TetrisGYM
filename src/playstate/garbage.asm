@@ -21,7 +21,7 @@ playState_receiveGarbage:
 @fillGarbage:
         cpx garbageHole
         beq @hole
-        lda #BLOCK_TILES + 3
+        lda #BLOCK_TILES
         jmp @set
 @hole:
         lda #EMPTY_TILE ; was $FF ?

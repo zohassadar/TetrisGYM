@@ -59,7 +59,7 @@ swapMino:
         lda playfield, x
         cmp #EMPTY_TILE
         bne @full
-        ldy #BLOCK_TILES+3
+        ldy #BLOCK_TILES
 @full:
         tya
         sta playfield, x
