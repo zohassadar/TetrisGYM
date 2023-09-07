@@ -395,7 +395,7 @@ setColorTableAndIndex:
         sta colorTableIndex
         sec
         sbc #$28           ; subtract 40
-        bmi @ret
+        bcc @ret
         sta colorTableIndex
         lda #<glitchedColorTable
         sta currentColorTable
