@@ -66,8 +66,8 @@ pztemp := mathRAM+$D
 byteSpriteAddr: .res 2
 byteSpriteTile: .res 1
 byteSpriteLen: .res 1
-    .res $2A
-
+    .res $1F
+replayAddress: .res 2
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
 stringIndexLookup:
@@ -156,7 +156,14 @@ currentPpuCtrl: .res 1 ; $00FF
 stack: .res $FF ; $0100
     .res 1
 oamStaging: .res $100 ; $0200                        ; format: https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM
-    .res $F0
+
+backupSlot: .res $1
+startingSlot: .res $1
+endingSlot: .res $1
+replayActive: .res $1
+    .res $C
+
+    .res $E0
 statsByType: .res $E ; $03F0
     .res 2
 playfield: .res $c8 ; $0400

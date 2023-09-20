@@ -59,6 +59,7 @@ MMC5_RAM_PROTECT2 := $5103
 MMC5_NT_MAPPING := $5105 ; $50 horizontal, $44 vertical, $00 single
 MMC5_CHR_BANK0 := $5123 ; 4kb page index
 MMC5_CHR_BANK1 := $5127
+MMC5_RAM_BANK := $5113
 
 .macro RESET_MMC1
 .if INES_MAPPER = 1

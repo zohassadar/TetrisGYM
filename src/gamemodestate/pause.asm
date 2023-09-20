@@ -85,6 +85,8 @@ pause:
         jsr byteSprite
 @noDebugHUD:
 
+        jsr restorePauseFunction
+        
         lda qualFlag
         bne @pauseCheckStart
 

@@ -59,6 +59,9 @@ mainLoop:
 .if SUPPORTS_SCROLLTRIS
 .include "sprites/scrolltris.asm"
 .endif
+.if REPLAY_MODE
+.include "replay.asm"
+.endif
 
 .include "data/bytebcd.asm"
 .include "data/orientation.asm"

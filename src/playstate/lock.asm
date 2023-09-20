@@ -1,6 +1,9 @@
 playState_lockTetrimino:
         jsr isPositionValid
         beq @notGameOver
+
+        jsr pause
+        rts
 ; gameOver:
         lda #$02
         sta soundEffectSlot0Init
@@ -29,6 +32,7 @@ playState_lockTetrimino:
         lda vramRow
         cmp #$20
         bmi @ret
+        jsr storePlayfield
         lda tetriminoY
         asl a
         sta generalCounter
