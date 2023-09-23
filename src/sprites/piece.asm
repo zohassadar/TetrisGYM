@@ -125,6 +125,10 @@ stageSpriteForCurrentPiece_actual:
         asl a
         clc
         adc generalCounter3
+        sta generalCounter5
+        lda #$8
+        sec
+        sbc generalCounter5
         sta oamStaging,y
 @finishLoop:  
         inc oamStagingLength

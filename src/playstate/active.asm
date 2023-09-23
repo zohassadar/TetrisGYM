@@ -409,10 +409,10 @@ shift_tetrimino:
         rts
 @dasOnlyEnd:
 
-        lda practiseType
-        cmp #MODE_DAS
-        bne @normalDAS
         lda dasModifier
+        cmp #$10
+        beq @normalDAS
+        ; lda dasModifier
         sta dasValueDelay
         lda palFlag
         eor #1

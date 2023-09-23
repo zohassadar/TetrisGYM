@@ -65,6 +65,8 @@ copyPlayfieldRowToVRAM:
         cpx #$15
         bpl @ret
         lda multBy10Table,x
+        clc
+        adc #$9
         tay
         txa
         asl a
@@ -82,12 +84,13 @@ copyPlayfieldRowToVRAM:
         ldx #$0A
         lda invisibleFlag
         bne @copyRowInvisible
-@copyByte:
+@copyByteMirrored:
         lda (playfieldAddr),y
         sta PPUDATA
-        iny
+        dey
         dex
-        bne @copyByte
+        bne @copyByteMirrored
+
 @rowCopied:
         inc vramRow
         lda vramRow

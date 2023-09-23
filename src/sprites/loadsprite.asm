@@ -96,20 +96,20 @@ sprite06TPiece:
         .byte   $00,$7B,$02,$0C,$08,$7B,$02,$04
         .byte   $FF
 sprite07SPiece:
-        .byte   $00,$7D,$02,$04,$00,$7D,$02,$0C
-        .byte   $08,$7D,$02,$FC,$08,$7D,$02,$04
+        .byte   $00,$7D,$02,$04,$00,$7D,$02,$FC
+        .byte   $08,$7D,$02,$0C,$08,$7D,$02,$04
         .byte   $FF
 sprite08ZPiece:
-        .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
-        .byte   $08,$7C,$02,$04,$08,$7C,$02,$0C
+        .byte   $00,$7C,$02,$0C,$00,$7C,$02,$04
+        .byte   $08,$7C,$02,$04,$08,$7C,$02,$FC
         .byte   $FF
 sprite09JPiece:
         .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
-        .byte   $00,$7D,$02,$0C,$08,$7D,$02,$0C
+        .byte   $00,$7D,$02,$0C,$08,$7D,$02,$FC
         .byte   $FF
 sprite0ALPiece:
         .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
-        .byte   $00,$7C,$02,$0C,$08,$7C,$02,$FC
+        .byte   $00,$7C,$02,$0C,$08,$7C,$02,$0C
         .byte   $FF
 sprite0BOPiece:
         .byte   $00,$7B,$02,$00,$00,$7B,$02,$08
