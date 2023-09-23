@@ -334,6 +334,7 @@ hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
 disablePauseFlag: .res 1
+disableMeltyMode: .res 1
 prideFlag: .res 1
 .if SUPPORTS_SCROLLTRIS
 scrollTrisFlag: .res 1

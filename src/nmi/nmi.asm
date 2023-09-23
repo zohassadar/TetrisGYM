@@ -77,6 +77,8 @@ chrCycle:
         .byte    $DE,$03,$ED,$04,$01
 
 resetWtfScroll:
+        lda disableMeltyMode
+        bne @ret
         cli
         lda #$01
         sta wtfCurrent
@@ -100,4 +102,4 @@ resetWtfScroll:
         ; lda outOfDateRenderFlags
         ; ora #$04
         ; sta outOfDateRenderFlags
-        rts
+@ret:   rts
