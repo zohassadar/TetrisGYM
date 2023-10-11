@@ -90,7 +90,7 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a      ZERO FROM ZERO        d#
+#a       ZERO TO ZERO         d#q
 #a                            d#
 #a                            d#
 #a                            d#

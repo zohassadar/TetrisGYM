@@ -56,9 +56,9 @@ CNROM_CHR_MENU:
 
 gameTypeLoop:
         ; fix to sometimes not having correct tileset loaded when using reset sequence
-        lda #$01
+        lda #$00
         jsr changeCHRBank0
-        lda #$01
+        lda #$00
         jsr changeCHRBank1
         ; memset FF-02 used to happen every loop
         ; but it's done in ResetOamStaging anyway?
