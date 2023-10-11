@@ -55,6 +55,11 @@ CNROM_CHR_MENU:
         jsr updateAudioWaitForNmiAndResetOamStaging
 
 gameTypeLoop:
+        ; fix to sometimes not having correct tileset loaded when using reset sequence
+        lda #$01
+        jsr changeCHRBank0
+        lda #$01
+        jsr changeCHRBank1
         ; memset FF-02 used to happen every loop
         ; but it's done in ResetOamStaging anyway?
         jmp seedControls
