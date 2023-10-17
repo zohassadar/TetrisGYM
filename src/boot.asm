@@ -111,3 +111,6 @@
         sta gameMode
         lda #$00
         sta frameCounter+1
+; these prevent palMode being set to 1
+        nop
+        nop

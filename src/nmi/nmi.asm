@@ -13,6 +13,18 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
+        lda renderMode
+        cmp #$03
+        bne @noCycle
+        lda frameCounter
+        bne @noCycle
+        ldx currentTileset
+        lda chrCycle,x
+        sta currentTileset
+        jsr changeCHRBank0
+        lda currentTileset
+        jsr changeCHRBank1
+@noCycle:
         lda frameCounter
         clc
         adc #$01
@@ -37,3 +49,8 @@ nmi:    pha
         tax
         pla
 irq:    rti
+
+; This is a quick way to get 1->3->4->1
+chrCycle:
+        .byte    $03,$03,$03,$04,$01
+
