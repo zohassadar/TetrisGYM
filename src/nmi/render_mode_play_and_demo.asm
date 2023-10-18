@@ -4,7 +4,13 @@ render_mode_play_and_demo:
         bne @playStateNotDisplayLineClearingAnimation
         lda #$04
         sta playfieldAddr+1
+        lda penguinFlag
+        beq @normalAnimation
+        jsr updatePenguinAnimation
+        jmp @resumeAfterPenguin
+@normalAnimation:
         jsr updateLineClearingAnimation
+@resumeAfterPenguin:
         lda #$00
         sta vramRow
         jmp @renderLines
@@ -366,3 +372,89 @@ L9996:  lda generalCounter
         ora #$40
         sta outOfDateRenderFlags
         rts
+
+
+updatePenguinAnimation:
+
+        ;  Start on left side in fixed spot and have penguin take 17-20 steps depending on frameCounter
+        ldx     effectiveRowY
+        lda     penguinXOffset,x
+        sta     spriteXOffset
+
+        ; Figure out lowest row cleared and put penguin there
+        ldx     #$03                     
+nextRowToCheck:
+        lda     completedRow,x
+        bne     foundRow
+        dex
+        bpl     nextRowToCheck
+foundRow:
+        asl
+        asl
+        asl
+        clc     
+        adc     #$2D
+        sta     spriteYOffset
+        lda     effectiveRowY
+        and     #$01
+        clc
+        adc     #$23
+        sta     spriteIndexInOamContentLookup
+        jsr     loadSpriteIntoOamStaging
+
+; Clear block
+        lda     effectiveRowY
+        and     #$01
+        bne     skipBlockClear
+        sta     generalCounter3 ; Countup through all four rows (0,1,2,3)
+whileCounter3LessThan4:
+        ldy     generalCounter3
+        lda     completedRow,y
+        beq     nextRow       ; Skip row if no line clear
+        asl                    ; Multiply by 2 to get second byte of address from table
+        tay
+        lda     vramPlayfieldRows+1,y  ; first byte of PPU address
+        sta     PPUADDR
+        lda     effectiveRowY           ; Divide by 2 to get row to clear
+        ror
+        clc
+        adc     vramPlayfieldRows,y  ; Add to get 2nd byte of PPU address
+        adc     #$05                 ; Offset to line up with 1 player screen
+        sta     PPUADDR
+        lda     #$FF                 ; blank tile
+        sta     PPUDATA
+nextRow:
+        inc     generalCounter3
+        lda     generalCounter3
+        cmp     #$04
+        bne     whileCounter3LessThan4
+
+skipBlockClear:
+        dec     effectiveRowY
+        dec     rowY ; rowY used for timing
+        bne     returnLineClear
+        inc     playState
+returnLineClear:    
+        rts
+
+setRowYBasedOnFrameCounter:
+        lda     frameCounter
+        and     #$03
+        tax
+        lda     rowYValues,x
+        sta     rowY ; use rowY to determine when to bail to line up with original rom timing
+        lda     #$14 
+        sta     effectiveRowY ; use effectiveRowY to have penguin always start on left most side
+        rts
+
+; Total steps penguin will take based on frameCounter & 0x03 
+; This makes the timing line up with vanilla lineclear
+rowYValues:
+        .byte   $11,$14,$13,$12
+
+; offsets to account for up to 20 steps
+; First byte not used and serves as offset only
+penguinXOffset:   
+        .byte   $00,$58,$5C,$60,$64,$68,$6C,$70
+        .byte   $74,$78,$7C,$80,$84,$88,$8C,$90
+        .byte   $94,$98,$9C,$A0,$A4

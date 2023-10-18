@@ -79,6 +79,8 @@ oamContentLookup:
         .addr   spriteReady ; $20
         .addr   spriteCustomLevelCursor ; $21
         .addr   spriteIngameHeart ; $22
+        .addr   spritePenguinClear1 ; $23
+        .addr   spritePenguinClear2 ; $24
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
 sprite00LevelSelectCursor:
@@ -154,3 +156,28 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
+spritePenguinClear1:
+        .byte   $E8,$A9,$03,$00
+        .byte   $E8,$AA,$03,$08
+        .byte   $F0,$B8,$03,$F8
+        .byte   $F0,$B9,$03,$00
+        .byte   $F0,$BA,$03,$08
+        .byte   $F8,$C9,$03,$00
+        .byte   $F8,$CA,$03,$08
+        .byte   $F8,$CB,$03,$10
+        .byte   $00,$D9,$03,$00
+        .byte   $00,$DA,$03,$08
+        .byte   $FF
+spritePenguinClear2:
+        .byte   $E8,$AD,$03,$00
+        .byte   $E8,$AE,$03,$08
+        .byte   $F0,$BC,$03,$F8
+        .byte   $F0,$BD,$03,$00
+        .byte   $F0,$BE,$03,$08
+        .byte   $F8,$CD,$03,$00
+        .byte   $F8,$CE,$03,$08
+        .byte   $F8,$CF,$03,$10
+        .byte   $00,$DD,$03,$00
+        .byte   $00,$DE,$03,$08
+        .byte   $FF
+

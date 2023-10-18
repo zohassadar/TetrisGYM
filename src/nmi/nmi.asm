@@ -3,8 +3,6 @@ nmi:    pha
         pha
         tya
         pha
-        lda #$00
-        sta oamStagingLength
         jsr render
         dec sleepCounter
         lda sleepCounter
@@ -13,6 +11,8 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
+        lda #$00
+        sta oamStagingLength
         lda frameCounter
         clc
         adc #$01
