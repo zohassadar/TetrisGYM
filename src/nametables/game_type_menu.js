@@ -66,6 +66,7 @@ drawTiles(buffer, lookup, `
 `);drawTiles(extra, lookup, `
 #a    SCORING                 d#
 #a    PENGUIN                 d#
+#a    DARK MODE               d#
 #a    HZ DISPLAY              d#
 #a    INPUT DISPLAY           d#
 #a    DISABLE FLASH           d#
@@ -76,7 +77,6 @@ drawTiles(buffer, lookup, `
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
 #a    PAL MODE                d#
-#a                            d#
 #a                            d#
 #a V5                         d#
 #a                            d#
@@ -134,8 +134,8 @@ drawAttrs(extra, [`
     2222222222222222
     2222222222222222
     2222222222222222
-    2333333333333332
     2222222222222222
+    2333333333333332
 `, screen]);
 
 writeRLE(

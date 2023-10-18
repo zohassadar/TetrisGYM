@@ -14,8 +14,11 @@ gameMode_gameTypeMenu:
 .if HAS_MMC
         ; switch to blank charmap
         ; (stops glitching when resetting)
-        lda #$03
-        jsr changeCHRBank1
+        ; lda #$03
+        ; jsr changeCHRBank1
+        lda currentPpuMask
+        and #$E7
+        sta PPUMASK
 .endif
 .if INES_MAPPER = 4
         ; Horizontal mirroring

@@ -186,7 +186,10 @@ render_mode_play_and_demo:
         sta PPUADDR
         lda #$0E
         sta PPUADDR
-        ldx #$00
+        ldx darkModeFlag
+        beq @normalBackGroundColor
+        ldx #$0F
+@normalBackGroundColor:
         lda completedLines
         cmp #$04
         bne @setPaletteColor
@@ -314,6 +317,15 @@ updatePaletteForLevel:
         sta PPUDATA
         lda colorTable+1+1+1,x
         sta PPUDATA
+        lda generalCounter
+        bne @skipBorderColor
+        lda darkModeFlag
+        beq @skipBorderColor
+        lda #$0F
+        sta PPUDATA
+        lda colorTable+1+1+1,x
+        sta PPUDATA
+@skipBorderColor:
         lda generalCounter
         clc
         adc #$10

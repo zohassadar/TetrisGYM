@@ -12,6 +12,11 @@ gameMode_levelMenu:
         sta renderMode
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
+.if INES_MAPPER = 3
+@cnromMenuBank:
+        lda #$01
+        sta @cnromMenuBank+1
+.endif
         lda #$00
         jsr changeCHRBank0
         lda #$00

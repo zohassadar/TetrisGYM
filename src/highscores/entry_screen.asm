@@ -126,6 +126,9 @@ highScoreEntryScreen:
         lda #%10000000
         sta PPUCTRL
         sta currentPpuCtrl
+@cnromHighScoreBank:
+        lda #$01
+        sta @cnromHighScoreBank+1
 .endif
         jsr bulkCopyToPpu
         .addr   menu_palette

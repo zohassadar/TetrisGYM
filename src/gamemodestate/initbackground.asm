@@ -2,10 +2,24 @@ gameModeState_initGameBackground:
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
 .if HAS_MMC
+        lda darkModeFlag
+        beq @normalMode
+        lda #$03
+        bne @storeBank 
+@normalMode:
         lda #$01
+@storeBank:
+        pha
         jsr changeCHRBank0
-        lda #$01
+        pla
         jsr changeCHRBank1
+.elseif INES_MAPPER = 3
+        lda darkModeFlag
+        beq @normalModeCnrom
+@gameBackgroundBank:
+        lda #$00
+        sta @gameBackgroundBank+1
+@normalModeCnrom:
 .endif
         jsr bulkCopyToPpu
         .addr   game_palette
