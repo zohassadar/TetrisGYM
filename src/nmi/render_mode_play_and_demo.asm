@@ -188,25 +188,32 @@ render_mode_play_and_demo:
         sta PPUADDR
         ldx darkModeFlag
         beq @normalBackGroundColor
+@disableFlash:
         ldx #$0F
 @normalBackGroundColor:
         lda completedLines
         cmp #$04
         bne @setPaletteColor
+        lda darkModeFlag
+        bne @noBlinking
         lda frameCounter
         and #$03
         bne @setPaletteColor
+@noBlinking:
+        lda disableFlashFlag
+        bne @noFlash
         ldx #$30
+        lda darkModeFlag
+        beq @noFlash
+        ldx #$00
+@noFlash:
         lda frameCounter
         and #$07
         bne @setPaletteColor
         lda #$09
         sta soundEffectSlot1Init
 @setPaletteColor:
-        lda disableFlashFlag
-        bne @noFlash
         stx PPUDATA
-@noFlash:
 .if INES_MAPPER = 3
         lda #%10011000
         sta PPUCTRL
