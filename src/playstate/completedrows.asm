@@ -151,7 +151,13 @@ playState_checkForCompletedRows:
 
         lda #$00
         sta vramRow
+        ldy penguinFlag
+        beq @normalClear
+        jsr setRowYBasedOnFrameCounter
+        jmp @setSoundEffect
+@normalClear:
         sta rowY
+@setSoundEffect:
         lda completedLines
         cmp #$04
         bne @skipTetrisSoundEffect

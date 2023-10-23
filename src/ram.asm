@@ -210,7 +210,9 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 
-    .res $39
+effectiveRowY: .res 1 ; $63C ; Set to 20 while rowY is set to 17-20 depending on frame counter.  Keeps penguin starting from consistent spot.
+
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -325,6 +327,7 @@ garbageModifier: .res 1
 droughtModifier: .res 1
 dasModifier: .res 1
 scoringModifier: .res 1
+penguinFlag: .res 1
 hzFlag: .res 1
 inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
