@@ -15,6 +15,9 @@
 
 .segment    "PRG_chunk1": absolute
 
+; region code at start of page to keep cycle count consistent
+.include "util/check_region.asm"
+
 initRam:
 
 .include "boot.asm"
@@ -50,7 +53,6 @@ mainLoop:
 .include "highscores/entry_screen.asm"
 
 .include "util/core.asm"
-.include "util/check_region.asm"
 .include "util/bytesprite.asm"
 .include "util/strings.asm"
 .include "util/math.asm"
