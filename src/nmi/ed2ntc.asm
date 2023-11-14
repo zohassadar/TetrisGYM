@@ -5,9 +5,13 @@ EMU_UNKNOWN :=  $40
 FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 
+PAYLOAD_SIZE = $f0
+
+
 messageHeader:
         ; $2b = "+". $22 = CMD_USB_WR
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
+
 
 sendEdlinkHeader:
         ldx     #$00
@@ -42,20 +46,29 @@ receiveNTCRequest:
 ; currentPiece 1
 ; tetriminoX 1 Needed to determine where piece is in playfield
 ; tetriminoY 1 same
+; frameCounter 1 Used for line clearing animation
+; autoRepeatX 1 current DAS
 ; statsByType 14
 ; playfield 200
-; Total 232/0xe8
+; subtotal 234/0xea
+
+; footer : 6 * $AA
+; Total 240/0xf0
 
 ; needed on c# side:
 ; tetriminoTypeFromOrientation
 ; orientationTable
 
+
+
 sendNTCData:
         lda     ntcRequest
         cmp     #CMD_SEND_STATS
-        bne     @ret
+        beq     @sendStats
+        rts
+@sendStats:
         jsr     sendEdlinkHeader
-        lda     #$e8          ; Length.  16 bit LE
+        lda     #PAYLOAD_SIZE     ; Length.  16 bit LE
         sta     FIFO_DATA
         lda     #$00
         sta     FIFO_DATA
@@ -73,13 +86,14 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; completedRow.  4
-        ldx     #$00
-@completedRowLoop:
         lda     completedRow,x
         sta     FIFO_DATA
-        inx
-        cpx     #$04
-        bne     @completedRowLoop
+        lda     completedRow+1,x
+        sta     FIFO_DATA
+        lda     completedRow+2,x
+        sta     FIFO_DATA
+        lda     completedRow+3,x
+        sta     FIFO_DATA
 
         ; lines.  2
         lda     lines
@@ -92,13 +106,14 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; score.  4
-        ldx     #$00
-@scoreLoop:
         lda     binScore,x
         sta     FIFO_DATA
-        inx
-        cpx     #$04
-        bne     @scoreLoop
+        lda     binScore+1,x
+        sta     FIFO_DATA
+        lda     binScore+2,x
+        sta     FIFO_DATA
+        lda     binScore+3,x
+        sta     FIFO_DATA
 
         ; nextPiece.  1
         lda     nextPiece
@@ -114,6 +129,14 @@ sendNTCData:
 
         ; tetriminoY.  1
         lda     tetriminoY
+        sta     FIFO_DATA
+
+        ; frameCounter.  1
+        lda     frameCounter
+        sta     FIFO_DATA
+
+        ; autorepeatX.  1
+        lda     autorepeatX
         sta     FIFO_DATA
 
         ; statsByType.  14
@@ -134,6 +157,15 @@ sendNTCData:
         cpx     #$c8
         bne     @playfieldLoop
 
+@addFooter:
+        lda     #$AA
+        sta     FIFO_DATA
+        sta     FIFO_DATA
+        sta     FIFO_DATA
+        sta     FIFO_DATA
+        sta     FIFO_DATA
+        sta     FIFO_DATA
         lda     #$00
         sta     ntcRequest
-@ret:   rts
+        rts
+
