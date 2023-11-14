@@ -13,6 +13,9 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
+.if ED2NTC
+        jsr receiveNTCRequest
+.endif
         lda frameCounter
         clc
         adc #$01
@@ -30,6 +33,9 @@ nmi:    pha
 .if KEYBOARD
 ; Read Family BASIC Keyboard
         jsr pollKeyboard
+.endif
+.if ED2NTC
+        jsr sendNTCData
 .endif
         pla
         tay
