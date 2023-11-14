@@ -86,13 +86,13 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; completedRow.  4
-        lda     completedRow,x
+        lda     completedRow
         sta     FIFO_DATA
-        lda     completedRow+1,x
+        lda     completedRow+1
         sta     FIFO_DATA
-        lda     completedRow+2,x
+        lda     completedRow+2
         sta     FIFO_DATA
-        lda     completedRow+3,x
+        lda     completedRow+3
         sta     FIFO_DATA
 
         ; lines.  2
@@ -106,13 +106,13 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; score.  4
-        lda     binScore,x
+        lda     binScore
         sta     FIFO_DATA
-        lda     binScore+1,x
+        lda     binScore+1
         sta     FIFO_DATA
-        lda     binScore+2,x
+        lda     binScore+2
         sta     FIFO_DATA
-        lda     binScore+3,x
+        lda     binScore+3
         sta     FIFO_DATA
 
         ; nextPiece.  1
