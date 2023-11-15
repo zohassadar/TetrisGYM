@@ -53,6 +53,9 @@ random10:
 ; canon is waitForVerticalBlankingInterval
 updateAudioWaitForNmiAndResetOamStaging:
         jsr updateAudio_jmp
+.if ED2NTC
+        jsr sendNTCData
+.endif
         lda #$00
         sta verticalBlankingInterval
         nop
@@ -76,21 +79,6 @@ resetOAMStaging:
         bne @hideY
         rts
 
-
-; canon is waitForVerticalBlankingInterval
-updateAudioWaitForNmiAndResetOamStaging:
-        jsr updateAudio_jmp
-.if ED2NTC
-        jsr sendNTCData
-.endif
-        lda #$00
-        sta verticalBlankingInterval
-        nop
-@checkForNmi:
-        lda verticalBlankingInterval
-        beq @checkForNmi
-        jsr resetOAMStaging
-        rts
 
 updateAudioAndWaitForNmi:
         jsr updateAudio_jmp
