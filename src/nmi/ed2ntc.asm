@@ -139,13 +139,34 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; statsByType.  14
-        ldx     #$00
-@statsLoop:
-        lda     statsByType,x
+        lda     statsByType
         sta     FIFO_DATA
-        inx
-        cpx     #$0e
-        bne     @statsLoop
+        lda     statsByType+1
+        sta     FIFO_DATA
+        lda     statsByType+2
+        sta     FIFO_DATA
+        lda     statsByType+3
+        sta     FIFO_DATA
+        lda     statsByType+4
+        sta     FIFO_DATA
+        lda     statsByType+5
+        sta     FIFO_DATA
+        lda     statsByType+6
+        sta     FIFO_DATA
+        lda     statsByType+7
+        sta     FIFO_DATA
+        lda     statsByType+8
+        sta     FIFO_DATA
+        lda     statsByType+9
+        sta     FIFO_DATA
+        lda     statsByType+10
+        sta     FIFO_DATA
+        lda     statsByType+11
+        sta     FIFO_DATA
+        lda     statsByType+12
+        sta     FIFO_DATA
+        lda     statsByType+13
+        sta     FIFO_DATA
 
         ; playfield.  200
         ldy     #$EC
