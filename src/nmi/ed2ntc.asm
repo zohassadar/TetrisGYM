@@ -12,17 +12,6 @@ messageHeader:
         ; $2b = "+". $22 = CMD_USB_WR
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
 
-
-sendEdlinkHeader:
-        ldx     #$00
-@headerLoop:
-        lda     messageHeader,x
-        sta     FIFO_DATA
-        inx
-        cpx     #$04
-        bne     @headerLoop
-        rts
-
 receiveNTCRequest:
         lda     FIFO_STATUS
         cmp     #EMU_UNKNOWN
@@ -67,7 +56,15 @@ sendNTCData:
         beq     @sendStats
         rts
 @sendStats:
-        jsr     sendEdlinkHeader
+        lda     messageHeader
+        sta     FIFO_DATA
+        lda     messageHeader+1
+        sta     FIFO_DATA
+        lda     messageHeader+2
+        sta     FIFO_DATA
+        lda     messageHeader+3
+        sta     FIFO_DATA
+
         lda     #PAYLOAD_SIZE     ; Length.  16 bit LE
         sta     FIFO_DATA
         lda     #$00
@@ -151,13 +148,53 @@ sendNTCData:
         bne     @statsLoop
 
         ; playfield.  200
-        ldx     #$00
-@playfieldLoop:
-        lda     playfield,x
+        ldy     #$EC
+@playfieldChunk:
+        ldx     multBy10Table - $EC,y
+        lda     playfield
         sta     FIFO_DATA
-        inx
-        cpx     #$c8
-        bne     @playfieldLoop
+        lda     playfield+1
+        sta     FIFO_DATA
+        lda     playfield+2
+        sta     FIFO_DATA
+        lda     playfield+3
+        sta     FIFO_DATA
+        lda     playfield+4
+        sta     FIFO_DATA
+        lda     playfield+5
+        sta     FIFO_DATA
+        lda     playfield+6
+        sta     FIFO_DATA
+        lda     playfield+7
+        sta     FIFO_DATA
+        lda     playfield+8
+        sta     FIFO_DATA
+        lda     playfield+9
+        sta     FIFO_DATA
+        lda     playfield+10
+        sta     FIFO_DATA
+        lda     playfield+11
+        sta     FIFO_DATA
+        lda     playfield+12
+        sta     FIFO_DATA
+        lda     playfield+13
+        sta     FIFO_DATA
+        lda     playfield+14
+        sta     FIFO_DATA
+        lda     playfield+15
+        sta     FIFO_DATA
+        lda     playfield+16
+        sta     FIFO_DATA
+        lda     playfield+17
+        sta     FIFO_DATA
+        lda     playfield+18
+        sta     FIFO_DATA
+        lda     playfield+19
+        sta     FIFO_DATA
+        iny
+        iny
+        bne     @playfieldChunk
+
 
 @addFooter:
         lda     #$AA
