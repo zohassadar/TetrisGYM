@@ -5,7 +5,7 @@ EMU_UNKNOWN :=  $40
 FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 
-PAYLOAD_SIZE = $f0
+PAYLOAD_SIZE = $f1
 
 
 messageHeader:
@@ -27,7 +27,7 @@ receiveNTCRequest:
 ; gameMode 1 
 ; playState 1
 ; rowY 1
-; completedRow
+; completedRow 4
 ; lines 2 (bcd)
 ; levelNumber 1
 ; binScore 4
