@@ -79,7 +79,6 @@ resetOAMStaging:
         bne @hideY
         rts
 
-
 updateAudioAndWaitForNmi:
         jsr updateAudio_jmp
         lda #$00
