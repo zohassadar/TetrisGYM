@@ -34,9 +34,6 @@ nmi:    pha
 ; Read Family BASIC Keyboard
         jsr pollKeyboard
 .endif
-.if ED2NTC
-        jsr sendNTCData
-.endif
         pla
         tay
         pla
