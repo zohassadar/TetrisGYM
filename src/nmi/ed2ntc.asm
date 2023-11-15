@@ -46,14 +46,14 @@ receiveNTCRequest:
 ; currentPiece 1
 ; tetriminoX 1 Needed to determine where piece is in playfield
 ; tetriminoY 1 same
-; frameCounter 1 Used for line clearing animation
+; frameCounter 2 Used for line clearing animation
 ; autoRepeatX 1 current DAS
 ; statsByType 14
 ; playfield 200
-; subtotal 234/0xea
+; subtotal 235/0xeb
 
 ; footer : 6 * $AA
-; Total 240/0xf0
+; Total 241/0xfa
 
 ; needed on c# side:
 ; tetriminoTypeFromOrientation
@@ -131,8 +131,10 @@ sendNTCData:
         lda     tetriminoY
         sta     FIFO_DATA
 
-        ; frameCounter.  1
+        ; frameCounter.  2
         lda     frameCounter
+        sta     FIFO_DATA
+        lda     frameCounter+1
         sta     FIFO_DATA
 
         ; autorepeatX.  1
