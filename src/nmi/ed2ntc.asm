@@ -169,48 +169,48 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; playfield.  200
-        ldy     #$EC
+        ldy     #(256-20) ; use offset to prevent needing cpy
 @playfieldChunk:
-        ldx     multBy10Table - $EC,y
-        lda     playfield
+        ldx     multBy10Table - (256-20),y
+        lda     playfield,x
         sta     FIFO_DATA
-        lda     playfield+1
+        lda     playfield+1,x
         sta     FIFO_DATA
-        lda     playfield+2
+        lda     playfield+2,x
         sta     FIFO_DATA
-        lda     playfield+3
+        lda     playfield+3,x
         sta     FIFO_DATA
-        lda     playfield+4
+        lda     playfield+4,x
         sta     FIFO_DATA
-        lda     playfield+5
+        lda     playfield+5,x
         sta     FIFO_DATA
-        lda     playfield+6
+        lda     playfield+6,x
         sta     FIFO_DATA
-        lda     playfield+7
+        lda     playfield+7,x
         sta     FIFO_DATA
-        lda     playfield+8
+        lda     playfield+8,x
         sta     FIFO_DATA
-        lda     playfield+9
+        lda     playfield+9,x
         sta     FIFO_DATA
-        lda     playfield+10
+        lda     playfield+10,x
         sta     FIFO_DATA
-        lda     playfield+11
+        lda     playfield+11,x
         sta     FIFO_DATA
-        lda     playfield+12
+        lda     playfield+12,x
         sta     FIFO_DATA
-        lda     playfield+13
+        lda     playfield+13,x
         sta     FIFO_DATA
-        lda     playfield+14
+        lda     playfield+14,x
         sta     FIFO_DATA
-        lda     playfield+15
+        lda     playfield+15,x
         sta     FIFO_DATA
-        lda     playfield+16
+        lda     playfield+16,x
         sta     FIFO_DATA
-        lda     playfield+17
+        lda     playfield+17,x
         sta     FIFO_DATA
-        lda     playfield+18
+        lda     playfield+18,x
         sta     FIFO_DATA
-        lda     playfield+19
+        lda     playfield+19,x
         sta     FIFO_DATA
         iny
         iny
