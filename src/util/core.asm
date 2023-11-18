@@ -84,7 +84,7 @@ updateAudioAndWaitForNmi:
         lda #$00
         sta verticalBlankingInterval
 .if ED2NTC
-        jsr resetOAMStaging
+        jsr sendNTCData
 .endif
         nop
 @checkForNmi:
