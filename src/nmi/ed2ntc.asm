@@ -5,7 +5,7 @@ EMU_UNKNOWN :=  $40
 FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 
-PAYLOAD_SIZE = $f1
+PAYLOAD_SIZE = $ed
 
 
 messageHeader:
@@ -219,10 +219,6 @@ sendNTCData:
 
 @addFooter:
         lda     #$AA
-        sta     FIFO_DATA
-        sta     FIFO_DATA
-        sta     FIFO_DATA
-        sta     FIFO_DATA
         sta     FIFO_DATA
         sta     FIFO_DATA
         lda     #$00
