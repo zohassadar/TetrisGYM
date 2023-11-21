@@ -1,18 +1,20 @@
-FIFO_DATA :=    $40f0
-FIFO_STATUS :=  $40f1
-
 EMU_UNKNOWN :=  $40
+FIFO_PENDING := $41
 FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 
 PAYLOAD_SIZE = $ed
 
+; FIFO_DATA reads unpredictable value when FIFO_STATUS != FIFO_PENDING
+FIFO_DATA :=    $40f0
+FIFO_STATUS :=  $40f1
 
 messageHeader:
         ; $2b = "+". $22 = CMD_USB_WR
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
 
 receiveNTCRequest:
+; todo: compare to FIFO_PENDING instead and test
         lda     FIFO_STATUS
         cmp     #EMU_UNKNOWN
         beq     @ret
@@ -41,8 +43,8 @@ receiveNTCRequest:
 ; playfield 200
 ; subtotal 235/0xeb
 
-; footer : 6 * $AA
-; Total 241/0xfa
+; footer : 2 * $AA
+; Total 237/0xed
 
 ; needed on c# side:
 ; tetriminoTypeFromOrientation
