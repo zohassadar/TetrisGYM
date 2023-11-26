@@ -77,6 +77,7 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; playState. 1
+        ; todo: add gameModeState to upper nybble and call it gameModeStatePlayState
         lda     playState
         sta     FIFO_DATA
 
