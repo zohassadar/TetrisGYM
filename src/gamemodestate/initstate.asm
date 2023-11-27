@@ -13,6 +13,10 @@ gameModeState_initGameState:
         lda #$05
         sta tetriminoX
 
+.if ED2NTC = 1
+        inc ntcGameStart
+.endif
+
         ; set seed init
         lda set_seed_input
         sta set_seed

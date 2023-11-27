@@ -26,8 +26,8 @@ receiveNTCRequest:
 @ret:   rts
 
 ; needed for nestrischamps:
-; gameMode 1 
-; playState 1
+; gameStartGameMode 1 (4 bits each)
+; gameModeStatePlayState 1 (4 bits each)
 ; rowY 1
 ; completedRow 4
 ; lines 2 (bcd)
@@ -72,13 +72,22 @@ sendNTCData:
         lda     #$00
         sta     FIFO_DATA
 
-        ; gameMode. 1
-        lda     gameMode
+        ; gameStartGameMode. 1
+        lda     ntcGameStart
+        asl
+        asl
+        asl
+        asl
+        ora     gameMode
         sta     FIFO_DATA
 
-        ; playState. 1
-        ; todo: add gameModeState to upper nybble and call it gameModeStatePlayState
-        lda     playState
+        ; gameModeStatePlayState. 1
+        lda     gameModeState
+        asl
+        asl
+        asl
+        asl
+        ora     playState
         sta     FIFO_DATA
 
         ; rowY. 1
