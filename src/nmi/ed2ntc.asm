@@ -289,7 +289,10 @@ sendNTCDataCompact:
         sta     FIFO_DATA
 
         ldx     vramRow
-        cpx     #$20
+        cpx     #$20   ; send game data when playfield isn't rendering
+        beq     @sendState
+        lda     playstate
+        cmp     #$04   ; send game data when animation is showing
         beq     @sendState
         jmp     sendCompactField
 @sendState:
