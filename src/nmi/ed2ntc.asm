@@ -13,7 +13,6 @@ COMPACT_FOOTER  = $5AA5
 COMPACT_UPDATE_STATE = $00
 COMPACT_UPDATE_FIELD = $01
 
-
 ; FIFO_DATA reads unpredictable value when FIFO_STATUS != FIFO_PENDING
 FIFO_DATA :=    $40f0
 FIFO_STATUS :=  $40f1
@@ -21,14 +20,6 @@ FIFO_STATUS :=  $40f1
 messageHeader:
         ; $2b = "+". $22 = CMD_USB_WR
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
-
-receiveNTCRequest:
-        lda     FIFO_STATUS
-        cmp     #FIFO_PENDING
-        bne     @ret
-        lda     FIFO_DATA
-        sta     ntcRequest
-@ret:   rts
 
 ; needed for nestrischamps:
 ; gameStartGameMode 1 (4 bits each)
@@ -51,14 +42,13 @@ receiveNTCRequest:
 ; footer : 2 * $AA
 ; Total 237/0xed
 
-; needed on c# side:
-; tetriminoTypeFromOrientation
-; orientationTable
-
 
 
 sendNTCData:
-        lda     ntcRequest
+        lda     FIFO_STATUS
+        cmp     #FIFO_PENDING
+        bne     @ret
+        lda     FIFO_DATA
         cmp     #CMD_SEND_STATS
         beq     @sendStats
         cmp     #CMD_SEND_COMPACT
@@ -241,8 +231,6 @@ sendNTCData:
         lda     #$AA
         sta     FIFO_DATA
         sta     FIFO_DATA
-        lda     #$00
-        sta     ntcRequest
         rts
 
 

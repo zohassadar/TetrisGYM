@@ -216,14 +216,7 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 
-.if ED2NTC = 1
-; todo: ntcRequest is not necessary and this byte can be cleaned
-ntcRequest: .res 1 ; $63C Used by NestrisChamps to request data via everdrive edlink
-.else
-    .res 1
-.endif
-
-    .res $38
+    .res $39
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

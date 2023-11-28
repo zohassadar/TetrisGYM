@@ -13,9 +13,6 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
-.if ED2NTC
-        jsr receiveNTCRequest
-.endif
         lda frameCounter
         clc
         adc #$01
