@@ -304,13 +304,13 @@ sendNTCDataCompact:
         bne     @stateByte
 
         ; statsByType.  14
-        ldx #$00
+        ldx     #$00
 @statsLoop:
-        lda statsByType,x
-        sta FIFO_DATA
+        lda     statsByType,x
+        sta     FIFO_DATA
         inx
-        cpx #$0E
-        bne @statsLoop
+        cpx     #$0E
+        bne     @statsLoop
         ; subtotal 40
 
         ldx     #stateBytesPadding
@@ -359,34 +359,34 @@ padCompact:
 
 ; Only zero page values are valid
 sharedBytes:
-        .byte  frameCounter
-        .byte  frameCounter+1
-        .byte  gameModeState
-        .byte  playState
-        .byte  ntcGameStart
-        .byte  gameMode
+        .byte   frameCounter
+        .byte   frameCounter+1
+        .byte   gameModeState
+        .byte   playState
+        .byte   ntcGameStart
+        .byte   gameMode
 sharedBytesEnd:
 sharedBytesLength = sharedBytesEnd-sharedBytes
 
 ; Only zero page values are valid
 gameStateBytes:
-        .byte  rowY
-        .byte  completedRow
-        .byte  completedRow+1
-        .byte  completedRow+2
-        .byte  completedRow+3
-        .byte  lines
-        .byte  lines+1
-        .byte  levelNumber
-        .byte  binScore
-        .byte  binScore+1
-        .byte  binScore+2
-        .byte  binScore+3
-        .byte  nextPiece
-        .byte  currentPiece
-        .byte  tetriminoX
-        .byte  tetriminoY
-        .byte  autorepeatX
+        .byte   rowY
+        .byte   completedRow
+        .byte   completedRow+1
+        .byte   completedRow+2
+        .byte   completedRow+3
+        .byte   lines
+        .byte   lines+1
+        .byte   levelNumber
+        .byte   binScore
+        .byte   binScore+1
+        .byte   binScore+2
+        .byte   binScore+3
+        .byte   nextPiece
+        .byte   currentPiece
+        .byte   tetriminoX
+        .byte   tetriminoY
+        .byte   autorepeatX
 gameStateBytesEnd:
 gameStateBytesLength = gameStateBytesEnd-gameStateBytes
 
