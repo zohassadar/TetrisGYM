@@ -269,27 +269,15 @@ sendNTCDataCompact:
         lda     #<COMPACT_HEADER
         sta     FIFO_DATA
 
-        ; frameCounter.  2
-        lda     frameCounter
+        ; shared 6
+        ldy     #$00
+@sharedByte:
+        ldx     sharedBytes,y
+        lda     tmp1,x
         sta     FIFO_DATA
-        lda     frameCounter+1
-        sta     FIFO_DATA
-
-        ; gameModeState. 1
-        lda     gameModeState
-        sta     FIFO_DATA
-
-        ; playState. 1
-        lda     playState
-        sta     FIFO_DATA
-
-
-        ; ntcGameStart. 1
-        lda     ntcGameStart
-        sta     FIFO_DATA
-        ; gameMode. 1
-        lda     gameMode
-        sta     FIFO_DATA
+        iny
+        cpy     #sharedBytesLength
+        bne     @sharedByte
 
         ldx     vramRow
         cpx     #$20            ; send game data when playfield isn't rendering
@@ -306,93 +294,26 @@ sendNTCDataCompact:
         sta     FIFO_DATA
 
 
-        ; rowY. 1
-        lda     rowY
+        ldy     #$00
+@stateByte:
+        ldx     gameStateBytes,y
+        lda     tmp1,x
         sta     FIFO_DATA
-
-        ; completedRow.  4
-        lda     completedRow
-        sta     FIFO_DATA
-        lda     completedRow+1
-        sta     FIFO_DATA
-        lda     completedRow+2
-        sta     FIFO_DATA
-        lda     completedRow+3
-        sta     FIFO_DATA
-
-        ; lines.  2
-        lda     lines
-        sta     FIFO_DATA
-        lda     lines+1
-        sta     FIFO_DATA
-
-        ; level. 1
-        lda     levelNumber
-        sta     FIFO_DATA
-
-        ; score.  4
-        lda     binScore
-        sta     FIFO_DATA
-        lda     binScore+1
-        sta     FIFO_DATA
-        lda     binScore+2
-        sta     FIFO_DATA
-        lda     binScore+3
-        sta     FIFO_DATA
-
-        ; nextPiece.  1
-        lda     nextPiece
-        sta     FIFO_DATA
-
-        ; currentPiece.  1
-        lda     currentPiece
-        sta     FIFO_DATA
-
-        ; tetrimonoX.  1
-        lda     tetriminoX
-        sta     FIFO_DATA
-
-        ; tetriminoY.  1
-        lda     tetriminoY
-        sta     FIFO_DATA
-
-        ; autorepeatX.  1
-        lda     autorepeatX
-        sta     FIFO_DATA
+        iny
+        cpy     #gameStateBytesLength
+        bne     @stateByte
 
         ; statsByType.  14
-        lda     statsByType
-        sta     FIFO_DATA
-        lda     statsByType+1
-        sta     FIFO_DATA
-        lda     statsByType+2
-        sta     FIFO_DATA
-        lda     statsByType+3
-        sta     FIFO_DATA
-        lda     statsByType+4
-        sta     FIFO_DATA
-        lda     statsByType+5
-        sta     FIFO_DATA
-        lda     statsByType+6
-        sta     FIFO_DATA
-        lda     statsByType+7
-        sta     FIFO_DATA
-        lda     statsByType+8
-        sta     FIFO_DATA
-        lda     statsByType+9
-        sta     FIFO_DATA
-        lda     statsByType+10
-        sta     FIFO_DATA
-        lda     statsByType+11
-        sta     FIFO_DATA
-        lda     statsByType+12
-        sta     FIFO_DATA
-        lda     statsByType+13
-        sta     FIFO_DATA
+        ldx #$00
+@statsLoop:
+        lda statsByType,x
+        sta FIFO_DATA
+        inx
+        cpx #$0E
+        bne @statsLoop
         ; subtotal 40
 
-        ; padding 22
-        ldx     #22
+        ldx     #stateBytesPadding
         jmp     padCompact
 
 
@@ -435,3 +356,41 @@ padCompact:
         sta     FIFO_DATA
 
         rts
+
+; Only zero page values are valid
+sharedBytes:
+        .byte  frameCounter
+        .byte  frameCounter+1
+        .byte  gameModeState
+        .byte  playState
+        .byte  ntcGameStart
+        .byte  gameMode
+sharedBytesEnd:
+sharedBytesLength = sharedBytesEnd-sharedBytes
+
+; Only zero page values are valid
+gameStateBytes:
+        .byte  rowY
+        .byte  completedRow
+        .byte  completedRow+1
+        .byte  completedRow+2
+        .byte  completedRow+3
+        .byte  lines
+        .byte  lines+1
+        .byte  levelNumber
+        .byte  binScore
+        .byte  binScore+1
+        .byte  binScore+2
+        .byte  binScore+3
+        .byte  nextPiece
+        .byte  currentPiece
+        .byte  tetriminoX
+        .byte  tetriminoY
+        .byte  autorepeatX
+gameStateBytesEnd:
+gameStateBytesLength = gameStateBytesEnd-gameStateBytes
+
+; header 2, stats 14, frame type 1, shared 6, 2 bytes footer
+stateBytesPadding := (64-(2+14+1+6+2+gameStateBytesLength))
+.assert stateBytesPadding >= 0, error, "Too many gameStateBytes specified"
+
