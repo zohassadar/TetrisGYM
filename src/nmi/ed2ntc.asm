@@ -291,7 +291,7 @@ sendNTCDataCompact:
         ldx     vramRow
         cpx     #$20   ; send game data when playfield isn't rendering
         beq     @sendState
-        lda     playstate
+        lda     playState
         cmp     #$04   ; send game data when animation is showing
         beq     @sendState
         jmp     sendCompactField
