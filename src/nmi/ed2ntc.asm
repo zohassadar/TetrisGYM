@@ -4,12 +4,12 @@ FIFO_IDLE :=    $C1
 CMD_SEND_STATS := $42
 CMD_SEND_COMPACT := $43
 
-PAYLOAD_SIZE = $ed
+PAYLOAD_SIZE    = $ed
 
-COMPACT_SIZE = $40
+COMPACT_SIZE    = $40
 
-COMPACT_HEADER = $A55A
-COMPACT_FOOTER = $5AA5
+COMPACT_HEADER  = $A55A
+COMPACT_FOOTER  = $5AA5
 COMPACT_UPDATE_STATE = $00
 COMPACT_UPDATE_FIELD = $01
 
@@ -75,7 +75,7 @@ sendNTCData:
         lda     messageHeader+3
         sta     FIFO_DATA
 
-        lda     #PAYLOAD_SIZE     ; Length.  16 bit LE
+        lda     #PAYLOAD_SIZE   ; Length.  16 bit LE
         sta     FIFO_DATA
         lda     #$00
         sta     FIFO_DATA
@@ -189,7 +189,7 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; playfield.  200
-        ldy     #(256-20) ; use offset to prevent needing cpy
+        ldy     #(256-20)       ; use offset to prevent needing cpy
 @playfieldChunk:
         ldx     multBy10Table - (256-20),y
         lda     playfield,x
@@ -256,18 +256,18 @@ sendNTCDataCompact:
         lda     messageHeader+3
         sta     FIFO_DATA
 
-        lda     #COMPACT_SIZE     ; Length.  16 bit LE
+        lda     #COMPACT_SIZE   ; Length.  16 bit LE
         sta     FIFO_DATA
         lda     #$00
         sta     FIFO_DATA
-        
+
 ; options for both kinds of updates
         ; header 2
-        lda    #>COMPACT_HEADER
-        sta    FIFO_DATA
+        lda     #>COMPACT_HEADER
+        sta     FIFO_DATA
 
-        lda    #<COMPACT_HEADER
-        sta    FIFO_DATA
+        lda     #<COMPACT_HEADER
+        sta     FIFO_DATA
 
         ; frameCounter.  2
         lda     frameCounter
@@ -292,10 +292,10 @@ sendNTCDataCompact:
         sta     FIFO_DATA
 
         ldx     vramRow
-        cpx     #$20   ; send game data when playfield isn't rendering
+        cpx     #$20            ; send game data when playfield isn't rendering
         beq     @sendState
         lda     playState
-        cmp     #$04   ; send game data when animation is showing
+        cmp     #$04            ; send game data when animation is showing
         beq     @sendState
         jmp     sendCompactField
 @sendState:
@@ -428,10 +428,10 @@ padCompact:
         bne     @pad
 
         ;footer 2
-        lda    #>COMPACT_FOOTER
-        sta    FIFO_DATA
+        lda     #>COMPACT_FOOTER
+        sta     FIFO_DATA
 
-        lda    #<COMPACT_FOOTER
-        sta    FIFO_DATA
+        lda     #<COMPACT_FOOTER
+        sta     FIFO_DATA
 
         rts
