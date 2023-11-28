@@ -417,6 +417,7 @@ sendCompactField:
         ldx     #40
 @sendFieldByte:
         lda     playfield,y
+        sta     FIFO_DATA
         iny
         dex
         bne     @sendFieldByte
