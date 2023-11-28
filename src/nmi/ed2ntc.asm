@@ -23,15 +23,11 @@ messageHeader:
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
 
 receiveNTCRequest:
-; todo: compare to FIFO_PENDING instead and test
         lda     FIFO_STATUS
-        cmp     #EMU_UNKNOWN
-        beq     @ret
-        cmp     #FIFO_IDLE
-        beq     @ret
+        cmp     #FIFO_PENDING
+        bne     @ret
         lda     FIFO_DATA
         sta     ntcRequest
-        jmp     receiveNTCRequest
 @ret:   rts
 
 ; needed for nestrischamps:
@@ -288,20 +284,6 @@ sendNTCDataCompact:
         ora     playState
         sta     FIFO_DATA
 
-        ldx     vramRow
-        cpx     #$20   ; send game data when playfield isn't rendering
-        beq     @sendState
-        lda     playState
-        cmp     #$04   ; send game data when animation is showing
-        beq     @sendState
-        jmp     sendCompactField
-@sendState:
-        ; subtotal 5
-
-        ; frame type 1
-        lda     #COMPACT_UPDATE_STATE
-        sta     FIFO_DATA
-
         ; gameStartGameMode. 1
         lda     ntcGameStart
         asl
@@ -310,6 +292,21 @@ sendNTCDataCompact:
         asl
         ora     gameMode
         sta     FIFO_DATA
+
+        ldx     vramRow
+        cpx     #$20   ; send game data when playfield isn't rendering
+        beq     @sendState
+        lda     playState
+        cmp     #$04   ; send game data when animation is showing
+        beq     @sendState
+        jmp     sendCompactField
+@sendState:
+        ; subtotal 6
+
+        ; frame type 1
+        lda     #COMPACT_UPDATE_STATE
+        sta     FIFO_DATA
+
 
         ; rowY. 1
         lda     rowY
@@ -403,7 +400,7 @@ sendNTCDataCompact:
 
 
 sendCompactField:
-        ; subtotal 5
+        ; subtotal 6
 
         ; frame type 1
         lda     #COMPACT_UPDATE_FIELD
@@ -422,8 +419,8 @@ sendCompactField:
         dex
         bne     @sendFieldByte
 
-        ; padding 15
-        ldx     #15
+        ; padding 14
+        ldx     #14
 padCompact:
         lda     #0
 @pad:
