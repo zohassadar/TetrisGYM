@@ -275,22 +275,20 @@ sendNTCDataCompact:
         lda     frameCounter+1
         sta     FIFO_DATA
 
-        ; gameModeStatePlayState. 1
+        ; gameModeState. 1
         lda     gameModeState
-        asl
-        asl
-        asl
-        asl
-        ora     playState
         sta     FIFO_DATA
 
-        ; gameStartGameMode. 1
+        ; playState. 1
+        lda     playState
+        sta     FIFO_DATA
+
+
+        ; ntcGameStart. 1
         lda     ntcGameStart
-        asl
-        asl
-        asl
-        asl
-        ora     gameMode
+        sta     FIFO_DATA
+        ; gameMode. 1
+        lda     gameMode
         sta     FIFO_DATA
 
         ldx     vramRow
@@ -301,7 +299,7 @@ sendNTCDataCompact:
         beq     @sendState
         jmp     sendCompactField
 @sendState:
-        ; subtotal 6
+        ; subtotal 8
 
         ; frame type 1
         lda     #COMPACT_UPDATE_STATE
@@ -391,16 +389,16 @@ sendNTCDataCompact:
         sta     FIFO_DATA
         lda     statsByType+13
         sta     FIFO_DATA
-        ; subtotal 38
+        ; subtotal 40
 
-        ; padding 24
-        ldx     #24
+        ; padding 22
+        ldx     #22
         jmp     padCompact
 
 
 
 sendCompactField:
-        ; subtotal 6
+        ; subtotal 8
 
         ; frame type 1
         lda     #COMPACT_UPDATE_FIELD
@@ -418,9 +416,10 @@ sendCompactField:
         iny
         dex
         bne     @sendFieldByte
+        ; subtotal 50
 
-        ; padding 14
-        ldx     #14
+        ; padding 12
+        ldx     #12
 padCompact:
         lda     #0
 @pad:
