@@ -47,7 +47,13 @@ garbageHole: .res 1 ; $0059                        ; Position of hole in receive
 garbageDelay: .res 1 ; $005A
 pieceTileModifier: .res 1 ; $005B ; above $80 - use a single one, below - use an offset
 curtainRow: .res 1 ; $5C
-    .res 3
+
+.if ED2NTC = 1
+ntcGameStart: .res 1 ; $5D Counter incremented in gameModeState_initGameState
+.else
+    .res 1
+.endif
+    .res 2
 
 mathRAM: .res $12
 binary32 := mathRAM+$0
@@ -213,12 +219,11 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 .if ED2NTC = 1
 ; todo: ntcRequest is not necessary and this byte can be cleaned
 ntcRequest: .res 1 ; $63C Used by NestrisChamps to request data via everdrive edlink
-ntcGameStart: .res 1 ; $63D Counter incremented in gameModeState_initGameState
 .else
-    .res 2
+    .res 1
 .endif
 
-    .res $37
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
