@@ -1,3 +1,5 @@
+multBy10OffsetBy2:
+        .byte   $EC,$F6
 multBy10Table:
         .byte   $00,$0A,$14,$1E,$28,$32,$3C,$46
         .byte   $50,$5A,$64,$6E,$78,$82,$8C,$96

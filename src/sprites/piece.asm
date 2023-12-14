@@ -17,7 +17,7 @@ ghostPiece:
 @loop:
         inc tetriminoY
         jsr isPositionValid
-        beq @loop
+        bcc @loop
         dec tetriminoY
 
         ; check if equal to current position

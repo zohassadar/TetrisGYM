@@ -171,7 +171,7 @@ debugContinue:
 
         ; handle piece
         jsr isPositionValid
-        bne @restore_
+        bcs @restore_
         jmp debugDrawPieces
 
 @restore_:
