@@ -1,61 +1,41 @@
 isPositionValid:
-        lda tetriminoY
-        asl a
-        sta generalCounter
-        asl a
-        asl a
-        clc
-        adc generalCounter
-        adc tetriminoX
-        sta generalCounter
+        ; carry clear when valid
         lda currentPiece
         asl a
         asl a
         tax
         lda #$04
         sta generalCounter3
-; Checks one square within the tetrimino
+        clc ; carry only needs to be cleared entering loop
 @checkSquare:
+        ; validate y
         lda orientationYOffsets,x
-        clc
         adc tetriminoY
+        clc
         adc #$02
-
         cmp #$16
-        bcs @invalid
-        lda orientationYOffsets,x
-        asl a
-        sta generalCounter4
-        asl a
-        asl a
-        clc
-        adc generalCounter4
-        clc
-        adc generalCounter
-        sta positionValidTmp
-        lda orientationXOffsets,x
-        clc
-        adc positionValidTmp
-        tay
-        lda playfield,y
-        cmp #EMPTY_TILE
-        bcc @invalid
+        bcs @ret ; y >= 20
+        tay ; Used to get y * 10
+
+        ; validate x
         lda orientationXOffsets,x
         clc
         adc tetriminoX
         cmp #$0A
-        bcs @invalid
+        bcs @ret  ; x < 0 || x >= 10
+
+        ; validate pos in playfield
+        clc
+        adc multBy10OffsetBy2,y
+        tay
+        lda #EMPTY_TILE-1
+        cmp playfield,y
+        bcs @ret ; Tile found in playfield
+
         inx
         dec generalCounter3
         bne @checkSquare
-        lda #$00
-        sta generalCounter
-        rts
-
-@invalid:
-        lda #$FF
-        sta generalCounter
-        rts
+@ret:   rts
 
 updatePlayfield:
         ldx tetriminoY

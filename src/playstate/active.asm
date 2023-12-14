@@ -26,7 +26,7 @@ harddrop_tetrimino:
 @loop:
         inc tetriminoY
         jsr isPositionValid
-        beq @loop
+        bcc @loop
         dec tetriminoY
 
         ; sonic drop
@@ -252,7 +252,7 @@ rotate_tetrimino:
         lda rotationTable,x
         sta currentPiece
         jsr isPositionValid
-        bne @restoreOrientationID
+        bcs @restoreOrientationID
         lda #$05
         sta soundEffectSlot1Init
         jmp @ret
@@ -265,7 +265,7 @@ rotate_tetrimino:
         lda rotationTable,x
         sta currentPiece
         jsr isPositionValid
-        bne @restoreOrientationID
+        bcs @restoreOrientationID
         lda #$05
         sta soundEffectSlot1Init
         jmp @ret
@@ -346,7 +346,7 @@ drop_tetrimino_actual:
         sta originalY
         inc tetriminoY
         jsr isPositionValid
-        beq @ret
+        bcc @ret
         lda originalY
         sta tetriminoY
         lda #$02
@@ -469,7 +469,7 @@ shift_tetrimino:
         beq @notPressingRight
         inc tetriminoX
         jsr isPositionValid
-        bne @restoreX
+        bcs @restoreX
         lda #$03
         sta soundEffectSlot1Init
         jmp @ret
@@ -480,7 +480,7 @@ shift_tetrimino:
         beq @ret
         dec tetriminoX
         jsr isPositionValid
-        bne @restoreX
+        bcs @restoreX
         lda #$03
         sta soundEffectSlot1Init
         jmp @ret
