@@ -19,13 +19,11 @@ isPositionValid:
 
         ; validate x
         lda orientationXOffsets,x
-        clc
         adc tetriminoX
         cmp #$0A
         bcs @ret  ; x < 0 || x >= 10
 
         ; validate pos in playfield
-        clc
         adc multBy10OffsetBy2,y
         tay
         lda #EMPTY_TILE-1
