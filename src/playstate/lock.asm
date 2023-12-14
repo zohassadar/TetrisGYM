@@ -41,21 +41,19 @@ playState_lockTetrimino:
         adc generalCounter
         adc tetriminoX
         sta generalCounter
-        lda currentPiece
-        sta currentPiece_copy
+        ldy currentPiece
+        sty currentPiece_copy ; this will conflict with floor mode mod
+        lda orientationTiles,y
+        sta generalCounter5
+        tya
         asl a
         asl a
-        sta generalCounter2
-        asl a
-        clc
-        adc generalCounter2
         tax
-        ldy #$00
         lda #$04
         sta generalCounter3
 ; Copies a single square of the tetrimino to the playfield
 @lockSquare:
-        lda orientationTable,x
+        lda orientationYOffsets,x
         asl a
         sta generalCounter4
         asl a
@@ -65,17 +63,13 @@ playState_lockTetrimino:
         clc
         adc generalCounter
         sta positionValidTmp
-        inx
-        lda orientationTable,x
-        sta generalCounter5
-        inx
-        lda orientationTable,x
+        lda orientationXOffsets,x
         clc
         adc positionValidTmp
         tay
         lda generalCounter5
         ; BLOCK_TILES
-        sta (playfieldAddr),y
+        sta playfield,y
         inx
         dec generalCounter3
         bne @lockSquare
