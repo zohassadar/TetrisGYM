@@ -32,15 +32,6 @@ playState_lockTetrimino:
         lda vramRow
         cmp #$20
         bmi @ret
-        lda tetriminoY
-        asl a
-        sta generalCounter
-        asl a
-        asl a
-        clc
-        adc generalCounter
-        adc tetriminoX
-        sta generalCounter
         ldy currentPiece
         sty currentPiece_copy ; this will conflict with floor mode mod
         lda orientationTiles,y
@@ -50,31 +41,30 @@ playState_lockTetrimino:
         asl a
         tax
         lda #$04
-        sta generalCounter3
+        sta lineIndex ; conveniently leaves lineIndex 0 at return
 ; Copies a single square of the tetrimino to the playfield
 @lockSquare:
         lda orientationYOffsets,x
-        asl a
-        sta generalCounter4
-        asl a
-        asl a
         clc
-        adc generalCounter4
+        adc #$02
         clc
-        adc generalCounter
-        sta positionValidTmp
+        adc tetriminoY
+        tay
+
         lda orientationXOffsets,x
         clc
-        adc positionValidTmp
+        adc tetriminoX
+        clc
+        adc multBy10OffsetBy2,y
         tay
+
         lda generalCounter5
         ; BLOCK_TILES
         sta playfield,y
+
         inx
-        dec generalCounter3
+        dec lineIndex
         bne @lockSquare
-        lda #$00
-        sta lineIndex
         jsr updatePlayfield
         jsr updateMusicSpeed
         inc playState
