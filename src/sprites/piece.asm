@@ -37,103 +37,82 @@ ghostPiece:
 @noGhost:
         rts
 
-tileModifierForCurrentPiece:
-        lda pieceTileModifier
-        beq @tileNormal
-        and #$80
-        bne @tileSingle
-; @tileMultiple:
-        lda orientationTable,x
-        clc
-        adc pieceTileModifier
-        rts
-@tileSingle:
-        lda pieceTileModifier
-        rts
-@tileNormal:
-        lda orientationTable,x
-        rts
+xCoord = generalCounter3
+yCoord = generalCounter4
+tile = generalCounter5
+tileCounter = generalCounter2
+minimimYCoord = 47
 
 stageSpriteForCurrentPiece_actual:
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
-        beq stageSpriteForCurrentPiece_return
+        beq @ret
         asl a
         asl a
         asl a
-        adc #$60
-        sta generalCounter3
-        clc
+        adc #$60 ; clc omission is from original code.   3*asl for 0-9 will result in clear carry
+        sta xCoord
         lda tetriminoY
-        rol a
-        rol a
-        rol a
-        adc #$2F
-        sta generalCounter4
+        asl a
+        asl a
+        asl a
+        clc
+        adc #minimimYCoord
+        sta yCoord
         lda currentPiece
-        sta generalCounter5
+        tay ; index into tiles
+        asl
+        asl
+        tax ; index into Y & X Offsets
+        lda orientationTiles,y
+        ldy pieceTileModifier
+        beq @storeTile
+        bpl @tileMultiple
+        tya
+        bmi @storeTile
+@tileMultiple:
         clc
-        lda generalCounter5
-        rol a
-        rol a
-        sta generalCounter
-        rol a
-        adc generalCounter
-        tax
+        adc pieceTileModifier
+@storeTile:
         ldy oamStagingLength
+        sta oamStaging+1,y
+        sta oamStaging+5,y
+        sta oamStaging+9,y
+        sta oamStaging+13,y
         lda #$04
-        sta generalCounter2
+        sta tileCounter
+         ; y is oam y coordinate
 @stageMino:  
-        lda orientationTable,x
+        lda orientationYOffsets,x
         asl a
         asl a
         asl a
         clc
-        adc generalCounter4
+        adc yCoord
+        cmp #minimimYCoord
+        bcs @validY
+        lda #$FF
+@validY:
         sta oamStaging,y
-        sta originalY
-        inc oamStagingLength
-        iny
-        inx
-        jsr tileModifierForCurrentPiece ; used to just load from orientationTable
-        ; lda orientationTable, x
-        sta oamStaging,y
-        inc oamStagingLength
-        iny
-        inx
+        iny ; oam tile
+        iny ; oam attribute
         lda #$02
         sta oamStaging,y
-        lda originalY
-        cmp #$2F
-        bcs @validYCoordinate
-        inc oamStagingLength
-        dey
-        lda #$FF
-        sta oamStaging,y
-        iny
-        iny
-        lda #$00
-        sta oamStaging,y
-        jmp @finishLoop
-
-@validYCoordinate:  
-        inc oamStagingLength
-        iny
-        lda orientationTable,x
+        iny ; oam x coordinate
+        lda orientationXOffsets,x
         asl a
         asl a
         asl a
         clc
-        adc generalCounter3
+        adc xCoord
         sta oamStaging,y
 @finishLoop:  
-        inc oamStagingLength
         iny
         inx
-        dec generalCounter2
+        dec tileCounter
         bne @stageMino
-stageSpriteForCurrentPiece_return:
-        rts
+        sty oamStagingLength
+@ret:   rts
 
 stageSpriteForNextPiece:
         lda qualFlag

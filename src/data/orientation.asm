@@ -30,6 +30,74 @@ orientationTable:
         .byte   $00,$00,$7B,$01,$00,$FF,$00,$00
         .byte   $FF,$00,$00,$FF,$00,$00,$FF,$00
 
+orientationYOffsets:
+        .byte   $00,$00,$00,$FF ; t
+        .byte   $FF,$00,$00,$01
+        .byte   $00,$00,$00,$01
+        .byte   $FF,$00,$00,$01 
+
+        .byte   $FF,$00,$01,$01 ; j
+        .byte   $FF,$00,$00,$00
+        .byte   $FF,$FF,$00,$01
+        .byte   $00,$00,$00,$01
+
+        .byte   $00,$00,$01,$01 ; z
+        .byte   $FF,$00,$00,$01
+
+        .byte   $00,$00,$01,$01 ; o
+
+        .byte   $00,$00,$01,$01 ; s
+        .byte   $FF,$00,$00,$01
+
+        .byte   $FF,$00,$01,$01 ; l
+        .byte   $00,$00,$00,$01
+        .byte   $FF,$FF,$00,$01
+        .byte   $FF,$00,$00,$00
+
+        .byte   $FE,$FF,$00,$01 ; i
+        .byte   $00,$00,$00,$00
+
+        .byte   $00,$00,$00,$00 ; hidden
+
+orientationXOffsets:
+        .byte   $FF,$00,$01,$00 ; t
+        .byte   $00,$00,$01,$00
+        .byte   $FF,$00,$01,$00
+        .byte   $00,$FF,$00,$00
+
+        .byte   $00,$00,$FF,$00 ; j
+        .byte   $FF,$FF,$00,$01
+        .byte   $00,$01,$00,$00
+        .byte   $FF,$00,$01,$01
+
+        .byte   $FF,$00,$00,$01 ; z
+        .byte   $01,$00,$01,$00
+
+        .byte   $FF,$00,$FF,$00 ; o
+
+        .byte   $00,$01,$FF,$00 ; s
+        .byte   $00,$00,$01,$01
+
+        .byte   $00,$00,$00,$01 ; l
+        .byte   $FF,$00,$01,$FF
+        .byte   $FF,$00,$00,$00
+        .byte   $01,$FF,$00,$01
+
+        .byte   $00,$00,$00,$00 ; i
+        .byte   $FE,$FF,$00,$01
+
+        .byte   $00,$00,$00,$00 ; hidden
+
+orientationTiles:
+        .byte $7B,$7B,$7B,$7B   ; t
+        .byte $7D,$7D,$7D,$7D   ; j
+        .byte $7C,$7C           ; z
+        .byte $7B               ; o
+        .byte $7D,$7D           ; s
+        .byte $7C,$7C,$7C,$7C   ; l
+        .byte $7B,$7B           ; i
+        .byte EMPTY_TILE
+
 ; Only cares about orientations selected by spawnTable
 orientationToSpriteTable:
         .byte   $00,$00,$06,$00,$00,$00,$00,$09
