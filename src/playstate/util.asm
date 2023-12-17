@@ -4,6 +4,7 @@ isPositionValid:
         asl a
         asl a
         tax
+isPositionValidPresetX:
         lda #$04
         sta generalCounter3
         clc ; carry only needs to be cleared entering loop
