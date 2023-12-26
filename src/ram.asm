@@ -26,7 +26,10 @@ yLimit: .res 1 ; $0029
 xStart: .res 1 ; $002A
 spriteDoubles: .res 1 ; $002B
 yOffset: .res 1 ; $002C
-    .res $6
+incompletes: .res 2 ; $002D
+incompleteRows: .res 1
+rowBeingMoved: .res 1
+    .res $2
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount

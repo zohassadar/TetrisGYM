@@ -5,7 +5,7 @@ branchOnPlayStatePlayer1:
         .addr   playState_playerControlsActiveTetrimino
         .addr   playState_lockTetrimino
         .addr   playState_checkForCompletedRows
-        .addr   playState_noop
+        .addr   playstate_shiftPlayfieldDownABit
         .addr   playState_updateLinesAndStatistics
         .addr   playState_prepareNext ; used to be bTypeGoalCheck
         .addr   playState_receiveGarbage

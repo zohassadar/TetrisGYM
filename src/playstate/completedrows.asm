@@ -5,70 +5,65 @@ playState_checkForCompletedRows:
         jmp playState_checkForCompletedRows_return
 
 @updatePlayfieldComplete:
-
+        ldx practiseType
         lda tetriminoY
-        sec
-        sbc #$02
-        bpl @yInRange
-        lda #$00
-@yInRange:
+        and maskValueForTetriminoY,x
         clc
         adc lineIndex
-        sta generalCounter2
-        asl a
-        sta generalCounter
-        asl a
-        asl a
-        clc
-        adc generalCounter
-        sta generalCounter
         tay
-        ldx #$0A
+        lda (multTableLo),y
+        sta sramPlayfield
+        clc
+        lda #>SRAM_clearbuffer
+        sta sramPlayfield+1
+
+
+        lda xLimits,x
+        tax
 
 @checkIfRowComplete:
 .if AUTO_WIN
         jmp @rowIsComplete
 .endif
-        lda practiseType
-        cmp #MODE_TSPINS
-        beq @rowNotComplete
+;         lda practiseType
+;         cmp #MODE_TSPINS
+;         beq @rowNotComplete
 
-        lda practiseType
-        cmp #MODE_FLOOR
-        beq @floorCheck
-        lda linecapState
-        cmp #LINECAP_FLOOR
-        beq @fullRowBurningCheck
-        bne @normalRow
+;         lda practiseType
+;         cmp #MODE_FLOOR
+;         beq @floorCheck
+;         lda linecapState
+;         cmp #LINECAP_FLOOR
+;         beq @fullRowBurningCheck
+;         bne @normalRow
 
-@floorCheck:
-        lda floorModifier
-        beq @rowNotComplete
+; @floorCheck:
+;         lda floorModifier
+;         beq @rowNotComplete
 
-@fullRowBurningCheck:
-        ; bugfix to ensure complete rows aren't cleared
-        ; used in floor / linecap floor
-        lda currentPiece_copy
-        beq @IJLTedge
-        cmp #5
-        beq @IJLTedge
-        cmp #$10
-        beq @IJLTedge
-        cmp #$12
-        beq @IJLTedge
-        bne @normalRow
-@IJLTedge:
-        lda lineIndex
-        cmp #3
-        bcs @rowNotComplete
-@normalRow:
+; @fullRowBurningCheck:
+;         ; bugfix to ensure complete rows aren't cleared
+;         ; used in floor / linecap floor
+;         lda currentPiece_copy
+;         beq @IJLTedge
+;         cmp #5
+;         beq @IJLTedge
+;         cmp #$10
+;         beq @IJLTedge
+;         cmp #$12
+;         beq @IJLTedge
+;         bne @normalRow
+; @IJLTedge:
+;         lda lineIndex
+;         cmp #3
+;         bcs @rowNotComplete
+; @normalRow:
 
-
+        ldy #$00
 @checkIfRowCompleteLoopStart:
-        lda (playfieldAddr),y
+        lda (sramPlayfield),y
         cmp #EMPTY_TILE
         beq @rowNotComplete
-        bne @rowNotComplete
         iny
         dex
         bne @checkIfRowCompleteLoopStart
@@ -77,79 +72,96 @@ playState_checkForCompletedRows:
         ; sound effect $A to slot 1 used to live here
         inc completedLines
         ldx lineIndex
-        lda generalCounter2
-        sta completedRow,x
-        ldy generalCounter
-        dey
-@movePlayfieldDownOneRow:
-        lda (playfieldAddr),y
-        ldx #$0A
-        stx playfieldAddr
-        sta (playfieldAddr),y
-        lda #$00
-        sta playfieldAddr
-        dey
-        cpy #$FF
-        bne @movePlayfieldDownOneRow
-        lda #EMPTY_TILE
-        ldy #$00
-@clearRowTopRow:
-        sta (playfieldAddr),y
-        iny
-        cpy #$0A
-        bne @clearRowTopRow
+        inc completedRow,x
+;         ldy generalCounter
+;         dey
+; @movePlayfieldDownOneRow:
+;         lda (playfieldAddr),y
+;         ldx #$0A
+;         stx playfieldAddr
+;         sta (playfieldAddr),y
+;         lda #$00
+;         sta playfieldAddr
+;         dey
+;         cpy #$FF
+;         bne @movePlayfieldDownOneRow
+;         lda #EMPTY_TILE
+;         ldy #$00
+; @clearRowTopRow:
+;         sta (playfieldAddr),y
+;         iny
+;         cpy #$0A
+;         bne @clearRowTopRow
         lda #$13
         sta currentPiece
         jmp @incrementLineIndex
 
 @rowNotComplete:
-        ldx lineIndex
+        inc incompleteRows
+        ldx practiseType
+        ldy xLimits,x
+        dey
+
+@copyRowToIncompletes:
+        lda (sramPlayfield),y
+        sta (incompletes),y
+        dey
+        bpl @copyRowToIncompletes
+        clc
+        lda xLimits,x
+        adc incompletes
+        sta incompletes
         lda #$00
-        sta completedRow,x
+        adc incompletes+1
+        sta incompletes+1
 @incrementLineIndex:
-
-        ; patch tapquantity data
-        lda practiseType
-        cmp #MODE_TAPQTY
-        bne @tapQtyEnd
-        lda completedLines
-        cmp #0
-        beq @tapQtyEnd
-        ; mark as complete
-        lda tqtyNext
-        sta tqtyCurrent
-        ; handle no burns
-        lda tapqtyModifier
-        and #$F0
-        beq @tapQtyEnd
-        lda #0
-        sta vramRow
-        inc playState
-        inc playState
-        lda #$07
-        sta soundEffectSlot1Init
-        rts
-@tapQtyEnd:
-
-        ; update top row for crunch
-        lda practiseType
-        cmp #MODE_CRUNCH
-        bne @crunchEnd
-        lda #1
-        jsr advanceSides
-@crunchEnd:
-
         lda completedLines
         beq :+
         lda #$0A
         sta soundEffectSlot1Init
 :
-
         inc lineIndex
         lda lineIndex
         cmp #$04 ; check actual height
         bmi playState_checkForCompletedRows_return
 
+        lda incompleteRows
+        beq @noIncompletesToMove
+        lda completedLines
+        beq @noIncompletesToMove
+
+        lda tetriminoY
+        cmp #$02
+        bcs @yInRange
+        lda #$02
+@yInRange:
+        sec
+        sbc #$02
+        clc
+        adc completedLines
+        tay
+        dey
+        sty rowBeingMoved
+        iny
+        lda (multTableLo),y
+        sta sramPlayfield
+        clc
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfield+1
+
+        ldy incompleteRows
+        iny
+        lda (multTableLo),y
+        tay
+        dey
+@incompleteRowLoop:
+        lda SRAM_incompletes,y
+        sta (sramPlayfield),y
+        dey
+        bpl @incompleteRowLoop
+
+@noIncompletesToMove:
         lda #$00
         sta vramRow
         sta rowY
@@ -168,4 +180,42 @@ playState_completeRowContinue:
         lda #$07
         sta soundEffectSlot1Init
 playState_checkForCompletedRows_return:
+        rts
+
+
+
+
+playstate_shiftPlayfieldDownABit:
+        lda rowBeingMoved
+        bne @incomplete
+        inc playState
+        rts
+@incomplete:
+        clc
+        adc completedLines
+        tay
+        lda (multTableLo),y
+        sta sramPlayfieldBR
+        clc
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfieldBR+1
+
+        ldy rowBeingMoved
+        lda (multTableLo),y
+        sta sramPlayfield
+        clc
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfield+1
+
+        ldx practiseType
+        ldy xLimits,x
+        dey
+@shiftLoop:
+        lda (sramPlayfield),y
+        sta (sramPlayfieldBR),y
+        dey
+        bpl @shiftLoop
+        dec rowBeingMoved
         rts

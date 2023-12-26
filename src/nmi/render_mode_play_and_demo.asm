@@ -212,6 +212,7 @@ pieceToPpuStatAddr:
 
 
 updateLineClearingAnimation:
+        rts
 .if AUTO_WIN
         inc playState
         rts

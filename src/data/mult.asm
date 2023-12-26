@@ -240,6 +240,44 @@ moveMediumPlayfieldToRenderPage:
         jsr updateAudioWaitForNmiAndResetOamStaging
         jmp mainLoop
 
+playfieldBytesToCopy:
+        .byte 119, 39, 19
+
+andValueForTetriminoY:
+        .byte $FE,$FF,$FF ; start at nearest even number
+
+maskValueForTetriminoY:
+        .byte $01,$00,$00 ; start at nearest even number
+
+
+copyPlayfieldToBuffer:
+        ldx practiseType
+        lda tetriminoY
+        and andValueForTetriminoY,x
+        tay
+        cpy #$02
+        bcs @yInRange
+        ldy #$02
+@yInRange:
+        dey
+        dey
+        lda (multTableLo),y
+        sta sramPlayfield
+        clc
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfield+1
+
+        ldx practiseType
+        ldy playfieldBytesToCopy,x
+        
+@copyLoop:
+        lda (sramPlayfield),y
+        sta SRAM_clearbuffer,y
+        dey
+        bpl @copyLoop; works only because max expected is 119
+        rts
+
 
 ; '01111011'
 ; '01111100'

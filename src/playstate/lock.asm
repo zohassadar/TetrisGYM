@@ -47,8 +47,9 @@ playState_lockTetrimino:
         lda orientationYOffsets,x
         clc
         adc tetriminoY
+        cmp #$02
+        bcc @skipLock ; don't lock above visible playfield to guarantee all blank tiles
         tay
-
         lda orientationXOffsets,x
         clc
         adc tetriminoX
@@ -61,10 +62,17 @@ playState_lockTetrimino:
         ldy #$00
         lda generalCounter5
         sta (sramPlayfield),y
+@skipLock:
         inx
         dec lineIndex
         bne @lockSquare
         jsr updatePlayfield
-        jsr updateMusicSpeed
+        jsr copyPlayfieldToBuffer ; use a copy of the 4 rows for line clear checking
+        lda #$00
+        sta incompleteRows
+        lda #<SRAM_incompletes
+        sta incompletes
+        lda #>SRAM_incompletes
+        sta incompletes+1
         inc playState
 @ret:   rts
