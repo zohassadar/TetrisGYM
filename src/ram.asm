@@ -15,7 +15,18 @@ spawnID: .res 1 ; $0019
 spawnCount: .res 1 ; $001A
 pointerAddr: .res 2 ; $001B ; used in debug, harddrop
 pointerAddrB: .res 2 ; $001D ; used in harddrop
-    .res $14
+
+.res 1
+sramPlayfield: .res 2 ; $0020   for ($3E),y addressing    
+sramPlayfieldBR: .res 2 ; $0022 
+multTableLo: .res 2 ; $0024
+multTableHi: .res 2 ; $0026
+xLimit: .res 1 ; $0028
+yLimit: .res 1 ; $0029
+xStart: .res 1 ; $002A
+spriteDoubles: .res 1 ; $002B
+yOffset: .res 1 ; $002C
+    .res $6
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
@@ -31,7 +42,7 @@ fallTimer: .res 1 ; $0045
 autorepeatX: .res 1 ; $0046
 startLevel: .res 1 ; $0047
 playState: .res 1 ; $0048
-vramRow: .res 1 ; $0049                        ; Next playfield row to copy. Set to $20 when playfield copy is complete
+vramRow: .res 1 ; $0049                        ; Next playfield row to copy. Set to $40 when playfield copy is complete
 completedRow: .res 4 ; $004A                    ; Row which has been cleared. 0 if none complete
 autorepeatY: .res 1 ; $004E
 holdDownPoints: .res 1 ; $004F
@@ -156,7 +167,8 @@ currentPpuCtrl: .res 1 ; $00FF
 stack: .res $FF ; $0100
     .res 1
 oamStaging: .res $100 ; $0200                        ; format: https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM
-    .res $F0
+    .res $30 ; Animation Staging Queue
+    .res $C0
 statsByType: .res $E ; $03F0
     .res 2
 playfield: .res $c8 ; $0400

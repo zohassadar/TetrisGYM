@@ -11,25 +11,31 @@ isPositionValid:
         ; validate y
         lda orientationYOffsets,x
         adc tetriminoY
-        clc
-        adc #$02
-        cmp #$16
+        cmp yLimit
         bcs @ret ; y >= 20
         tay ; Used to get y * 10
 
         ; validate x
         lda orientationXOffsets,x
         adc tetriminoX
-        cmp #$0A
+        cmp xLimit
         bcs @ret  ; x < 0 || x >= 10
 
         ; validate pos in playfield
-        adc multBy10OffsetBy2,y
-        tay
-        lda #EMPTY_TILE-1
-        cmp playfield,y
-        bcs @ret ; Tile found in playfield
+        adc (multTableLo),y
+        sta sramPlayfield
+        lda #$00
+        adc (multTableHi),y
+        sta sramPlayfield+1
 
+        lda #>SRAM_playfield
+        clc
+        adc sramPlayfield+1
+        sta sramPlayfield+1
+        ldy #$00
+        lda #EMPTY_TILE-1
+        cmp (sramPlayfield),y
+        bcs @ret ; Tile found in playfield
         inx
         dec generalCounter3
         bne @checkSquare
@@ -39,47 +45,58 @@ updatePlayfield:
         ldx tetriminoY
         dex
         dex
+        dex
+        dex
         txa
         bpl @rowInRange
         lda #$00
 @rowInRange:
-        cmp vramRow
-        bpl @ret
+        ldx practiseType
+        cpx #MODE_SMALL
+        bne @notSmall
+        lsr
+        jmp @compare
+@notSmall:
+        cpx #MODE_BIG
+        bne @compare
+        asl
+@compare:
+        and #$FC
         sta vramRow
 @ret:   rts
 
 updateMusicSpeed:
-        ldx #$05
-        lda multBy10Table,x
-        tay
-        ldx #$0A
-@checkForBlockInRow:
-        lda (playfieldAddr),y
-        cmp #EMPTY_TILE
-        bne @foundBlockInRow
-        iny
-        dex
-        bne @checkForBlockInRow
-        lda allegro
-        beq @ret
-        lda #$00
-        sta allegro
-        ldx musicType
-        lda musicSelectionTable,x
-        jsr setMusicTrack
-        jmp @ret
+;         ldx #$05
+;         lda multBy10Table,x
+;         tay
+;         ldx #$0A
+; @checkForBlockInRow:
+;         lda (playfieldAddr),y
+;         cmp #EMPTY_TILE
+;         bne @foundBlockInRow
+;         iny
+;         dex
+;         bne @checkForBlockInRow
+;         lda allegro
+;         beq @ret
+;         lda #$00
+;         sta allegro
+;         ldx musicType
+;         lda musicSelectionTable,x
+;         jsr setMusicTrack
+;         jmp @ret
 
-@foundBlockInRow:
-        lda allegro
-        bne @ret
-        lda #$FF
-        sta allegro
-        lda musicType
-        clc
-        adc #$04
-        tax
-        lda musicSelectionTable,x
-        jsr setMusicTrack
+; @foundBlockInRow:
+;         lda allegro
+;         bne @ret
+;         lda #$FF
+;         sta allegro
+;         lda musicType
+;         clc
+;         adc #$04
+;         tax
+;         lda musicSelectionTable,x
+;         jsr setMusicTrack
 @ret:   rts
 
 

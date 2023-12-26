@@ -3,6 +3,9 @@ SRAM_states := SRAM
 SRAM_hsMagic := SRAM+$A00
 SRAM_highscores := SRAM_hsMagic+$4
 
+SRAM_playfield := $7C00
+SRAM_clearbuffer := $7B00 ; need 120, 40 or 20 bytes to stage line clear
+
 PPUCTRL     := $2000
 PPUMASK     := $2001
 PPUSTATUS   := $2002

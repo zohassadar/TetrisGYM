@@ -26,6 +26,20 @@ mainLoop:
         jsr branchOnGameMode
         cmp gameModeState
         bne @continue
+        lda vramRow
+        cmp #$20
+        beq @updateAudio
+        lda practiseType
+        cmp #MODE_SMALL
+        bne @checkNormal
+        jmp moveSmallPlayfieldToRenderPage
+@checkNormal:
+        cmp #MODE_MEDIUM
+        bne @big
+        jmp moveMediumPlayfieldToRenderPage
+@big:
+        jmp moveBigPlayfieldToRenderPage
+@updateAudio:
         jsr updateAudioWaitForNmiAndResetOamStaging
 @continue:
         jmp mainLoop

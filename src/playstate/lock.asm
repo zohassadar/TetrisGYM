@@ -46,8 +46,6 @@ playState_lockTetrimino:
 @lockSquare:
         lda orientationYOffsets,x
         clc
-        adc #$02
-        clc
         adc tetriminoY
         tay
 
@@ -55,13 +53,14 @@ playState_lockTetrimino:
         clc
         adc tetriminoX
         clc
-        adc multBy10OffsetBy2,y
-        tay
-
+        adc (multTableLo),y
+        sta sramPlayfield
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfield+1
+        ldy #$00
         lda generalCounter5
-        ; BLOCK_TILES
-        sta playfield,y
-
+        sta (sramPlayfield),y
         inx
         dec lineIndex
         bne @lockSquare

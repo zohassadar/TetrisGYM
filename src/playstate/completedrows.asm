@@ -68,6 +68,7 @@ playState_checkForCompletedRows:
         lda (playfieldAddr),y
         cmp #EMPTY_TILE
         beq @rowNotComplete
+        bne @rowNotComplete
         iny
         dex
         bne @checkIfRowCompleteLoopStart

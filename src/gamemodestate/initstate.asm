@@ -1,16 +1,15 @@
 gameModeState_initGameState:
-        lda #$EF
-        ldx #$04
-        ldy #$04
-        jsr memset_page
+        jsr resetPlayfields
+        jsr setModeValues
         ldx #$0F
         lda #$00
 ; statsByType
+
 @initStatsByType:
         sta $03EF,x
         dex
         bne @initStatsByType
-        lda #$05
+        lda xStart
         sta tetriminoX
 
         ; set seed init
@@ -59,7 +58,10 @@ gameModeState_initGameState:
         ; 0 in A
 
         ; OEM stuff (except score stuff now)
-        sta tetriminoY
+        lda #$02
+        sta tetriminoY ; no negative rows!
+
+        lda #$00
         sta vramRow
         sta fallTimer
         sta pendingGarbage

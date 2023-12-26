@@ -50,7 +50,7 @@ if (!mappers.includes(+mapper)) {
             .map((d) => `-m${d}`)
             .join(', ')}`,
     );
-    process.exit(0);
+    process.exit(1);
 }
 
 // compileFlags
@@ -117,7 +117,7 @@ function handleSpawn(exe, ...args) {
     );
     if (output.length) {
         console.log(output.join('\n'));
-        process.exit(0);
+        process.exit(1);
     }
 }
 

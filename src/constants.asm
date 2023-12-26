@@ -31,9 +31,10 @@ INITIAL_LINECAP_LEVEL := 39
 INITIAL_LINECAP_LINES := $30 ; bcd
 INITIAL_LINECAP_LINES_1 := 3 ; hex (lol)
 BTYPE_START_LINES := $25 ; bcd
-MENU_HIGHLIGHT_COLOR := $12 ; $12 in gym, $16 in original
+; MENU_HIGHLIGHT_COLOR := $12 ; $12 in gym, $16 in original
+MENU_HIGHLIGHT_COLOR := $2A
 BLOCK_TILES := $7B
-EMPTY_TILE := $EF
+EMPTY_TILE := $A0
 TETRIMINO_X_HIDE := $EF
 
 PAUSE_SPRITE_X := $74
@@ -53,9 +54,12 @@ BUTTON_START := $10
 BUTTON_DPAD := BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT | BUTTON_RIGHT
 
 .enum
-MODE_TETRIS
-MODE_TSPINS
+MODE_SMALL
+MODE_MEDIUM
+MODE_BIG
 MODE_SEED
+MODE_DAS
+MODE_TSPINS
 MODE_PARITY
 MODE_PACE
 MODE_PRESETS
@@ -69,7 +73,6 @@ MODE_TAPQTY
 MODE_CHECKERBOARD
 MODE_GARBAGE
 MODE_DROUGHT
-MODE_DAS
 MODE_KILLX2
 MODE_INVISIBLE
 MODE_HARDDROP
@@ -87,8 +90,8 @@ MODE_QUAL
 MODE_PAL
 .endenum
 
-MODE_QUANTITY = MODE_PAL + 1
-MODE_GAME_QUANTITY = MODE_HARDDROP + 1
+MODE_QUANTITY = MODE_DAS + 1
+MODE_GAME_QUANTITY = MODE_BIG + 1
 
 SCORING_CLASSIC := 0 ; for scoringModifier
 SCORING_LETTERS := 1
@@ -112,59 +115,63 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
 .macro MENUSIZES 
-    .byte $0    ; MODE_TETRIS
-    .byte $0    ; MODE_TSPINS
-    .byte $0    ; MODE_SEED
-    .byte $0    ; MODE_PARITY
-    .byte $F    ; MODE_PACE
-    .byte $7    ; MODE_PRESETS
-    .byte $8    ; MODE_TYPEB
-    .byte $C    ; MODE_FLOOR
-    .byte $F    ; MODE_CRUNCH
-    .byte $20   ; MODE_TAP
-    .byte $10   ; MODE_TRANSITION
-    .byte $0    ; MODE_MARATHON
-    .byte $1F   ; MODE_TAPQTY
-    .byte $8    ; MODE_CHECKERBOARD
-    .byte $4    ; MODE_GARBAGE
-    .byte $12   ; MODE_DROUGHT
-    .byte $10   ; MODE_DAS
-    .byte $0    ; MODE_KILLX2
-    .byte $0    ; MODE_INVISIBLE
-    .byte $0    ; MODE_HARDDROP
-    .byte $0    ; MODE_SPEED_TEST
-    .byte $5    ; MODE_SCORE_DISPLAY
-    .byte $1    ; MODE_HZ_DISPLAY
-    .byte $1    ; MODE_INPUT_DISPLAY
-    .byte $1    ; MODE_DISABLE_FLASH
-    .byte $1    ; MODE_DISABLE_PAUSE
-    .byte $1    ; MODE_GOOFY
-    .byte $1    ; MODE_DEBUG
-    .byte $1    ; MODE_LINECAP
-    .byte $1    ; MODE_DASONLY
-    .byte $1    ; MODE_QUAL
-    .byte $1    ; MODE_PAL
+        .byte $0
+        .byte $0
+        .byte $0
+        .byte $0
+        .byte $10
+    ; .byte $0    ; MODE_TETRIS
+    ; .byte $0    ; MODE_TSPINS
+    ; .byte $0    ; MODE_SEED
+    ; .byte $0    ; MODE_PARITY
+    ; .byte $F    ; MODE_PACE
+    ; .byte $7    ; MODE_PRESETS
+    ; .byte $8    ; MODE_TYPEB
+    ; .byte $C    ; MODE_FLOOR
+    ; .byte $F    ; MODE_CRUNCH
+    ; .byte $20   ; MODE_TAP
+    ; .byte $10   ; MODE_TRANSITION
+    ; .byte $0    ; MODE_MARATHON
+    ; .byte $1F   ; MODE_TAPQTY
+    ; .byte $8    ; MODE_CHECKERBOARD
+    ; .byte $4    ; MODE_GARBAGE
+    ; .byte $12   ; MODE_DROUGHT
+    ; .byte $10   ; MODE_DAS
+    ; .byte $0    ; MODE_KILLX2
+    ; .byte $0    ; MODE_INVISIBLE
+    ; .byte $0    ; MODE_HARDDROP
+    ; .byte $0    ; MODE_SPEED_TEST
+    ; .byte $5    ; MODE_SCORE_DISPLAY
+    ; .byte $1    ; MODE_HZ_DISPLAY
+    ; .byte $1    ; MODE_INPUT_DISPLAY
+    ; .byte $1    ; MODE_DISABLE_FLASH
+    ; .byte $1    ; MODE_DISABLE_PAUSE
+    ; .byte $1    ; MODE_GOOFY
+    ; .byte $1    ; MODE_DEBUG
+    ; .byte $1    ; MODE_LINECAP
+    ; .byte $1    ; MODE_DASONLY
+    ; .byte $1    ; MODE_QUAL
+    ; .byte $1    ; MODE_PAL
 .endmacro
 
 .macro MODENAMES
-    .byte   "TETRIS"
-    .byte   "TSPINS"
-    .byte   " SEED "
-    .byte   "STACKN"
-    .byte   " PACE "
-    .byte   "SETUPS"
-    .byte   "B-TYPE"
-    .byte   "FLOOR "
-    .byte   "CRUNCH"
-    .byte   "QCKTAP"
-    .byte   "TRNSTN"
-    .byte   "MARTHN"
-    .byte   "TAPQTY"
-    .byte   "CKRBRD"
-    .byte   "GARBGE"
-    .byte   "LOBARS"
-    .byte   "DASDLY"
-    .byte   "KILLX2"
-    .byte   "INVZBL"
-    .byte   "HRDDRP"
+    .byte   "SMALL "
+    .byte   "MEDIUM"
+    .byte   " BIG  "
+    ; .byte   " PACE "
+    ; .byte   "SETUPS"
+    ; .byte   "B-TYPE"
+    ; .byte   "FLOOR "
+    ; .byte   "CRUNCH"
+    ; .byte   "QCKTAP"
+    ; .byte   "TRNSTN"
+    ; .byte   "MARTHN"
+    ; .byte   "TAPQTY"
+    ; .byte   "CKRBRD"
+    ; .byte   "GARBGE"
+    ; .byte   "LOBARS"
+    ; .byte   "DASDLY"
+    ; .byte   "KILLX2"
+    ; .byte   "INVZBL"
+    ; .byte   "HRDDRP"
 .endmacro

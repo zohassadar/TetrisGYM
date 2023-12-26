@@ -33,6 +33,8 @@ const extra = [...buffer];
 printNT(buffer, lookup);
 
 drawTiles(buffer, lookup, `
+################################
+#qwwwwwwwwwwwwwwwwwwwwwwwwwwwwe#
 #a                            d#
 #a                            d#
 #a                            d#
@@ -40,29 +42,27 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a                            d#
-#a                            d#
-#a    TETRIS                  d#
-#a    T-SPINS                 d#
+#a    SMALL                   d#
+#a    MEDIUM                  d#
+#a    BIG                     d#
 #a    SEED                    d#
-#a    STACKING                d#
-#a    PACE                    d#
-#a    SETUPS                  d#
-#a    B-TYPE                  d#
-#a    FLOOR                   d#
-#a    CRUNCH                  d#
-#a    (QUICK)TAP              d#
-#a    TRANSITION              d#
-#a    MARATHON                d#
-#a    TAP QUANTITY            d#
-#a    CHECKERBOARD            d#
-#a    GARBAGE                 d#
-#a    DROUGHT                 d#
-#a    DAS DELAY               d#
-#a    KILLSCREEN »2           d#
-#a    INVISIBLE               d#
-#a    HARD DROP               d#
-#a    TAP/ROLL SPEED          d#
+#a    DAS                     d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#a                            d#
+#zxxxxxxxxxxxxxxxxxxxxxxxxxxxxc#
+################################
 `);drawTiles(extra, lookup, `
 #a    SCORING                 d#
 #a    HZ DISPLAY              d#

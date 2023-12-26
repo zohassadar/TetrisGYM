@@ -397,7 +397,7 @@ renderMenuVars:
 
 @seedCursor:
         clc
-        lda #MENU_SPRITE_Y_BASE + 7
+        lda #MENU_SPRITE_Y_BASE + 23
         sbc menuScrollY
         sta spriteYOffset
         lda menuSeedCursorIndex
@@ -522,29 +522,29 @@ menuYTmp := tmp2
         rts
 
 @renderBool:
-        lda menuCounter
-        jsr menuItemY16Offset
-        bne @boolOutOfRange
-        stx spriteYOffset
-        lda #$E9
-        sta spriteXOffset
-        clc
-        lda menuVars, y
-        adc #$8
-        sta spriteIndexInOamContentLookup
-        jsr stringSpriteAlignRight
+        ; lda menuCounter
+        ; jsr menuItemY16Offset
+        ; bne @boolOutOfRange
+        ; stx spriteYOffset
+        ; lda #$E9
+        ; sta spriteXOffset
+        ; clc
+        ; lda menuVars, y
+        ; adc #$8
+        ; sta spriteIndexInOamContentLookup
+        ; jsr stringSpriteAlignRight
 @boolOutOfRange:
         jmp @loopNext
 
 @renderScoreName:
-        lda scoringModifier
-        sta spriteIndexInOamContentLookup
-        lda #(MODE_SCORE_DISPLAY*8) + MENU_SPRITE_Y_BASE + 1
-        sbc menuScrollY
-        sta spriteYOffset
-        lda #$e9
-        sta spriteXOffset
-        jsr stringSpriteAlignRight
+        ; lda scoringModifier
+        ; sta spriteIndexInOamContentLookup
+        ; lda #(MODE_SCORE_DISPLAY*8) + MENU_SPRITE_Y_BASE + 1
+        ; sbc menuScrollY
+        ; sta spriteYOffset
+        ; lda #$e9
+        ; sta spriteXOffset
+        ; jsr stringSpriteAlignRight
         jmp @loopNext
 
 ; <- menu item index in A
