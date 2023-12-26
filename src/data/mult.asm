@@ -1,7 +1,7 @@
 multBy10Table:
         .byte   $00,$0A,$14,$1E,$28,$32,$3C,$46
         .byte   $50,$5A,$64,$6E,$78,$82,$8C,$96
-        .byte   $A0,$AA,$B4,$BE,$C8,$D2
+        .byte   $A0,$AA,$B4,$BE,$C8,$D2,$DC
 multBy32Table:
         .byte 0,32,64,96,128,160,192,224
 multBy100Table:
@@ -10,13 +10,13 @@ multBy100Table:
 
 multBy5Table:
         .byte   $00,$05,$0a,$0f,$14,$19,$1e,$23
-        .byte   $28,$2d,$32,$37
+        .byte   $28,$2d,$32,$37,$3C
 
 multBy10HiByte:
 multBy5HiByte:
         .byte   $00,$00,$00,$00,$00,$00,$00,$00
         .byte   $00,$00,$00,$00,$00,$00,$00,$00
-        .byte   $00,$00,$00,$00,$00,$00
+        .byte   $00,$00,$00,$00,$00,$00,$00
 
 multBy20Table:
         .byte   $00,$14,$28,$3c,$50,$64,$78,$8c
@@ -24,7 +24,7 @@ multBy20Table:
         .byte   $40,$54,$68,$7c,$90,$a4,$b8,$cc
         .byte   $e0,$f4,$08,$1c,$30,$44,$58,$6c
         .byte   $80,$94,$a8,$bc,$d0,$e4,$f8,$0c
-        .byte   $20,$34
+        .byte   $20,$34,$48
 
 multBy20HiByte:
         .byte   $00,$00,$00,$00,$00,$00,$00,$00
@@ -32,7 +32,7 @@ multBy20HiByte:
         .byte   $01,$01,$01,$01,$01,$01,$01,$01
         .byte   $01,$01,$02,$02,$02,$02,$02,$02
         .byte   $02,$02,$02,$02,$02,$02,$02,$03
-        .byte   $03,$03
+        .byte   $03,$03,$03
 
 multTablesLoHi:
         .byte >multBy20Table, >multBy10Table, >multBy5Table
@@ -275,9 +275,21 @@ copyPlayfieldToBuffer:
         lda (sramPlayfield),y
         sta SRAM_clearbuffer,y
         dey
-        bpl @copyLoop; works only because max expected is 119
-        rts
+        bpl @copyLoop ; works only because max expected is 119
 
+        ; todo Fix this!!
+        lda tetriminoY
+        clc
+        adc #$02
+        sta rowBottom ; where uncleared rows goe
+        sec
+        sbc #$04
+        sta rowTop ; increases for every line cleared
+        sec
+        sbc #$01
+        sta rowBeingMoved
+
+        rts
 
 ; '01111011'
 ; '01111100'

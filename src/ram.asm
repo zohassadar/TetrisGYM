@@ -29,7 +29,8 @@ yOffset: .res 1 ; $002C
 incompletes: .res 2 ; $002D
 incompleteRows: .res 1
 rowBeingMoved: .res 1
-    .res $2
+rowTop: .res 1
+rowBottom: .res 1
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount

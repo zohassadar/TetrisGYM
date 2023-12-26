@@ -25,40 +25,6 @@ playState_checkForCompletedRows:
 .if AUTO_WIN
         jmp @rowIsComplete
 .endif
-;         lda practiseType
-;         cmp #MODE_TSPINS
-;         beq @rowNotComplete
-
-;         lda practiseType
-;         cmp #MODE_FLOOR
-;         beq @floorCheck
-;         lda linecapState
-;         cmp #LINECAP_FLOOR
-;         beq @fullRowBurningCheck
-;         bne @normalRow
-
-; @floorCheck:
-;         lda floorModifier
-;         beq @rowNotComplete
-
-; @fullRowBurningCheck:
-;         ; bugfix to ensure complete rows aren't cleared
-;         ; used in floor / linecap floor
-;         lda currentPiece_copy
-;         beq @IJLTedge
-;         cmp #5
-;         beq @IJLTedge
-;         cmp #$10
-;         beq @IJLTedge
-;         cmp #$12
-;         beq @IJLTedge
-;         bne @normalRow
-; @IJLTedge:
-;         lda lineIndex
-;         cmp #3
-;         bcs @rowNotComplete
-; @normalRow:
-
         ldy #$00
 @checkIfRowCompleteLoopStart:
         lda (sramPlayfield),y
@@ -69,29 +35,11 @@ playState_checkForCompletedRows:
         bne @checkIfRowCompleteLoopStart
 
 @rowIsComplete:
-        ; sound effect $A to slot 1 used to live here
         inc completedLines
+        inc rowTop
         ldx lineIndex
         inc completedRow,x
-;         ldy generalCounter
-;         dey
-; @movePlayfieldDownOneRow:
-;         lda (playfieldAddr),y
-;         ldx #$0A
-;         stx playfieldAddr
-;         sta (playfieldAddr),y
-;         lda #$00
-;         sta playfieldAddr
-;         dey
-;         cpy #$FF
-;         bne @movePlayfieldDownOneRow
-;         lda #EMPTY_TILE
-;         ldy #$00
-; @clearRowTopRow:
-;         sta (playfieldAddr),y
-;         iny
-;         cpy #$0A
-;         bne @clearRowTopRow
+
         lda #$13
         sta currentPiece
         jmp @incrementLineIndex
@@ -125,24 +73,13 @@ playState_checkForCompletedRows:
         cmp #$04 ; check actual height
         bmi playState_checkForCompletedRows_return
 
+        ; todo Fix this!!
         lda incompleteRows
-        beq @noIncompletesToMove
+        beq @resetVars
         lda completedLines
-        beq @noIncompletesToMove
-
-        lda tetriminoY
-        cmp #$02
-        bcs @yInRange
-        lda #$02
-@yInRange:
-        sec
-        sbc #$02
-        clc
-        adc completedLines
-        tay
-        dey
-        sty rowBeingMoved
-        iny
+        beq @resetVars
+        
+        ldy rowTop
         lda (multTableLo),y
         sta sramPlayfield
         clc
@@ -151,9 +88,7 @@ playState_checkForCompletedRows:
         sta sramPlayfield+1
 
         ldy incompleteRows
-        iny
         lda (multTableLo),y
-        tay
         dey
 @incompleteRowLoop:
         lda SRAM_incompletes,y
@@ -161,7 +96,7 @@ playState_checkForCompletedRows:
         dey
         bpl @incompleteRowLoop
 
-@noIncompletesToMove:
+@resetVars:
         lda #$00
         sta vramRow
         sta rowY
@@ -186,22 +121,14 @@ playState_checkForCompletedRows_return:
 
 
 playstate_shiftPlayfieldDownABit:
-        lda rowBeingMoved
+        ; todo Fix this!!
+        ldy rowBeingMoved
         bne @incomplete
         inc playState
+        lda #$00
+        sta vramRow
         rts
 @incomplete:
-        clc
-        adc completedLines
-        tay
-        lda (multTableLo),y
-        sta sramPlayfieldBR
-        clc
-        lda #>SRAM_playfield
-        adc (multTableHi),y
-        sta sramPlayfieldBR+1
-
-        ldy rowBeingMoved
         lda (multTableLo),y
         sta sramPlayfield
         clc
@@ -209,6 +136,14 @@ playstate_shiftPlayfieldDownABit:
         adc (multTableHi),y
         sta sramPlayfield+1
 
+        ldy rowTop
+        iny
+        lda (multTableLo),y
+        sta sramPlayfieldBR
+        clc
+        lda #>SRAM_playfield
+        adc (multTableHi),y
+        sta sramPlayfieldBR+1
         ldx practiseType
         ldy xLimits,x
         dey
@@ -218,4 +153,5 @@ playstate_shiftPlayfieldDownABit:
         dey
         bpl @shiftLoop
         dec rowBeingMoved
+        dec rowTop
         rts
