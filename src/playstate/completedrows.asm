@@ -89,6 +89,7 @@ playState_checkForCompletedRows:
 
         ldy incompleteRows
         lda (multTableLo),y
+        tay
         dey
 @incompleteRowLoop:
         lda SRAM_incompletes,y
@@ -123,11 +124,6 @@ playState_checkForCompletedRows_return:
 playstate_shiftPlayfieldDownABit:
         ; todo Fix this!!
         ldy rowBeingMoved
-        bne @incomplete
-        inc playState
-        lda #$00
-        sta vramRow
-        rts
 @incomplete:
         lda (multTableLo),y
         sta sramPlayfield
@@ -137,7 +133,7 @@ playstate_shiftPlayfieldDownABit:
         sta sramPlayfield+1
 
         ldy rowTop
-        iny
+        dey
         lda (multTableLo),y
         sta sramPlayfieldBR
         clc
@@ -153,5 +149,13 @@ playstate_shiftPlayfieldDownABit:
         dey
         bpl @shiftLoop
         dec rowBeingMoved
+        bpl @noReset
+        inc rowBeingMoved
+@noReset:
         dec rowTop
-        rts
+        bne @ret
+        inc playState
+        lda #$00
+        sta vramRow
+@ret:   rts
+
