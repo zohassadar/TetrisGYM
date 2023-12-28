@@ -132,28 +132,12 @@ render_mode_play_and_demo:
         lda outOfDateRenderFlags
         and #$FB
         sta outOfDateRenderFlags
-
 @renderHz:
-        lda hzFlag
-        beq @renderStats
         lda outOfDateRenderFlags
         and #$10
-        beq @renderStatsHz
-        jsr renderHz
-        lda outOfDateRenderFlags
-        and #$EF
-        sta outOfDateRenderFlags
-
-        ; run a patched version of the stats
-@renderStatsHz:
-        lda outOfDateRenderFlags
-        and #$40
-        beq @renderTetrisFlashAndSound
-        lda #$06
-        sta tmpCurrentPiece
-        jmp @renderPieceStat
-
-@renderStats:
+        beq @actuallyRenderStats
+        jsr renderNext
+@actuallyRenderStats:
         lda outOfDateRenderFlags
         and #$40
         beq @renderTetrisFlashAndSound

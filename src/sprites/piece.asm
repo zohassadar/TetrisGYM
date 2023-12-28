@@ -192,18 +192,99 @@ stageSpriteForCurrentPiece_actual:
         rts
 
 stageSpriteForNextPiece:
-        lda qualFlag
-        beq @alwaysNextBox
-        lda displayNextPiece
-        bne @ret
-
-@alwaysNextBox:
-        lda #$C8
-        sta spriteXOffset
-        lda #$77
-        sta spriteYOffset
-        ldx nextPiece
-        lda orientationToSpriteTable,x
-        sta spriteIndexInOamContentLookup
-        jmp loadSpriteIntoOamStaging
+        lda      outOfDateRenderFlags
+        ora      #$10
+        sta      outOfDateRenderFlags
 @ret:   rts
+
+
+
+modeOffset:
+        .byte $04,$00,$00
+
+
+renderNext:
+        ldx     practiseType
+        lda     modeOffset,x
+        sta     generalCounter5 ; small mode gets different sprites
+
+        lda     #$01
+        sta     generalCounter3
+        lda     displayNextPiece
+        beq     @notHidden
+        ldx     #$0e
+        jmp     @startRender
+@notHidden:
+        ldx     nextPiece
+        lda     tetriminoTypeFromOrientation,x
+        asl
+        tax
+@startRender:
+        lda     nextBoxAddresses,x
+        sta     generalCounter
+        lda     nextBoxAddresses+1,x
+        sta     generalCounter+1
+        ldy     #$00
+@nextPpuAddress:
+        lda     generalCounter3
+        asl
+        tax
+        lda     nextBoxRows,x
+        sta     PPUADDR
+        inx
+        lda     nextBoxRows,x
+        sta     PPUADDR
+@nextPpuData:
+        lda     (generalCounter),y
+        iny
+        cmp     #$FD
+        beq     @nextRow
+        clc
+        adc     generalCounter5
+        sta     PPUDATA
+        jmp     @nextPpuData
+@nextRow:
+        dec     generalCounter3
+        bpl     @nextPpuAddress
+        lda     outOfDateRenderFlags
+        and     #$EF
+        sta     outOfDateRenderFlags
+        rts
+
+nextBoxRows:
+        .byte $22,$18,$21,$F8
+
+nextBoxAddresses:
+    .addr nextBoxT
+    .addr nextBoxJ
+    .addr nextBoxZ
+    .addr nextBoxO
+    .addr nextBoxS
+    .addr nextBoxL
+    .addr nextBoxI
+    .addr nextBoxNo
+
+nextBoxT:
+        .byte   $93,$94,$94,$95,$FD  ; 7b
+        .byte   $F7,$93,$95,$F7,$FD
+nextBoxJ:
+        .byte   $B3,$B4,$B4,$B5,$FD  ;7d
+        .byte   $F7,$F7,$B3,$B5,$FD
+nextBoxZ:
+        .byte   $A3,$A4,$A5,$F7,$FD  ;7c
+        .byte   $F7,$A3,$A4,$A5,$FD
+nextBoxO:
+        .byte   $F7,$7B,$7B,$F7,$FD  ;7b
+        .byte   $F7,$7B,$7B,$F7,$FD
+nextBoxS:
+        .byte   $F7,$B3,$B4,$B5,$FD  ;7d
+        .byte   $B3,$B4,$B5,$F7,$FD
+nextBoxL:
+        .byte   $A3,$A4,$A4,$A5,$FD  ;7c
+        .byte   $A3,$A5,$F7,$F7,$FD
+nextBoxI:
+        .byte   $A6,$A6,$A6,$A6,$FD
+        .byte   $B6,$B6,$B6,$B6,$FD ; 7b
+nextBoxNo:
+        .byte   $F7,$F7,$F7,$F7,$FD
+        .byte   $F7,$F7,$F7,$F7,$FD
