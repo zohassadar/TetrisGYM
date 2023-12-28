@@ -109,7 +109,7 @@ moveBigPlayfieldToRenderPage:
         sta generalCounter
 @pieceLoop:
         lda SRAM_playfield+10,x
-        bmi @loop
+        bmi @blank
         clc
         adc #$10
         sta playfield,y
@@ -118,6 +118,13 @@ moveBigPlayfieldToRenderPage:
         adc #$10
         sta playfield+10,y
         adc #$10
+        sta playfield+11,y
+        jmp @loop
+@blank:
+        lda #EMPTY_TILE
+        sta playfield,y
+        sta playfield+1,y
+        sta playfield+10,y
         sta playfield+11,y
 @loop:
         iny

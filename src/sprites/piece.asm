@@ -144,6 +144,9 @@ stageSpriteForCurrentPiece_actual:
         lda #$04
         sta generalCounter
 @loop:
+        lda oamStaging+1,y
+        cmp #EMPTY_TILE
+        beq @nextPiece
         lda oamStaging,y
         cmp #$F0
         bcs @nextPiece
