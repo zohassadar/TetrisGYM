@@ -179,8 +179,8 @@ statsByType: .res $E ; $03F0
 playfield: .res $c8 ; $0400
     .res $38
 animationRenderBuffer:
-    .res 40
-    .res 216 ; $500 ; 2 player playfield
+    .res 56
+    .res 200 ; $500 ; 2 player playfield
 
 practiseType: .res 1 ; $600
 spawnDelay: .res 1 ; $601

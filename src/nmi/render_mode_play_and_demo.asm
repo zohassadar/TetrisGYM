@@ -242,6 +242,15 @@ dumpAnimationBuffer:
 
 
 updateLineClearingAnimation:
+        ldx practiseType
+        cpx #MODE_MEDIUM
+        beq updateLineClearingAnimationForMedium
+        cpx #MODE_BIG
+        bne @smallJump
+        jmp updateLineClearingAnimationForBig
+@smallJump:
+        jmp updateLineClearingAnimationForSmall
+updateLineClearingAnimationForMedium:
         lda playState
         cmp #$04
         bne @firstRet
@@ -413,3 +422,140 @@ L9996:  lda generalCounter
         ora #$40
         sta outOfDateRenderFlags
         rts
+
+leftColumnsBig:
+        .byte   $04,$02,$00
+rightColumnsBig:
+        .byte   $04,$06,$08
+
+updateLineClearingAnimationForBig:
+        lda playState
+        cmp #$04
+        bne @firstRet
+        lda frameCounter
+        and #$03
+        beq @carryOn
+@firstRet:
+        rts
+@carryOn:
+        ; invisible mode show blocks intead of empty
+
+        ldx rowY
+        lda leftColumnsBig,x
+        sta leftCol
+        lda rightColumnsBig,x
+        sta rightCol
+
+        ldy tetriminoYforLineClear
+        dey
+        dey
+        dey
+        dey
+
+        tya
+        asl
+        asl ; extra for big mode
+        tay
+        lda vramPlayfieldRows+1,y
+        sta animationRenderBuffer+0
+        sta animationRenderBuffer+11
+        sta animationRenderBuffer+22
+        sta animationRenderBuffer+33
+
+
+        lda vramPlayfieldRows,y
+        clc
+        adc leftCol
+        sta animationRenderBuffer+1
+        adc #$01
+        sta animationRenderBuffer+12
+
+        lda vramPlayfieldRows,y
+        clc
+        adc rightCol
+        sta animationRenderBuffer+23
+        adc #$01
+        sta animationRenderBuffer+34
+
+        lda #$08
+        sta animationRenderBuffer+2
+        sta animationRenderBuffer+13
+        sta animationRenderBuffer+24
+        sta animationRenderBuffer+35
+
+        lsr leftCol
+        lsr rightCol
+
+        ldy #$00
+        ldx leftCol
+
+.repeat 4,index
+        lda completedRow,y
+        bne :+
+        lda SRAM_clearbuffer+(index*5),x
+        cmp #EMPTY_TILE
+        beq :+
+        clc
+        adc #$10
+        sta animationRenderBuffer+3+(index*2)
+        adc #$10
+        sta animationRenderBuffer+14+(index*2)
+
+        adc #$10
+        sta animationRenderBuffer+4+(index*2)
+        adc #$10
+        sta animationRenderBuffer+15+(index*2)
+        jmp :++
+:
+        lda #EMPTY_TILE
+        sta animationRenderBuffer+3+(index*2)
+        sta animationRenderBuffer+14+(index*2)
+        sta animationRenderBuffer+4+(index*2)
+        sta animationRenderBuffer+15+(index*2)
+:
+        ldx rightCol
+
+        lda completedRow,y
+        bne :+
+        lda SRAM_clearbuffer+(index*5),x
+        cmp #EMPTY_TILE
+        beq :+
+        clc
+        adc #$10
+        sta animationRenderBuffer+25+(index*2)
+        adc #$10
+        sta animationRenderBuffer+36+(index*2)
+        adc #$10
+        sta animationRenderBuffer+26+(index*2)
+        adc #$10
+        sta animationRenderBuffer+37+(index*2)
+        jmp :++
+:
+        lda #EMPTY_TILE
+        sta animationRenderBuffer+25+(index*2)
+        sta animationRenderBuffer+36+(index*2)
+        sta animationRenderBuffer+26+(index*2)
+        sta animationRenderBuffer+37+(index*2)
+:
+        ldx leftCol
+        iny
+.endrepeat
+        inc animationRenderFlag
+        lda #$00
+        sta animationRenderBuffer+44
+        inc rowY
+        lda rowY
+        cmp #$03
+        bmi @ret
+        inc playState
+@ret:   rts
+
+
+
+updateLineClearingAnimationForSmall:
+        inc rowY
+        lda rowY
+        cmp #$40
+        bne @ret
+        inc playState
+@ret:   rts
