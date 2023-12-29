@@ -101,6 +101,7 @@ playState_checkForCompletedRows:
         lda #$00
         sta vramRow
         sta rowY
+        jsr updateLineClearingAnimation
         lda completedLines
         cmp #$04
         bne @skipTetrisSoundEffect
@@ -122,6 +123,8 @@ playState_checkForCompletedRows_return:
 
 
 playstate_shiftPlayfieldDownABit:
+        lda rowTop
+        beq @ret
         ; todo Fix this!!
         ldy rowBeingMoved
 @incomplete:
@@ -154,8 +157,7 @@ playstate_shiftPlayfieldDownABit:
 @noReset:
         dec rowTop
         bne @ret
-        inc playState
         lda #$00
         sta vramRow
-@ret:   rts
+@ret:   jmp updateLineClearingAnimation
 

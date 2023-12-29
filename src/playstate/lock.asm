@@ -66,6 +66,8 @@ playState_lockTetrimino:
         inx
         dec lineIndex
         bne @lockSquare
+
+        jsr setTetriminoYForLineClear
         jsr updatePlayfield
         jsr copyPlayfieldToBuffer ; use a copy of the 4 rows for line clear checking
         lda #$00
@@ -74,5 +76,33 @@ playState_lockTetrimino:
         sta incompletes
         lda #>SRAM_incompletes
         sta incompletes+1
+        ldx #$03
+        lda #$00
+@clearCompletedLines:
+        sta completedRow,x
+        dex
+        bpl @clearCompletedLines
         inc playState
 @ret:   rts
+
+
+tetriminoYLimit:
+        .byte $29,$15,$0B
+
+
+
+setTetriminoYForLineClear:
+        lda tetriminoY
+        cmp #$04
+        bcs @atMinimum
+        lda #$04
+@atMinimum:
+        ldx practiseType
+        cmp tetriminoYLimit,x
+        bcc @atMaximum
+        ldy tetriminoYLimit,x
+        dey
+        tya
+@atMaximum:
+        sta tetriminoYforLineClear
+        rts

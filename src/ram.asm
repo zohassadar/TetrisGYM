@@ -8,7 +8,8 @@ tmpZ: .res 1 ;  $0005
 tmpBulkCopyToPpuReturnAddr: .res 2 ;  $0006 ; 2 bytes
 binScore: .res 4 ;  $8 ; 4 bytes binary
 score: .res 4 ;  $C ; 4 bytes BCD
-    .res 7
+tetriminoYforLineClear: .res 1
+    .res 6
 
 rng_seed: .res 2 ; $0017
 spawnID: .res 1 ; $0019
@@ -16,7 +17,7 @@ spawnCount: .res 1 ; $001A
 pointerAddr: .res 2 ; $001B ; used in debug, harddrop
 pointerAddrB: .res 2 ; $001D ; used in harddrop
 
-.res 1
+animationRenderFlag: .res 1
 sramPlayfield: .res 2 ; $0020   for ($3E),y addressing    
 sramPlayfieldBR: .res 2 ; $0022 
 multTableLo: .res 2 ; $0024
@@ -177,7 +178,9 @@ statsByType: .res $E ; $03F0
     .res 2
 playfield: .res $c8 ; $0400
     .res $38
-    .res $100 ; $500 ; 2 player playfield
+animationRenderBuffer:
+    .res 40
+    .res 216 ; $500 ; 2 player playfield
 
 practiseType: .res 1 ; $600
 spawnDelay: .res 1 ; $601

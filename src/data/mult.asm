@@ -259,7 +259,7 @@ maskValueForTetriminoY:
 
 copyPlayfieldToBuffer:
         ldx practiseType
-        lda tetriminoY
+        lda tetriminoYforLineClear
         and andValueForTetriminoY,x
         tay
         cpy #$02
@@ -285,7 +285,7 @@ copyPlayfieldToBuffer:
         bpl @copyLoop ; works only because max expected is 119
 
         ; todo Fix this!!
-        lda tetriminoY
+        lda tetriminoYforLineClear
         clc
         adc #$02
         sta rowBottom ; where uncleared rows goe

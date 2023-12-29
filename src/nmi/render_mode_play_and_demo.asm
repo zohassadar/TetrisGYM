@@ -1,15 +1,16 @@
 render_mode_play_and_demo:
-        lda playState
-        cmp #$04
-        bne @playStateNotDisplayLineClearingAnimation
-        lda #$04
-        sta playfieldAddr+1
-        jsr updateLineClearingAnimation
+        lda animationRenderFlag
+        beq @playStateNotDisplayLineClearingAnimation
+        jsr dumpAnimationBuffer
         lda #$00
         sta vramRow
         jmp @renderLines
 
 @playStateNotDisplayLineClearingAnimation:
+        lda playState
+        cmp #$04
+        beq @renderLines
+
         jsr render_playfield
 @renderLines:
 
@@ -182,11 +183,12 @@ render_mode_play_and_demo:
         bne @noFlash
         stx PPUDATA
 @noFlash:
-.if INES_MAPPER = 3
-        lda #%10011000
+; .if INES_MAPPER = 3
+        ; lda #%10011000
+        lda currentPpuCtrl
         sta PPUCTRL
-        sta currentPpuCtrl
-.endif
+        ; sta currentPpuCtrl
+; .endif
         jsr resetScroll
         rts
 
@@ -195,63 +197,123 @@ pieceToPpuStatAddr:
         .dbyt   $2286,$22C6,$2306
 
 
+rightCol = generalCounter
+leftCol = generalCounter2
+counter = generalCounter3
+; clearedRowAddr = generalCounter4 ; & 5
+
+
+dumpAnimationBuffer:
+        lda animationRenderBuffer
+        beq @ret
+
+        lda currentPpuCtrl
+        ora #$04
+        sta PPUCTRL
+
+        ldy #$00
+@outerLoop:
+        lda animationRenderBuffer,y
+        beq @restoreCtrl
+        sta PPUADDR
+        iny
+        lda animationRenderBuffer,y
+        sta PPUADDR
+        iny
+        ldx animationRenderBuffer,y
+        iny
+@innerLoop:
+        lda animationRenderBuffer,y
+        sta PPUDATA
+        iny
+        dex
+        bne @innerLoop
+        beq @outerLoop
+
+@restoreCtrl:
+        lda #$00
+        sta animationRenderBuffer
+        sta animationRenderFlag
+
+        lda currentPpuCtrl
+        sta PPUCTRL
+@ret:   
+        rts
+
+
 updateLineClearingAnimation:
-        rts
-.if AUTO_WIN
-        inc playState
-        rts
-.endif
+        lda playState
+        cmp #$04
+        bne @firstRet
         lda frameCounter
         and #$03
-        bne @ret
+        beq @carryOn
+@firstRet:
+        rts
+@carryOn:
         ; invisible mode show blocks intead of empty
-        ldy #$FF
-        lda invisibleFlag
-        beq @notInvisible
-        ldy #BLOCK_TILES
-@notInvisible:
-        sty tmp3
 
-        lda #$00
-        sta generalCounter3
-@whileCounter3LessThan4:
-        ldx generalCounter3
-        lda completedRow,x
-        beq @nextRow
-        asl a
-        tay
-        lda vramPlayfieldRows,y
-        sta generalCounter
-        lda generalCounter
-        clc
-        adc #$06
-        sta generalCounter
-
-        iny
-        lda vramPlayfieldRows,y
-        sta generalCounter2
-        sta PPUADDR
         ldx rowY
         lda leftColumns,x
-        clc
-        adc generalCounter
-        sta PPUADDR
-        lda tmp3 ; #$FF
-        sta PPUDATA
-        lda generalCounter2
-        sta PPUADDR
-        ldx rowY
+        sta leftCol
         lda rightColumns,x
+        sta rightCol
+
+        ldy tetriminoYforLineClear
+        dey
+        dey
+        dey
+        dey
+
+        tya
+        asl
+        tay
+        lda vramPlayfieldRows+1,y
+        sta animationRenderBuffer+0
+        sta animationRenderBuffer+7
+
+        lda vramPlayfieldRows,y
         clc
-        adc generalCounter
-        sta PPUADDR
-        lda tmp3 ; #$FF
-        sta PPUDATA
-@nextRow:
-        inc generalCounter3
-        lda generalCounter3
-        cmp #$04
-        bne @whileCounter3LessThan4
+        adc leftCol
+        sta animationRenderBuffer+1
+
+        lda vramPlayfieldRows,y
+        clc
+        adc rightCol
+        sta animationRenderBuffer+8
+
+        lda #$04
+        sta animationRenderBuffer+2
+        sta animationRenderBuffer+9
+
+        ldy #$00
+        ldx leftCol
+
+.repeat 4,index
+        lda completedRow,y
+        bne :+
+        lda SRAM_clearbuffer+(index*10),x
+        jmp :++
+:
+        lda #EMPTY_TILE
+:
+        sta animationRenderBuffer+3+index
+
+        ldx rightCol
+        lda completedRow,y
+        bne :+
+        lda SRAM_clearbuffer+(index*10),x
+        jmp :++
+:
+        lda #EMPTY_TILE
+:
+        sta animationRenderBuffer+10+index
+        ldx leftCol
+        iny
+.endrepeat
+        inc animationRenderFlag
+        lda #$00
+        sta animationRenderBuffer+14
         inc rowY
         lda rowY
         cmp #$05

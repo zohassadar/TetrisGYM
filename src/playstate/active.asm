@@ -351,6 +351,7 @@ drop_tetrimino_actual:
         sta tetriminoY
         lda #$02
         sta playState
+        jsr setTetriminoYForLineClear
         jsr updatePlayfield
 @ret:   rts
 
