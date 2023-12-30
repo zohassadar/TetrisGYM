@@ -328,6 +328,8 @@ updateLineClearingAnimationForMedium:
         cmp #$05
         bmi @ret
         inc playState
+        lda #$00
+        sta vramRow
 @ret:   rts
 
 leftColumns:
@@ -547,6 +549,8 @@ updateLineClearingAnimationForBig:
         lda rowY
         cmp #$03
         bmi @ret
+        lda #$00
+        sta vramRow
         inc playState
 @ret:   rts
 
@@ -558,4 +562,6 @@ updateLineClearingAnimationForSmall:
         cmp #$40
         bne @ret
         inc playState
+        lda #$00
+        sta vramRow
 @ret:   rts

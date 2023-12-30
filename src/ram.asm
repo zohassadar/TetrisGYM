@@ -48,22 +48,24 @@ autorepeatX: .res 1 ; $0046
 startLevel: .res 1 ; $0047
 playState: .res 1 ; $0048
 vramRow: .res 1 ; $0049                        ; Next playfield row to copy. Set to $40 when playfield copy is complete
-completedRow: .res 4 ; $004A                    ; Row which has been cleared. 0 if none complete
-autorepeatY: .res 1 ; $004E
-holdDownPoints: .res 1 ; $004F
-lines: .res 2 ; $0050
-rowY: .res 1 ; $0052
-linesBCDHigh: .res 1 ; $53
-linesTileQueue: .res 1 ; $54
-currentPiece_copy: .res 1 ; $55 ; used in floor code checking
-completedLines: .res 1 ; $0056
-lineIndex: .res 1 ; $0057                        ; Iteration count of playState_checkForCompletedRows
-startHeight: .res 1 ; $0058
-garbageHole: .res 1 ; $0059                        ; Position of hole in received garbage
-garbageDelay: .res 1 ; $005A
-pieceTileModifier: .res 1 ; $005B ; above $80 - use a single one, below - use an offset
-curtainRow: .res 1 ; $5C
-    .res 3
+autorepeatY: .res 1 ; $004A
+holdDownPoints: .res 1 ; $004B
+lines: .res 2 ; $005C
+rowY: .res 1 ; $005E
+linesBCDHigh: .res 1 ; $5F
+linesTileQueue: .res 1 ; $50
+currentPiece_copy: .res 1 ; $51 ; used in floor code checking
+completedLines: .res 1 ; $0052
+lineIndex: .res 1 ; $0053                        ; Iteration count of playState_checkForCompletedRows
+startHeight: .res 1 ; $0054
+garbageHole: .res 1 ; $0055                        ; Position of hole in received garbage
+garbageDelay: .res 1 ; $0056
+pieceTileModifier: .res 1 ; $0057 ; above $80 - use a single one, below - use an offset
+curtainRow: .res 1 ; $58
+
+completedRowSmall: .res 1 ; $59 gap to account for odd number tetriminoY
+completedRow: .res 4 ; $005A                    ; Row which has been cleared. 0 if none complete
+completedRowSmallAlwaysZero .res 2 ; $5E used for small
 
 mathRAM: .res $12
 binary32 := mathRAM+$0
@@ -82,7 +84,9 @@ pztemp := mathRAM+$D
 byteSpriteAddr: .res 2
 byteSpriteTile: .res 1
 byteSpriteLen: .res 1
-    .res $2A
+
+    .res $28
+completedRowAddr: .res 2 ; used for small
 
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1

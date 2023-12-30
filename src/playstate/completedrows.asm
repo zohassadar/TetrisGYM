@@ -157,7 +157,7 @@ playstate_shiftPlayfieldDownABit:
 @noReset:
         dec rowTop
         bne @ret
-        lda #$00
-        sta vramRow
-@ret:   jmp updateLineClearingAnimation
+        ; lda #$00
+        ; sta vramRow
+@ret:   rts
 

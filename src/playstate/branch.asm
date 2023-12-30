@@ -5,7 +5,7 @@ branchOnPlayStatePlayer1:
         .addr   playState_playerControlsActiveTetrimino
         .addr   playState_lockTetrimino
         .addr   playState_checkForCompletedRows
-        .addr   playstate_shiftPlayfieldDownABit
+        .addr   shiftPlayfield3TimesThenAnimation
         .addr   playState_updateLinesAndStatistics
         .addr   playState_prepareNext ; used to be bTypeGoalCheck
         .addr   playState_receiveGarbage
@@ -18,6 +18,13 @@ playState_unassignOrientationId:
         lda #$13
         sta currentPiece
         rts
+
+
+shiftPlayfield3TimesThenAnimation:
+        jsr playstate_shiftPlayfieldDownABit
+        jsr playstate_shiftPlayfieldDownABit
+        jsr playstate_shiftPlayfieldDownABit
+        jmp updateLineClearingAnimation
 
 playState_incrementPlayState:
         inc playState
