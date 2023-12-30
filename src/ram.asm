@@ -65,7 +65,7 @@ curtainRow: .res 1 ; $58
 
 completedRowSmall: .res 1 ; $59 gap to account for odd number tetriminoY
 completedRow: .res 4 ; $005A                    ; Row which has been cleared. 0 if none complete
-completedRowSmallAlwaysZero .res 2 ; $5E used for small
+completedRowSmallAlwaysZero: .res 2 ; $5E used for small
 
 mathRAM: .res $12
 binary32 := mathRAM+$0
