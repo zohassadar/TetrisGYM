@@ -133,7 +133,11 @@ endingSleepCounter: .res 2 ; $00C4
 endingRocketCounter: .res 1 ; $00C6
 endingRocketX: .res 1 ; $C7
 endingRocketY: .res 1 ; $C8
-    .res 5
+bigModeRightOne: .res 1
+bigModeLeftOne: .res 1
+bigModeRightBit: .res 1
+bigModeLeftBit: .res 1
+    .res 1
 demo_heldButtons: .res 1 ; $00CE
 demo_repeats: .res 1 ; $00CF
     .res 1
