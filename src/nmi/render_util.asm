@@ -69,25 +69,27 @@ copyPlayfieldRowToVRAM:
         txa
         asl a
         tax
-        inx
-        lda vramPlayfieldRows,x
+        ; inx
+        lda vramPlayfieldRows+1,x
         sta PPUADDR
-        dex
+        ; dex
 
         lda vramPlayfieldRows,x
         ; clc
         ; adc #$06
         sta PPUADDR
-@copyRow:
-        ldx #$0A
-        lda invisibleFlag
-        bne @copyRowInvisible
-@copyByte:
-        lda (playfieldAddr),y
+; @copyRow:
+;         ldx #$0A
+;         lda invisibleFlag
+;         bne @copyRowInvisible
+; @copyByte:
+.repeat 10,index
+        lda playfield+index,y
         sta PPUDATA
-        iny
-        dex
-        bne @copyByte
+.endrepeat
+;         iny
+;         dex
+;         bne @copyByte
 @rowCopied:
         inc vramRow
         lda vramRow
