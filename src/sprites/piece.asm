@@ -45,9 +45,13 @@ tileCounter = generalCounter2
 minimimYCoord = 47
 
 stageSpriteForCurrentPiece_actual:
+        lda currentPiece
+        cmp #$13
+        beq @noSprite
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
         bne @carryOn
+@noSprite:
         rts
 @carryOn:
         ldy spriteDoubles

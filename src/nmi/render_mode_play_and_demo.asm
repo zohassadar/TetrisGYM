@@ -249,7 +249,7 @@ updateLineClearingAnimation:
         bne @smallJump
         jmp updateLineClearingAnimationForBig
 @smallJump:
-        jmp updateLineClearingAnimationForSmall
+        jmp updateLineClearingAnimationForSmallOddOrBranchToEven
 updateLineClearingAnimationForMedium:
         lda playState
         cmp #$04
@@ -557,12 +557,140 @@ updateLineClearingAnimationForBig:
 @ret:   rts
 
 
-updateLineClearingAnimationForSmall:
+updateLineClearingAnimationForSmallOddOrBranchToEven:
+        lda tetriminoY
+        and #$01
+        bne @odd
+        jmp updateLineClearingAnimationForSmallEven
+@odd:
         inc rowY
         lda rowY
-        cmp #$40
+        cmp #$14
         bne @ret
         inc playState
         lda #$00
         sta vramRow
 @ret:   rts
+
+
+.macro makeident lname, count
+    .ident(.concat(lname,.sprintf("%d", count))):
+.endmacro
+
+
+.macro CheckSmallModeEven index
+        lda #$C0
+        sta generalCounter4
+
+@checkUpperLeft:
+        lda SRAM_clearbuffer+(index*40),x
+        bmi @checkUpperRight
+        lda completedRow+(index*2)
+        bne @checkLowerLeft
+        lda #$01
+        ora generalCounter4
+        sta generalCounter4
+@checkUpperRight:
+        lda SRAM_clearbuffer+(index*40)+1,x
+        bmi @checkLowerLeft
+        lda #$2
+        ora generalCounter4
+        sta generalCounter4
+@checkLowerLeft:
+        lda SRAM_clearbuffer+(index*40)+20,x
+        bmi @checkLowerRight
+        lda completedRow+(index*2)+1
+        bne @plantTile
+        lda #$04
+        ora generalCounter4
+        sta generalCounter4
+@checkLowerRight:
+        lda SRAM_clearbuffer+(index*40)+21,x
+        bmi @plantTile
+        lda #$08
+        ora generalCounter4
+        sta generalCounter4
+@plantTile:
+        lda generalCounter4
+.endMacro
+
+
+updateLineClearingAnimationForSmallEven:
+        lda playState
+        cmp #$04
+        bne @firstRet
+        lda frameCounter
+        and #$03
+        beq @carryOn
+@firstRet:
+        rts
+@carryOn:
+        ; invisible mode show blocks intead of empty
+        ldx rowY
+        lda leftColumns,x
+        asl
+        sta leftCol
+
+        lda rightColumns,x
+        asl
+        sta rightCol
+        
+        ldy tetriminoYforLineClear
+        dey
+        dey
+        dey
+        dey
+
+        ; tya
+        ; asl
+        ; asl ; extra for big mode
+        ; tay
+        lda vramPlayfieldRows+1,y
+        sta animationRenderBuffer+0
+        sta animationRenderBuffer+5
+
+        
+        lda vramPlayfieldRows,y
+        clc
+        adc leftColumns,x
+        sta animationRenderBuffer+1
+
+
+        lda vramPlayfieldRows,y
+        clc
+        adc rightColumns,x
+        sta animationRenderBuffer+6
+
+        lda #$02
+        sta animationRenderBuffer+2
+        sta animationRenderBuffer+7
+
+        ldy #$00
+        ldx leftCol
+
+.repeat 2,index
+        makeident "foo", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
+        CheckSmallModeEven index
+        sta animationRenderBuffer+index+3
+
+        ldx rightCol
+
+        makeident "fum", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
+        CheckSmallModeEven index
+
+        sta animationRenderBuffer+index+8
+        ldx leftCol
+.endrepeat
+        inc animationRenderFlag
+        lda #$00
+        sta animationRenderBuffer+10
+        inc rowY
+        lda rowY
+        cmp #$05
+        bmi @ret4
+        lda #$00
+        sta vramRow
+        inc playState
+@ret4:  rts
+
+
