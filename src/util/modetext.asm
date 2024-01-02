@@ -1,19 +1,19 @@
 displayModeText:
         ldx practiseType
-        cpx #MODE_SEED
-        bne @drawModeName
-        ; draw seed instead
-        lda tmp1
-        sta PPUADDR
-        lda tmp2
-        sta PPUADDR
-        lda set_seed_input
-        jsr twoDigsToPPU
-        lda set_seed_input+1
-        jsr twoDigsToPPU
-        lda set_seed_input+2
-        jsr twoDigsToPPU
-        rts
+        ; cpx #MODE_SEED
+        ; bne @drawModeName
+        ; ; draw seed instead
+        ; lda tmp1
+        ; sta PPUADDR
+        ; lda tmp2
+        ; sta PPUADDR
+        ; lda set_seed_input
+        ; jsr twoDigsToPPU
+        ; lda set_seed_input+1
+        ; jsr twoDigsToPPU
+        ; lda set_seed_input+2
+        ; jsr twoDigsToPPU
+        ; rts
 
 @drawModeName:
         ; ldx practiseType
@@ -42,3 +42,38 @@ displayModeText:
         dey
         bne @writeChar
         rts
+
+
+patchSeed:
+        ; skip if not seeded
+        lda seededPieces
+        beq @ret
+        sty PPUADDR
+        stx PPUADDR
+        lda #$3B
+        sta PPUDATA
+        lda set_seed_input
+        jsr twoDigsToPPU
+        lda set_seed_input+1
+        jsr twoDigsToPPU
+        lda set_seed_input+2
+        jsr twoDigsToPPU
+        lda #$3C
+        sta PPUDATA
+        sty PPUADDR
+        txa
+        clc
+        adc #$20
+        sta PPUADDR
+        ldx #$07
+@boxLoop:
+        lda bottomOfBox,x
+        sta PPUDATA
+        dex
+        bpl @boxLoop
+@ret:   rts
+
+
+bottomOfBox:
+        .byte $3F,$3E,$3E,$3E,$3E,$3E,$3E,$3D
+

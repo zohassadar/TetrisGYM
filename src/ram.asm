@@ -236,8 +236,9 @@ linecapState: .res 1 ; $639 ; 0 if not triggered, 1 + linecapHow otherwise, rese
 dasOnlyShiftDisabled: .res 1 ; $63A
 
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
+seededPieces: .res 1 ; $63C ; 0 for not seeded, 1 for seeded pieces
 
-    .res $39
+    .res $38
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -339,6 +340,7 @@ linecapHow: .res 1
 linecapLevel: .res 1
 linecapLines: .res 2
 menuVars: ; $76E
+dasModifier: .res 1
 paceModifier: .res 1
 presetModifier: .res 1
 typeBModifier: .res 1
@@ -350,7 +352,6 @@ tapqtyModifier: .res 1
 checkerModifier: .res 1
 garbageModifier: .res 1
 droughtModifier: .res 1
-dasModifier: .res 1
 scoringModifier: .res 1
 hzFlag: .res 1
 inputDisplayFlag: .res 1

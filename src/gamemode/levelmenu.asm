@@ -30,6 +30,11 @@ gameMode_levelMenu:
         beq @noLinecapInfo
         jsr levelMenuLinecapInfo
 @noLinecapInfo:
+        ; patch if seeded
+        ldy #$20
+        ldx #$B5
+        jsr patchSeed
+
         ; render level when loading screen
         lda #$1
         sta outOfDateRenderFlags

@@ -67,7 +67,7 @@ gameTypeLoopCheckStart:
         lda newlyPressedButtons_player1
         cmp #BUTTON_START
         bne gameTypeLoopNext
-
+        jsr checkIfSeeded
         ; check double killscreen
         lda practiseType
         cmp #MODE_KILLX2
@@ -133,7 +133,14 @@ seedControls:
         lda practiseType
         cmp #MODE_SEED
         bne gameTypeLoopContinue
-
+        lda heldButtons_player1
+        cmp #BUTTON_A + BUTTON_B
+        bne @ABNotPressed
+        lda #$00
+        sta set_seed_input
+        sta set_seed_input+1
+        sta set_seed_input+2
+@ABNotPressed:
         lda newlyPressedButtons_player1
         cmp #BUTTON_SELECT
         bne @skipSeedSelect
@@ -397,7 +404,7 @@ renderMenuVars:
 
 @seedCursor:
         clc
-        lda #MENU_SPRITE_Y_BASE + 23
+        lda #MENU_SPRITE_Y_BASE + 15
         sbc menuScrollY
         sta spriteYOffset
         lda menuSeedCursorIndex
@@ -603,4 +610,29 @@ bufferScreen:
         jsr updateAudioWaitForNmiAndResetOamStaging
         lda sleepCounter
         bne @endLoop
+        rts
+
+checkIfSeeded:
+        lda #$00
+        sta seededPieces
+        lda practiseType
+        cmp #MODE_TSPINS
+        beq @noSeed
+        cmp #MODE_TAPQTY
+        beq @noSeed
+        cmp #MODE_TAP
+        beq @noSeed
+        cmp #MODE_PRESETS
+        beq @noSeed
+        cmp #MODE_DROUGHT
+        beq @noSeed
+        ; check for seed of 0000XX
+        lda set_seed_input
+        bne @seeded
+        lda set_seed_input+1
+        bne @seeded
+        beq @noSeed
+@seeded:
+        inc seededPieces
+@noSeed:
         rts

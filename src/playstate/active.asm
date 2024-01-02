@@ -416,8 +416,8 @@ shift_tetrimino:
 @dasOnlyEnd:
 
         lda practiseType
-        cmp #MODE_DAS
-        bne @normalDAS
+        ; cmp #MODE_DAS
+        ; bne @normalDAS
         lda dasModifier
         sta dasValueDelay
         lda palFlag
