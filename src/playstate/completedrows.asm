@@ -6,7 +6,7 @@ playState_checkForCompletedRows:
 
 @updatePlayfieldComplete:
         ldx practiseType
-        lda tetriminoY
+        lda tetriminoYforLineClear
         and maskValueForTetriminoY,x
         clc
         adc lineIndex
