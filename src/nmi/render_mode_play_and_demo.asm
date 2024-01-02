@@ -249,7 +249,7 @@ updateLineClearingAnimation:
         bne @smallJump
         jmp updateLineClearingAnimationForBig
 @smallJump:
-        jmp updateLineClearingAnimationForSmallOddOrBranchToEven
+        jmp updateLineClearingAnimationForSmall
 updateLineClearingAnimationForMedium:
         lda playState
         cmp #$04
@@ -557,20 +557,13 @@ updateLineClearingAnimationForBig:
 @ret:   rts
 
 
-updateLineClearingAnimationForSmallOddOrBranchToEven:
-        lda tetriminoY
+updateLineClearingAnimationForSmall:
+        lda tetriminoYforLineClear
         and #$01
         bne @odd
         jmp updateLineClearingAnimationForSmallEven
 @odd:
-        inc rowY
-        lda rowY
-        cmp #$14
-        bne @ret
-        inc playState
-        lda #$00
-        sta vramRow
-@ret:   rts
+        jmp updateLineClearingAnimationForSmallOdd
 
 
 .macro makeident lname, count
@@ -578,14 +571,14 @@ updateLineClearingAnimationForSmallOddOrBranchToEven:
 .endmacro
 
 
-.macro CheckSmallModeEven index
+.macro checkSmallMode index, _completedRow
         lda #$C0
         sta generalCounter4
 
 @checkUpperLeft:
         lda SRAM_clearbuffer+(index*40),x
         bmi @checkUpperRight
-        lda completedRow+(index*2)
+        lda _completedRow+(index*2)
         bne @checkLowerLeft
         lda #$01
         ora generalCounter4
@@ -599,7 +592,7 @@ updateLineClearingAnimationForSmallOddOrBranchToEven:
 @checkLowerLeft:
         lda SRAM_clearbuffer+(index*40)+20,x
         bmi @checkLowerRight
-        lda completedRow+(index*2)+1
+        lda _completedRow+(index*2)+1
         bne @plantTile
         lda #$04
         ora generalCounter4
@@ -670,13 +663,13 @@ updateLineClearingAnimationForSmallEven:
 
 .repeat 2,index
         makeident "foo", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
-        CheckSmallModeEven index
+        checkSmallMode index, completedRow
         sta animationRenderBuffer+index+3
 
         ldx rightCol
 
         makeident "fum", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
-        CheckSmallModeEven index
+        checkSmallMode index, completedRow
 
         sta animationRenderBuffer+index+8
         ldx leftCol
@@ -684,6 +677,92 @@ updateLineClearingAnimationForSmallEven:
         inc animationRenderFlag
         lda #$00
         sta animationRenderBuffer+10
+        inc rowY
+        lda rowY
+        cmp #$05
+        bmi @ret4
+        lda #$00
+        sta vramRow
+        inc playState
+@ret4:  rts
+
+
+
+
+
+updateLineClearingAnimationForSmallOdd:
+        lda playState
+        cmp #$04
+        bne @firstRet
+        lda frameCounter
+        and #$03
+        beq @carryOn
+@firstRet:
+        rts
+@carryOn:
+        ; invisible mode show blocks intead of empty
+        ldx rowY
+        lda leftColumns,x
+        asl
+        sta leftCol
+
+        lda rightColumns,x
+        asl
+        sta rightCol
+        
+        ldy tetriminoYforLineClear
+        dey
+        dey
+        dey
+        dey
+
+        tya ; kill odd bit
+        asl
+        lsr
+        tya
+        ; tya
+        ; asl
+        ; asl ; extra for big mode
+        ; tay
+        lda vramPlayfieldRows+1,y
+        sta animationRenderBuffer+0
+        sta animationRenderBuffer+6
+
+        
+        lda vramPlayfieldRows,y
+        clc
+        adc leftColumns,x
+        sta animationRenderBuffer+1
+
+
+        lda vramPlayfieldRows,y
+        clc
+        adc rightColumns,x
+        sta animationRenderBuffer+7
+
+        lda #$03
+        sta animationRenderBuffer+2
+        sta animationRenderBuffer+8
+
+        ldy #$00
+        ldx leftCol
+
+.repeat 3,index
+        makeident "fee", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
+        checkSmallMode index, completedRow-1
+        sta animationRenderBuffer+index+3
+
+        ldx rightCol
+
+        makeident "fii", index ; https://codebase64.org/doku.php?id=base:create_labels_on_the_fly_using_macros
+        checkSmallMode index, completedRow-1
+
+        sta animationRenderBuffer+index+9
+        ldx leftCol
+.endrepeat
+        inc animationRenderFlag
+        lda #$00
+        sta animationRenderBuffer+12
         inc rowY
         lda rowY
         cmp #$05
