@@ -425,11 +425,6 @@ L9996:  lda generalCounter
         sta outOfDateRenderFlags
         rts
 
-leftColumnsBig:
-        .byte   $04,$02,$02,$00,$00
-rightColumnsBig:
-        .byte   $04,$06,$06,$08,$08
-
 updateLineClearingAnimationForBig:
         lda playState
         cmp #$04
@@ -479,8 +474,6 @@ updateLineClearingAnimationForBig:
         lda vramPlayfieldRows+1,y
         sta animationRenderBuffer+0
         sta animationRenderBuffer+11
-        ; sta animationRenderBuffer+22
-        ; sta animationRenderBuffer+33
 
 
         lda vramPlayfieldRows,y
@@ -488,10 +481,7 @@ updateLineClearingAnimationForBig:
         adc leftCol
         adc leftCol
         adc bigModeLeftOne
-
         sta animationRenderBuffer+1
-        ; adc #$01
-        ; sta animationRenderBuffer+12
 
         lda vramPlayfieldRows,y
         clc
@@ -499,17 +489,10 @@ updateLineClearingAnimationForBig:
         adc rightCol
         adc bigModeRightOne
         sta animationRenderBuffer+12
-        ; adc #$01
-        ; sta animationRenderBuffer+34
 
         lda #$08
         sta animationRenderBuffer+2
         sta animationRenderBuffer+13
-        ; sta animationRenderBuffer+24
-        ; sta animationRenderBuffer+35
-
-        ; lsr leftCol
-        ; lsr rightCol
 
         ldy #$00
         ldx leftCol
@@ -527,19 +510,14 @@ updateLineClearingAnimationForBig:
         adc #$10
 :
         sta animationRenderBuffer+3+(index*2)
-        ; sta animationRenderBuffer+14+(index*2)
 
         adc #$20
-        ; sta animationRenderBuffer+4+(index*2)
-        ; adc #$10
         sta animationRenderBuffer+4+(index*2)
         jmp :++
 :
         lda #EMPTY_TILE
         sta animationRenderBuffer+3+(index*2)
-        ; sta animationRenderBuffer+14+(index*2)
         sta animationRenderBuffer+4+(index*2)
-        ; sta animationRenderBuffer+15+(index*2)
 :
         ldx rightCol
 
@@ -555,18 +533,13 @@ updateLineClearingAnimationForBig:
         adc #$10
 :
         sta animationRenderBuffer+14+(index*2)
-        ; sta animationRenderBuffer+36+(index*2)
         adc #$20
         sta animationRenderBuffer+15+(index*2)
-        ; adc #$10
-        ; sta animationRenderBuffer+37+(index*2)
         jmp :++
 :
         lda #EMPTY_TILE
         sta animationRenderBuffer+14+(index*2)
-        ; sta animationRenderBuffer+36+(index*2)
         sta animationRenderBuffer+15+(index*2)
-        ; sta animationRenderBuffer+37+(index*2)
 :
         ldx leftCol
         iny
