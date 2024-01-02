@@ -556,8 +556,6 @@ updateLineClearingAnimationForBig:
         inc playState
 @ret:   rts
 
-bigModeBitTable:
-        .byte $00,$81
 
 updateLineClearingAnimationForSmall:
         inc rowY
