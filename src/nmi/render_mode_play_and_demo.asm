@@ -717,9 +717,9 @@ updateLineClearingAnimationForSmallOdd:
         dey
 
         tya ; kill odd bit
-        asl
         lsr
-        tya
+        asl
+        tay
         ; tya
         ; asl
         ; asl ; extra for big mode
