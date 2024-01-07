@@ -51,7 +51,7 @@ updatePlayfield:
         bpl @rowInRange
         lda #$00
 @rowInRange:
-        ldx practiseType
+        ldx currentSize
         cpx #MODE_SMALL
         bne @notSmall
         lsr

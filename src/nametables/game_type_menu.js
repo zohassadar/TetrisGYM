@@ -45,9 +45,9 @@ drawTiles(buffer, lookup, `
 #a    SMALL                   d#
 #a    MEDIUM                  d#
 #a    BIG                     d#
+#a    SHRINK                  d#
 #a    SEED                    d#
 #a    DAS                     d#
-#a                            d#
 #a                            d#
 #a                            d#
 #a                            d#

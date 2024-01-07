@@ -70,11 +70,11 @@ gameTypeLoopCheckStart:
         jsr checkIfSeeded
         ; check double killscreen
         lda practiseType
-        cmp #MODE_KILLX2
+        cmp #MODE_SHRINK
         bne @checkSpeedTest
         lda #$10
         jsr setMMC1Control
-        lda #29
+        lda #09
         sta startLevel
         sta levelNumber
         lda #$00

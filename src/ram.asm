@@ -238,7 +238,9 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 seededPieces: .res 1 ; $63C ; 0 for not seeded, 1 for seeded pieces
 
-    .res $38
+currentSize: .res 1
+sizeChangeFlag: .res 1
+    .res $36
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

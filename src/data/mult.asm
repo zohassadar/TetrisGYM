@@ -60,7 +60,7 @@ yOffsets:
         .byte 39, 31, 15
 
 setModeValues:
-        ldx practiseType
+        ldx currentSize
         lda multTablesLoLo,x
         sta multTableLo
         lda multTablesLoHi,x
@@ -258,7 +258,7 @@ maskValueForTetriminoY:
 
 
 copyPlayfieldToBuffer:
-        ldx practiseType
+        ldx currentSize
         lda tetriminoYforLineClear
         and andValueForTetriminoY,x
         tay
@@ -275,7 +275,7 @@ copyPlayfieldToBuffer:
         adc (multTableHi),y
         sta sramPlayfield+1
 
-        ldx practiseType
+        ldx currentSize
         ldy playfieldBytesToCopy,x
         
 @copyLoop:

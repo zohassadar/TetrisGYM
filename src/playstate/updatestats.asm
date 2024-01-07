@@ -78,11 +78,13 @@ checkLevelUp:
         lda practiseType
         cmp #MODE_TAPQTY
         beq @lineLoop
-        cmp #MODE_TRANSITION
-        bne @notSXTOKL
-        lda transitionModifier
-        cmp #$10
-        bne @notSXTOKL
+        ; cmp #MODE_TRANSITION
+        ; bne @notSXTOKL
+        ; lda transitionModifier
+        ; cmp #$10
+        lda practiseType
+        cmp #MODE_SHRINK
+        bne @notSXTOKL ; treat shrink like SXTOKL
         jmp @nextLevel
 @notSXTOKL:
 

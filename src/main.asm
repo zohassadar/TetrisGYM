@@ -29,7 +29,7 @@ mainLoop:
         lda vramRow
         cmp #$20
         beq @updateAudio
-        lda practiseType
+        lda currentSize
         cmp #MODE_SMALL
         bne @checkNormal
         jmp moveSmallPlayfieldToRenderPage

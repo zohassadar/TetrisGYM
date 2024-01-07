@@ -57,6 +57,7 @@ BUTTON_DPAD := BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT | BUTTON_RIGHT
 MODE_SMALL
 MODE_MEDIUM
 MODE_BIG
+MODE_SHRINK
 MODE_SEED
 MODE_DAS
 MODE_TSPINS
@@ -91,7 +92,7 @@ MODE_PAL
 .endenum
 
 MODE_QUANTITY = MODE_DAS + 1
-MODE_GAME_QUANTITY = MODE_BIG + 1
+MODE_GAME_QUANTITY = MODE_SHRINK + 1
 
 SCORING_CLASSIC := 0 ; for scoringModifier
 SCORING_LETTERS := 1
@@ -115,6 +116,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
 .macro MENUSIZES 
+        .byte $0
         .byte $0
         .byte $0
         .byte $0
@@ -158,6 +160,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte   "SMALL "
     .byte   "MEDIUM"
     .byte   " BIG  "
+    .byte   "SHRINK"
     ; .byte   " PACE "
     ; .byte   "SETUPS"
     ; .byte   "B-TYPE"

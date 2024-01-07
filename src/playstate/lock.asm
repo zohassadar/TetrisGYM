@@ -97,7 +97,7 @@ setTetriminoYForLineClear:
         bcs @atMinimum
         lda #$04
 @atMinimum:
-        ldx practiseType
+        ldx currentSize
         cmp tetriminoYLimit,x
         bcc @atMaximum
         ldy tetriminoYLimit,x

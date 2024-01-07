@@ -76,7 +76,7 @@ stageSpriteForCurrentPiece_actual:
         asl
         tax ; index into Y & X Offsets
         lda orientationTiles,y
-        ldy practiseType
+        ldy currentSize
         cpy #MODE_SMALL
         bne @loadPieceTile
         lda #$C1
@@ -135,7 +135,7 @@ stageSpriteForCurrentPiece_actual:
         dec tileCounter
         bne @stageMino
         sty oamStagingLength
-        lda practiseType
+        lda currentSize
         cmp #MODE_BIG
         beq @expandBigSprites
 @ret:   rts
@@ -208,7 +208,7 @@ modeOffset:
 
 
 renderNext:
-        ldx     practiseType
+        ldx     currentSize
         lda     modeOffset,x
         sta     generalCounter5 ; small mode gets different sprites
 

@@ -1,5 +1,12 @@
 gameModeState_initGameState:
         jsr resetPlayfields
+        lda practiseType
+        sta currentSize  ; in case this is right
+        cmp #MODE_SHRINK
+        bne @setValues
+        lda #MODE_BIG    ; start with big for shrink mode
+        sta currentSize
+@setValues:
         jsr setModeValues
         ldx #$0F
         lda #$00

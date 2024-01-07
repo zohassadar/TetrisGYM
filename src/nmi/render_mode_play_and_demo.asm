@@ -242,7 +242,7 @@ dumpAnimationBuffer:
 
 
 updateLineClearingAnimation:
-        ldx practiseType
+        ldx currentSize
         cpx #MODE_MEDIUM
         beq updateLineClearingAnimationForMedium
         cpx #MODE_BIG
@@ -330,6 +330,7 @@ updateLineClearingAnimationForMedium:
         inc playState
         lda #$00
         sta vramRow
+        jmp changeSizeIfNeeded
 @ret:   rts
 
 leftColumns:
@@ -554,6 +555,7 @@ updateLineClearingAnimationForBig:
         lda #$00
         sta vramRow
         inc playState
+        jmp changeSizeIfNeeded
 @ret:   rts
 
 
@@ -684,6 +686,7 @@ updateLineClearingAnimationForSmallEven:
         lda #$00
         sta vramRow
         inc playState
+        jmp changeSizeIfNeeded
 @ret4:  rts
 
 
@@ -766,10 +769,29 @@ updateLineClearingAnimationForSmallOdd:
         inc rowY
         lda rowY
         cmp #$05
-        bmi @ret4
+        bmi smallOddReturn
         lda #$00
         sta vramRow
         inc playState
-@ret4:  rts
+        jmp changeSizeIfNeeded
+smallOddReturn:
+        rts
 
-
+changeSizeIfNeeded:
+        lda practiseType
+        cmp #MODE_SHRINK
+        bne smallOddReturn
+        lda sizeChangeFlag
+        beq smallOddReturn
+        lda #$00
+        sta sizeChangeFlag
+        lda levelNumber
+        cmp #$12
+        bne @checkMediumToSmall
+        jmp @change
+@checkMediumToSmall:
+        cmp #$1C
+        bne smallOddReturn
+@change:
+        dec currentSize
+        jmp setModeValues
