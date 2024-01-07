@@ -6,40 +6,40 @@
 lineTargetThreshold := 110
 
 targetTable:
-        .byte $0,$0,$0,$0
-        .byte $68,$1,$4B,$0 ; 1
-        .byte $F8,$2,$6E,$0 ; 2
-        .byte $7E,$4,$9A,$0 ; 3
-        .byte $E6,$5,$E5,$0 ; 4
-        .byte $6C,$7,$12,$1 ; 5
-        .byte $CA,$8,$67,$1 ; 6
-        .byte $5A,$A,$89,$1 ; 7
-        .byte $B8,$B,$DE,$1 ; 8
-        .byte $3E,$D,$B,$2 ; 9
-        .byte $F2,$E,$A,$2 ; A
-        .byte $2C,$10,$83,$2 ; B
-        .byte $94,$11,$CD,$2 ; C
-        .byte $38,$13,$DC,$2 ; D
-        .byte $B4,$14,$13,$3 ; E
-        .byte $08,$16,$72,$3
+        ; .byte $0,$0,$0,$0
+        ; .byte $68,$1,$4B,$0 ; 1
+        ; .byte $F8,$2,$6E,$0 ; 2
+        ; .byte $7E,$4,$9A,$0 ; 3
+        ; .byte $E6,$5,$E5,$0 ; 4
+        ; .byte $6C,$7,$12,$1 ; 5
+        ; .byte $CA,$8,$67,$1 ; 6
+        ; .byte $5A,$A,$89,$1 ; 7
+        ; .byte $B8,$B,$DE,$1 ; 8
+        ; .byte $3E,$D,$B,$2 ; 9
+        ; .byte $F2,$E,$A,$2 ; A
+        ; .byte $2C,$10,$83,$2 ; B
+        ; .byte $94,$11,$CD,$2 ; C
+        ; .byte $38,$13,$DC,$2 ; D
+        ; .byte $B4,$14,$13,$3 ; E
+        ; .byte $08,$16,$72,$3
 
 prepareNextPace:
         ; lines BCD -> binary
-        lda lines
-        sta bcd32
-        lda lines+1
-        sta bcd32+1
-        lda #0
-        sta bcd32+2
-        sta bcd32+3
-        jsr BCD_BIN
+        ; lda lines
+        ; sta bcd32
+        ; lda lines+1
+        ; sta bcd32+1
+        ; lda #0
+        ; sta bcd32+2
+        ; sta bcd32+3
+        ; jsr BCD_BIN
 
-        ; check if lines > 230
-        lda binary32+1
-        bne @moreThan230
-        lda binary32
-        cmp #230
-        bcc @lessThan230
+        ; ; check if lines > 230
+        ; lda binary32+1
+        ; bne @moreThan230
+        ; lda binary32
+        ; cmp #230
+        ; bcc @lessThan230
 @moreThan230:
         lda #$AA
         sta paceResult
@@ -48,49 +48,49 @@ prepareNextPace:
         rts
 @lessThan230:
 
-        ; use target multiplier as factor B
-        jsr paceTarget
+        ; ; use target multiplier as factor B
+        ; jsr paceTarget
 
-        ; use lines as factor A
-        lda binary32
-        sta factorA24
-        lda #0
-        sta factorA24+1
-        sta factorA24+2
+        ; ; use lines as factor A
+        ; lda binary32
+        ; sta factorA24
+        ; lda #0
+        ; sta factorA24+1
+        ; sta factorA24+2
 
-        ; get actual score target in product24
-        jsr unsigned_mul24
+        ; ; get actual score target in product24
+        ; jsr unsigned_mul24
 
-        ; subtract target from score
-        sec
-        lda binScore
-        sbc product24
-        sta binaryTemp
-        lda binScore+1
-        sbc product24+1
-        sta binaryTemp+1
-        lda binScore+2
-        sbc product24+2
-        sta binaryTemp+2
+        ; ; subtract target from score
+        ; sec
+        ; lda binScore
+        ; sbc product24
+        ; sta binaryTemp
+        ; lda binScore+1
+        ; sbc product24+1
+        ; sta binaryTemp+1
+        ; lda binScore+2
+        ; sbc product24+2
+        ; sta binaryTemp+2
 
-        ; convert to unsigned, extract sign
-        lda #0
-        sta sign
-        lda binaryTemp+2
-        and #$80
-        beq @positive
-        lda #1
-        sta sign
-        lda binaryTemp
-        eor #$FF
-        adc #1
-        sta binaryTemp
-        lda binaryTemp+1
-        eor #$FF
-        sta binaryTemp+1
-        lda binaryTemp+2
-        eor #$FF
-        sta binaryTemp+2
+        ; ; convert to unsigned, extract sign
+        ; lda #0
+        ; sta sign
+        ; lda binaryTemp+2
+        ; and #$80
+        ; beq @positive
+        ; lda #1
+        ; sta sign
+        ; lda binaryTemp
+        ; eor #$FF
+        ; adc #1
+        ; sta binaryTemp
+        ; lda binaryTemp+1
+        ; eor #$FF
+        ; sta binaryTemp+1
+        ; lda binaryTemp+2
+        ; eor #$FF
+        ; sta binaryTemp+2
 @positive:
 
         lda binaryTemp
