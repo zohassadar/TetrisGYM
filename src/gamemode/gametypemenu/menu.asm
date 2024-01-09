@@ -404,7 +404,7 @@ renderMenuVars:
 
 @seedCursor:
         clc
-        lda #MENU_SPRITE_Y_BASE + 15
+        lda #MENU_SPRITE_Y_BASE + 23
         sbc menuScrollY
         sta spriteYOffset
         lda menuSeedCursorIndex
