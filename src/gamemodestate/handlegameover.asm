@@ -32,7 +32,9 @@ gameModeState_handleGameOver:
         jsr updateAudioWaitForNmiAndResetOamStaging
         ldx #3 ; levelMenu
         lda practiseType
-        cmp #MODE_KILLX2
+        ; cmp #MODE_KILLX2
+        ; bne @notGameTypeMenu
+        cmp #MODE_SHRINK
         bne @notGameTypeMenu
         dex
 @notGameTypeMenu:
