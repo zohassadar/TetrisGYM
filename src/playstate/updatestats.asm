@@ -666,8 +666,11 @@ testCrash:
         bcc @newBit0
         inc allegroIndex
 @newBit0:
+        sec
+        lda nmiReturnAddr+1
+        sbc #>(updateAudioWaitForNmiAndResetOamStaging+10)
         lda nmiReturnAddr
-        cmp #<updateAudioWaitForNmiAndResetOamStaging+10
+        sbc #<(updateAudioWaitForNmiAndResetOamStaging+10)
         beq @returnLate ; checking which instruction returned to. if so, add 3 cycles
         lda #$03
         clc

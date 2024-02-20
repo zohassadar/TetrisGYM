@@ -11,7 +11,7 @@ switchTmp2 := tmpY
 tmpBulkCopyToPpuReturnAddr: .res 2 ;  $0006 ; 2 bytes
 binScore: .res 4 ;  $8 ; 4 bytes binary
 score: .res 4 ;  $C ; 4 bytes BCD
-nmiReturnAddr: .res 1 ; $0010 ; used for crash
+.res 1
 crashState: .res 1 ; $0011 ; used for crash
 cycleCount: .res 2 ; $0012 ; 2 bytes ; used for crash
 oneThirdPRNG: .res 1 ; $0014 ; used for crash
@@ -207,7 +207,7 @@ hzResult := hzRAM+5 ; 2 byte
 hzSpawnDelay := hzRAM+7 ; 1 byte
 hzPalette := hzRAM+8 ; 1 byte
 inputLogCounter := presetIndex ; reusing presetIndex
-    .res 2
+nmiReturnAddr: .res 2 ; $61F ; used for crash
 tqtyCurrent: .res 1 ; $621
 tqtyNext: .res 1 ; $622
 

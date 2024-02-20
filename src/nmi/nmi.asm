@@ -33,11 +33,13 @@ nmi:    pha
 .endif
         lda #$01
         sta verticalBlankingInterval
+        tsx
+        lda stack+5,x
+        sta nmiReturnAddr
+        lda stack+6,x
+        sta nmiReturnAddr+1
         pla
         tay
-        tsx
-        lda stack+4,x
-        sta nmiReturnAddr
         pla
         tax
         pla
