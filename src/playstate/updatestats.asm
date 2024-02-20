@@ -667,7 +667,7 @@ testCrash:
         inc allegroIndex
 @newBit0:
         lda nmiReturnAddr
-        cmp #<updateAudioWaitForNmiAndResetOamStaging+10
+        ; cmp #<updateAudioWaitForNmiAndResetOamStaging+10 ; temporarily disabling this to test a feature
         beq @returnLate ; checking which instruction returned to. if so, add 3 cycles
         lda #$03
         clc
