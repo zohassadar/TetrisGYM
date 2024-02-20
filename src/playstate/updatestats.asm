@@ -667,7 +667,7 @@ testCrash:
         inc allegroIndex
 @newBit0:
         lda nmiReturnAddr
-        cmp #<updateAudioWaitForNmiAndResetOamStaging+10
+        cmp #<updateAudioWaitForNmiAndResetOamStaging+10  ; this relies on routine existing within a page boundary
         beq @returnLate ; checking which instruction returned to. if so, add 3 cycles
         lda #$03
         clc

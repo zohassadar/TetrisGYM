@@ -69,6 +69,7 @@ random10:
         rts
 
 ; canon is waitForVerticalBlankingInterval
+.assert >updateAudioWaitForNmiAndResetOamStaging = >resetOAMStaging, error, "updateAudioWaitForNmiAndResetOamStaging crosses page boundary"
 updateAudioWaitForNmiAndResetOamStaging:
         jsr updateAudio_jmp
         lda #$00
