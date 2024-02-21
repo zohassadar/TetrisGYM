@@ -47,6 +47,9 @@ resetScroll:
         rts
 
 random10:
+        lda #$05 ; max attempts
+        sta generalCounter
+@reroll:
         ldx #rng_seed
         ldy #$02
         jsr generateNextPseudorandomNumber
@@ -65,8 +68,11 @@ random10:
         lda rng_seed
         and #$0F
         cmp #$0A
-        bpl random10
-        rts
+        bcc @ret
+        dec generalCounter
+        bne @reroll
+        lsr     ; divide result by 2 if max attempts reached
+@ret:   rts
 
 ; canon is waitForVerticalBlankingInterval
 updateAudioWaitForNmiAndResetOamStaging:
