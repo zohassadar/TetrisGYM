@@ -40,7 +40,6 @@ hi, lo = seed_hi, seed_lo
 
 while True:
     tmp_hi, tmp_lo = hi, lo
-    tmp_lo = lo
     for _ in range(5):
         for _ in range(5):
             tmp_hi, tmp_lo = generate_next(tmp_hi, tmp_lo)
