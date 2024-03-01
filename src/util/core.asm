@@ -255,6 +255,10 @@ generateNextPseudorandomNumber:
         lda #$2
 @noReset:
         sta oneThirdPRNG
+        ldy #$00
+@stupidLoop:
+        dey
+        bne @stupidLoop
         rts
 
 ; canon is initializeOAM

@@ -34,5 +34,8 @@ pub fn test() {
     "##.trim(), playfield::get_str(&emu).trim());
 
     // check pixel is actually rendered
+
+    println!("Tile at 0x22CC is: {:02x}", emu.ppu.read_byte(&mut *emu.mapper, 0x22CC));
     assert_eq!(emu.ppu.screen[offset(96, 176) as usize], 0x30);
+    
 }

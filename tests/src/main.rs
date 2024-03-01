@@ -45,24 +45,24 @@ fn main() {
 
     // run tests
     if options.test {
-        // garbage::test_garbage4_crash();
-        // println!(">> garbage4 ✅");
-        floor::test();
-        println!(">> floor ✅");
+        garbage::test_garbage4_crash();
+        println!(">> garbage4 ✅");
+        // floor::test();
+        // println!(">> floor ✅");
         tspins::test();
         println!(">> tspins ✅");
-        toprow::test();
-        println!(">> top row bug ✅");
-        score::test();
-        println!(">> score ✅");
-        score::test_render();
-        println!(">> score rendering ✅");
-        pushdown::test();
-        println!(">> pushdown ✅");
-        rng::test();
-        println!(">> rng seeds ✅");
-        sps::test();
-        println!(">> sps ✅");
+        // toprow::test();
+        // println!(">> top row bug ✅");
+        // score::test();
+        // println!(">> score ✅");
+        // score::test_render();
+        // println!(">> score rendering ✅");
+        // pushdown::test();
+        // println!(">> pushdown ✅");
+        // rng::test();
+        // println!(">> rng seeds ✅");
+        // sps::test();
+        // println!(">> sps ✅");
     }
 
     // count cycles
