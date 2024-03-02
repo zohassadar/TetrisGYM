@@ -41,7 +41,7 @@ modes.push("HZ DISPLAY");
 modes.push("INPUT DISPLAY");
 modes.push("DISABLE FLASH");
 modes.push("DISABLE PAUSE");
-modes.push("DISABLE MELT");
+// modes.push("DISABLE MELT");
 modes.push("PRIDE COLORS");
 if (supports_scrolltris){
     modes.push("SCROLLTRIS");
@@ -90,7 +90,7 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a       ZERO TO ZERO         d#
+#a      MELTY COLOR HACK      d#
 #a                            d#
 #a                            d#
 #a                            d#

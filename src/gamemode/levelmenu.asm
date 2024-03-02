@@ -122,11 +122,11 @@ levelMenuCheckStartGame:
         sta startLevel
         jmp @startGame
 @normalLevel:
-        lda heldButtons_player1
-        and #BUTTON_A
-        beq @noA
-        lda #$80
-        sta classicLevel
+        ; lda heldButtons_player1
+        ; and #BUTTON_A
+        ; beq @noA
+        ; lda #$80
+        ; sta classicLevel
 @noA:
         lda heldButtons_player1
         cmp #BUTTON_LEFT+BUTTON_UP+BUTTON_START
