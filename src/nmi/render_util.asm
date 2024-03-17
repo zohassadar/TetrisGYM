@@ -67,8 +67,15 @@ vramPlayfieldRows:
 
 copyLowStackRowToVram:
         lda lowStackRow
+        and #$0F
         asl
         tax
+        lda lowStackRow
+        and #$10
+        beq @noHide
+        bit autorepeatY
+        bpl @ret
+@noHide:
         lda vramPlayfieldRows+1,x
         sta PPUADDR
         lda vramPlayfieldRows,x
@@ -79,7 +86,7 @@ copyLowStackRowToVram:
         sta PPUDATA
         dex
         bne @drawLine
-        rts
+@ret:   rts
 
 copyPlayfieldRowToVRAM:
         ldx vramRow

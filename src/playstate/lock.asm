@@ -86,6 +86,7 @@ playState_lockTetrimino:
         ldx #<lowStackNopeGraphic
         ldy #>lowStackNopeGraphic
         lda lowStackRow
+        and #$0F
         cmp #$09
         bcs @drawOnUpperHalf
 ; draw on lower half

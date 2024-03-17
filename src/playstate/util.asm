@@ -116,7 +116,9 @@ updateMusicSpeed:
 
 checkIfAboveLowStackLine:
 ; carry set - block found
-        ldx lowStackRow
+        lda lowStackRow
+        and #$0F
+        tax
         lda multBy10Table,x
         tay
         ldx #$0A
