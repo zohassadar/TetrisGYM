@@ -5,4 +5,5 @@
 ; CHRBankSet1:
 .if INES_MAPPER <> 0 ; exclude for NROM
     .incbin "chr/rocket_tileset.chr"
+    .incbin "chr/game_tileset_dark.chr"
 .endif
