@@ -351,6 +351,7 @@ debugFlag: .res 1
 linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
+darkFlag: .res 1
 palFlag: .res 1
 
 ; ... $7FF
