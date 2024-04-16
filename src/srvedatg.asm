@@ -15,7 +15,7 @@ displayBetterMoveIfThere:
         lda     srMoveTimer
         beq     @ret
         lda     tetriminoX
-        pha     
+        pha
         lda     tetriminoY
         pha
         lda     currentPiece
@@ -27,20 +27,6 @@ displayBetterMoveIfThere:
         lda     srMove+2
         sta     tetriminoX
         jsr     stageSpriteForCurrentPiece
-        ; change background priority for each of the newly staged sprites
-        ldx     oamStagingLength
-        lda     oamStaging-14,x
-        and     #~20
-        sta     oamStaging-14,x
-        lda     oamStaging-10,x
-        and     #~20
-        sta     oamStaging-10,x
-        lda     oamStaging-6,x
-        and     #~20
-        sta     oamStaging-6,x
-        lda     oamStaging-2,x
-        and     #~20
-        sta     oamStaging-2,x
 
         ; set up frame based flicker
         lda     frameCounter
@@ -52,7 +38,6 @@ displayBetterMoveIfThere:
         sta     generalCounter
 
         ; change tile
-        clc
         lda     oamStaging-15,x
         adc     generalCounter
         sta     oamStaging-15,x
