@@ -38,6 +38,7 @@ displayBetterMoveIfThere:
         sta     generalCounter
 
         ; change tile
+        ldx     oamStagingLength
         lda     oamStaging-15,x
         adc     generalCounter
         sta     oamStaging-15,x
