@@ -11,25 +11,41 @@ messageHeader:
         ; $22 = CMD_USB_WR
         .byte   $2b, ~$2b, $22, ~$22
 
+displayBetterMoveIfThere:
+        lda     srMoveTimer
+        beq     @ret
+        lda     tetriminoX
+        pha     
+        lda     tetriminoY
+        pha
+        lda     currentPiece
+        pha
+        lda     srMove
+        sta     currentPiece
+        lda     srMove+1
+        sta     tetriminoY
+        lda     srMove+2
+        sta     tetriminoX
+        jsr     stageSpriteForCurrentPiece
+        pla
+        sta     currentPiece
+        pla
+        sta     tetriminoY
+        pla
+        sta     tetriminoX
+        dec     srMoveTimer
+@ret:   rts
 
-checkSendPlayfieldState:
-        lda     gameMode
-        cmp     #4
-        bne     ret4
-        lda     playState
-        cmp     #3
-        bne     ret4
-        lda     lineIndex
-        bne     ret4
-        jmp     sendPlayfieldState
-ret4:   rts
 
 checkReceiveMove:
-        lda      srMoveTimer
-        bne      ret4
-        jmp      receiveSRMove
-
-receiveSRMove:
+        lda     srMoveTimer
+        bne     @ret
+        lda     gameMode
+        cmp     #4
+        bne     @ret
+        lda     playState
+        cmp     #3
+        bne     @ret
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
         bne     @ret

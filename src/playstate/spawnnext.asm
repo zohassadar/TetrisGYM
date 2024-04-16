@@ -39,6 +39,9 @@ playState_spawnNextTetrimino:
         jsr incrementPieceStat
         jsr chooseNextTetrimino
         sta nextPiece
+.if SRVEDATG
+        jsr sendPlayfieldState
+.endif
 @resetDownHold:
         lda #$00
         sta autorepeatY
