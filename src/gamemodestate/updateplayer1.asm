@@ -11,6 +11,10 @@ gameModeState_updatePlayer1:
         jsr practiseAdvanceGame
         jsr practiseGameHUD
         jsr branchOnPlayStatePlayer1
+.if SRVEDATG
+        jsr checkReceiveMove
+        jsr displayBetterMoveIfThere
+.endif
         jsr stageSpriteForCurrentPiece
         jsr stageSpriteForNextPiece
 

@@ -28,29 +28,12 @@ displayBetterMoveIfThere:
         sta     tetriminoX
         jsr     stageSpriteForCurrentPiece
 
-        ; set up frame based flicker
-        lda     frameCounter
-        and     #$01
-        asl
-        asl
-        clc
-        adc     #$0D
-        sta     generalCounter
-
         ; change tile
         ldx     oamStagingLength
-        lda       #$EE
-        ; lda     oamStaging-15,x
-        ; adc     generalCounter
+        lda     #$EE
         sta     oamStaging-15,x
-        ; lda     oamStaging-11,x
-        ; adc     generalCounter
         sta     oamStaging-11,x
-        ; lda     oamStaging-7,x
-        ; adc     generalCounter
         sta     oamStaging-7,x
-        ; lda     oamStaging-3,x
-        ; adc     generalCounter
         sta     oamStaging-3,x
 
         pla
