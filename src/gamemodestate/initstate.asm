@@ -107,7 +107,9 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
-
+.if SRVEDATG
+        jsr sendPlayfieldState
+.endif
         lda practiseType
         cmp #MODE_TRANSITION
         bne @notTransition
