@@ -41,6 +41,31 @@ displayBetterMoveIfThere:
         lda     oamStaging-2,x
         and     #~20
         sta     oamStaging-2,x
+
+        ; set up frame based flicker
+        lda     frameCounter
+        and     #$01
+        asl
+        asl
+        clc
+        adc     #$0D
+        sta     generalCounter
+
+        ; change tile
+        clc
+        lda     oamStaging-15,x
+        adc     generalCounter
+        sta     oamStaging-15,x
+        lda     oamStaging-11,x
+        adc     generalCounter
+        sta     oamStaging-11,x
+        lda     oamStaging-7,x
+        adc     generalCounter
+        sta     oamStaging-7,x
+        lda     oamStaging-3,x
+        adc     generalCounter
+        sta     oamStaging-3,x
+
         pla
         sta     currentPiece
         pla
@@ -69,7 +94,7 @@ checkReceiveMove:
         sta     srMove+1
         lda     FIFO_DATA
         sta     srMove+2
-        lda     #5
+        lda     #$A
         sta     srMoveTimer
 @ret:   rts
 
@@ -95,14 +120,14 @@ sendPlayfieldState:
         inx
         cpx     #200
         bne     @copyPlayfield
-        lda     currentPiece
+        lda     currentPiece    ; index 200
         sta     FIFO_DATA
-        lda     nextPiece
+        lda     nextPiece       ; index 201
         sta     FIFO_DATA
-        lda     levelNumber
+        lda     levelNumber     ; index 202
         sta     FIFO_DATA
-        lda     lines
+        lda     lines           ; index 203
         sta     FIFO_DATA
-        lda     lines+1
+        lda     lines+1         ; index 204
         sta     FIFO_DATA
         rts
