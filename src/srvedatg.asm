@@ -39,17 +39,18 @@ displayBetterMoveIfThere:
 
         ; change tile
         ldx     oamStagingLength
-        lda     oamStaging-15,x
-        adc     generalCounter
+        lda       #$EE
+        ; lda     oamStaging-15,x
+        ; adc     generalCounter
         sta     oamStaging-15,x
-        lda     oamStaging-11,x
-        adc     generalCounter
+        ; lda     oamStaging-11,x
+        ; adc     generalCounter
         sta     oamStaging-11,x
-        lda     oamStaging-7,x
-        adc     generalCounter
+        ; lda     oamStaging-7,x
+        ; adc     generalCounter
         sta     oamStaging-7,x
-        lda     oamStaging-3,x
-        adc     generalCounter
+        ; lda     oamStaging-3,x
+        ; adc     generalCounter
         sta     oamStaging-3,x
 
         pla
