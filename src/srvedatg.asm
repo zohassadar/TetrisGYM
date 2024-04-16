@@ -54,7 +54,7 @@ sendPlayfieldState:
         lda     messageHeader+3
         sta     FIFO_DATA
 
-        lda     205 ; playfield (200) + currentPiece + nextPiece + levelNumber + lines + lines+1
+        lda     #205 ; playfield (200) + currentPiece + nextPiece + levelNumber + lines + lines+1
         sta     FIFO_DATA
         lda     #$00
         sta     FIFO_DATA
