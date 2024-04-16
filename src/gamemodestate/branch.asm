@@ -14,10 +14,6 @@ branchOnGameModeState:
         .addr   gameModeState_vblankThenRunState2 ; gms: 2 acc eq (set to $2)
 
 gameModeState_next: ; used to be updatePlayer2
-.if SRVEDATG
-        jsr checkReceiveMove
-        jsr displayBetterMoveIfThere
-.endif
         inc gameModeState
         lda #$1 ; acc should not be equal
         rts
