@@ -79,6 +79,11 @@ if (args.includes('-s')) {
     console.log('highscore saving disabled');
 }
 
+if (args.includes('-S')) {
+    compileFlags.push('-D', 'SRVEDATG=1');
+    console.log('srvedatg');
+}
+
 console.log();
 
 // build / compress nametables

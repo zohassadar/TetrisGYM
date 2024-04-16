@@ -38,6 +38,10 @@ mainLoop:
 .include "nmi/pollkeyboard.asm"
 .endif
 
+.if SRVEDATG
+.include "srvedatg.asm"
+.endif
+
 .include "gamemode/branch.asm"
     ; -> playAndEnding
 .include "gamemodestate/branch.asm"
