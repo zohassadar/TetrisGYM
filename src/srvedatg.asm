@@ -52,9 +52,11 @@ checkReceiveMove:
         lda     gameMode
         cmp     #4
         bne     @ret
+.if SRVEDATG_SHOW_SOONER = 0
         lda     playState
         cmp     #3
         bne     @ret
+.endif
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
         bne     @ret
@@ -64,7 +66,7 @@ checkReceiveMove:
         sta     srMove+1
         lda     FIFO_DATA
         sta     srMove+2
-        lda     #$A
+        lda     #SRVEDATG_DISPLAY_FRAMES
         sta     srMoveTimer
 @ret:   rts
 

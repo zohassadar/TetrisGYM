@@ -84,6 +84,11 @@ if (args.includes('-S')) {
     console.log('srvedatg');
 }
 
+// pass any additional build flags directly to ca65
+if (args.includes('--')) {
+    compileFlags.push(...args.slice(args.indexOf('--') + 1))
+    }
+
 console.log();
 
 // build / compress nametables

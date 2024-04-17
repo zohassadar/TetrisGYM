@@ -21,6 +21,14 @@ KEYBOARD := 0
 SRVEDATG = 0
 .endif
 
+.ifndef SRVEDATG_SHOW_SOONER
+SRVEDATG_SHOW_SOONER = 0
+.endif
+
+.ifndef SRVEDATG_DISPLAY_FRAMES
+SRVEDATG_DISPLAY_FRAMES = $A
+.endif
+
 NO_MUSIC := 1
 
 ; dev flags
