@@ -5,7 +5,8 @@ const crypto = require('crypto');
 console.log('TetrisGYM buildscript');
 console.time('build');
 
-const mappers = { // https://www.nesdev.org/wiki/Mapper
+const mappers = {
+    // https://www.nesdev.org/wiki/Mapper
     0: 'NROM',
     1: 'MMC1',
     3: 'CNROM',
@@ -15,25 +16,25 @@ const mappers = { // https://www.nesdev.org/wiki/Mapper
 };
 
 const darkModeBoxes = [
-    [56,0,16,64],
-    [48,56,8,8],
-    [56,64,8,24],
-    [25,1,1,2],
-    [26,1,1,1],
-    [25,20,1,2],
-    [26,21,1,1],
-    [30,41,1,2],
-    [29,41,1,1],
-    [30,60,1,2],
-    [29,61,1,1],
-    [24,64,1,2],
-    [25,64,1,1],
-    [24,86,1,2],
-    [25,87,1,1],
-    [31,104,1,2],
-    [30,104,1,1],
-    [31,126,1,2],
-    [30,127,1,1],
+    [56, 0, 16, 64],
+    [48, 56, 8, 8],
+    [56, 64, 8, 24],
+    [25, 1, 1, 2],
+    [26, 1, 1, 1],
+    [25, 20, 1, 2],
+    [26, 21, 1, 1],
+    [30, 41, 1, 2],
+    [29, 41, 1, 1],
+    [30, 60, 1, 2],
+    [29, 61, 1, 1],
+    [24, 64, 1, 2],
+    [25, 64, 1, 1],
+    [24, 86, 1, 2],
+    [25, 87, 1, 1],
+    [31, 104, 1, 2],
+    [30, 104, 1, 1],
+    [31, 126, 1, 2],
+    [30, 127, 1, 1],
 ];
 
 // options handling
@@ -41,7 +42,9 @@ const darkModeBoxes = [
 const args = process.argv.slice(2);
 
 if (args.includes('-h')) {
-    console.log(`usage: node build.js [-h] [-v] [-m<${Object.keys(mappers).join('|')}>] [-a] [-s] [-k] [-w]
+    console.log(`usage: node build.js [-h] [-v] [-m<${Object.keys(mappers).join(
+        '|',
+    )}>] [-a] [-s] [-k] [-w]
 
 -m  mapper
 -a  faster aeppoz + press select to end game
@@ -139,10 +142,13 @@ fs.readdirSync(dir)
 
         if (staleCHR || args.includes('-c')) {
             console.log(`${name} => ${path.basename(chr)}`);
-	    if (name == "game_tileset.png") {
-                let darkFile = path.join(dir, "game_tileset_dark.chr");
-                fs.writeFileSync(darkFile, png2chr(fs.readFileSync(png),darkModeBoxes));
-	    }
+            if (name == 'game_tileset.png') {
+                let darkFile = path.join(dir, 'game_tileset_dark.chr');
+                fs.writeFileSync(
+                    darkFile,
+                    png2chr(fs.readFileSync(png), darkModeBoxes),
+                );
+            }
             fs.writeFileSync(chr, png2chr(fs.readFileSync(png)));
         }
     });
@@ -180,7 +186,9 @@ const ld65bin = nativeCC65 ? 'ld65' : 'node ./tools/assemble/ld65.js';
 
 console.time('link');
 
-exec(`${ld65bin} -m tetris.map -Ln tetris.lbl --dbgfile tetris.dbg -o tetris.nes -C src/tetris.nes.cfg main.o header.o`);
+exec(
+    `${ld65bin} -m tetris.map -Ln tetris.lbl --dbgfile tetris.dbg -o tetris.nes -C src/tetris.nes.cfg main.o header.o`,
+);
 
 console.timeEnd('link');
 

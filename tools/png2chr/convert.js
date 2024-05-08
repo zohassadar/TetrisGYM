@@ -1,15 +1,15 @@
 const { PNG } = require('./png.js');
 
-function addBlackBox(y,x,height,width,tilePixels){
-    for (let yIdx = y; yIdx < y + height; yIdx++){
-    	for (let xIdx = x; xIdx < x + width; xIdx++){
-    		let idx = yIdx * 128 + xIdx;
-    		tilePixels[idx] = 0;
-    	    }
+function addBlackBox(y, x, height, width, tilePixels) {
+    for (let yIdx = y; yIdx < y + height; yIdx++) {
+        for (let xIdx = x; xIdx < x + width; xIdx++) {
+            let idx = yIdx * 128 + xIdx;
+            tilePixels[idx] = 0;
         }
     }
+}
 
-module.exports = function png2chr(file,blackBoxes) {
+module.exports = function png2chr(file, blackBoxes) {
     if (blackBoxes == undefined) blackBoxes = [];
 
     const png = PNG.sync.read(file);
@@ -30,8 +30,8 @@ module.exports = function png2chr(file,blackBoxes) {
 
     // add blackBoxes
     for (blackBox of blackBoxes) {
-	    addBlackBox(...blackBox, pixels);
-       }
+        addBlackBox(...blackBox, pixels);
+    }
 
     // rearrange into groups of tiles
 
@@ -61,9 +61,9 @@ module.exports = function png2chr(file,blackBoxes) {
             bytes.push(
                 parseInt(
                     indicesBin
-                    .slice(i, i + 8)
-                    .map((idx) => idx[1])
-                    .join(''),
+                        .slice(i, i + 8)
+                        .map((idx) => idx[1])
+                        .join(''),
                     2,
                 ),
             );
@@ -73,9 +73,9 @@ module.exports = function png2chr(file,blackBoxes) {
             bytes.push(
                 parseInt(
                     indicesBin
-                    .slice(i, i + 8)
-                    .map((idx) => idx[0])
-                    .join(''),
+                        .slice(i, i + 8)
+                        .map((idx) => idx[0])
+                        .join(''),
                     2,
                 ),
             );
@@ -83,4 +83,4 @@ module.exports = function png2chr(file,blackBoxes) {
     }
 
     return Uint8Array.from(bytes);
-}
+};
