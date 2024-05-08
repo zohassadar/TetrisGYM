@@ -14,6 +14,28 @@ const mappers = { // https://www.nesdev.org/wiki/Mapper
     1000: 'Autodetect MMC1/CNROM',
 };
 
+const darkModeBoxes = [
+    [56,0,16,64],
+    [48,56,8,8],
+    [56,64,8,24],
+    [25,1,1,2],
+    [26,1,1,1],
+    [25,20,1,2],
+    [26,21,1,1],
+    [30,41,1,2],
+    [29,41,1,1],
+    [30,60,1,2],
+    [29,61,1,1],
+    [24,64,1,2],
+    [25,64,1,1],
+    [24,86,1,2],
+    [25,87,1,1],
+    [31,104,1,2],
+    [30,104,1,1],
+    [31,126,1,2],
+    [30,127,1,1],
+];
+
 // options handling
 
 const args = process.argv.slice(2);
@@ -106,6 +128,7 @@ const dir = path.join(__dirname, 'src', 'chr');
 fs.readdirSync(dir)
     .filter((name) => name.endsWith('.png'))
     .forEach((name) => {
+        var blackBoxes = [];
         const png = path.join(dir, name);
         const chr = path.join(dir, name.replace('.png', '.chr'));
 
@@ -116,6 +139,10 @@ fs.readdirSync(dir)
 
         if (staleCHR || args.includes('-c')) {
             console.log(`${name} => ${path.basename(chr)}`);
+	    if (name == "game_tileset.png") {
+                let darkFile = path.join(dir, "game_tileset_dark.chr");
+                fs.writeFileSync(darkFile, png2chr(fs.readFileSync(png),darkModeBoxes));
+	    }
             fs.writeFileSync(chr, png2chr(fs.readFileSync(png)));
         }
     });

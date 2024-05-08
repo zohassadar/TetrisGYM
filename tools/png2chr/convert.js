@@ -1,6 +1,17 @@
 const { PNG } = require('./png.js');
 
-module.exports = function png2chr(file) {
+function addBlackBox(y,x,height,width,tilePixels){
+    for (let yIdx = y; yIdx < y + height; yIdx++){
+    	for (let xIdx = x; xIdx < x + width; xIdx++){
+    		let idx = yIdx * 128 + xIdx;
+    		tilePixels[idx] = 0;
+    	    }
+        }
+    }
+
+module.exports = function png2chr(file,blackBoxes) {
+    if (blackBoxes == undefined) blackBoxes = [];
+
     const png = PNG.sync.read(file);
 
     const palettes = png.palette.map((arr) => String(arr));
@@ -16,6 +27,11 @@ module.exports = function png2chr(file) {
         }
         pixels.push(paletteIndex);
     }
+
+    // add blackBoxes
+    for (blackBox of blackBoxes) {
+	    addBlackBox(...blackBox, pixels);
+       }
 
     // rearrange into groups of tiles
 
