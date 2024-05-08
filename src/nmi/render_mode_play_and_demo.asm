@@ -334,6 +334,13 @@ updatePaletteForLevel:
         sta PPUDATA
         lda colorTable2,x
         sta PPUDATA
+        ldy darkFlag
+	cpy #$02
+	bne @notDark
+	ldy #$0F
+	sty PPUDATA
+	sta PPUDATA
+@notDark:
         lda #$3F
         sta PPUADDR
         lda #$19

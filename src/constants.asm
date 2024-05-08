@@ -166,7 +166,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $1    ; MODE_LINECAP
     .byte $1    ; MODE_DASONLY
     .byte $1    ; MODE_QUAL
-    .byte $1    ; MODE_DARK
+    .byte $2    ; MODE_DARK
     .byte $1    ; MODE_PAL
 .endmacro
 

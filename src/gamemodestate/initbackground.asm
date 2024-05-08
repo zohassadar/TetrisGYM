@@ -2,8 +2,11 @@ gameModeState_initGameBackground:
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
 .if INES_MAPPER <> 0
-        lda darkFlag
-        asl
+	lda #$00
+        ldy darkFlag
+	beq @notDark
+	lda #$02
+@notDark:
         jsr changeCHRBanks
 .endif
         jsr bulkCopyToPpu
