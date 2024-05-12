@@ -82,7 +82,7 @@ playState_lockTetrimino:
         cmp #MODE_LOWSTACK
         bne @notAboveLowStack
         jsr checkIfAboveLowStackLine
-        bcc @notAboveLowStack
+        beq @notAboveLowStack
         ldx #<lowStackNopeGraphic
         ldy #>lowStackNopeGraphic
         lda lowStackRowModifier

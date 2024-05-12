@@ -337,6 +337,12 @@ updatePaletteForLevel:
         sta PPUDATA
         lda colorTable2,x
         sta PPUDATA
+        ldy darkMode
+        cpy #$02
+        bne @notNeon
+        sta PPUDATA
+        sta PPUDATA
+@notNeon:
         lda #$3F
         sta PPUADDR
         lda #$19

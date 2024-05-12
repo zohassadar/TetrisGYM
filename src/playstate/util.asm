@@ -115,19 +115,18 @@ updateMusicSpeed:
 @ret:   rts
 
 checkIfAboveLowStackLine:
-; carry set - block found
+; not zero - block found
         ldx lowStackRowModifier
         lda multBy10Table,x
         tay
         ldx #$0A
-        sec
 @checkForBlockInRow:
         lda playfield,y
-        bpl @foundBlockInRow
+        cmp #EMPTY_TILE
+        bne @foundBlockInRow
         iny
         dex
         bne @checkForBlockInRow
-        clc
 @foundBlockInRow:
         rts
 

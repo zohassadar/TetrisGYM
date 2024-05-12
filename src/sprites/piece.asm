@@ -146,6 +146,12 @@ stageSpriteForNextPiece:
         sta spriteYOffset
         ldx nextPiece
         lda orientationToSpriteTable,x
+        ldx darkMode
+        cpx #$2
+        bne @notNeon
+        clc
+        adc #$09
+@notNeon:
         sta spriteIndexInOamContentLookup
         jmp loadSpriteIntoOamStaging
 

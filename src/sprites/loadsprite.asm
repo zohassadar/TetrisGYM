@@ -59,13 +59,13 @@ oamContentLookup:
         .addr   sprite0CIPiece
         .addr   sprite0EHighScoreNameCursor
         .addr   sprite0EHighScoreNameCursor
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
+        .addr   sprite06TPieceNeon
+        .addr   sprite07SPieceNeon
+        .addr   sprite08ZPieceNeon
+        .addr   sprite09JPieceNeon
+        .addr   sprite0ALPieceNeon
+        .addr   sprite0BOPieceNeon
+        .addr   sprite0CIPieceNeon
         .addr   spriteDebugLevelEdit ; $16
         .addr   spriteStateSave; $17
         .addr   spriteStateLoad; $18
@@ -154,3 +154,31 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
+sprite06TPieceNeon:
+        .byte   $00,$A2,$02,$FC,$00,$AA,$02,$04
+        .byte   $00,$A4,$02,$0C,$08,$A7,$02,$04
+        .byte   $FF
+sprite07SPieceNeon:
+        .byte   $00,$CC,$02,$04,$00,$C4,$02,$0C
+        .byte   $08,$C2,$02,$FC,$08,$CF,$02,$04
+        .byte   $FF
+sprite08ZPieceNeon:
+        .byte   $00,$B2,$02,$FC,$00,$BD,$02,$04
+        .byte   $08,$BE,$02,$04,$08,$B4,$02,$0C
+        .byte   $FF
+sprite09JPieceNeon:
+        .byte   $00,$C2,$02,$FC,$00,$C3,$02,$04
+        .byte   $00,$CD,$02,$0C,$08,$C7,$02,$0C
+        .byte   $FF
+sprite0ALPieceNeon:
+        .byte   $00,$BC,$02,$FC,$00,$B3,$02,$04
+        .byte   $00,$B4,$02,$0C,$08,$B7,$02,$FC
+        .byte   $FF
+sprite0BOPieceNeon:
+        .byte   $00,$AC,$02,$00,$00,$AD,$02,$08
+        .byte   $08,$AE,$02,$00,$08,$AF,$02,$08
+        .byte   $FF
+sprite0CIPieceNeon:
+        .byte   $04,$A2,$02,$F8,$04,$A3,$02,$00
+        .byte   $04,$A3,$02,$08,$04,$A4,$02,$10
+        .byte   $FF

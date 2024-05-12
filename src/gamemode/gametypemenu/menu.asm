@@ -462,6 +462,9 @@ menuYTmp := tmp2
         beq @renderBool
 
         lda menuCounter
+        cmp #MODE_DARK
+        beq @renderBool
+
         cmp #MODE_SCORE_DISPLAY
         beq @renderScoreName
 

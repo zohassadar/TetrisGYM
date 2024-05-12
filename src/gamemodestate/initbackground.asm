@@ -3,6 +3,11 @@ gameModeState_initGameBackground:
         jsr disableNmi
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
+        ldy darkMode
+        cpy #$02
+        bne @notNeon
+        lda #CHRBankSet1
+@notNeon:
         jsr changeCHRBanks
 .endif
         jsr bulkCopyToPpu
