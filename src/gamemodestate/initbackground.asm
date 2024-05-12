@@ -12,6 +12,16 @@ gameModeState_initGameBackground:
 .endif
         jsr bulkCopyToPpu
         .addr   game_palette
+        lda darkMode
+        cmp #$02
+    bne :+
+        lda #$3F
+        sta PPUADDR
+        lda #$0F
+        sta PPUADDR
+        lda #$3D
+        sta PPUDATA
+:
         jsr copyRleNametableToPpu
         .addr   game_nametable
         jsr scoringBackground
