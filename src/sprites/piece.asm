@@ -44,6 +44,19 @@ tileModifierForCurrentPiece:
         bne @tileSingle
 ; @tileMultiple:
         lda orientationTable,x
+        and #$F0
+        cmp #$A0
+        bne @checkB
+        lda #$7B
+        bne @add
+@checkB:
+        cmp #$B0
+        bne @itsC
+        lda #$7C
+        bne @add
+@itsC:
+        lda #$7D
+@add:
         clc
         adc pieceTileModifier
         rts
