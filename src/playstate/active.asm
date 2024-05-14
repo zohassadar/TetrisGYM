@@ -380,6 +380,10 @@ lookupDropSpeed:
         beq @noTableLookup
         lda framesPerDropTablePAL,x
 @noTableLookup:
+        cmp maxDropRate
+        bcs @ret
+        lda maxDropRate
+@ret:
         rts
 
 framesPerDropTableNTSC:

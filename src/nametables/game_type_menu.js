@@ -63,6 +63,7 @@ drawTiles(buffer, lookup, `
 `);drawTiles(extra, lookup, `
 #a    TAP/ROLL SPEED          d#
 #a    SCORING                 d#
+#a    MAX DROP RATE           d#
 #a    CRASH                   d#
 #a    STRICT CRASH            d#
 #a    HZ DISPLAY              d#
@@ -76,7 +77,6 @@ drawTiles(buffer, lookup, `
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
 #a    PAL MODE                d#
-#a                            d#
 #a                            d#
 #a V6                         d#
 #a                            d#
