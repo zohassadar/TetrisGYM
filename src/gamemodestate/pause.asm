@@ -57,7 +57,7 @@ pause:
 
 @pauseLoopCommon:
         clc
-        lda #$1B
+        lda #$A
         adc debugFlag
         sta spriteIndexInOamContentLookup
         jsr stringSprite
