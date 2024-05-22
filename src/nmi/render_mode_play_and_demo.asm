@@ -93,14 +93,14 @@ render_mode_play_and_demo:
         and #RENDER_SCORE
         beq @renderHz
 
-        ; 7 safe tile writes freed from stats / hz
-        ; (lazy render hz for 10 more)
+        ; (lazy render hz for 10 free writes)
         ; 1 added in level (3 total)
         ; 2 added in lines (5 total)
-        ; 2 added on crash
         ; independent writes;
         ; 1 added in 7digit
         ; 3 added in float
+        ; 2 added in neon
+        ; 2 added on crash
 
         ; scorecap
         lda crashModifier
@@ -337,9 +337,12 @@ updatePaletteForLevel:
         sta PPUDATA
         lda colorTable2,x
         sta PPUDATA
-        ldy darkMode
-        cpy #$02
+        ldy darkModifier
+        cpy #2 ; neon
+        beq @neon
+        cpy #6 ; tron
         bne @notNeon
+@neon:
         sta PPUDATA
         sta PPUDATA
 @notNeon:

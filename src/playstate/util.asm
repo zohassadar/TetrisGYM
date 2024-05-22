@@ -116,7 +116,10 @@ updateMusicSpeed:
 
 checkIfAboveLowStackLine:
 ; not zero - block found
-        ldx lowStackRowModifier
+        sec
+        lda #19
+        sbc lowStackRowModifier
+        tax
         lda multBy10Table,x
         tay
         ldx #$0A

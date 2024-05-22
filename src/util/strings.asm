@@ -80,7 +80,7 @@ stringLookup:
         .byte stringNull-stringLookup
         .byte stringOff-stringLookup ; 8
         .byte stringOn-stringLookup
-        .byte stringNeon-stringLookup
+        .byte stringPause-stringLookup
         .byte stringDebug-stringLookup
         .byte stringClear-stringLookup
         .byte stringConfirm-stringLookup
@@ -97,7 +97,11 @@ stringLookup:
         .byte stringCrash-stringLookup
         .byte stringConfetti-stringLookup ;19
         .byte stringStrict-stringLookup
-        .byte stringPause-stringLookup
+        .byte stringNeon-stringLookup
+        .byte stringLite-stringLookup
+        .byte stringTeal-stringLookup
+        .byte stringOG-stringLookup
+        .byte stringTron-stringLookup
 stringClassic:
         .byte $7,'C','L','A','S','S','I','C'
 stringLetters:
@@ -155,4 +159,12 @@ stringConfetti:
 stringStrict:
         .byte $6,'S','T','R','I','C','T'
 stringNeon:
-        .byte $4,"NEON"
+        .byte $4,'N','E','O','N'
+stringTeal:
+        .byte $4,'T','E','A','L'
+stringLite:
+        .byte $4,'L','I','T','E'
+stringOG:
+        .byte $2,'O','G'
+stringTron:
+        .byte $4,'T','R','O','N'

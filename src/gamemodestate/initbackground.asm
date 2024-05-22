@@ -3,17 +3,17 @@ gameModeState_initGameBackground:
         jsr disableNmi
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
-        ldy darkMode
-        cpy #$02
-        bne @notNeon
+        ldy darkModifier
+        cpy #$06
+        bne @notTron
         lda #CHRBankSet1
-@notNeon:
+@notTron:
         jsr changeCHRBanks
 .endif
         jsr bulkCopyToPpu
         .addr   game_palette
-        lda darkMode
-        cmp #$02
+        lda darkModifier
+        cmp #$06
     bne :+
         lda #$3F
         sta PPUADDR
@@ -27,7 +27,7 @@ gameModeState_initGameBackground:
         jsr scoringBackground
         jsr debugNametableUI
 
-        lda darkMode
+        ldy darkModifier
         beq @notDarkMode
         jsr drawDarkMode
 @notDarkMode:
@@ -244,9 +244,21 @@ savestate_nametable:
 NORMAL_CORNER_TILES := $70
 DARK_CORNER_TILES := $80
 
+darkModeColors:
+        .byte $2D,$3C,$10,$0C,$3C
+
 drawDarkMode:
 
 darkBuffer := playfield ; cleared right after in initGameState
+
+        ; set the border colour
+        lda #$3F
+        sta PPUADDR
+        lda #$D
+        sta PPUADDR
+        ldx darkModifier
+        lda darkModeColors-1,x
+        sta PPUDATA
 
         ; process the playfield in 60 chunks
         lda #60
