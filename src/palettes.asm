@@ -54,6 +54,6 @@ wait_palette:
         .byte   $30             ; sprite
         .byte   $3F,$00
         .byte   $08
-        .byte   $0F,$30,$38,$26 ; bg
-        .byte   $0F,$17,$27,$37
+        .byte   $0F,$17,$27,$30 ; bg
+        .byte   $0F,$30,$27,$37
         .byte   $FF

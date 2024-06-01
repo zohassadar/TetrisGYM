@@ -11,7 +11,7 @@ waitScreenLoad:
 .if INES_MAPPER <> 0
 ; NROM (and possibly FDS in the future) won't load the 2nd bankset
 ; and will instead use the title/menu chrset letters.  This won't be noticeable
-; unless a graphic is added 
+; unless a graphic is added
         lda #CHRBankSet1
         jsr changeCHRBanks
 .endif
@@ -23,8 +23,8 @@ waitScreenLoad:
         lda screenStage
         cmp #2
         bne @justLegal
-        jsr bulkCopyToPpu
-        .addr title_nametable_patch
+        ;jsr bulkCopyToPpu
+        ;.addr title_nametable_patch
 @justLegal:
 
         jsr waitForVBlankAndEnableNmi
