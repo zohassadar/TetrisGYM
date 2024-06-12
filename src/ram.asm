@@ -226,7 +226,8 @@ inputPPUAddress: .res 2; $63F
 inputLeft: .res 1
 inputRight: .res 1
 currentNTMask: .res 1
-    .res $30
+inputBuffer: .res 4
+    .res $2C
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
