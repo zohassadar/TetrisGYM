@@ -5,9 +5,13 @@ gameModeState_initGameBackground:
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
+        jsr setVerticalMirroring
         jsr bulkCopyToPpu
         .addr   game_palette
         jsr copyRleNametableToPpu
+        .addr   game_nametable
+        lda #$24
+        jsr copyRleToOffsetInA
         .addr   game_nametable
         jsr scoringBackground
         jsr debugNametableUI

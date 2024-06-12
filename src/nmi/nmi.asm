@@ -3,7 +3,7 @@ nmi:    pha
         pha
         tya
         pha
-        lda #$00
+        lda #$04
         sta oamStagingLength
         jsr render
         lda currentPpuCtrl
@@ -15,6 +15,8 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
+        lda #$04
+        sta oamStagingLength
         lda frameCounter
         clc
         adc #$01

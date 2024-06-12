@@ -1,6 +1,6 @@
 gameModeState_updateCountersAndNonPlayerState:
         ; CHR bank used to be reset to 0 here
-        lda #$00
+        lda #$04
         sta oamStagingLength
         inc fallTimer
         ; next code makes acc behave as normal

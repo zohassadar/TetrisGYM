@@ -34,6 +34,7 @@ addrOff := addrLo+2
 
 copyRleNametableToPpu:
         lda #$20
+copyRleToOffsetInA:
         sta addrOff
 copyRleNametableToPpuOffset:
         jsr copyAddrAtReturnAddressToTmp_incrReturnAddrBy2

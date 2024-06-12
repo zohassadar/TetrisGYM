@@ -58,9 +58,31 @@ random10:
 ; canon is waitForVerticalBlankingInterval
 updateAudioWaitForNmiAndResetOamStaging:
         jsr updateAudio_jmp
+        jsr incrementInputScrollStuff
         lda #$00
         sta verticalBlankingInterval
-        nop
+
+        lda sprite0State
+        cmp #$03
+        bne @checkForNmi
+        lsr sprite0State
+
+@sprite0Wait:
+        bit PPUSTATUS
+        bvc @sprite0Wait
+
+        ldx #$A0
+@burn:
+        dex
+        bne @burn
+        lda inputXScroll
+        sta PPUSCROLL
+        lda #$00
+        sta PPUSCROLL
+        lda currentPpuCtrl
+        ora currentNTMask
+        sta PPUCTRL
+
 @checkForNmi:
         lda verticalBlankingInterval
         beq @checkForNmi
@@ -301,3 +323,44 @@ switch_s_plus_2a:
         sta switchTmp2
         stx switchTmp1
         jmp (switchTmp1)
+
+
+
+
+incrementInputScrollStuff:
+    lda #$FF
+    sta inputLeft
+    sta inputRight
+    lda inputXScroll
+    clc
+    adc #$08
+    sta inputXScroll
+    bcc :+
+    lda currentNTMask
+    eor #$01
+    sta currentNTMask
+:
+    lda inputPPUAddress
+    clc
+    adc #$01
+    cmp #$80
+    bcc @noSwitch
+    lda inputPPUAddress+1
+    eor #$04
+    sta inputPPUAddress+1
+    lda #$60
+@noSwitch:
+    sta inputPPUAddress
+    lda heldButtons
+    and #BUTTON_LEFT
+    beq @noLeft
+    lda #'L'
+    sta inputLeft
+@noLeft:
+    lda heldButtons
+    and #BUTTON_RIGHT
+    beq @noRight
+    lda #'R'
+    sta inputRight
+@noRight:
+    rts

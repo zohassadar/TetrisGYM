@@ -1,4 +1,18 @@
 render_mode_play_and_demo:
+        lda inputPPUAddress+1
+        lda currentPpuCtrl
+        ora #$04
+        sta PPUCTRL
+        lda inputPPUAddress+1
+        sta PPUADDR
+        lda inputPPUAddress
+        sta PPUADDR
+        lda inputLeft
+        sta PPUDATA
+        lda inputRight
+        sta PPUDATA
+        lda currentPpuCtrl
+        sta PPUCTRL
         lda playState
         cmp #$04
         bne @playStateNotDisplayLineClearingAnimation

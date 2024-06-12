@@ -136,6 +136,22 @@ stageSpriteForCurrentPiece_return:
         rts
 
 stageSpriteForNextPiece:
+        sec
+        rol sprite0State
+        lda sprite0State
+        and #$03
+        sta sprite0State
+
+        ; sprite 0 ytax
+        lda #$CF
+        sta oamStaging
+        lda #$A1
+        sta oamStaging+1
+        lda #$03
+        sta oamStaging+2
+        lda #$00
+        sta oamStaging+3
+
         lda hideNextPiece
         bne @maybeDisplayNextPiece
 

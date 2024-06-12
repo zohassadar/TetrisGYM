@@ -29,7 +29,17 @@ gameModeState_initGameState:
         ; paceResult init
         lda #$B0
         sta paceResult
+
+        lda #$27
+        sta inputPPUAddress+1
+        lda #$60
+        sta inputPPUAddress
         lda #$00
+        sta currentNTMask
+        sta inputXScroll
+
+        sta sprite0State
+
         sta paceSign
         sta paceResult+1
         sta paceResult+2

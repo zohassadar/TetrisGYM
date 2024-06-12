@@ -220,8 +220,13 @@ dasOnlyShiftDisabled: .res 1 ; $63A
 invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
-
-    .res $37
+sprite0State: .res 1 ; $63E
+inputXScroll: .res 1 ; $63F
+inputPPUAddress: .res 2; $63F
+inputLeft: .res 1
+inputRight: .res 1
+currentNTMask: .res 1
+    .res $30
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
