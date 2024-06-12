@@ -223,10 +223,10 @@ mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MM
 sprite0State: .res 1 ; $63E
 inputXScroll: .res 1 ; $63F
 inputPPUAddress: .res 2; $63F
-inputLeft: .res 1
-inputRight: .res 1
+inputTile: .res 1
 currentNTMask: .res 1
 inputBuffer: .res 4
+eventBuffer: .res 1
     .res $2C
 
 .if KEYBOARD

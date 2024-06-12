@@ -11,12 +11,14 @@ render_mode_play_and_demo:
         sta PPUADDR
         lda inputPPUAddress
         sta PPUADDR
-        lda inputLeft
+        lda inputTile
         sta PPUDATA
-        lda inputRight
+        lda eventBuffer
         sta PPUDATA
         lda currentPpuCtrl
         sta PPUCTRL
+        lda #$FF
+        sta eventBuffer
 @noInputScroll:
         lda playState
         cmp #$04

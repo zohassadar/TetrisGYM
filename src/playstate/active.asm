@@ -349,6 +349,13 @@ drop_tetrimino_actual:
         sta tetriminoY
         lda #$02
         sta playState
+
+        lda frameCounter
+        and #$03
+        tax
+        lda eventTileTableLock,x
+        sta eventBuffer
+
         jsr updatePlayfield
 @ret:   rts
 
@@ -489,3 +496,6 @@ shift_tetrimino:
         lda dasValueDelay
         sta autorepeatX
 @ret:   rts
+
+eventTileTableLock:
+    .byte $A8,$A9,$AA,$AB

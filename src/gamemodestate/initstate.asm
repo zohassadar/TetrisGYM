@@ -34,6 +34,8 @@ gameModeState_initGameState:
         sta inputPPUAddress+1
         lda #$60
         sta inputPPUAddress
+        lda #$FF
+        sta eventBuffer
         lda #$00
         sta currentNTMask
         sta inputXScroll

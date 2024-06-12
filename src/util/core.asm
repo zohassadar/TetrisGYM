@@ -71,7 +71,7 @@ updateAudioWaitForNmiAndResetOamStaging:
         bit PPUSTATUS
         bvc @sprite0Wait
 
-        ldx #$A0
+        ldx #$C0
 @burn:
         dex
         bne @burn
@@ -346,9 +346,6 @@ incrementInputScrollStuff:
     beq @continue
     rts
 @continue:
-    lda #$00
-    sta inputLeft
-    sta inputRight
 
     lda inputPPUAddress
     clc
@@ -361,61 +358,68 @@ incrementInputScrollStuff:
     lda #$60
 @noSwitch:
     sta inputPPUAddress
+    lda #$00
+    sta inputTile
     clc
     lda inputBuffer
     and #BUTTON_LEFT
     beq @noLeft0
     sec
 @noLeft0:
-    rol inputLeft
+    rol inputTile
     lda inputBuffer+1
     and #BUTTON_LEFT
     beq @noLeft1
     sec
 @noLeft1:
-    rol inputLeft
+    rol inputTile
     lda inputBuffer+2
     and #BUTTON_LEFT
     beq @noLeft2
     sec
 @noLeft2:
-    rol inputLeft
+    rol inputTile
     lda inputBuffer+3
     and #BUTTON_LEFT
     beq @noLeft3
     sec
 @noLeft3:
-    rol inputLeft
+    rol inputTile
     lda #$B0
-    ora inputLeft
-    sta inputLeft
+    ora inputTile
+    sta inputTile
+    cmp #$B0
+    bne @noRightRead
 
+    lda #$00
+    sta inputTile
     clc
     lda inputBuffer
     and #BUTTON_RIGHT
     beq @noRight0
     sec
 @noRight0:
-    rol inputRight
+    rol inputTile
     lda inputBuffer+1
     and #BUTTON_RIGHT
     beq @noRight1
     sec
 @noRight1:
-    rol inputRight
+    rol inputTile
     lda inputBuffer+2
     and #BUTTON_RIGHT
     beq @noRight2
     sec
 @noRight2:
-    rol inputRight
+    rol inputTile
     lda inputBuffer+3
     and #BUTTON_RIGHT
     beq @noRight3
     sec
 @noRight3:
-    rol inputRight
-    lda #$B0
-    ora inputRight
-    sta inputRight
+    rol inputTile
+    lda #$C0
+    ora inputTile
+    sta inputTile
+@noRightRead:
     rts
