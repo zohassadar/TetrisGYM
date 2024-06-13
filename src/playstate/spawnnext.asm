@@ -1,6 +1,6 @@
 SPAWN_NEXT_ADDONS := 1
 eventTileTableSpawn:
-    .byte $AC,$AD,$AE,$AF
+    .byte $AA,$AB,$AE,$AF
 
 playState_spawnNextTetrimino:
         lda vramRow
@@ -12,7 +12,7 @@ playState_spawnNextTetrimino:
 
 :
         lda frameCounter
-        and #$03
+        and #$01
         tax
         lda eventTileTableSpawn,x
         sta eventBuffer

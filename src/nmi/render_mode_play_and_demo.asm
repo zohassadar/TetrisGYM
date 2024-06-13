@@ -1,7 +1,7 @@
 render_mode_play_and_demo:
         lda frameCounter
-        and #$03
-        cmp #$03
+        and #$01
+        cmp #$01
         bne @noInputScroll
         lda inputPPUAddress+1
         lda currentPpuCtrl

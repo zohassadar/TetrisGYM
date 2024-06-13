@@ -330,7 +330,7 @@ switch_s_plus_2a:
 incrementInputScrollStuff:
     lda inputXScroll
     clc
-    adc #$02
+    adc #$04
     sta inputXScroll
     bcc :+
     lda currentNTMask
@@ -338,11 +338,11 @@ incrementInputScrollStuff:
     sta currentNTMask
 :
     lda frameCounter
-    and #$03
+    and #$01
     tax
     lda heldButtons
     sta inputBuffer,x
-    cpx #$03
+    cpx #$01
     beq @continue
     rts
 @continue:
@@ -372,18 +372,18 @@ incrementInputScrollStuff:
     beq @noLeft1
     sec
 @noLeft1:
-    rol inputTile
-    lda inputBuffer+2
-    and #BUTTON_LEFT
-    beq @noLeft2
-    sec
-@noLeft2:
-    rol inputTile
-    lda inputBuffer+3
-    and #BUTTON_LEFT
-    beq @noLeft3
-    sec
-@noLeft3:
+;    rol inputTile
+;    lda inputBuffer+2
+;    and #BUTTON_LEFT
+;    beq @noLeft2
+;    sec
+;@noLeft2:
+;    rol inputTile
+;    lda inputBuffer+3
+;    and #BUTTON_LEFT
+;    beq @noLeft3
+;    sec
+;@noLeft3:
     rol inputTile
     lda #$B0
     ora inputTile
@@ -405,18 +405,18 @@ incrementInputScrollStuff:
     beq @noRight1
     sec
 @noRight1:
-    rol inputTile
-    lda inputBuffer+2
-    and #BUTTON_RIGHT
-    beq @noRight2
-    sec
-@noRight2:
-    rol inputTile
-    lda inputBuffer+3
-    and #BUTTON_RIGHT
-    beq @noRight3
-    sec
-@noRight3:
+;    rol inputTile
+;    lda inputBuffer+2
+;    and #BUTTON_RIGHT
+;    beq @noRight2
+;    sec
+;@noRight2:
+;    rol inputTile
+;    lda inputBuffer+3
+;    and #BUTTON_RIGHT
+;    beq @noRight3
+;    sec
+;@noRight3:
     rol inputTile
     lda #$C0
     ora inputTile

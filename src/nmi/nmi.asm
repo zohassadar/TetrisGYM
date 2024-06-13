@@ -15,8 +15,6 @@ nmi:    pha
         inc sleepCounter
 @jumpOverIncrement:
         jsr copyOamStagingToOam
-        lda #$04
-        sta oamStagingLength
         lda frameCounter
         clc
         adc #$01

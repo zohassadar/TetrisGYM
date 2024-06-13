@@ -351,7 +351,7 @@ drop_tetrimino_actual:
         sta playState
 
         lda frameCounter
-        and #$03
+        and #$01
         tax
         lda eventTileTableLock,x
         sta eventBuffer
