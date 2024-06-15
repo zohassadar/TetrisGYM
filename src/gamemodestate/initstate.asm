@@ -46,6 +46,7 @@ gameModeState_initGameState:
         sta dasOnlyShiftDisabled
         sta invisibleFlag
         sta currentFloor
+        sta dasMeter
 
 ; initialize currentFloor if necessary
         lda practiseType

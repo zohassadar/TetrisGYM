@@ -441,12 +441,14 @@ shift_tetrimino:
 
         lda tetriminoX
         sta originalY
+        lda dasMeter
+        sta originalDasMeter
         lda heldButtons
         and #BUTTON_DOWN
         bne @ret
         lda newlyPressedButtons
         and #$03
-        bne @resetAutorepeatX
+        bne @decreaseDasMeter
         lda heldButtons
         and #$03
         beq @ret
@@ -457,11 +459,15 @@ shift_tetrimino:
         lda dasValuePeriod
         sta autorepeatX
         jmp @buttonHeldDown
-
+@decreaseDasMeter:
+        jsr decreaseDasMeter
 @resetAutorepeatX:
         lda #$00
         sta autorepeatX
+        beq @shiftPiece
 @buttonHeldDown:
+        jsr increaseDasMeter
+@shiftPiece:
         lda heldButtons
         and #BUTTON_RIGHT
         beq @notPressingRight
@@ -484,8 +490,28 @@ shift_tetrimino:
         jmp @ret
 
 @restoreX:
+        lda originalDasMeter
+        sta dasMeter
         lda originalY
         sta tetriminoX
         lda dasValueDelay
         sta autorepeatX
+@ret:   rts
+
+increaseDasMeter:
+        inc dasMeter
+        lda dasMeter
+        cmp #11
+        bne @ret
+        dec dasMeter
+@ret:   rts
+
+decreaseDasMeter:
+        jsr @repeat
+@repeat:
+        dec dasMeter
+        lda dasMeter
+        cmp #127
+        bne @ret
+        inc dasMeter
 @ret:   rts

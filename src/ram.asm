@@ -15,7 +15,10 @@ nmiReturnAddr: .res 1 ; $0010 ; used for crash
 crashState: .res 1 ; $0011 ; used for crash
 cycleCount: .res 2 ; $0012 ; 2 bytes ; used for crash
 oneThirdPRNG: .res 1 ; $0014 ; used for crash
-    .res $2
+
+dasMeter: .res 1    ; -15 to 5.  DAS shifts will increase, taps decrease.
+                    ; Affects score when negative.
+    .res $1
 
 rng_seed: .res 2 ; $0017
 spawnID: .res 1 ; $0019
@@ -188,7 +191,7 @@ saveStateSlot: .res 1 ; $60B
 saveStateSpriteType: .res 1 ; $60C
 saveStateSpriteDelay: .res 1 ; $60D
 presetIndex: .res 1 ; $60E ; can be mangled in other modes
-.res 1
+effectiveLines: .res 1 ; $60F used to affect scoring in dasmeter mode
 debugLevelEdit: .res 1 ; $610
 debugNextCounter: .res 1 ; $611
 paceResult: .res 3 ; $612 ; 3 bytes
@@ -203,7 +206,8 @@ hzResult := hzRAM+5 ; 2 byte
 hzSpawnDelay := hzRAM+7 ; 1 byte
 hzPalette := hzRAM+8 ; 1 byte
 inputLogCounter := presetIndex ; reusing presetIndex
-    .res 2
+originalDasMeter:.res 1 ; used like originalY
+    .res 1
 tqtyCurrent: .res 1 ; $621
 tqtyNext: .res 1 ; $622
 
@@ -348,8 +352,9 @@ darkModifier: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
 linecapFlag: .res 1
-dasOnlyFlag: .res 1
+dasMeterFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
+dasOnlyFlag: .res 1     ; disabling this to test dasMeter
 
 ; ... $7FF

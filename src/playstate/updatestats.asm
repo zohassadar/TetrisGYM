@@ -1,4 +1,5 @@
 playState_updateLinesAndStatistics:
+        jsr setEffectiveLines
         jsr updateMusicSpeed
         lda completedLines
         bne @linesCleared
@@ -360,7 +361,7 @@ addLineClearPoints:
         sta factorA24
 @multSetupEnd:
 
-        lda completedLines
+        lda effectiveLines
         beq addLineClearPoints_end ; skip with 0 completed lines
         asl
         tax
@@ -460,4 +461,21 @@ calcBCDLinesAndTileQueue:
         lda #$80
         sta linesTileQueue
 @ret:
+        rts
+
+
+
+setEffectiveLines:
+        lda completedLines
+        ldx dasMeterFlag
+        beq @store          ; skip if dasMeter disabled
+        bit dasMeter
+        bpl @store          ; skip if dasMeter positive
+        clc
+        adc dasMeter
+        sta dasMeter
+        bpl @store          ; store difference if positive
+        lda #$0
+@store:
+        sta effectiveLines
         rts
