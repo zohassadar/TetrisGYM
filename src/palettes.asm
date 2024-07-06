@@ -55,7 +55,10 @@ wait_palette:
         .byte   $3F,$00
         .byte   $10
         .byte   $0F,$16,$30,$30 ; bg
-        .byte   $0F,$21,$01,$11
-        .byte   $0F,$11,$21,$30
-        .byte   $0F,$21,$01,$30
+        .byte   $0F,$31,$01,$21
+        .byte   $0F,$21,$31,$30
+        .byte   $0F,$31,$11,$30
+        .byte   $3F,$14
+        .byte   $04
+        .byte   $0F,$31,$11,$01
         .byte   $FF
