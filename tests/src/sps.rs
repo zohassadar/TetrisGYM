@@ -14,6 +14,7 @@ impl SPS {
     }
 
     pub fn set_input(&mut self, seed: (u8, u8, u8)) {
+        self.emu.memory.iram_raw[labels::get("spawnID") as usize] = 0;
         self.emu.memory.iram_raw[(labels::get("set_seed_input") + 0) as usize] = seed.0;
         self.emu.memory.iram_raw[(labels::get("set_seed") + 0) as usize] = seed.0;
         self.emu.memory.iram_raw[(labels::get("set_seed_input") + 1) as usize] = seed.1;
@@ -54,61 +55,28 @@ pub fn test() {
         assert_eq!(blocks.next(), block.into());
     });
 
+    blocks.set_input((0x00, 0x02, 0x06));
+    "STJTJSILJSIIZLJLJOSOTIJSTOIOLIZIZIOTSLOSZTZOLSZTIJZIOIJLJLJTZJOLZJSZILSJTLIOTJSSLIJOZJOTITZSSTTIOITJ".chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
     let (shuffled, by_repeats) = rng::get_pre_shuffle();
 
-    blocks.set_input( (0x77, 0x77, 0x77));
-    let (s1, s2, s3) = (0x77, 0x77, 0x77);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
+    static LENGTH: i32 = 10;
+    for seed in 0..0x1000000 {
+        if seed % 0x100000 == 0 {
+            println!("{:X}", seed >> 20);
+        }
+        let s1 = ((seed >> 16) & 0xFF) as u8;
+        let s2 = ((seed >> 8) & 0xFF) as u8;
+        let s3 = (seed & 0xFF) as u8;
+        if s1 == 0 && s2 & 0xFE == 0 { continue };
+        if s3 & 0x08 == 0x08 || s2 & 0x01 == 0x01 { continue };
+        let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, LENGTH);
+        let string = rng::get_string_from_sequence(&sequence);
+        blocks.set_input((s1, s2, s3));
+        let gym_string: String = (0..LENGTH).map(|_| format!("{:#?}", blocks.next())).collect();
 
-    blocks.set_input( (0x99, 0x99, 0x99));
-    let (s1, s2, s3) = (0x99, 0x99, 0x99);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
-
-    blocks.set_input( (0xAA, 0xAA, 0xAA));
-    let (s1, s2, s3) = (0xAA, 0xAA, 0xAA);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
-
-    blocks.set_input( (0xBB, 0xBB, 0xBB));
-    let (s1, s2, s3) = (0xBB, 0xBB, 0xBB);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
-
-    blocks.set_input( (0xCC, 0xCC, 0xCC));
-    let (s1, s2, s3) = (0xCC, 0xCC, 0xCC);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
-
-    blocks.set_input( (0xDD, 0xDD, 0xDD));
-    let (s1, s2, s3) = (0xDD, 0xDD, 0xDD);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
-
-    blocks.set_input( (0xEE, 0xEE, 0xEE));
-    let (s1, s2, s3) = (0xEE, 0xEE, 0xEE);
-    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
-    let string = rng::get_string_from_sequence(&sequence);
-    string.chars().for_each(|block| {
-        assert_eq!(blocks.next(), block.into());
-    });
+        assert_eq!((format!("{seed:06X}"),gym_string), (format!("{seed:06X}"),string));
+    }
 }
