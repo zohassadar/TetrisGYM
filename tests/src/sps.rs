@@ -1,5 +1,6 @@
 use crate::{block, labels, util};
 use rusticnes_core::nes::NesState;
+use rustyseed::rng;
 
 pub struct SPS {
     emu: NesState,
@@ -50,6 +51,64 @@ pub fn test() {
 
     blocks.set_input((0x13, 0x37, 0x02));
     "OJSTZSIOLSIJTSZILJZJJLZLISISJTLZTSZTJOJOSJSZLITJOIOTITILTOSTJSZTSOOIOJSIITLJOZSIOJOTZTLJLIOJLITSSLSLIJIIOLOISLZJLIJJTIZIJOJISLTIJTOTZIOILSTTLTZIZJSOLOZOZOLOTZTZOTZOSIOTJJTSIZSOLTOLIZSOZOTZISLJTSZLOISO".chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    let (shuffled, by_repeats) = rng::get_pre_shuffle();
+
+    blocks.set_input( (0x77, 0x77, 0x77));
+    let (s1, s2, s3) = (0x77, 0x77, 0x77);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0x99, 0x99, 0x99));
+    let (s1, s2, s3) = (0x99, 0x99, 0x99);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0xAA, 0xAA, 0xAA));
+    let (s1, s2, s3) = (0xAA, 0xAA, 0xAA);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0xBB, 0xBB, 0xBB));
+    let (s1, s2, s3) = (0xBB, 0xBB, 0xBB);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0xCC, 0xCC, 0xCC));
+    let (s1, s2, s3) = (0xCC, 0xCC, 0xCC);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0xDD, 0xDD, 0xDD));
+    let (s1, s2, s3) = (0xDD, 0xDD, 0xDD);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
+        assert_eq!(blocks.next(), block.into());
+    });
+
+    blocks.set_input( (0xEE, 0xEE, 0xEE));
+    let (s1, s2, s3) = (0xEE, 0xEE, 0xEE);
+    let sequence = rng::crunch_seed(s1, s2, s3, &shuffled, &by_repeats, 1000);
+    let string = rng::get_string_from_sequence(&sequence);
+    string.chars().for_each(|block| {
         assert_eq!(blocks.next(), block.into());
     });
 }
