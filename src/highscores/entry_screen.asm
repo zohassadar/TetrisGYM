@@ -109,6 +109,8 @@ copyHighscore:
         rts
 
 highScoreEntryScreen:
+        lda #$01
+        sta oamStaging+254
         lda #$09
         jsr setMusicTrack
         lda #$02

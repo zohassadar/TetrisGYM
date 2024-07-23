@@ -70,14 +70,17 @@ resetOAMStaging:
 ; Sprites are never displayed on the first line of the picture, and it is impossible to place
 ; a sprite partially off the top of the screen.
 ; https://www.nesdev.org/wiki/PPU_OAM
-        ldx #$00
+        ldx tourneyFlag ; 0 if not enabled
+        beq @notTourney
+        ldx #$FC        ; leave last slot alone
+@notTourney:
         lda #$FF
 @hideY:
+        dex
+        dex
+        dex
+        dex
         sta oamStaging,x
-        inx
-        inx
-        inx
-        inx
         bne @hideY
         rts
 

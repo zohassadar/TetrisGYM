@@ -1,4 +1,6 @@
 gameMode_levelMenu:
+        lda #$01
+        sta oamStaging+254
         lda #NMIEnable
         sta currentPpuCtrl
         jsr updateAudio2

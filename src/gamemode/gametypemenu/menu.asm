@@ -41,6 +41,16 @@ gameTypeLoop:
 gameTypeLoopContinue:
         jsr menuConfigControls
         jsr practiseTypeMenuControls
+        lda tourneyFlag
+        beq gameTypeLoopCheckStart
+        lda #$E7
+        sta oamStaging+252
+        lda #$FE
+        sta oamStaging+253
+        lda #$00
+        sta oamStaging+254
+        lda #$F8
+        sta oamStaging+255
 
 gameTypeLoopCheckStart:
         lda newlyPressedButtons_player1
@@ -109,8 +119,9 @@ gameTypeLoopNext:
 seedControls:
         lda practiseType
         cmp #MODE_SEED
-        bne gameTypeLoopContinue
-
+        beq @modeSeed
+        jmp gameTypeLoopContinue
+@modeSeed:
         lda newlyPressedButtons_player1
         cmp #BUTTON_SELECT
         bne @skipSeedSelect
