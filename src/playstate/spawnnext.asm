@@ -58,7 +58,7 @@ playState_spawnNextTetrimino:
         sta autorepeatY
 @ret:   rts
 
-chooseNextTetrimino:
+chooseNextTetriminoOld:
         jmp pickTetriminoPre
 
 pickRandomTetrimino:

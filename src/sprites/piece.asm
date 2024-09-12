@@ -135,7 +135,7 @@ stageSpriteForCurrentPiece_actual:
 stageSpriteForCurrentPiece_return:
         rts
 
-stageSpriteForNextPiece:
+stageSpriteForNextPieceOld:
         lda hideNextPiece
         bne @maybeDisplayNextPiece
 

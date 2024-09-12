@@ -31,7 +31,10 @@ lagState: .res 1 ; $0022 for lagged lines & score
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
-    .res 6
+    .res 2
+droughtTens: .res 1 ; number of pieces until next bar
+droughtOnes: .res 1
+spsPointer: .res 2 ; $003A ; high byte always 5.  low byte current piece
 
 tetriminoX: .res 1 ; $0040
 tetriminoY: .res 1 ; $0041
@@ -170,7 +173,9 @@ statsByType: .res $E ; $03F0
 playfield: .res $c8 ; $0400
     .res $38 ; still technically part of playfield
 
-    .res $100 ; $500 ; 2 player playfield
+    .res $9c ; $500 ; 2 player playfield
+
+pieceBuffer: .res $64  ; $59c ; 100 pieces chosen in advance
 
 practiseType: .res 1 ; $600
 spawnDelay: .res 1 ; $601

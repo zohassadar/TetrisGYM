@@ -94,7 +94,7 @@ gameModeState_initGameState:
         ldx #$B4
 @ntsc:
         stx autorepeatY
-        jsr chooseNextTetrimino
+        jsr initDroughtInfoAndChooseNext
         sta currentPiece
         jsr incrementPieceStat
         ldx #rng_seed
