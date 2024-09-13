@@ -23,6 +23,9 @@ waitScreenLoad:
         lda screenStage
         cmp #2
         bne @justLegal
+        .repeat 5
+        nop
+        .endrepeat
         ; jsr bulkCopyToPpu
         ; .addr title_nametable_patch
 @justLegal:
