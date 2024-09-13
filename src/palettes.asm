@@ -40,7 +40,7 @@ rocket_palette:
 .if INES_MAPPER = 0             ; sprite
         .byte   $2D,$30,$27     ; Ufo colors
 .else
-        .byte   $16,$2A,$28     ; Cathedral colors
+        .byte   $17,$27,$37     ; Cathedral colors
 .endif
         .byte   $0F,$37,$18,$38
         .byte   $3F,$00
@@ -54,6 +54,6 @@ wait_palette:
         .byte   $30             ; sprite
         .byte   $3F,$00
         .byte   $08
-        .byte   $0F,$30,$38,$26 ; bg
-        .byte   $0F,$17,$27,$37
+        .byte   $0F,$16,$27,$21 ; bg
+        .byte   $0F,$30,$27,$37
         .byte   $FF
