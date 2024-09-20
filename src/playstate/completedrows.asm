@@ -135,7 +135,7 @@ playState_checkForCompletedRows:
         sta vramRow
         inc playState
         inc playState
-        lda #$07
+        lda #$00
         sta soundEffectSlot1Init
         rts
 @tapQtyEnd:
@@ -150,7 +150,7 @@ playState_checkForCompletedRows:
 
         lda completedLines
         beq :+
-        lda #$0A
+        lda #$00
         sta soundEffectSlot1Init
 :
 
@@ -174,7 +174,7 @@ playState_checkForCompletedRows:
 @skipLines:
 playState_completeRowContinue:
         inc playState
-        lda #$07
+        lda #$00
         sta soundEffectSlot1Init
 playState_checkForCompletedRows_return:
         rts

@@ -251,7 +251,7 @@ rotate_tetrimino:
         sta currentPiece
         jsr isPositionValid
         bne @restoreOrientationID
-        lda #$05
+        lda #$00
         sta soundEffectSlot1Init
         jmp @ret
 
@@ -264,7 +264,7 @@ rotate_tetrimino:
         sta currentPiece
         jsr isPositionValid
         bne @restoreOrientationID
-        lda #$05
+        lda #$00
         sta soundEffectSlot1Init
         jmp @ret
 
@@ -468,7 +468,7 @@ shift_tetrimino:
         inc tetriminoX
         jsr isPositionValid
         bne @restoreX
-        lda #$03
+        lda #$00
         sta soundEffectSlot1Init
         jmp @ret
 
@@ -479,7 +479,7 @@ shift_tetrimino:
         dec tetriminoX
         jsr isPositionValid
         bne @restoreX
-        lda #$03
+        lda #$00
         sta soundEffectSlot1Init
         jmp @ret
 
