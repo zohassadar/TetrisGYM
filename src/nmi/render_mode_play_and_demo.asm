@@ -237,7 +237,7 @@ dumpAnimationBuffer:
 
         lda currentPpuCtrl
         sta PPUCTRL
-@ret:   
+@ret:
         rts
 
 
@@ -629,7 +629,7 @@ updateLineClearingAnimationForSmallEven:
         lda rightColumns,x
         asl
         sta rightCol
-        
+
         ldy tetriminoYforLineClear
         dey
         dey
@@ -644,7 +644,7 @@ updateLineClearingAnimationForSmallEven:
         sta animationRenderBuffer+0
         sta animationRenderBuffer+5
 
-        
+
         lda vramPlayfieldRows,y
         clc
         adc leftColumns,x
@@ -712,7 +712,7 @@ updateLineClearingAnimationForSmallOdd:
         lda rightColumns,x
         asl
         sta rightCol
-        
+
         ldy tetriminoYforLineClear
         dey
         dey
@@ -731,7 +731,7 @@ updateLineClearingAnimationForSmallOdd:
         sta animationRenderBuffer+0
         sta animationRenderBuffer+6
 
-        
+
         lda vramPlayfieldRows,y
         clc
         adc leftColumns,x
@@ -786,11 +786,11 @@ changeSizeIfNeeded:
         lda #$00
         sta sizeChangeFlag
         lda levelNumber
-        cmp #$12
+        cmp big2MediumLevel
         bne @checkMediumToSmall
         jmp @change
 @checkMediumToSmall:
-        cmp #$1C
+        cmp medium2SmallLevel
         bne smallOddReturn
 @change:
         dec currentSize

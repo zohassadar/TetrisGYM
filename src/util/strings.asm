@@ -70,9 +70,9 @@ stringSpriteLoop:
         rts
 
 stringLookup:
-        .byte stringClassic-stringLookup
-        .byte stringLetters-stringLookup
-        .byte stringSevenDigit-stringLookup
+        .byte stringEasy-stringLookup
+        .byte stringMedium-stringLookup
+        .byte stringHard-stringLookup
         .byte stringFloat-stringLookup
         .byte stringScorecap-stringLookup
         .byte stringHidden-stringLookup
@@ -92,12 +92,12 @@ stringLookup:
         .byte stringFromBelow-stringLookup
         .byte stringInviz-stringLookup
         .byte stringHalt-stringLookup
-stringClassic:
-        .byte $7,'C','L','A','S','S','I','C'
-stringLetters:
-        .byte $7,'L','E','T','T','E','R','S'
-stringSevenDigit:
-        .byte $6,'7','D','I','G','I','T'
+stringEasy:
+        .byte $4,"EASY"
+stringMedium:
+        .byte $6,"MEDIUM"
+stringHard:
+        .byte $4,"HARD"
 stringFloat:
         .byte $1,'M'
 stringScorecap:

@@ -74,7 +74,12 @@ gameTypeLoopCheckStart:
         bne @checkSpeedTest
         lda #$10
         jsr setMMC1Control
-        lda #09
+        ldx shrinkDifficulty
+        lda big2MediumLevels,x
+        sta big2MediumLevel
+        lda medium2SmallLevels,x
+        sta medium2SmallLevel
+        lda shrinkStartLevels,x
         sta startLevel
         sta levelNumber
         lda #$00
@@ -132,7 +137,9 @@ gameTypeLoopNext:
 seedControls:
         lda practiseType
         cmp #MODE_SEED
-        bne gameTypeLoopContinue
+        beq @carryOn
+        jmp gameTypeLoopContinue
+@carryOn:
         lda heldButtons_player1
         cmp #BUTTON_A + BUTTON_B
         bne @ABNotPressed
@@ -460,6 +467,7 @@ menuYTmp := tmp2
         jsr menuItemY16Offset
         bne @notSeed
         stx spriteYOffset
+        dec spriteYOffset
         lda #set_seed_input
         sta byteSpriteAddr
         lda #0
@@ -492,7 +500,7 @@ menuYTmp := tmp2
         beq @renderBool
 
         lda menuCounter
-        cmp #MODE_SCORE_DISPLAY
+        cmp #MODE_SHRINK
         beq @renderScoreName
 
         ldx oamStagingLength
@@ -544,14 +552,15 @@ menuYTmp := tmp2
         jmp @loopNext
 
 @renderScoreName:
-        ; lda scoringModifier
-        ; sta spriteIndexInOamContentLookup
-        ; lda #(MODE_SCORE_DISPLAY*8) + MENU_SPRITE_Y_BASE + 1
-        ; sbc menuScrollY
-        ; sta spriteYOffset
-        ; lda #$e9
-        ; sta spriteXOffset
-        ; jsr stringSpriteAlignRight
+        lda shrinkDifficulty
+        sta spriteIndexInOamContentLookup
+        lda #(MODE_SHRINK*8) + MENU_SPRITE_Y_BASE + 1
+        sbc menuScrollY
+        sta spriteYOffset
+        dec spriteYOffset
+        lda #$e9
+        sta spriteXOffset
+        jsr stringSpriteAlignRight
         jmp @loopNext
 
 ; <- menu item index in A
@@ -636,3 +645,11 @@ checkIfSeeded:
         inc seededPieces
 @noSeed:
         rts
+
+
+shrinkStartLevels:
+        .byte $00,$00,$09
+big2MediumLevels:
+        .byte $04,$08,$12
+medium2SmallLevels:
+        .byte $08,$12,$1C

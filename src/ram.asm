@@ -9,7 +9,10 @@ tmpBulkCopyToPpuReturnAddr: .res 2 ;  $0006 ; 2 bytes
 binScore: .res 4 ;  $8 ; 4 bytes binary
 score: .res 4 ;  $C ; 4 bytes BCD
 tetriminoYforLineClear: .res 1
-    .res 6
+big2MediumLevel: .res 1
+medium2SmallLevel: .res 1
+shrinkStartLevel: .res 1
+    .res 3
 
 rng_seed: .res 2 ; $0017
 spawnID: .res 1 ; $0019
@@ -18,8 +21,8 @@ pointerAddr: .res 2 ; $001B ; used in debug, harddrop
 pointerAddrB: .res 2 ; $001D ; used in harddrop
 
 animationRenderFlag: .res 1
-sramPlayfield: .res 2 ; $0020   for ($3E),y addressing    
-sramPlayfieldBR: .res 2 ; $0022 
+sramPlayfield: .res 2 ; $0020   for ($3E),y addressing
+sramPlayfieldBR: .res 2 ; $0022
 multTableLo: .res 2 ; $0024
 multTableHi: .res 2 ; $0026
 xLimit: .res 1 ; $0028
@@ -342,6 +345,7 @@ linecapHow: .res 1
 linecapLevel: .res 1
 linecapLines: .res 2
 menuVars: ; $76E
+shrinkDifficulty: .res 1
 dasModifier: .res 1
 paceModifier: .res 1
 presetModifier: .res 1

@@ -115,11 +115,11 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
-.macro MENUSIZES 
+.macro MENUSIZES
         .byte $0
         .byte $0
         .byte $0
-        .byte $0
+        .byte $2
         .byte $0
         .byte $10
     ; .byte $0    ; MODE_TETRIS

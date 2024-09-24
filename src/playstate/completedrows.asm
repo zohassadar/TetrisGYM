@@ -78,7 +78,7 @@ playState_checkForCompletedRows:
         beq @resetVars
         lda completedLines
         beq @resetVars
-        
+
         ldy rowTop
         lda (multTableLo),y
         sta sramPlayfield
@@ -183,11 +183,11 @@ checkForSizeChange:
         lda currentSize
         beq @ret
         lda levelNumber
-        cmp #$12
+        cmp big2MediumLevel
         bne @checkMediumToSmall
         jmp changeBigToMedium
 @checkMediumToSmall:
-        cmp #$1C
+        cmp medium2SmallLevel
         bne @ret
         jmp changeMediumToSmall
 @ret:
