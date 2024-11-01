@@ -251,6 +251,17 @@ rotate_tetrimino:
         sta currentPiece
         jsr isPositionValid
         bne @restoreOrientationID
+        lda noTripFlipFlag
+        beq :+
+        jsr checkIfTJorL
+        beq :+
+        inc noTripFlipCounter
+        lda noTripFlipCounter
+        cmp #$03
+        bne :+
+        dec noTripFlipCounter
+        bne @restoreOrientationID ; expected to be 2
+:
         lda #$05
         sta soundEffectSlot1Init
         jmp @ret
@@ -264,6 +275,17 @@ rotate_tetrimino:
         sta currentPiece
         jsr isPositionValid
         bne @restoreOrientationID
+        lda noTripFlipFlag
+        beq :+
+        jsr checkIfTJorL
+        beq :+
+        dec noTripFlipCounter
+        lda noTripFlipCounter
+        cmp #$FD
+        bne :+
+        inc noTripFlipCounter
+        bne @restoreOrientationID ; expected to be -2
+:
         lda #$05
         sta soundEffectSlot1Init
         jmp @ret
@@ -272,6 +294,16 @@ rotate_tetrimino:
         lda originalY
         sta currentPiece
 @ret:   rts
+
+checkIfTJorL:
+        ldx currentPiece
+        ldy tetriminoTypeFromOrientation,x
+        ldx tripFlipPieces,y
+        rts
+
+tripFlipPieces:
+        ; only care about T, J, L
+        .byte 1,1,0,0,0,1,0
 
 rotationTable:
         .dbyt   $0301,$0002,$0103,$0200

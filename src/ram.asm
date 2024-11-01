@@ -221,7 +221,12 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
 
-    .res $37
+noTripFlipCounter: .res 1
+; used to discourage triple flipping
+; decrement with b, increment with a.
+; must be -2 <= counter <= 2
+
+    .res $36
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675
@@ -350,6 +355,7 @@ debugFlag: .res 1
 linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
+noTripFlipFlag: .res 1
 palFlag: .res 1
 
 ; ... $7FF
