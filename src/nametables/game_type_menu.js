@@ -75,7 +75,7 @@ drawTiles(buffer, lookup, `
 #a    LINECAP                 d#
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
-#a    NO TRIPLE FLIP          d#
+#a    NO PANIC FLIP           d#
 #a    PAL MODE                d#
 #a                            d#
 #a V6                         d#
