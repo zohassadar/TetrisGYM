@@ -201,5 +201,5 @@ console.timeEnd('build');
 
 if (args.includes('-t')) {
     console.log('\nrunning tests');
-    exec('cargo run --release --manifest-path tests/Cargo.toml -- -t');
+    exec('cargo run --release --manifest-path tests/Cargo.toml -- -T sps');
 }

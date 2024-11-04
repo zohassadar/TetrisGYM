@@ -32,10 +32,10 @@ verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
     .res 2
-droughtTens: .res 1 ; number of pieces until next bar
-droughtOnes: .res 1
-spsPointer: .res 2 ; $003A ; high byte always 5.  low byte current piece
-
+droughtTens: .res 1 ; $003C number of pieces until next bar
+droughtOnes: .res 1 ; $003D
+spsPointer: .res 1 ; $003E ; stores offset into pieceBuffer
+.res 1
 tetriminoX: .res 1 ; $0040
 tetriminoY: .res 1 ; $0041
 currentPiece: .res 1 ; $0042                    ; Current piece as an orientation ID

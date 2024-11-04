@@ -1,20 +1,21 @@
+pieceBufferOffset = pieceBuffer - <pieceBuffer
+
+.macro resetSpsPointer
+    ldy #<pieceBuffer
+.endmacro
+
 initDroughtInfoAndChooseNext:
     lda practiseType
     cmp #MODE_SEED
     bne normalRng
-    lda #<pieceBuffer
-    sta spsPointer
-    lda #>pieceBuffer
-    sta spsPointer+1
-    ldy #0
+    resetSpsPointer
 @fillLoop:
     jsr pickTetriminoSeed
-    sta (spsPointer),y
-    inc spsPointer
+    sta pieceBufferOffset,y
+    iny
     bne @fillLoop
 ; reset pointer
-    lda #<pieceBuffer
-    sta spsPointer
+    resetSpsPointer
     bne chooseNextTetriminoAfterInit ; unconditional
 
 normalRng:
@@ -24,30 +25,27 @@ chooseNextTetrimino:
     lda practiseType
     cmp #MODE_SEED
     bne normalRng
-    ldy #0
+    ldy spsPointer
 chooseNextTetriminoAfterInit:
-    lda (spsPointer),y
+    lda pieceBufferOffset,y
     pha
     jsr pickTetriminoSeed
-    sta (spsPointer),y
-    inc spsPointer
+    sta pieceBufferOffset,y
+    iny
     bne @noReset
-    lda #<pieceBuffer
-    sta spsPointer
+    resetSpsPointer
 @noReset:
-    lda spsPointer
-    pha
+    sty spsPointer
     ldx #0
     stx droughtTens
 @droughtCount:
-    lda (spsPointer),y
+    lda pieceBufferOffset,y
     cmp #$12
     beq @barFound
     inx
-    inc spsPointer
+    iny
     bne @droughtCount
-    lda #<pieceBuffer
-    sta spsPointer
+    resetSpsPointer
     bne @droughtCount ; unconditional
 @barFound:
     txa
@@ -59,8 +57,6 @@ chooseNextTetriminoAfterInit:
     bcs @compareLoop ; unconditional
 @storeOnes:
     sta droughtOnes
-    pla
-    sta spsPointer
     pla
     rts
 
