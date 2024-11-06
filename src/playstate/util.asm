@@ -78,12 +78,15 @@ updatePlayfield:
 @ret:   rts
 
 updateMusicSpeed:
-        ldx #$05
-        lda multBy10Table,x ;this piece of code is parameterized for no reason but the crash checking code relies on the index being 50-59 so if you ever optimize this part out of the code please also adjust the crash test, specifically the part which handles cycles for allegro.
+        ; ldx #$05
+        ; lda multBy10Table,x ;this piece of code is parameterized for no reason but the crash checking code relies on the index being 50-59 so if you ever optimize this part out of the code please also adjust the crash test, specifically the part which handles cycles for allegro.
+
+; optimized version of above:
+        ldy #50
 
 ; ignore crunch columns
-        ldy practiseType
-        cpy #MODE_CRUNCH
+        lda practiseType
+        cmp #MODE_CRUNCH
         bne @notCrunch
 
 ; count left columns and offset starting point (y)
@@ -92,25 +95,24 @@ updateMusicSpeed:
         lsr
         sta generalCounter ; to be combined with right column count
         clc
-        adc multBy10Table,x
+        adc #50
         tay
 
 ; add right crunch columns to left columns to get x value
         lda crunchModifier
         and #3
-        adc generalCounter ; carry is already clear from previous add
-        sta generalCounter
-        lda #$0A
+        adc generalCounter ; carry is already clear
+
+        eor #$FF
         sec
-        sbc generalCounter ; subtract total crunch columns
+        adc #$0A ; add 10 to two's complement of crunch columns to get total non-crunch columns for x
         tax
-        bne @checkForBlockInRow ; unconditional
+        bne @checkForBlockInRow ; x will be 4-10
 
 @notCrunch:
-        tay
         ldx #$0A
 @checkForBlockInRow:
-        lda (playfieldAddr),y
+        lda playfield,y
         cmp #EMPTY_TILE
         bne @foundBlockInRow
         iny
