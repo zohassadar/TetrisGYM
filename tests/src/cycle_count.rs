@@ -4,6 +4,7 @@ pub fn count_cycles() {
     count_hz_cycles();
     count_max_score_cycles();
     count_mode_score_cycles();
+    count_crunch_cycles();
 }
 
 fn count_hz_cycles() {
@@ -78,6 +79,46 @@ fn count_max_score_cycles() {
     }
 
     println!("scoring routine most cycles: {}", highest);
+}
+
+fn count_crunch_cycles() {
+    let mut highest_init: u32 = 0;
+    let mut highest_line: u32 = 0;
+    let mut init_setting: u32 = 0xff;
+    let mut line_setting: u32 = 0xff;
+
+    let mut emu = util::emulator(None);
+
+    let init_routine = labels::get("advanceGameCrunch") as u16;
+    let line_routine = labels::get("advanceSides") as u16;
+    let crunch_modifier = labels::get("crunchModifier") as usize;
+
+    for crunch_setting in 0..=0xF {
+        emu.reset();
+        util::run_n_vblanks(&mut emu, 4);
+        emu.memory.iram_raw[crunch_modifier] = crunch_setting as u8;
+        emu.registers.pc = line_routine;
+        emu.registers.a = 1;
+        let line_cycles = util::cycles_to_return(&mut emu);
+        // println!("{} setting {:X}", line_cycles, crunch_setting);
+        if line_cycles > highest_line {
+            highest_line = line_cycles;
+            line_setting = crunch_setting;
+        }
+        emu.reset();
+        util::run_n_vblanks(&mut emu, 4);
+        emu.memory.iram_raw[crunch_modifier] = crunch_setting as u8;
+        emu.registers.pc = init_routine;
+        let init_cycles = util::cycles_to_return(&mut emu);
+        // println!("{} setting {:X}", init_cycles, crunch_setting);
+        if init_cycles > highest_init {
+            highest_init = init_cycles;
+            init_setting = crunch_setting;
+        }
+    }
+
+    println!("Highest crunch init: {} setting {:X}", highest_init, init_setting);
+    println!("Highest crunch line: {} setting {:X}", highest_line, line_setting);
 }
 
 fn count_mode_score_cycles() {
