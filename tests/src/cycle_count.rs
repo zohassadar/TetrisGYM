@@ -1,9 +1,9 @@
 use crate::{util, score, labels, playfield};
 
 pub fn count_cycles() {
-    count_hz_cycles();
-    count_max_score_cycles();
-    count_mode_score_cycles();
+    // count_hz_cycles();
+    // count_max_score_cycles();
+    // count_mode_score_cycles();
     count_crunch_cycles();
 }
 
@@ -92,25 +92,29 @@ fn count_crunch_cycles() {
     let init_routine = labels::get("advanceGameCrunch") as u16;
     let line_routine = labels::get("advanceSides") as u16;
     let crunch_modifier = labels::get("crunchModifier") as usize;
+    let playfield_addr = labels::get("playfieldAddr") as usize;
 
-    for crunch_setting in 0..=0xF {
+    for crunch_setting in (0..=0xF).rev() {
         emu.reset();
-        util::run_n_vblanks(&mut emu, 4);
+        util::run_n_vblanks(&mut emu, 5);
         emu.memory.iram_raw[crunch_modifier] = crunch_setting as u8;
+        emu.memory.iram_raw[playfield_addr + 1] = 4;
         emu.registers.pc = line_routine;
         emu.registers.a = 1;
         let line_cycles = util::cycles_to_return(&mut emu);
-        // println!("{} setting {:X}", line_cycles, crunch_setting);
+        println!("{} setting {:X}", line_cycles, crunch_setting);
         if line_cycles > highest_line {
             highest_line = line_cycles;
             line_setting = crunch_setting;
         }
+
         emu.reset();
-        util::run_n_vblanks(&mut emu, 4);
+        util::run_n_vblanks(&mut emu, 5);
         emu.memory.iram_raw[crunch_modifier] = crunch_setting as u8;
+        emu.memory.iram_raw[playfield_addr + 1] = 4;
         emu.registers.pc = init_routine;
         let init_cycles = util::cycles_to_return(&mut emu);
-        // println!("{} setting {:X}", init_cycles, crunch_setting);
+        println!("{} setting {:X}", init_cycles, crunch_setting);
         if init_cycles > highest_init {
             highest_init = init_cycles;
             init_setting = crunch_setting;
