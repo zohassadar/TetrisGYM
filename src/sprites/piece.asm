@@ -43,7 +43,7 @@ tileModifierForCurrentPiece:
         and #$80
         bne @tileSingle
 ; @tileMultiple:
-        lda orientationTable,x
+        lda orientationTableTiles,x
         clc
         adc pieceTileModifier
         rts
@@ -51,7 +51,7 @@ tileModifierForCurrentPiece:
         lda pieceTileModifier
         rts
 @tileNormal:
-        lda orientationTable,x
+        lda orientationTableTiles,x
         rts
 
 stageSpriteForCurrentPiece_actual:
@@ -71,20 +71,14 @@ stageSpriteForCurrentPiece_actual:
         adc #$2F
         sta generalCounter4
         lda currentPiece
-        sta generalCounter5
-        clc
-        lda generalCounter5
-        rol a
-        rol a
-        sta generalCounter
-        rol a
-        adc generalCounter
+        asl a
+        asl a
         tax
         ldy oamStagingLength
         lda #$04
         sta generalCounter2
 @stageMino:
-        lda orientationTable,x
+        lda orientationTableY,x
         asl a
         asl a
         asl a
@@ -94,13 +88,11 @@ stageSpriteForCurrentPiece_actual:
         sta originalY
         inc oamStagingLength
         iny
-        inx
         jsr tileModifierForCurrentPiece ; used to just load from orientationTable
         ; lda orientationTable, x
         sta oamStaging,y
         inc oamStagingLength
         iny
-        inx
         lda #$02
         sta oamStaging,y
         lda originalY
@@ -119,7 +111,7 @@ stageSpriteForCurrentPiece_actual:
 @validYCoordinate:
         inc oamStagingLength
         iny
-        lda orientationTable,x
+        lda orientationTableX,x
         asl a
         asl a
         asl a
