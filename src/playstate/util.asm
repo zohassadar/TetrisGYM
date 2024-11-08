@@ -37,9 +37,8 @@ isPositionValid:
         clc
         adc positionValidTmp
         tay
-        lda (playfieldAddr),y
-        cmp #EMPTY_TILE
-        bcc @invalid
+        lda playfield,y
+        bpl @invalid ; tiles do not set negative flag
         lda orientationTable,x
         clc
         adc tetriminoX
