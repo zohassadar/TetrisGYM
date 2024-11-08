@@ -24,7 +24,7 @@ mult10Tail:
 pageBoundry1:
 .assert <pageBoundry1 = 0, error, "pageBoundry1 shifted"
 
-orientationTable:
+orientationTable: ; to be removed when all functions use the split table
         .byte   $00,$7B,$FF,$00,$7B,$00,$00,$7B
         .byte   $01,$FF,$7B,$00,$FF,$7B,$00,$00
         .byte   $7B,$00,$00,$7B,$01,$01,$7B,$00
@@ -63,3 +63,77 @@ orientationTable:
 
 pageBoundry2:
 .assert <pageBoundry2 = 0, error, "pageBoundry2 shifted"
+
+orientationTableY:
+        .byte $00,$00,$00,$FF
+        .byte $FF,$00,$00,$01
+        .byte $00,$00,$00,$01
+        .byte $FF,$00,$00,$01
+        .byte $FF,$00,$01,$01
+        .byte $FF,$00,$00,$00
+        .byte $FF,$FF,$00,$01
+        .byte $00,$00,$00,$01
+        .byte $00,$00,$01,$01
+        .byte $FF,$00,$00,$01
+        .byte $00,$00,$01,$01
+        .byte $00,$00,$01,$01
+        .byte $FF,$00,$00,$01
+        .byte $FF,$00,$01,$01
+        .byte $00,$00,$00,$01
+        .byte $FF,$FF,$00,$01
+        .byte $FF,$00,$00,$00
+        .byte $FE,$FF,$00,$01
+        .byte $00,$00,$00,$00
+        .byte $00,$00,$00,$00
+
+orientationTableTiles:
+        .byte $7B,$7B,$7B,$7B
+        .byte $7B,$7B,$7B,$7B
+        .byte $7B,$7B,$7B,$7B
+        .byte $7B,$7B,$7B,$7B
+        .byte $7D,$7D,$7D,$7D
+        .byte $7D,$7D,$7D,$7D
+        .byte $7D,$7D,$7D,$7D
+        .byte $7D,$7D,$7D,$7D
+        .byte $7C,$7C,$7C,$7C
+        .byte $7C,$7C,$7C,$7C
+        .byte $7B,$7B,$7B,$7B
+        .byte $7D,$7D,$7D,$7D
+        .byte $7D,$7D,$7D,$7D
+        .byte $7C,$7C,$7C,$7C
+        .byte $7C,$7C,$7C,$7C
+        .byte $7C,$7C,$7C,$7C
+        .byte $7C,$7C,$7C,$7C
+        .byte $7B,$7B,$7B,$7B
+        .byte $7B,$7B,$7B,$7B
+        .byte $FF,$FF,$FF,$FF
+
+orientationTableX:
+        .byte $FF,$00,$01,$00
+        .byte $00,$00,$01,$00
+        .byte $FF,$00,$01,$00
+        .byte $00,$FF,$00,$00
+        .byte $00,$00,$FF,$00
+        .byte $FF,$FF,$00,$01
+        .byte $00,$01,$00,$00
+        .byte $FF,$00,$01,$01
+        .byte $FF,$00,$00,$01
+        .byte $01,$00,$01,$00
+        .byte $FF,$00,$FF,$00
+        .byte $00,$01,$FF,$00
+        .byte $00,$00,$01,$01
+        .byte $00,$00,$00,$01
+        .byte $FF,$00,$01,$FF
+        .byte $FF,$00,$00,$00
+        .byte $01,$FF,$00,$01
+        .byte $00,$00,$00,$00
+        .byte $FE,$FF,$00,$01
+        .byte $00,$00,$00,$00
+
+; free space
+.repeat 16
+    .byte $00
+.endrepeat
+
+pageBoundry3:
+.assert <pageBoundry3 = 0, error, "pageBoundry3 shifted"
