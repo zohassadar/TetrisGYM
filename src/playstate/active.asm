@@ -115,8 +115,7 @@ harddropMarkCleared:
         ldy #$9
 @minoLoop:
         lda (harddropAddr), y
-        cmp #EMPTY_TILE
-        beq @noLineClear
+        bmi @noLineClear ; EMPTY_TILE sets negative flag, normal tiles do not
 
         dey
         bpl @minoLoop
