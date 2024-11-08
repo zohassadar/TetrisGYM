@@ -94,9 +94,10 @@ mainLoop:
 .include "modes/garbage.asm"
 
 .code
+.segment "PRG_tables": absolute
+.include "data/prg_tables.asm"
 
 .segment    "PRG_chunk3": absolute
-
 .include "reset.asm"
 
 .code
