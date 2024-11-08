@@ -1,11 +1,7 @@
 isPositionValid:
-        lda tetriminoY
-        asl a
-        sta generalCounter
-        asl a
-        asl a
+        ldy tetriminoY
+        lda multBy10Table,y
         clc
-        adc generalCounter
         adc tetriminoX
         sta generalCounter
         lda currentPiece
@@ -24,23 +20,20 @@ isPositionValid:
         lda orientationTable,x
         clc
         adc tetriminoY
-        adc #$02
+        adc #$02 ; carry may be set for this add but doesn't have any noticeable impact
 
         cmp #$16
         bcs @invalid
-        lda orientationTable,x
-        asl a
-        sta generalCounter4
-        asl a
-        asl a
-        clc
-        adc generalCounter4
-        clc
+
+        ldy orientationTable,x ; y offset
+        lda multBy10Table,y
+        ; clc - carry is clear from cmp instruction above that branches away on carry set
+
         adc generalCounter
         sta positionValidTmp
         inx
         inx
-        lda orientationTable,x
+        lda orientationTable,x ; x offset
         clc
         adc positionValidTmp
         tay
