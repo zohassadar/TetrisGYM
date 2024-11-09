@@ -35,7 +35,7 @@ tetriminoTileFromOrientation:                                   ; 20
 orientationTableY:                                              ; 80
         .byte   $00,$00,$00,$FF ; $00 t up
         .byte   $FF,$00,$00,$01 ; $01 t right
-        .byte   $FF,$00,$00,$01 ; $02 t down
+        .byte   $00,$00,$00,$01 ; $02 t down
         .byte   $FF,$00,$00,$01 ; $03 t left
         .byte   $FF,$00,$01,$01 ; $04 j left
         .byte   $FF,$00,$00,$00 ; $05 j up
