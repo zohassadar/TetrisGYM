@@ -205,6 +205,7 @@ fn test_harddropped_piece(emu: &mut NesState, start: &str, finish: &str, piece: 
     emu.memory.iram_raw[labels::get("currentPiece") as usize] = piece;
     emu.memory.iram_raw[labels::get("tetriminoX") as usize] = 0x5;
     emu.memory.iram_raw[labels::get("tetriminoY") as usize] = 0x0;
+
     // stage ghost piece
     let temp_pc = emu.registers.pc;
     emu.registers.pc = stage_sprite;
@@ -224,13 +225,6 @@ fn test_harddropped_piece(emu: &mut NesState, start: &str, finish: &str, piece: 
     // hard drop and count cycles
     emu.registers.pc = active_tetrimino;
     let drop_cycles = util::cycles_to_return(emu);
-
-
-
-    println!("ghost y: {:X}", emu.memory.iram_raw[labels::get("hardDropGhostY") as usize]);
-    println!("tetrimino y: {:X}", emu.memory.iram_raw[labels::get("tetriminoY") as usize]);
-    println!("buttons: {:X}", emu.memory.iram_raw[labels::get("newlyPressedButtons") as usize]);
-
 
     assert_eq!(finish, playfield::get_str(emu));
 
