@@ -1,4 +1,6 @@
 playState_lockTetrimino:
+@currentTile := generalCounter5
+
         jsr isPositionValid
         beq @notGameOver
 @gameOver:
@@ -38,8 +40,8 @@ playState_lockTetrimino:
         adc tetriminoX
         sta generalCounter
         ldx currentPiece
-        lda orientationTableTiles,x
-        sta generalCounter5
+        lda tetriminoTileFromOrientation,x
+        sta @currentTile
         txa
         asl a
         asl a
@@ -58,7 +60,7 @@ playState_lockTetrimino:
         clc
         adc positionValidTmp
         tay
-        lda generalCounter5
+        lda @currentTile
         ; BLOCK_TILES
         sta playfield,y
         inx

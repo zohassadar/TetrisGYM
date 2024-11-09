@@ -91,9 +91,9 @@ mainLoop:
 .include "modes/qtap.asm"
 .include "modes/garbage.asm"
 
-.code
-.segment "PRG_tables": absolute
-.include "data/prg_tables.asm"
+
+.align $100
+.include "data/page_aligned.asm" ;
 
 .segment    "PRG_chunk3": absolute
 .include "reset.asm"

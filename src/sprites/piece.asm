@@ -1,3 +1,5 @@
+currentTile := generalCounter5
+
 stageSpriteForCurrentPiece:
         lda #$0
         sta pieceTileModifier
@@ -43,7 +45,7 @@ tileModifierForCurrentPiece:
         and #$80
         bne @tileSingle
 ; @tileMultiple:
-        lda generalCounter5
+        lda currentTile
         clc
         adc pieceTileModifier
         rts
@@ -51,7 +53,7 @@ tileModifierForCurrentPiece:
         lda pieceTileModifier
         rts
 @tileNormal:
-        lda generalCounter5
+        lda currentTile
         rts
 
 stageSpriteForCurrentPiece_actual:
@@ -71,8 +73,8 @@ stageSpriteForCurrentPiece_actual:
         adc #$2F
         sta generalCounter4
         ldx currentPiece
-        lda orientationTableTiles,x
-        sta generalCounter5
+        lda tetriminoTileFromOrientation,x
+        sta currentTile
         txa
         asl a
         asl a
