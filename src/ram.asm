@@ -221,7 +221,9 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
 
-    .res $37
+hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
+
+    .res $36
 
 .if KEYBOARD
 newlyPressedKeys: .res 1 ; $0675

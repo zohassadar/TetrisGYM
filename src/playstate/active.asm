@@ -21,13 +21,12 @@ harddrop_tetrimino:
         lda newlyPressedButtons
         and #BUTTON_UP+BUTTON_SELECT
         beq playState_playerControlsActiveTetrimino_return
+
         lda tetriminoY
         sta tmpY
-@loop:
-        inc tetriminoY
-        jsr isPositionValid
-        beq @loop
-        dec tetriminoY
+
+        lda hardDropGhostY
+        sta tetriminoY
 
         ; sonic drop
         lda newlyPressedButtons

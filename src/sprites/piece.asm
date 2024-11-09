@@ -22,8 +22,12 @@ ghostPiece:
         beq @loop
         dec tetriminoY
 
-        ; check if equal to current position
         lda tetriminoY
+
+        ; shortcut for hard/sonicdrop
+        sta hardDropGhostY
+
+        ; check if equal to current position
         cmp tmp3
         beq @noGhost
 
