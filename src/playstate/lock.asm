@@ -37,7 +37,10 @@ playState_lockTetrimino:
         clc
         adc tetriminoX
         sta generalCounter
-        lda currentPiece
+        ldx currentPiece
+        lda orientationTableTiles,x
+        sta generalCounter5
+        txa
         asl a
         asl a
         tax
@@ -51,8 +54,6 @@ playState_lockTetrimino:
         clc
         adc generalCounter
         sta positionValidTmp
-        lda orientationTableTiles,x
-        sta generalCounter5
         lda orientationTableX,x
         clc
         adc positionValidTmp

@@ -66,8 +66,6 @@ mainLoop:
 .include "sprites/piece.asm"
 
 .include "data/bytebcd.asm"
-.include "data/orientation.asm"
-.include "data/mult.asm"
 
 .include "palettes.asm"
 .include "nametables.asm"

@@ -43,7 +43,7 @@ tileModifierForCurrentPiece:
         and #$80
         bne @tileSingle
 ; @tileMultiple:
-        lda orientationTableTiles,x
+        lda generalCounter5
         clc
         adc pieceTileModifier
         rts
@@ -51,7 +51,7 @@ tileModifierForCurrentPiece:
         lda pieceTileModifier
         rts
 @tileNormal:
-        lda orientationTableTiles,x
+        lda generalCounter5
         rts
 
 stageSpriteForCurrentPiece_actual:
@@ -70,7 +70,10 @@ stageSpriteForCurrentPiece_actual:
         rol a
         adc #$2F
         sta generalCounter4
-        lda currentPiece
+        ldx currentPiece
+        lda orientationTableTiles,x
+        sta generalCounter5
+        txa
         asl a
         asl a
         tax
@@ -137,7 +140,9 @@ stageSpriteForNextPiece:
         lda #$77
         sta spriteYOffset
         ldx nextPiece
-        lda orientationToSpriteTable,x
+        lda tetriminoTypeFromOrientation,x
+        clc
+        adc #$6 ; piece sprites start at index 6
         sta spriteIndexInOamContentLookup
         jmp loadSpriteIntoOamStaging
 
