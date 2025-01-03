@@ -83,7 +83,7 @@ if (anydas) {
 if (combo) {
 combo_modes = `
 FLOOR
-FLOOR HEIGHT
+FLOOR MOD
 INVISIBLE
 DROUGHT
 DROUGHT MOD

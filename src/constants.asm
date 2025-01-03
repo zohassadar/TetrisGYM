@@ -176,7 +176,7 @@ MENU_SPRITE_Y_BASE := $46
 .if COMBO <> 1
 MENU_MAX_Y_SCROLL := $A0
 .else
-MENU_MAX_Y_SCROLL := $70
+MENU_MAX_Y_SCROLL := $68
 .endif
 MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 
