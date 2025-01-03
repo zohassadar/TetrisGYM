@@ -35,18 +35,17 @@ practisePrepareNext:
 @skipPace:
 .if COMBO = 1
         lda cGarbageToggle
-        bne @prepareGarbage
-        lda practiseType
-        jmp @skipGarbo
+        beq @skipGarbo
 @prepareGarbage:
         jsr prepareNextGarbage
+@skipGarbo:
         lda practiseType
 .else
         cmp #MODE_GARBAGE
         bne @skipGarbo
         jmp prepareNextGarbage
-.endif
 @skipGarbo:
+.endif
         cmp #MODE_PARITY
         bne @skipParity
         jmp prepareNextParity

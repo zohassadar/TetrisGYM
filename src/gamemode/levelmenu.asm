@@ -129,12 +129,14 @@ levelMenuCheckStartGame:
         sta startLevel
 @startGame:
         ; lda startLevel
+.if COMBO = 1
+        ldy cMarathonToggle
+        beq @noLevelModification
+        ldy cMarathonModifier
+.else
         ldy practiseType
         cpy #MODE_MARATHON
         bne @noLevelModification
-.if COMBO = 1
-        ldy cMarathonModifier
-.else
         ldy marathonModifier
 .endif
         cpy #2 ; marathon mode 2 starts at level 0
