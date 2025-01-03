@@ -1,5 +1,9 @@
 prepareNextGarbage:
+.if COMBO = 1
+        lda cGarbageModifier
+.else
         lda garbageModifier
+.endif
         jsr switch_s_plus_2a
         .addr garbageAlwaysTetrisReady
         .addr garbageNormal

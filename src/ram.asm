@@ -323,6 +323,8 @@ linecapHow: .res 1
 linecapLevel: .res 1
 linecapLines: .res 2
 menuVars: ; $76E
+
+.macro playableVars
 paceModifier: .res 1
 presetModifier: .res 1
 typeBModifier: .res 1
@@ -339,6 +341,10 @@ droughtModifier: .res 1
 dasModifier: .res 1
 .endif
 lowStackRowModifier: .res 1
+.endmacro
+.if COMBO <> 1
+playableVars
+.endif
 scoringModifier: .res 1
 crashModifier: .res 1
 strictFlag: .res 1 ;used for crash detection. If 1, the game will register a crash anytime there is a possibility of one.
@@ -347,6 +353,7 @@ inputDisplayFlag: .res 1
 disableFlashFlag: .res 1
 disablePauseFlag: .res 1
 darkModifier: .res 1
+prideFlag: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
 linecapFlag: .res 1
@@ -360,5 +367,20 @@ anydasDASValue: .res 1
 anydasARRValue: .res 1
 anydasARECharge: .res 1
 .endif
-
+.if COMBO = 1
+cFloorToggle: .res 1
+cFloorModifier: .res 1
+cInvisibleToggle: .res 1
+cDroughtToggle: .res 1
+cDroughtModifier: .res 1
+cCrunchToggle: .res 1
+cCrunchModifier: .res 1
+cTransToggle: .res 1
+cTransModifier: .res 1
+cMarathonToggle: .res 1
+cMarathonModifier: .res 1
+cGarbageToggle: .res 1
+cGarbageModifier: .res 1
+playableVars
+.endif
 ; ... $7FF

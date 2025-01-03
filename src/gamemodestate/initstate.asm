@@ -48,16 +48,26 @@ gameModeState_initGameState:
         sta currentFloor
 
 ; initialize currentFloor if necessary
+.if COMBO = 1
+        lda cFloorToggle
+        beq @notFloor
+        lda cFloorModifier
+.else
         lda practiseType
         cmp #MODE_FLOOR
         bne @notFloor
         lda floorModifier
+.endif
         sta currentFloor
 @notFloor:
 
+.if COMBO = 1
+        lda cInvisibleToggle
+.else
         lda practiseType
         cmp #MODE_INVISIBLE
         bne @notInvisible
+.endif
         sta invisibleFlag
 @notInvisible:
 
@@ -101,10 +111,14 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
-
+.if COMBO = 1
+        lda cTransToggle
+        beq @notTransition
+.else
         lda practiseType
         cmp #MODE_TRANSITION
         bne @notTransition
+.endif
         jsr transitionModeSetup
 @notTransition:
 
@@ -158,7 +172,11 @@ initGameState_return:
         rts
 
 transitionModeSetup:
+.if COMBO = 1
+        lda cTransModifier
+.else
         lda transitionModifier
+.endif
         cmp #$10 ; (SXTOKL compat)
         beq initGameState_return
         ; set score

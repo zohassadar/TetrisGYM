@@ -23,6 +23,10 @@ CNROM_OVERRIDE := 0
 ANYDAS = 0
 .endif
 
+.ifndef COMBO
+COMBO = 0
+.endif
+
 NO_MUSIC := 1
 
 ; dev flags
@@ -68,8 +72,7 @@ RENDER_HZ = $10
 RENDER_STATS = $40
 RENDER_HIGH_SCORE_LETTER = $80
 
-.enum
-MODE_TETRIS
+.macro MODES_PLAYABLE
 MODE_TSPINS
 MODE_SEED
 MODE_PARITY
@@ -92,6 +95,13 @@ MODE_LOWSTACK
 MODE_KILLX2
 MODE_INVISIBLE
 MODE_HARDDROP
+.endmacro
+
+.enum
+MODE_TETRIS
+.if COMBO <> 1
+MODES_PLAYABLE
+.endif
 MODE_SPEED_TEST
 MODE_SCORE_DISPLAY
 MODE_CRASH
@@ -101,6 +111,7 @@ MODE_INPUT_DISPLAY
 MODE_DISABLE_FLASH
 MODE_DISABLE_PAUSE
 MODE_DARK
+MODE_PRIDE
 MODE_GOOFY
 MODE_DEBUG
 MODE_LINECAP
@@ -114,10 +125,32 @@ MODE_DAS_VALUE
 MODE_ARR_VALUE
 MODE_ARE_CHARGE
 .endif
+.if COMBO = 1
+MODE_CFLOOR
+MODE_CFLOOR_HEIGHT
+MODE_CINVIZ
+MODE_CDROUGHT
+MODE_CDROUGHT_MOD
+MODE_CCRUNCH
+MODE_CCRUNCH_MOD
+MODE_CTRANSITION
+MODE_CTRANSITON_MOD
+MODE_CMARATHON
+MODE_CMARATHON_MOD
+MODE_CGARBAGE
+MODE_CGARBAGE_MOD
+.endif
 MODE_QUANTITY
+.if COMBO = 1
+MODES_PLAYABLE
+.endif
 .endenum
 
+.if COMBO <> 1
 MODE_GAME_QUANTITY = MODE_HARDDROP + 1
+.else
+MODE_GAME_QUANTITY = MODE_TETRIS + 1
+.endif
 
 SCORING_CLASSIC := 0 ; for scoringModifier
 SCORING_LETTERS := 1
@@ -140,13 +173,16 @@ LINECAP_WHEN_STRING_OFFSET := $10
 LINECAP_HOW_STRING_OFFSET := $12
 
 MENU_SPRITE_Y_BASE := $46
+.if COMBO <> 1
 MENU_MAX_Y_SCROLL := $A0
+.else
+MENU_MAX_Y_SCROLL := $70
+.endif
 MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 
 ; menuConfigSizeLookup
 ; menu ram is defined at menuRAM in ./ram.asm
-.macro MENUSIZES
-    .byte $0    ; MODE_TETRIS
+.macro PLAYABLE_SIZES
     .byte $0    ; MODE_TSPINS
     .byte $0    ; MODE_SEED
     .byte $0    ; MODE_PARITY
@@ -169,6 +205,13 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $0    ; MODE_KILLX2
     .byte $0    ; MODE_INVISIBLE
     .byte $0    ; MODE_HARDDROP
+.endmacro
+
+.macro MENUSIZES
+    .byte $0    ; MODE_TETRIS
+.if COMBO <> 1
+PLAYABLE_SIZES
+.endif
     .byte $0    ; MODE_SPEED_TEST
     .byte $5    ; MODE_SCORE_DISPLAY
     .byte $3	; MODE_CRASH
@@ -178,6 +221,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $1    ; MODE_DISABLE_FLASH
     .byte $1    ; MODE_DISABLE_PAUSE
     .byte $5    ; MODE_DARK
+    .byte $1    ; MODE_PRIDE
     .byte $1    ; MODE_GOOFY
     .byte $1    ; MODE_DEBUG
     .byte $1    ; MODE_LINECAP
@@ -191,10 +235,29 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $40   ; MODE_ARR_VALUE
     .byte $1    ; MODE_ARE_CHARGE
 .endif
+.if COMBO = 1
+    .byte $1    ; MODE_CFLOOR
+    .byte $C    ; MODE_CFLOOR_HEIGHT
+    .byte $1    ; MODE_CINVIZ
+    .byte $1    ; MODE_CDROUGHT
+    .byte $12   ; MODE_CROUGHT_MOD
+    .byte $1    ; MODE_CCRUNCH
+    .byte $F    ; MODE_CCRUNCH_MOD
+    .byte $1    ; MODE_CTRANSITION
+    .byte $10   ; MODE_CTRANSITON_MOD
+    .byte $1    ; MODE_CMARATHON
+    .byte $2    ; MODE_CMARATHON_MOD
+    .byte $1    ; MODE_CGARBAGE
+    .byte $4    ; MODE_CGARBAGE_MOD
+.endif
+.if COMBO = 1
+PLAYABLE_SIZES
+.endif
 .endmacro
 
 .macro MODENAMES
     .byte   "TETRIS"
+.if COMBO <> 1
     .byte   "TSPINS"
     .byte   " SEED "
     .byte   "STACKN"
@@ -217,4 +280,5 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte   "KILLX2"
     .byte   "INVZBL"
     .byte   "HRDDRP"
+.endif
 .endmacro

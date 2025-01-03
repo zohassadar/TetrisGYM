@@ -367,9 +367,14 @@ drop_tetrimino_actual:
 lookupDropSpeed:
         lda #$01
         ldx levelNumber
+.if COMBO = 1
+        ldy cMarathonToggle
+        beq @notMarathon
+.else
         ldy practiseType
         cpy #MODE_MARATHON
         bne @notMarathon
+.endif
         ldx startLevel
 @notMarathon:
         cpx #$1D

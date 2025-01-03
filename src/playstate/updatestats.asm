@@ -82,15 +82,30 @@ checkLevelUp:
         lda practiseType
         cmp #MODE_TAPQTY
         beq @lineLoop
+.if COMBO = 1
+        lda cMarathonToggle
+        bne @marathon
+        lda practiseType
+        jmp @notMarathon
+@marathon:
+        lda cMarathonModifier
+.else
         cmp #MODE_MARATHON
         bne @notMarathon
         lda marathonModifier
+.endif
         beq @lineLoop ; marathon mode 0 does not transition
         bne @notSXTOKL
 @notMarathon:
+.if COMBO = 1
+        lda cTransToggle
+        beq @notSXTOKL
+        lda cTransModifier
+.else
         cmp #MODE_TRANSITION
         bne @notSXTOKL
         lda transitionModifier
+.endif
         cmp #$10
         bne @notSXTOKL
         jmp @nextLevel
@@ -346,9 +361,14 @@ addLineClearPoints:
         sta factorA24+1
         sta factorA24+2
         lda levelNumber
+.if COMBO = 1
+        ldy cMarathonToggle
+        beq @notMarathon
+.else
         ldy practiseType
         cpy #MODE_MARATHON
         bne @notMarathon
+.endif
         lda startLevel
 @notMarathon:
         sta factorA24+0

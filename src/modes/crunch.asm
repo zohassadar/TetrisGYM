@@ -23,14 +23,22 @@ advanceGameCrunch:
 advanceSides:
     pha
     sta tmp3
+.if COMBO = 1
+    lda cCrunchModifier
+.else
     lda crunchModifier
+.endif
     lsr a
     lsr a
     ldx #0
     jsr advanceSide
     pla
     sta tmp3
+.if COMBO = 1
+    lda cCrunchModifier
+.else
     lda crunchModifier
+.endif
     and #%00000011
     pha
     eor #$FF

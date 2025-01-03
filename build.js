@@ -24,6 +24,7 @@ if (args.includes('-h')) {
 -m  mapper
 -a  faster aeppoz + press select to end game
 -A  build anydas
+-C  build combo
 -s  disable highscores/SRAM
 -k  Famicom Keyboard support
 -w  force WASM compiler
@@ -91,6 +92,11 @@ if (args.includes('-o')) {
 if (args.includes('-A')) {
     compileFlags.push('-D', 'ANYDAS=1');
     console.log('anydas enabled');
+}
+
+if (args.includes('-C')) {
+    compileFlags.push('-D', 'COMBO=1');
+    console.log('combo enabled');
 }
 console.log();
 

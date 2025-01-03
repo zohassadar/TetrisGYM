@@ -8,6 +8,7 @@ const {
 } = require('./nametables');
 
 const anydas = !!process.env['GYM_FLAGS']?.match(/-D ANYDAS=1/);
+const combo = !!process.env['GYM_FLAGS']?.match(/-D COMBO=1/);
 
 const lookup = flatLookup(`
 0123456789ABCDEF
@@ -62,6 +63,7 @@ INPUT DISPLAY
 DISABLE FLASH
 DISABLE PAUSE
 DARK MODE
+PRIDE COLORS
 GOOFY FOOT
 BLOCK TOOL
 LINECAP
@@ -77,6 +79,29 @@ if (anydas) {
     modes.splice(modes.indexOf('DAS ONLY'), 1);
     modes.push('DAS', 'ARR', 'ARE CHARGE');
 }
+
+if (combo) {
+combo_modes = `
+FLOOR
+FLOOR HEIGHT
+INVISIBLE
+DROUGHT
+DROUGHT MOD
+CRUNCH
+CRUNCH MOD
+TRANSITION
+TRANSITION MOD
+MARATHON
+MARATHON MOD
+GARBAGE
+GARBAGE MOD
+`
+    .trim()
+    .split('\n');
+
+    modes.splice(1,modes.indexOf("HARD DROP"))
+    modes.push(...combo_modes);
+    }
 
 const modeStartRow = 9;
 const modeOffset = 6;

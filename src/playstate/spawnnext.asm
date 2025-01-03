@@ -228,9 +228,14 @@ presetBitmask := tmp2
         rts
 
 pickTetriminoPost:
+.if COMBO = 1
+        lda cDroughtToggle
+        bne pickTetriminoDrought
+.else
         lda practiseType
         cmp #MODE_DROUGHT
         beq pickTetriminoDrought
+.endif
         lda spawnID ; restore A
         rts
 
@@ -241,7 +246,11 @@ pickTetriminoDrought:
         lda rng_seed+1
         and #$F
         adc #1 ; always adds 1 so code continues as normal if droughtModifier is 0
+.if COMBO = 1
+        cmp cDroughtModifier
+.else
         cmp droughtModifier
+.endif
         bmi @pickRando
         lda spawnID ; restore A
 @droughtDone:

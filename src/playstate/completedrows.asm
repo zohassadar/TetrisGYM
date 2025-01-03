@@ -35,10 +35,14 @@ playState_checkForCompletedRows:
         lda practiseType
         cmp #MODE_TSPINS
         beq @rowNotComplete
-
+.if COMBO = 1
+        lda cFloorToggle
+        bne @floorCheck
+.else
         ; lda practiseType ; accumulator is still practiseType
         cmp #MODE_FLOOR
         beq @floorCheck
+.endif
         lda linecapState
         cmp #LINECAP_FLOOR
         beq @fullRowBurningCheck
@@ -141,9 +145,14 @@ playState_checkForCompletedRows:
 @tapQtyEnd:
 
         ; update top row for crunch
+.if COMBO = 1
+        lda cCrunchToggle
+        beq @crunchEnd
+.else
         lda practiseType
         cmp #MODE_CRUNCH
         bne @crunchEnd
+.endif
         lda #1
         jsr advanceSides
 @crunchEnd:
