@@ -35,6 +35,7 @@ playState_checkForCompletedRows:
         lda practiseType
         cmp #MODE_TSPINS
         beq @rowNotComplete
+
 .if COMBO = 1
         lda cFloorToggle
         bne @floorCheck

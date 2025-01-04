@@ -111,6 +111,7 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
+
 .if COMBO = 1
         lda cTransToggle
         beq @notTransition

@@ -423,6 +423,7 @@ menuRAMCounter := tmp3
 menuYTmp := tmp2
 
         ; render seed
+
 .if COMBO <> 1
         lda #$b8
         sta spriteXOffset
@@ -458,6 +459,7 @@ menuYTmp := tmp2
 
         beq @loopNext ; gap support
         inc menuRAMCounter ; only increment RAM when config size isnt zero
+
 .if COMBO <> 1
         cmp #1
         beq @renderBool
