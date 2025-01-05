@@ -424,6 +424,7 @@ menuYTmp := tmp2
 
         ; render seed
 
+.if COMBO <> 1
         lda #$b8
         sta spriteXOffset
         lda #MODE_SEED
@@ -439,6 +440,7 @@ menuYTmp := tmp2
         lda #3
         sta byteSpriteLen
         jsr byteSprite
+.endif
 @notSeed:
 
         ; render config vars
@@ -458,8 +460,10 @@ menuYTmp := tmp2
         beq @loopNext ; gap support
         inc menuRAMCounter ; only increment RAM when config size isnt zero
 
+.if COMBO <> 1
         cmp #1
         beq @renderBool
+.endif
 
         lda menuCounter
         cmp #MODE_SCORE_DISPLAY

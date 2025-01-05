@@ -56,13 +56,20 @@ advanceSides:
     dey
     bpl @rightLoop ; unconditional
 
-
 unpackCrunchModifier:
+.if COMBO = 1
+    lda cCrunchModifier
+.else
     lda crunchModifier
+.endif
     lsr
     lsr
     sta crunchLeftColumns ; generalCounter3
+.if COMBO = 1
+    lda cCrunchModifier
+.else
     lda crunchModifier
+.endif
     and #$03
     sta crunchRightColumns ; generalCounter4
     rts

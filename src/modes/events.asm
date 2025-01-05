@@ -5,13 +5,24 @@ practiseInitGameState:
         jsr initChecker
 @skipChecker:
         jsr practiseEachPiece
+.if COMBO = 1
+        lda cFloorToggle
+        beq @skipFloor
+        jsr advanceGameFloor
+.else
         cmp #MODE_FLOOR
         bne @skipFloor
         jmp advanceGameFloor
+.endif
 @skipFloor:
+.if COMBO = 1
+        lda cCrunchToggle
+        beq @skipCrunch
+.else
         lda practiseType
         cmp #MODE_CRUNCH
         bne @skipCrunch
+.endif
         jsr advanceGameCrunch
 @skipCrunch:
         rts
@@ -22,10 +33,19 @@ practisePrepareNext:
         bne @skipPace
         jmp prepareNextPace
 @skipPace:
+.if COMBO = 1
+        lda cGarbageToggle
+        beq @skipGarbo
+@prepareGarbage:
+        jsr prepareNextGarbage
+@skipGarbo:
+        lda practiseType
+.else
         cmp #MODE_GARBAGE
         bne @skipGarbo
         jmp prepareNextGarbage
 @skipGarbo:
+.endif
         cmp #MODE_PARITY
         bne @skipParity
         jmp prepareNextParity
