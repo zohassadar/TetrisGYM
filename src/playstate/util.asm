@@ -89,9 +89,14 @@ updateMusicSpeed:
         ldy #50 ; replaces above
 
 ; check if crunch mode
+.if COMBO = 1
+        ldx cCrunchToggle
+        beq @notCrunch
+.else
         ldx practiseType
         cpx #MODE_CRUNCH
         bne @notCrunch
+.endif
 
         ; add crunch left columns to y
         jsr unpackCrunchModifier
