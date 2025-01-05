@@ -153,6 +153,7 @@ playState_checkForCompletedRows:
         lda practiseType
         cmp #MODE_CRUNCH
         bne @crunchEnd
+.endif
         jsr advanceSides ; clobbers generalCounter3 and generalCounter4
 @crunchEnd:
 
