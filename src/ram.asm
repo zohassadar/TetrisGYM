@@ -380,7 +380,6 @@ anydasARECharge: .res 1
 .if COMBO = 1
 cFloorModifier: .res 1
 cInvisibleToggle: .res 1
-cDroughtToggle: .res 1
 cDroughtModifier: .res 1
 cCrunchModifier: .res 1
 cTransToggle: .res 1
@@ -391,6 +390,8 @@ cGarbageToggle: .res 1
 cGarbageModifier: .res 1
 cTeppozToggle: .res 1
 cScrolltrisModifier: .res 1
+cFillType: .res 1
+cFillModifier: .res 1
 playableVars
 .endif
 ; ... $7FF

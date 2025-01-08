@@ -84,7 +84,6 @@ if (combo) {
 combo_modes = `
 FLOOR MOD
 INVISIBLE
-DROUGHT
 DROUGHT MOD
 CRUNCH MOD
 TRANSITION
@@ -95,6 +94,8 @@ GARBAGE
 GARBAGE MOD
 TEPPOZ
 SCROLLTRIS MOD
+FILL TYPE
+FILL MOD
 `
     .trim()
     .split('\n');

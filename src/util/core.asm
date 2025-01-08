@@ -430,10 +430,10 @@ scrolltrisXTable:
     .byte $7F ; jUp
     .byte $FF ; jRight
     .byte $7F ; jDown
-    .byte $FF ; zHoriz
+    .byte $01 ; zHoriz
     .byte $01 ; zVert
     .byte $00 ; oFixed
-    .byte $01 ; sHoriz
+    .byte $FF ; sHoriz
     .byte $FF ; sVert
     .byte $FF ; lRight
     .byte $7F ; lDown

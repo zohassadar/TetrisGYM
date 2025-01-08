@@ -151,10 +151,16 @@ gameModeState_initGameState:
         lda #RENDER_STATS|RENDER_HZ|RENDER_SCORE|RENDER_LEVEL|RENDER_LINES
         sta renderFlags
         jsr updateAudioWaitForNmiAndResetOamStaging
-
+.if COMBO = 1
+        lda cFillModifier
+        beq @noTypeBPlayfield
+        lda cFillType
+        bne @noTypeBPlayfield
+.else
         lda practiseType
         cmp #MODE_TYPEB
         bne @noTypeBPlayfield
+.endif
         jsr initPlayfieldForTypeB
 @noTypeBPlayfield:
 
@@ -264,7 +270,11 @@ presetScoreFromBCD:
         rts
 
 initPlayfieldForTypeB:
+.if COMBO = 1
+        lda cFillModifier
+.else
         lda typeBModifier
+.endif
         cmp #$6
         bmi @normalStart
         sbc #$5
@@ -318,11 +328,19 @@ L8824:  ldx #rng_seed
         tay
         lda #EMPTY_TILE
         sta playfield,y
+.if COMBO = 1
+        jsr updateAudioAndWaitForNmi
+.else
         jsr updateAudioWaitForNmiAndResetOamStaging
+.endif
         dec generalCounter
         bne L87E7
 L884A:
+.if COMBO = 1
+        ldx cFillModifier
+.else
         ldx typeBModifier
+.endif
         lda typeBBlankInitCountByHeightTable,x
         tay
         lda #EMPTY_TILE

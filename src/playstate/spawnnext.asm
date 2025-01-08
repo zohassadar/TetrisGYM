@@ -229,7 +229,7 @@ presetBitmask := tmp2
 
 pickTetriminoPost:
 .if COMBO = 1
-        lda cDroughtToggle
+        lda cDroughtModifier
         bne pickTetriminoDrought
 .else
         lda practiseType
@@ -245,10 +245,11 @@ pickTetriminoDrought:
         bne @droughtDone
         lda rng_seed+1
         and #$F
-        adc #1 ; always adds 1 so code continues as normal if droughtModifier is 0
 .if COMBO = 1
+        adc #2 ; 0 means drought off.  everything offset by 1
         cmp cDroughtModifier
 .else
+        adc #1 ; always adds 1 so code continues as normal if droughtModifier is 0
         cmp droughtModifier
 .endif
         bmi @pickRando

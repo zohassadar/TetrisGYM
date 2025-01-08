@@ -3,7 +3,11 @@ CHECKERBOARD_TILE := BLOCK_TILES
 CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         lda #0
         sta vramRow
+.if COMBO = 1
+        ldx cFillModifier
+.else
         ldx checkerModifier
+.endif
         lda typeBBlankInitCountByHeightTable, x
         tax
         cpx #$C8 ; edge case for height 0

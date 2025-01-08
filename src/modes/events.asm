@@ -1,7 +1,12 @@
 practiseInitGameState:
+.if COMBO = 1
+        lda cFillType
+        beq @skipChecker
+.else
         lda practiseType
         cmp #MODE_CHECKERBOARD
         bne @skipChecker
+.endif
         jsr initChecker
 @skipChecker:
         jsr practiseEachPiece
