@@ -26,7 +26,16 @@ allegroIndex: .res 1 ; $001F for crash
 wasAllegro: .res 1 ; $0020 for crash
 startParity: .res 1 ; $0021 for crash
 lagState: .res 1 ; $0022 for lagged lines & score
+
+
+.if COMBO = 1
+scrolltrisX: .res 1
+scrolltrisY: .res 1
+currentPieceMirror: .res 1
+.res $D
+.else
     .res $10
+.endif
 
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
@@ -369,12 +378,10 @@ anydasARECharge: .res 1
 .endif
 
 .if COMBO = 1
-cFloorToggle: .res 1
 cFloorModifier: .res 1
 cInvisibleToggle: .res 1
 cDroughtToggle: .res 1
 cDroughtModifier: .res 1
-cCrunchToggle: .res 1
 cCrunchModifier: .res 1
 cTransToggle: .res 1
 cTransModifier: .res 1
@@ -382,6 +389,8 @@ cMarathonToggle: .res 1
 cMarathonModifier: .res 1
 cGarbageToggle: .res 1
 cGarbageModifier: .res 1
+cTeppozToggle: .res 1
+cScrolltrisModifier: .res 1
 playableVars
 .endif
 ; ... $7FF

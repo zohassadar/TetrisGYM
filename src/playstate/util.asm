@@ -90,7 +90,7 @@ updateMusicSpeed:
 
 ; check if crunch mode
 .if COMBO = 1
-        ldx cCrunchToggle
+        ldx cCrunchModifier
         beq @notCrunch
 .else
         ldx practiseType

@@ -232,7 +232,9 @@ render_mode_play_and_demo:
         bne @noFlash
         stx PPUDATA
 @noFlash:
+.if COMBO <> 1
         jsr resetScroll
+.endif
         rts
 
 pieceToPpuStatAddr:

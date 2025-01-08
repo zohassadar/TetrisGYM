@@ -5,6 +5,10 @@ gameModeState_initGameBackground:
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
+.if COMBO = 1
+        lda #%10000
+        jsr _setMMC1Control
+.endif
         jsr bulkCopyToPpu
         .addr   game_palette
         jsr copyRleNametableToPpu
@@ -44,12 +48,30 @@ gameModeState_initGameBackground:
         lda tmpZ
         sta PPUDATA
 @heartEnd:
+.if COMBO = 1
+        jsr waitForVBlankAndEnableNmi
+        lda #NMIEnable|BGPattern1|SpritePattern1
+        sta PPUCTRL
+        sta currentPpuCtrl
+        jsr resetScroll
+        lda #$00
+        sta scrolltrisX
+        sta scrolltrisY
+        ldy cScrolltrisModifier
+        beq @wait
+        cpy #$01
+        bne @wait
+        sty scrolltrisX
+        sty scrolltrisY
+@wait:
 
+.else
         lda #NMIEnable|BGPattern1|SpritePattern1
         sta PPUCTRL
         sta currentPpuCtrl
         jsr resetScroll
         jsr waitForVBlankAndEnableNmi
+.endif
         jsr updateAudioWaitForNmiAndResetOamStaging
         jsr updateAudioWaitForNmiAndEnablePpuRendering
         jsr updateAudioWaitForNmiAndResetOamStaging

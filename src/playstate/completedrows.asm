@@ -14,6 +14,13 @@ playState_checkForCompletedRows:
         bpl @yInRange
         lda #$00
 @yInRange:
+.if COMBO = 1
+        ldx lineIndex
+        bne :+
+        ldx currentPiece
+        stx currentPieceMirror
+:
+.endif
         clc
         adc lineIndex
         sta generalCounter2
@@ -37,7 +44,9 @@ playState_checkForCompletedRows:
         beq @rowNotComplete
 
 .if COMBO = 1
-        lda cFloorToggle
+        lda cTeppozToggle
+        bne @rowNotComplete
+        lda cFloorModifier
         bne @floorCheck
 .else
         ; lda practiseType ; accumulator is still practiseType
@@ -50,8 +59,10 @@ playState_checkForCompletedRows:
         bne @normalRow
 
 @floorCheck:
+.if COMBO <> 1
         lda currentFloor
         beq @rowNotComplete
+.endif
 
 @fullRowBurningCheck:
         inc activeFloorMode ; Floor is active
@@ -147,7 +158,7 @@ playState_checkForCompletedRows:
 
         ; update top row for crunch
 .if COMBO = 1
-        lda cCrunchToggle
+        lda cCrunchModifier
         beq @crunchEnd
 .else
         lda practiseType

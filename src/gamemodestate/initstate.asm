@@ -50,7 +50,7 @@ gameModeState_initGameState:
 
 ; initialize currentFloor if necessary
 .if COMBO = 1
-        lda cFloorToggle
+        lda cFloorModifier
         beq @notFloor
         lda cFloorModifier
 .else

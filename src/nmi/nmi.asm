@@ -8,6 +8,9 @@ nmi:    pha
         jsr render
         lda currentPpuCtrl
         sta PPUCTRL
+.if COMBO = 1
+        jsr copyCurrentScrollAndCtrlToPPU
+.endif
         dec sleepCounter
         lda sleepCounter
         cmp #$FF
@@ -24,7 +27,9 @@ nmi:    pha
         sta frameCounter+1
         ldx #rng_seed
         jsr generateNextPseudorandomNumber
+.if COMBO <> 1
         jsr copyCurrentScrollAndCtrlToPPU
+.endif
         jsr pollControllerButtons
         lda #$00
         sta lagState ; clear flag after lag frame achieved

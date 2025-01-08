@@ -14,6 +14,9 @@ gameMode_gameTypeMenu:
         sta renderMode
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
+.if COMBO = 1
+        jsr setHorizontalMirroring
+.endif
         jsr bulkCopyToPpu
         .addr   title_palette
         jsr copyRleNametableToPpu

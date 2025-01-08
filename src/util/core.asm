@@ -57,6 +57,10 @@ random10:
 
 ; canon is waitForVerticalBlankingInterval
 updateAudioWaitForNmiAndResetOamStaging:
+.if COMBO = 1
+        jsr applyScrolltrisUpdate
+        jsr incrementScroll
+.endif
         jsr updateAudio_jmp
         lda #$00
         sta verticalBlankingInterval
@@ -73,7 +77,11 @@ resetOAMStaging:
         ldx #$00
         lda #$FF
 @hideY:
+.if COMBO = 1
+        sta oamStaging+1,x  ; store invisible tile instead due to scrolltris
+.else
         sta oamStaging,x
+.endif
         inx
         inx
         inx
@@ -301,3 +309,158 @@ switch_s_plus_2a:
         sta switchTmp2
         stx switchTmp1
         jmp (switchTmp1)
+
+.if COMBO = 1
+
+applyScrolltrisUpdate:
+        lda cScrolltrisModifier
+        beq @ret
+        lda gameMode
+        cmp #$04
+        beq @shiftSprites
+@ret:
+        rts
+
+@shiftSprites:
+        lda scrolltrisY
+        beq @noScroll
+        bpl @scrollInc
+        lda #$FE
+        jmp @storeTmp
+@scrollInc:
+        lda #$00
+        jmp @storeTmp
+@noScroll:
+        lda #$FF
+@storeTmp:
+        sta generalCounter
+
+.repeat 64,idx
+.scope
+        lda oamStaging+idx*4
+        sec
+        sbc generalCounter
+        sta tmp3
+        lda ppuScrollY
+        cmp tmp3
+        bcc @dontOffset
+        lda tmp3
+        sbc #$10 ; carry is set
+        sta tmp3
+@dontOffset:
+        lda tmp3
+        clc
+        sbc ppuScrollY
+        sta oamStaging+idx*4
+
+; x offset
+        lda oamStaging+idx*4+3
+        sec
+        sbc ppuScrollX
+        sec
+        sbc scrolltrisX
+        sta oamStaging+idx*4+3
+.endscope
+.endrepeat
+        rts
+
+incrementScroll:
+        ldy cScrolltrisModifier
+        beq @ret
+        lda #$04
+        cmp gameMode
+        bne @ret
+        dey ; check if mod is 2
+        beq @normalScroll
+        cmp playState ; 4 in accum
+        bne @normalScroll
+        jsr @inLineClear
+@normalScroll:
+        lda ppuScrollX
+        clc
+        adc scrolltrisX
+        sta ppuScrollX
+
+        lda ppuScrollY
+        clc
+        adc scrolltrisY
+        sta ppuScrollY
+        ldy scrolltrisY
+        bpl @increment
+
+        ; decrement
+        cmp #$FF
+        bne @ret
+        lda #$EF
+        sta ppuScrollY
+        rts
+@increment:
+        cmp #$F0
+        bne @ret
+        lda #$00
+        sta ppuScrollY
+@ret:
+        rts
+
+@inLineClear:
+        lda frameCounter
+        and #$03
+        bne @ret
+        lda rowY
+        bne @ret
+        ldx currentPieceMirror
+        lda scrolltrisXTable,x
+        cmp #$7F
+        beq :+
+        sta scrolltrisX
+:
+        lda scrolltrisYTable,x
+        cmp #$7F
+        beq :+
+        sta scrolltrisY
+:
+        rts
+
+scrolltrisXTable:
+    .byte $7F ; tUp
+    .byte $FF ; tRight
+    .byte $7F ; tDown
+    .byte $01 ; tLeft
+    .byte $01 ; jLeft
+    .byte $7F ; jUp
+    .byte $FF ; jRight
+    .byte $7F ; jDown
+    .byte $FF ; zHoriz
+    .byte $01 ; zVert
+    .byte $00 ; oFixed
+    .byte $FF ; sHoriz
+    .byte $FF ; sVert
+    .byte $FF ; lRight
+    .byte $7F ; lDown
+    .byte $01 ; lLeft
+    .byte $7F ; lUp
+    .byte $00 ; iVert
+    .byte $7F ; iHoriz
+
+scrolltrisYTable:
+    .byte $01 ; tUp
+    .byte $7F ; tRight
+    .byte $FF ; tDown
+    .byte $7F ; tLeft
+    .byte $7F ; jLeft
+    .byte $01 ; jUp
+    .byte $7F ; jRight
+    .byte $FF ; jDown
+    .byte $01 ; zHoriz
+    .byte $FF ; zVert
+    .byte $00 ; oFixed
+    .byte $01 ; sHoriz
+    .byte $FF ; sVert
+    .byte $7F ; lRight
+    .byte $FF ; lDown
+    .byte $7F ; lLeft
+    .byte $01 ; lUp
+    .byte $7F ; iVert
+    .byte $00 ; iHoriz
+
+.endif

@@ -12,5 +12,7 @@ render_mode_pause:
         beq @done
         jsr render_playfield
 @done:
+.if COMBO <> 1
         jsr resetScroll
+.endif
         rts

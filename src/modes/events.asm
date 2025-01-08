@@ -6,7 +6,7 @@ practiseInitGameState:
 @skipChecker:
         jsr practiseEachPiece
 .if COMBO = 1
-        lda cFloorToggle
+        lda cFloorModifier
         beq @skipFloor
         jsr advanceGameFloor
 .else
@@ -16,7 +16,7 @@ practiseInitGameState:
 .endif
 @skipFloor:
 .if COMBO = 1
-        lda cCrunchToggle
+        lda cCrunchModifier
         beq @skipCrunch
 .else
         lda practiseType
