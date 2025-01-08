@@ -433,7 +433,7 @@ scrolltrisXTable:
     .byte $FF ; zHoriz
     .byte $01 ; zVert
     .byte $00 ; oFixed
-    .byte $FF ; sHoriz
+    .byte $01 ; sHoriz
     .byte $FF ; sVert
     .byte $FF ; lRight
     .byte $7F ; lDown
