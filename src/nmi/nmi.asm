@@ -9,6 +9,7 @@ nmi:    pha
         sta OAMADDR
         lda #$02
         sta OAMDMA
+oamStaged:
         lda sleepCounter
         beq :+
         dec sleepCounter

@@ -7,7 +7,7 @@ pub fn test() {
     let main_loop = labels::get("mainLoop");
     let game_mode = labels::get("gameMode") as usize;
     let level_number = labels::get("levelNumber") as usize;
-    let nmi_label = labels::get("nmi");
+    let oam_staged = labels::get("oamStaged");
     let hz_flag = labels::get("hzFlag") as usize;
     let render_flags = labels::get("renderFlags") as usize;
 
@@ -57,7 +57,7 @@ pub fn test() {
 
     for _ in 0..50 {
         // loop until pc is at the instruction after the jsr copyOamStagingToOam
-        while emu.registers.pc != nmi_label + 25 {
+        while emu.registers.pc != oam_staged {
             emu.step();
             if emu.ppu.current_scanline == 261 {
                 panic!("render took too long!");
