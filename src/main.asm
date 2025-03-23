@@ -100,7 +100,7 @@ mainLoop:
 .include "reset.asm"
 
 .code
-
+.byte $99
 .segment    "VECTORS": absolute
 
         .addr   nmi
