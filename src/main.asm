@@ -92,7 +92,7 @@ mainLoop:
 .include "modes/crunch.asm"
 .include "modes/qtap.asm"
 .include "modes/garbage.asm"
-
+.byte $99
 .code
 
 .segment    "PRG_chunk3": absolute
