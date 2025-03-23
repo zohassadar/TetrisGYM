@@ -228,6 +228,6 @@ fn test_harddropped_piece(emu: &mut NesState, start: &str, finish: &str, piece: 
     let drop_cycles = util::cycles_to_return(emu);
 
     assert_eq!(finish, playfield::get_str(emu));
-
+    assert_eq!(1, 2);
     return (stage_cycles, drop_cycles);
 }
