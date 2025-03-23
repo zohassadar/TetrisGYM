@@ -98,9 +98,9 @@ mainLoop:
 .segment    "PRG_chunk3": absolute
 
 .include "reset.asm"
-
-.code
 .byte $99
+.code
+
 .segment    "VECTORS": absolute
 
         .addr   nmi
