@@ -69,7 +69,6 @@ for _ in 0..40 {
     let return_hi = read_byte(&mut emu, 0x0100 + stack_pointer as u16 + 3) as u16 ;
     let return_addr = return_hi << 8 | return_lo;
     assert!(return_addr >= wait_loop_start && return_addr <= wait_loop_end);
-    assert!(1==2);
 }
 
 assert_ne!(emu.cpu.opcode, 18);
