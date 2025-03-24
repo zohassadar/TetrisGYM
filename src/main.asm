@@ -19,7 +19,7 @@
 ; region code at start of page to keep cycle count consistent
 .include "util/check_region.asm"
 .include "audio.asm"
-.byte $99
+.byte $9A
 initRam:
 
 .include "boot.asm"
