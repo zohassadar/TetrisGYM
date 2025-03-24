@@ -66,8 +66,6 @@ mainLoop:
 .include "sprites/piece.asm"
 
 .include "data/bytebcd.asm"
-.include "data/orientation.asm"
-.include "data/mult.asm"
 
 .include "palettes.asm"
 .include "nametables.asm"
@@ -92,7 +90,10 @@ mainLoop:
 .include "modes/crunch.asm"
 .include "modes/qtap.asm"
 .include "modes/garbage.asm"
-.byte $99
+
+.align $100
+; these tables benefit from page alignment
+.include "data/mult_orient.asm"
 .code
 
 .segment    "PRG_chunk3": absolute
