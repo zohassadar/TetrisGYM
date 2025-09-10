@@ -38,6 +38,12 @@ checkRegion:
 ;;; Right now, A contains 0,1,2,3 for NTSC,PAL,Dendy,Bad
         cmp #0
         beq @ntsc
+.if ANYDAS = 1
+        lda #$0C
+        sta anydasDASValue
+        lda #$04
+        sta anydasARRValue
+.endif
         lda #1
         sta palFlag
 @ntsc:
