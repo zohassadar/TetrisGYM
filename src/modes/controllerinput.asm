@@ -1,3 +1,20 @@
+.if KEYBOARD = 1
+controllerInputTiles:
+        ; RS    Start, Select
+        ; HJKL  Left, Down, Up, Right
+        ; DF -> B, A
+        ;        R
+        ;  DFHJKL
+        ; S
+        .byte "L", "H", "J", "K"
+        .byte "R", "S", "D", "F"
+controllerInputX:
+        .byte 6*8+4, 3*8+4, 4*8+4, 5*8+4
+        .byte 7*8+0, 0*8+0, 1*8-4, 2*8-4
+controllerInputY:
+        .byte  0, 0, 0, 0
+        .byte -8, 8, 0, 0
+.else
 controllerInputTiles:
         ; .byte "RLDUSSBA"
         .byte $D0, $D1, $D2, $D3
@@ -9,6 +26,7 @@ controllerInputY:
         .byte $0, $0, $5, $FB
         .byte $0, $0, $FF, $FF
 
+.endif
 controllerInputDisplay: ; called in events, speedtest
         lda #0
         sta tmp3
@@ -29,12 +47,27 @@ controllerInputDisplayX:
         lda controllerInputTiles, y
         sta oamStaging, x
         inx
+.if KEYBOARD = 1
+        cmp #'R'
+        beq @red
+        cmp #'S'
+        bne @noRed
+@red:
+        lda #$03
+        bne @storeAttr
+@noRed:
+.endif
         lda #$01
+@storeAttr:
         sta oamStaging, x
         inx
         lda controllerInputX, y
         clc
+.if KEYBOARD = 1
+        adc #$10
+.else
         adc #$13
+.endif
         adc tmp3
         sta oamStaging, x
         inx
