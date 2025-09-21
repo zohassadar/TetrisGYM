@@ -51,6 +51,10 @@ gameModeState_initGameState:
         sta trtLineCounter+1
         sta trtScratch+5
 
+        sta previous
+        sta repeats
+        sta kbHeldInput
+
 ; initialize currentFloor if necessary
         lda practiseType
         cmp #MODE_FLOOR

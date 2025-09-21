@@ -93,6 +93,8 @@ pollKeyboard:
 ; 7   CTR   Q       ESC     F1        2       1       GRPH     LSHIFT
 ; 8   LEFT  RIGHT   UP      CLR HOME  INS     DEL     SPACE    DOWN
 
+
+
 kbUp = $0280     ; k
 kbDown = $0380   ; j
 kbLeft = $0480   ; h
@@ -103,11 +105,16 @@ kbSelect = $0701 ; lshift
 kbStart = $0020  ; return
 
 
+.macro readSingleKey keyWord
+        lda keyboardInput+>keyWord
+        and #<keyWord
+.endmacro
+
+
 mapKeysToButtons:
         lda entryActive
         bne @startOnly
-        lda keyboardInput+>kbUp
-        and #<kbUp
+        readSingleKey kbUp
         beq @upNotPressed
         lda newlyPressedKeys
         ora #BUTTON_UP
@@ -115,16 +122,14 @@ mapKeysToButtons:
         bne @skipDownRead
 @upNotPressed:
 
-        lda keyboardInput+>kbDown
-        and #<kbDown
+        readSingleKey kbDown
         beq @downNotPressed
         lda newlyPressedKeys
         ora #BUTTON_DOWN
         sta newlyPressedKeys
 @skipDownRead:
 @downNotPressed:
-        lda keyboardInput+>kbLeft
-        and #<kbLeft
+        readSingleKey kbLeft
         beq @leftNotPressed
         lda newlyPressedKeys
         ora #BUTTON_LEFT
@@ -132,8 +137,7 @@ mapKeysToButtons:
         bne @skipRightRead
 @leftNotPressed:
 
-        lda keyboardInput+>kbRight
-        and #<kbRight
+        readSingleKey kbRight
         beq @rightNotPressed
         lda newlyPressedKeys
         ora #BUTTON_RIGHT
@@ -141,24 +145,21 @@ mapKeysToButtons:
 @skipRightRead:
 @rightNotPressed:
 
-        lda keyboardInput+>kbB
-        and #<kbB
+        readSingleKey kbB
         beq @bNotPressed
         lda newlyPressedKeys
         ora #BUTTON_B
         sta newlyPressedKeys
 @bNotPressed:
 
-        lda keyboardInput+>kbA
-        and #<kbA
+        readSingleKey kbA
         beq @aNotPressed
         lda newlyPressedKeys
         ora #BUTTON_A
         sta newlyPressedKeys
 @aNotPressed:
 
-        lda keyboardInput+>kbSelect
-        and #<kbSelect
+        readSingleKey kbSelect
         beq @selectNotPressed
         lda newlyPressedKeys
         ora #BUTTON_SELECT
@@ -166,8 +167,7 @@ mapKeysToButtons:
 @selectNotPressed:
 @startOnly:
 
-        lda keyboardInput+>kbStart
-        and #<kbStart
+        readSingleKey kbStart
         beq @startNotPressed
         lda newlyPressedKeys
         ora #BUTTON_START
@@ -191,6 +191,44 @@ mapKeysToButtons:
         lda heldButtons_player1
         ora heldKeys
         sta heldButtons_player1
+
+kb0 = $0208
+kb1 = $0704
+kb2 = $0708
+kb3 = $0608
+kb4 = $0508
+kb5 = $0504
+kb6 = $0408
+kb7 = $0404
+kb8 = $0308
+kb9 = $0304
+
+;         readSingleKey kb7
+;         beq @ret
+;         lda #$07
+;         sta repeats
+; @ret:
+;         rts
+
+        ldx #repeatChars
+@checkNextChar:
+        lda charToRepeats,x
+        jsr readKey
+        bne @keyPressed
+        dex
+        bpl @checkNextChar
+        bmi @nothingNew
+@keyPressed:
+        dex
+        txa
+        eor #$A5
+        cmp kbHeldInput
+        beq @nothingNew
+        stx repeats
+        sta kbHeldInput
+        lda #$00
+        sta previous
+@nothingNew:
         rts
 
 shiftFlag := $08
@@ -222,6 +260,7 @@ charToKbMap:
         .byte $67 ; X
         .byte $42 ; Y
         .byte $66 ; Z
+charToRepeats:
         .byte $24 ; 0
         .byte $75 ; 1
         .byte $74 ; 2
@@ -232,6 +271,7 @@ charToKbMap:
         .byte $45 ; 7
         .byte $34 ; 8
         .byte $35 ; 9
+charToRepeatsEnd:
         .byte $26 ; ,
         .byte $16 ; /
         .byte $01 ; (
@@ -247,6 +287,8 @@ charToKbMapEnd:
 
 kbChars = <(charToKbMapEnd - charToKbMap) - 1
 kbInputThrottle := generalCounter4
+
+repeatChars = <(charToRepeatsEnd - charToRepeats) - 1
 
 readKbScoreInput:
 ; n - no input or throttled

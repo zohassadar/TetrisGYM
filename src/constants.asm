@@ -218,3 +218,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte   "INVZBL"
     .byte   "HRDDRP"
 .endmacro
+
+
+SFX_ROTATE = 5
+SFX_SHIFT = 3

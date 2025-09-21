@@ -83,4 +83,37 @@ controllerInputDisplayX:
         iny
         cpy #8
         bmi @inputLoop
+
+        ldx oamStagingLength
+        lda repeats
+        beq @ret
+        bpl @notZero
+
+; x
+        clc
+        adc #$0A
+@notZero:
+        asl
+        asl
+        asl
+        adc #$04
+        sta oamStaging+3,x
+; tile
+        ldy repeats
+        iny
+        tya
+        sta oamStaging+1,x
+; attr
+        lda #$01
+        sta oamStaging+2,x
+; y
+        lda #$45
+        sta oamStaging+0,x
+
+        inx
+        inx
+        inx
+        inx
+        stx oamStagingLength
+@ret:
         rts

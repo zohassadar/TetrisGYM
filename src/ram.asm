@@ -50,7 +50,7 @@ lines: .res 2 ; $0050
 rowY: .res 1 ; $0052
 linesBCDHigh: .res 1 ; $53
 linesTileQueue: .res 1 ; $54
-    .res 1
+repeats: .res 1 ; $55
 completedLines: .res 1 ; $0056
 lineIndex: .res 1 ; $0057                        ; Iteration count of playState_checkForCompletedRows
 startHeight: .res 1 ; $0058
@@ -109,7 +109,7 @@ oamStagingLength: .res 1 ; $00B3
     .res 1
 newlyPressedButtons: .res 1 ; $00B5                 ; Active player's buttons
 heldButtons: .res 1 ; $00B6                        ; Active player's buttons
-    .res 1
+previous: .res 1 ; $00B7
 playfieldAddr: .res 2 ; $00B8                    ; HI byte is leftPlayfield in canon. Current playfield being processed: $0400 (left; 1st player) or $0500 (right; 2nd player)
 allegro: .res 1 ; $00BA
 pendingGarbage: .res 1 ; $00BB                    ; Garbage waiting to be delivered to the current player. This is exchanged with pendingGarbageInactivePlayer when swapping players.
