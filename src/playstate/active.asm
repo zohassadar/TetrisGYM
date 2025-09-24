@@ -668,8 +668,12 @@ keyboardActiveTetrimino:
         lda #0
         sta @repeatTmp
         lda heldButtons_player1
-        and #BUTTON_SELECT
+        and #BUTTON_SELECT ; keyShiftLeft
+        bne @sonic
+        readKeyDirect keyShiftRight
+        bne @sonic
         beq @notSonic
+@sonic:
         lda #$B0
         sta autorepeatY
 @notSonic:
@@ -699,7 +703,9 @@ keyboardActiveTetrimino:
         sta previous
 
         lda heldButtons_player1
-        and #BUTTON_SELECT
+        and #BUTTON_SELECT ; keyShiftLeft
+        bne @resetRepeats
+        readKeyDirect keyShiftRight
         beq @lock
         bne @resetRepeats
 
