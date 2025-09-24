@@ -144,6 +144,9 @@ pollKeyboard:
         lda heldButtons_player1
         ora heldKeys
         sta heldButtons_player1
+.ifdef ANYTAP
+        jsr readNumberKeys
+.endif
 @ret:   rts
 
 @keyboardReadWait:
@@ -258,6 +261,7 @@ charToKbMap:
         .byte keyX
         .byte keyY
         .byte keyZ
+charToRepeats:
         .byte key0
         .byte key1
         .byte key2
@@ -268,6 +272,7 @@ charToKbMap:
         .byte key7
         .byte key8
         .byte key9
+charToRepeatsEnd:
         .byte keyComma
         .byte keySlash
         .byte keyOpenBracket
@@ -428,3 +433,28 @@ readKey:
 
 @readKeyMasks:
     .byte $80,$40,$20,$10,$08,$04,$02,$01
+
+.ifdef ANYTAP
+repeatChars = <(charToRepeatsEnd - charToRepeats) - 1
+readNumberKeys:
+        ldx #repeatChars
+@checkNextChar:
+        lda charToRepeats,x
+        jsr readKey
+        bne @keyPressed
+        dex
+        bpl @checkNextChar
+        bmi @nothingNew
+@keyPressed:
+        dex
+        txa
+        eor #$A5
+        cmp kbHeldInput
+        beq @nothingNew
+        stx repeats
+        sta kbHeldInput
+        lda #$00
+        sta previous
+@nothingNew:
+        rts
+.endif

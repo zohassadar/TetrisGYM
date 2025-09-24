@@ -48,6 +48,12 @@ gameModeState_initGameState:
         sta currentFloor
         sta crashState
 
+.ifdef ANYTAP
+        sta previous
+        sta repeats
+        sta kbHeldInput
+.endif
+
 ; initialize currentFloor if necessary
         lda practiseType
         cmp #MODE_FLOOR

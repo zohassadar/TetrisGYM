@@ -9,6 +9,10 @@ playState_playerControlsActiveTetrimino:
 @notHard:
         jsr hzControl ; and dasOnly control
 
+.ifdef ANYTAP
+        jmp keyboardActiveTetrimino
+.endif
+
         jsr shift_tetrimino
         jsr rotate_tetrimino
 
@@ -329,7 +333,11 @@ drop_tetrimino_actual:
 
 @autorepeating:
         lda heldButtons
+.ifdef UNSAFE
+        and #$00
+.else
         and #$0F
+.endif
         cmp #BUTTON_DOWN
         beq @downPressed
         lda #$00
@@ -354,6 +362,10 @@ drop_tetrimino_actual:
         beq @ret
         lda originalY
         sta tetriminoY
+.ifdef UNSAFE
+        lda #$00
+        sta previous
+.endif
         lda #$02
         sta playState
         jsr updatePlayfield
@@ -454,7 +466,11 @@ shift_tetrimino:
         lda newlyPressedButtons
         and #$03
         bne @resetAutorepeatX
+.ifdef UNSAFE
+        lda #$00
+.else
         lda heldButtons
+        .endif
         and #$03
         beq @ret
         inc autorepeatX
@@ -496,3 +512,170 @@ shift_tetrimino:
         lda dasValueDelay
         sta autorepeatX
 @ret:   rts
+
+
+
+A_ROTATE = 1
+A_SHIFT = 2
+
+.ifdef ANYTAP
+keyboardActiveTetrimino:
+        @repeatTmp = generalCounter5
+
+@checkShift:
+        lda newlyPressedButtons
+        and #BUTTON_LEFT|BUTTON_RIGHT
+        beq @normalShift
+        ldx repeats
+.ifdef UNSAFE
+        bmi @normalShift ; prevent 255 shifts
+.else
+        beq @normalShift
+.endif
+        inx
+        stx @repeatTmp
+.ifdef UNSAFE
+        lda previous
+        cmp #A_SHIFT
+        beq @checkRotate
+.endif
+@repeatedShift:
+        ldy tetriminoX
+        sty originalY
+        lda newlyPressedButtons
+        and #BUTTON_LEFT
+        bne @leftPressed
+        inc tetriminoX ; right pressed
+        bne @checkShiftedPosition
+@leftPressed:
+        dec tetriminoX
+@checkShiftedPosition:
+.ifndef UNSAFE
+        jsr isPositionValid
+        bne @restoreTetriminoX
+.endif
+        lda #SFX_SHIFT
+        sta soundEffectSlot1Init
+.ifdef ANYDAS
+        lda anydasDASValue
+.else
+        lda #$00
+.endif
+        sta autorepeatX
+        dec @repeatTmp
+        beq @resetAfterShift
+        bne @repeatedShift
+
+@restoreTetriminoX:
+        lda originalY
+        sta tetriminoX
+
+@resetAfterShift:
+.ifdef UNSAFE
+        lda #A_SHIFT
+        sta previous
+.endif
+        lda #$00
+        sta repeats
+        sta kbHeldInput
+        beq @checkRotate
+
+@normalShift:
+        jsr shift_tetrimino
+
+@checkRotate:
+        lda newlyPressedButtons
+        and #BUTTON_A|BUTTON_B
+        beq @normalRotate
+        ldx repeats
+.ifndef UNSAFE
+        beq @normalRotate
+.endif
+        bmi @normalRotate ; prevent 255 rotations
+        inx
+        stx @repeatTmp
+.ifdef UNSAFE
+        lda previous
+        cmp #A_ROTATE
+        beq @checkDrop
+.endif
+@repeatedRotate:
+        lda currentPiece
+        sta originalY
+        asl
+        tax
+        lda newlyPressedButtons
+        and #BUTTON_B
+        bne @checkNewRotation
+        inx ; a pressed
+@checkNewRotation:
+        lda rotationTable,x
+        sta currentPiece
+        jsr isPositionValid
+        bne @restoreCurrentPiece
+        lda #SFX_ROTATE
+        sta soundEffectSlot1Init
+        dec @repeatTmp
+        beq @resetAfterRotate
+        bne @repeatedRotate
+
+@restoreCurrentPiece:
+        lda originalY
+        sta currentPiece
+@resetAfterRotate:
+.ifdef UNSAFE
+        lda #A_ROTATE
+        sta previous
+.endif
+        lda #$00
+        sta repeats
+        sta kbHeldInput
+        beq @checkDrop
+
+@normalRotate:
+        jsr rotate_tetrimino
+
+@checkDrop:
+        lda newlyPressedButtons
+        and #BUTTON_DOWN
+        beq @normalDrop
+        ldx repeats
+        beq @normalDrop
+        inx
+        stx @repeatTmp
+
+@repeatedDrop:
+        lda tetriminoY
+        sta originalY
+        inc tetriminoY
+        jsr isPositionValid
+        bne @restoreTetriminoY
+        dec @repeatTmp
+        beq @resetRepeats
+        bne @repeatedDrop
+
+@restoreTetriminoY:
+        lda originalY
+        sta tetriminoY
+        lda #$00
+        sta repeats
+.ifdef UNSAFE
+        sta previous
+.endif
+        lda #$02
+        sta playState
+        jsr updatePlayfield
+        jmp @resetRepeats
+
+@normalDrop:
+        jsr drop_tetrimino
+
+@resetRepeats:
+        lda newlyPressedButtons
+        and #BUTTON_B|BUTTON_A|BUTTON_DOWN|BUTTON_LEFT|BUTTON_RIGHT
+        beq @ret
+        lda #$00
+        sta repeats
+        sta kbHeldInput
+@ret:   rts
+.endif

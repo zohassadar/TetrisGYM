@@ -11,9 +11,17 @@ game_palette:
         .byte   $0F,$2C,$16,$29
         .byte   $0F,$3C,$00,$30
         .byte   $0F,$16,$2A,$22 ; sprite
+.if KEYBOARD = 1
+        .byte   $0F,$10,$16,$3D
+.else
         .byte   $0F,$10,$16,$2D
+.endif
         .byte   $0F,$2C,$16,$29
+.if KEYBOARD = 1
+        .byte   $0F,$3C,$00,$26
+.else
         .byte   $0F,$3C,$00,$30
+.endif
         .byte   $FF
 title_palette:
         .byte   $3F,$00
