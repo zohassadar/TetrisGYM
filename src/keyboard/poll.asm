@@ -40,7 +40,7 @@
 ; The FDS BIOS terminates the routine early if all keys are pressed on column 0 of any row (it determines that the keyboard is disconnected). Family BASIC always reads all rows/columns.
 ; The FDS BIOS writes to $4016 with bit 2 clear at the end of the routine (thus disabling the keyboard matrix), but Family BASIC does not.
 ; There are currently no known commercial FDS games which use the BIOS routine for keyboard reading[footnotes 1].
-
+noInput: rts
 pollKeyboard:
 @upDown = BUTTON_UP|BUTTON_DOWN
 @leftRight = BUTTON_LEFT|BUTTON_RIGHT
@@ -74,7 +74,7 @@ pollKeyboard:
         asl
         asl
         asl
-        beq @ret ; assume 4 simultaneously pressed keys in one row indicates no keyboard
+        beq noInput ; assume 4 simultaneously pressed keys in one row indicates no keyboard
         sta generalCounter
 
         ldy #3
@@ -122,6 +122,15 @@ pollKeyboard:
         bpl @antiSocd
 
 ; determine which are new
+.ifdef ANYTAP
+; G  means A + B pressed and is treated as a double rotation
+        readKeyDirect keyG
+        beq @noG
+        lda #BUTTON_A|BUTTON_B
+        ora newlyPressedKeys
+        sta newlyPressedKeys
+@noG:
+.endif
         lda newlyPressedKeys
 
 ; ignore everything except start during score entry

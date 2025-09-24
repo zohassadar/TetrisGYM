@@ -284,6 +284,35 @@ rotate_tetrimino:
         sta currentPiece
 @ret:   rts
 
+.ifdef ANYTAP
+doubleRotationTable:
+         .byte   $02
+         .byte   $03
+         .byte   $00
+         .byte   $01
+
+         .byte   $06
+         .byte   $07
+         .byte   $04
+         .byte   $05
+
+         .byte   $08
+         .byte   $09
+
+         .byte   $0A
+
+         .byte   $0B
+         .byte   $0C
+
+         .byte   $0F
+         .byte   $10
+         .byte   $0D
+         .byte   $0E
+
+         .byte   $11
+         .byte   $12
+.endif
+
 rotationTable:
         .dbyt   $0301,$0002,$0103,$0200
         .dbyt   $0705,$0406,$0507,$0604
@@ -586,11 +615,11 @@ keyboardActiveTetrimino:
 @checkRotate:
         lda newlyPressedButtons
         and #BUTTON_A|BUTTON_B
-        beq @normalRotate
+        beq @checkDrop
         ldx repeats
-.ifndef UNSAFE
-        beq @normalRotate
-.endif
+; .ifndef UNSAFE
+;         beq @normalRotate
+; .endif
         bmi @normalRotate ; prevent 255 rotations
         inx
         stx @repeatTmp
@@ -605,11 +634,15 @@ keyboardActiveTetrimino:
         asl
         tax
         lda newlyPressedButtons
+        and #BUTTON_A|BUTTON_B
+        cmp #BUTTON_A|BUTTON_B
+        beq @doubleRotate
         and #BUTTON_B
         bne @checkNewRotation
         inx ; a pressed
 @checkNewRotation:
         lda rotationTable,x
+@skipNormalRotation:
         sta currentPiece
         jsr isPositionValid
         bne @restoreCurrentPiece
@@ -632,8 +665,14 @@ keyboardActiveTetrimino:
         sta kbHeldInput
         beq @checkDrop
 
+@doubleRotate:
+        ldx currentPiece
+        lda doubleRotationTable,x
+        jmp @skipNormalRotation
+
+
 @normalRotate:
-        jsr rotate_tetrimino
+        ; jsr rotate_tetrimino
 
 @checkDrop:
         lda newlyPressedButtons
