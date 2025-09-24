@@ -674,7 +674,7 @@ keyboardActiveTetrimino:
         bne @sonic
         beq @notSonic
 @sonic:
-        lda #$B0
+        lda #$A0
         sta autorepeatY
 @notSonic:
 .else
@@ -721,7 +721,7 @@ keyboardActiveTetrimino:
 
 @resetRepeats:
         lda newlyPressedButtons
-        and #BUTTON_B|BUTTON_A|BUTTON_DOWN|BUTTON_LEFT|BUTTON_RIGHT
+        and #BUTTON_B|BUTTON_A|BUTTON_LEFT|BUTTON_RIGHT
         beq @ret
         lda #$00
         sta repeats
