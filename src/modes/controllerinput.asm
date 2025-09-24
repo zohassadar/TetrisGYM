@@ -86,17 +86,26 @@ controllerInputDisplayX:
 
         ldx oamStagingLength
         lda repeats
+        bmi @zero
+        bne @notZeroOrOne
+        readKeyDirect key1  ; only display when held
         beq @ret
-        bpl @notZero
-
+        lda #$00
+        beq @skipMultiply
 ; x
+@zero:
         clc
         adc #$0A
-@notZero:
+@notZeroOrOne:
+        sta generalCounter ; multiply by 7
         asl
         asl
         asl
-        adc #$04
+        sec
+        sbc generalCounter
+@skipMultiply:
+        clc
+        adc #$0C
         sta oamStaging+3,x
 ; tile
         ldy repeats
