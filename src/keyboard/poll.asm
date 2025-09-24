@@ -463,7 +463,7 @@ readNumberKeys:
         stx repeats
         sta kbHeldInput
         lda #$00
-        sta previous
+        sta previous ; any numerical input resets no double input
 @nothingNew:
         rts
 .endif

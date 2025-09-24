@@ -394,6 +394,7 @@ drop_tetrimino_actual:
 .ifdef UNSAFE
         lda #$00
         sta previous
+        sta repeats
 .endif
         lda #$02
         sta playState
@@ -554,20 +555,18 @@ keyboardActiveTetrimino:
 @checkShift:
         lda newlyPressedButtons
         and #BUTTON_LEFT|BUTTON_RIGHT
-        beq @normalShift
+        beq @checkRotate
+.ifdef UNSAFE
+        cmp previous
+        beq @checkRotate
+        sta previous
+.endif
         ldx repeats
 .ifdef UNSAFE
-        bmi @normalShift ; prevent 255 shifts
-.else
-        beq @normalShift
+        bmi @checkRotate ; prevent 255 shifts
 .endif
         inx
         stx @repeatTmp
-.ifdef UNSAFE
-        lda previous
-        cmp #A_SHIFT
-        beq @checkRotate
-.endif
 @repeatedShift:
         ldy tetriminoX
         sty originalY
@@ -600,27 +599,22 @@ keyboardActiveTetrimino:
         sta tetriminoX
 
 @resetAfterShift:
-.ifdef UNSAFE
-        lda #A_SHIFT
-        sta previous
-.endif
         lda #$00
         sta repeats
         sta kbHeldInput
         beq @checkRotate
 
-@normalShift:
-        jsr shift_tetrimino
-
 @checkRotate:
         lda newlyPressedButtons
         and #BUTTON_A|BUTTON_B
         beq @checkDrop
+.ifdef UNSAFE
+        cmp previous
+        beq @checkDrop
+        sta previous
+.endif
         ldx repeats
-; .ifndef UNSAFE
-;         beq @normalRotate
-; .endif
-        bmi @normalRotate ; prevent 255 rotations
+        bmi @checkDrop ; prevent 255 rotations
         inx
         stx @repeatTmp
 .ifdef UNSAFE
@@ -656,10 +650,6 @@ keyboardActiveTetrimino:
         lda originalY
         sta currentPiece
 @resetAfterRotate:
-.ifdef UNSAFE
-        lda #A_ROTATE
-        sta previous
-.endif
         lda #$00
         sta repeats
         sta kbHeldInput
@@ -670,18 +660,25 @@ keyboardActiveTetrimino:
         lda doubleRotationTable,x
         jmp @skipNormalRotation
 
-
-@normalRotate:
-        ; jsr rotate_tetrimino
-
 @checkDrop:
         lda newlyPressedButtons
         and #BUTTON_DOWN
         beq @normalDrop
+.ifdef UNSAFE
+        lda #0
+        sta @repeatTmp
+        lda heldButtons_player1
+        and #BUTTON_SELECT
+        beq @notSonic
+        lda #$B0
+        sta autorepeatY
+@notSonic:
+.else
         ldx repeats
         beq @normalDrop
         inx
         stx @repeatTmp
+.endif
 
 @repeatedDrop:
         lda tetriminoY
@@ -700,6 +697,13 @@ keyboardActiveTetrimino:
         sta repeats
 .ifdef UNSAFE
         sta previous
+
+        lda heldButtons_player1
+        and #BUTTON_SELECT
+        beq @lock
+        bne @resetRepeats
+
+@lock:
 .endif
         lda #$02
         sta playState

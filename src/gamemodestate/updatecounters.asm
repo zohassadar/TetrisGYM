@@ -8,6 +8,10 @@ gameModeState_updateCountersAndNonPlayerState:
         lda newlyPressedButtons_player1
         and #BUTTON_SELECT
         beq @ret
+.ifdef UNSAFE
+        ; select is used for sonic drop
+        bne @ret
+.endif
         lda hideNextPiece
         eor #$01
         sta hideNextPiece
