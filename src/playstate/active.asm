@@ -391,11 +391,6 @@ drop_tetrimino_actual:
         beq @ret
         lda originalY
         sta tetriminoY
-.ifdef UNSAFE
-        lda #$00
-        sta previous
-        sta repeats
-.endif
         lda #$02
         sta playState
         jsr updatePlayfield
@@ -599,9 +594,15 @@ keyboardActiveTetrimino:
         sta tetriminoX
 
 @resetAfterShift:
+        lda autorepeatY
+        bpl @notSuspended
+        lda tetriminoY
+        beq @notSuspended
+        lda #$00
+        sta autorepeatY
+@notSuspended:
         lda #$00
         sta repeats
-        sta kbHeldInput
         beq @checkRotate
 
 @checkRotate:
@@ -617,11 +618,6 @@ keyboardActiveTetrimino:
         bmi @checkDrop ; prevent 255 rotations
         inx
         stx @repeatTmp
-.ifdef UNSAFE
-        lda previous
-        cmp #A_ROTATE
-        beq @checkDrop
-.endif
 @repeatedRotate:
         lda currentPiece
         sta originalY
@@ -652,7 +648,6 @@ keyboardActiveTetrimino:
 @resetAfterRotate:
         lda #$00
         sta repeats
-        sta kbHeldInput
         beq @checkDrop
 
 @doubleRotate:
@@ -663,7 +658,21 @@ keyboardActiveTetrimino:
 @checkDrop:
         lda newlyPressedButtons
         and #BUTTON_DOWN
-        beq @normalDrop
+        bne @downPressed
+        lda tetriminoY
+        beq @normalDrop ; ignore suspended piece at beginning of the game
+        lda autorepeatY
+        bpl @normalDrop
+        lda heldButtons_player1
+        and #BUTTON_SELECT
+        bne @normalDrop
+        readKeyDirect keyShiftRight
+        bne @normalDrop
+@resetAutorepeatY:
+        lda #$00
+        sta autorepeatY
+        jmp @lock
+@downPressed:
 .ifdef UNSAFE
         lda #0
         sta @repeatTmp
@@ -697,10 +706,7 @@ keyboardActiveTetrimino:
 @restoreTetriminoY:
         lda originalY
         sta tetriminoY
-        lda #$00
-        sta repeats
 .ifdef UNSAFE
-        sta previous
 
         lda heldButtons_player1
         and #BUTTON_SELECT ; keyShiftLeft
@@ -711,6 +717,7 @@ keyboardActiveTetrimino:
 
 @lock:
 .endif
+        sta autorepeatY
         lda #$02
         sta playState
         jsr updatePlayfield
@@ -725,6 +732,5 @@ keyboardActiveTetrimino:
         beq @ret
         lda #$00
         sta repeats
-        sta kbHeldInput
 @ret:   rts
 .endif

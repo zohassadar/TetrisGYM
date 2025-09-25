@@ -26,6 +26,11 @@
         ; cpx #0 ; dex sets z flag
         bne @loop
 
+.if DEFAULT_INPUT_DISPLAY = 1
+        lda #$01
+        sta inputDisplayFlag
+.endif
+
         ; default pace to A
         lda #$A
         sta paceModifier

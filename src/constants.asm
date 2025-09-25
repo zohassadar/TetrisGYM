@@ -19,6 +19,10 @@ KEYBOARD := 0
 CNROM_OVERRIDE := 0
 .endif
 
+.ifndef DEFAULT_INPUT_DISPLAY
+DEFAULT_INPUT_DISPLAY = 0
+.endif
+
 NO_MUSIC := 1
 
 ; dev flags

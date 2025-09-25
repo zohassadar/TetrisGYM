@@ -154,7 +154,7 @@ pollKeyboard:
         ora heldKeys
         sta heldButtons_player1
 .ifdef ANYTAP
-        jsr readNumberKeys
+        jmp readNumberKeys
 .endif
 @ret:   rts
 
@@ -446,6 +446,8 @@ readKey:
 .ifdef ANYTAP
 repeatChars = <(charToRepeatsEnd - charToRepeats) - 1
 readNumberKeys:
+        lda entryActive
+        bne @nothingNew
         ldx #repeatChars
 @checkNextChar:
         lda charToRepeats,x
@@ -453,12 +455,12 @@ readNumberKeys:
         bne @keyPressed
         dex
         bpl @checkNextChar
-        bmi @nothingNew
+        lda #$80
+        sta kbHeldInput
+        bne @nothingNew
 @keyPressed:
         dex
-        txa
-        eor #$A5
-        cmp kbHeldInput
+        cpx kbHeldInput
         beq @nothingNew
         stx repeats
         sta kbHeldInput
