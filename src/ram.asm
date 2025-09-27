@@ -78,8 +78,9 @@ pztemp := mathRAM+$D
 byteSpriteAddr: .res 2
 byteSpriteTile: .res 1
 byteSpriteLen: .res 1
-    .res $2A
-
+    .res $28
+repeatWarningFlag: .res 1
+spriteA: .res 1
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
 stringIndexLookup:
@@ -361,3 +362,6 @@ qualFlag: .res 1
 palFlag: .res 1
 
 ; ... $7FF
+
+blinkingVar = playfield + 200
+blinkDuration = 48

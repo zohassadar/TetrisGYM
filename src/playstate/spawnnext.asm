@@ -46,6 +46,7 @@ playState_spawnNextTetrimino:
         sta fallTimer
         sta tetriminoY
         sta previous
+        sta repeatWarningFlag
         lda #$05
         sta tetriminoX
         lda nextPiece

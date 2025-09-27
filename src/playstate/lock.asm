@@ -1,7 +1,80 @@
 playState_lockTetrimino:
         jsr isPositionValid
-        beq @notGameOver
-@gameOver:
+        bne gameOver
+
+        jmp notGameOver
+gameOver:
+.ifdef UNSAFE
+        ; check for normal topout
+        lda tetriminoY
+        bne @noCanDo
+        lda tetriminoX
+        cmp #5
+        bne @noCanDo
+        jmp normalTopout
+@noCanDo:
+        lda #$00
+        sta soundEffectSlot0Init
+        lda #$02
+        sta soundEffectSlot2Init
+        jsr reduceScore
+        lda #$80
+        sta sleepCounter
+@wait:
+        lda #3
+        sta spriteA
+        lda #PAUSE_SPRITE_X-4
+        sta spriteXOffset
+        lda #PAUSE_SPRITE_Y-40
+        sta spriteYOffset
+        lda #$1f
+        sta spriteIndexInOamContentLookup
+        jsr stringSprite
+        lda #$00
+        sta spriteA
+        jsr practiseGameHUD
+        lda frameCounter
+        and #7
+        bne @checkIfStaging
+        lda blinkingVar
+        eor #8
+        sta blinkingVar
+@checkIfStaging:
+        lda blinkingVar
+        and #8
+        bne @skipStagingCurrent
+        jsr stageSpriteForCurrentPiece
+@skipStagingCurrent:
+        jsr stageSpriteForNextPiece
+        jsr updateAudioWaitForNmiAndResetOamStaging
+@idleLoop:
+        lda #BUTTON_DPAD|BUTTON_A|BUTTON_B
+        bit newlyPressedButtons_player1
+        bne @resume
+        lda sleepCounter
+        bne @wait
+@resume:
+.repeat 4,i
+        lda binScore+i
+        bne @resetPiece
+.endrepeat
+        jmp normalTopout
+@resetPiece:
+        ldx currentPiece
+        ldy tetriminoTypeFromOrientation,x
+        lda spawnTable,y
+        sta currentPiece
+        lda #$00
+        sta tetriminoY
+        sta previous
+        lda #$05
+        sta tetriminoX
+        lda #$01
+        sta playState
+        jmp playState_playerControlsActiveTetrimino
+.endif
+
+normalTopout:
         lda renderFlags ; Flag needed to reveal hidden score
         ora #RENDER_SCORE
         sta renderFlags
@@ -28,7 +101,7 @@ playState_lockTetrimino:
         sta vramRow
         rts
 
-@notGameOver:
+notGameOver:
         lda vramRow
         cmp #$20
         bmi @ret
@@ -97,7 +170,7 @@ playState_lockTetrimino:
         sbc #$04 ; carry already set
 @copyGraphic:
         jsr copyGraphicToPlayfieldAtCustomRow
-        jmp @gameOver
+        jmp gameOver
 @notAboveLowStack:
         lda #$00
         sta lineIndex

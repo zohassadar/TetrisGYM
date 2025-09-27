@@ -51,7 +51,7 @@ stringSpriteLoop:
         lda stringLookup, x
         inx
         sta oamStaging+1, y
-        lda #$00
+        lda spriteA
         sta oamStaging+2, y
         lda tmpX
         sta oamStaging+3, y
@@ -101,6 +101,9 @@ stringLookup:
         .byte stringLite-stringLookup
         .byte stringTeal-stringLookup
         .byte stringOG-stringLookup
+        .byte stringError-stringLookup
+        .byte stringRepeat-stringLookup
+        ; force-range could be a problem in the future. add validation here
 stringClassic:
         .byte $7,'C','L','A','S','S','I','C'
 stringLetters:
@@ -165,3 +168,7 @@ stringLite:
         .byte $4,'L','I','T','E'
 stringOG:
         .byte $2,'O','G'
+stringError:
+        .byte $6,"ERROR", $28
+stringRepeat:
+        .byte $6,"REPEAT"

@@ -1,4 +1,19 @@
 stageSpriteForCurrentPiece:
+        lda repeatWarningFlag
+        beq @noWarning
+        lda #3
+        sta spriteA
+        lda #PAUSE_SPRITE_X-4
+        sta spriteXOffset
+        lda #PAUSE_SPRITE_Y-40
+        sta spriteYOffset
+        lda #$20
+        sta spriteIndexInOamContentLookup
+        jsr stringSprite
+        lda #$00
+        sta spriteA
+        dec repeatWarningFlag
+@noWarning:
         lda #$0
         sta pieceTileModifier
         jsr stageSpriteForCurrentPiece_actual

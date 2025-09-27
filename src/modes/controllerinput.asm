@@ -8,12 +8,15 @@ controllerInputTiles:
         ; S
         .byte "L", "H", "J", "K"
         .byte "R", "S", "D", "F"
+        .byte "S"
 controllerInputX:
         .byte 6*8+4, 3*8+4, 4*8+4, 5*8+4
-        .byte 7*8+0, 0*8+0, 1*8-4, 2*8-4
+        .byte 7*8+3, 0*8-3, 1*8-4, 2*8-4
+        .byte 7*8+3
 controllerInputY:
         .byte  0, 0, 0, 0
-        .byte -8, 8, 0, 0
+        .byte -2, 6, 0, 0
+        .byte 6
 .else
 controllerInputTiles:
         ; .byte "RLDUSSBA"
@@ -41,7 +44,7 @@ controllerInputDisplayX:
         ldx oamStagingLength
         clc
         lda controllerInputY, y
-        adc #$4C
+        adc #$4E
         sta oamStaging, x
         inx
         lda controllerInputTiles, y
@@ -83,7 +86,15 @@ controllerInputDisplayX:
         iny
         cpy #8
         bmi @inputLoop
+        cpy #9
+        beq @finishStaging
+        readKeyDirect keyShiftRight
+        beq @finishStaging
+        sec
+        rol tmp1
+        jmp @inputLoop
 
+@finishStaging:
         ldx oamStagingLength
         lda repeats
         bmi @zero
@@ -111,9 +122,10 @@ controllerInputDisplayX:
         ldy repeats
         iny
         tya
+        ora #$F0 ; use pace numbers
         sta oamStaging+1,x
 ; attr
-        lda #$01
+        lda #$02 ; numbers are brighter
         sta oamStaging+2,x
 ; y
         lda #$45

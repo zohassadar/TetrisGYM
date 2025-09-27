@@ -363,7 +363,7 @@ drop_tetrimino_actual:
 @autorepeating:
         lda heldButtons
 .ifdef UNSAFE
-        and #$00
+        and #$00 ; disables hold down
 .else
         and #$0F
 .endif
@@ -492,7 +492,7 @@ shift_tetrimino:
         and #$03
         bne @resetAutorepeatX
 .ifdef UNSAFE
-        lda #$00
+        lda #$00 ; disables das
 .else
         lda heldButtons
         .endif
@@ -538,10 +538,11 @@ shift_tetrimino:
         sta autorepeatX
 @ret:   rts
 
-
-
-A_ROTATE = 1
-A_SHIFT = 2
+setWarningFlag:
+        jsr reduceScore
+        lda #$40
+        sta repeatWarningFlag
+        rts
 
 .ifdef ANYTAP
 keyboardActiveTetrimino:
@@ -551,15 +552,15 @@ keyboardActiveTetrimino:
         lda newlyPressedButtons
         and #BUTTON_LEFT|BUTTON_RIGHT
         beq @checkRotate
-.ifdef UNSAFE
         cmp previous
-        beq @checkRotate
+        bne @notARepeat
+        jsr setWarningFlag
+        bne @continue
+@notARepeat:
         sta previous
-.endif
+@continue:
         ldx repeats
-.ifdef UNSAFE
-        bmi @checkRotate ; prevent 255 shifts
-.endif
+        bmi @checkRotate ; 0 means no action
         inx
         stx @repeatTmp
 @repeatedShift:
@@ -578,13 +579,17 @@ keyboardActiveTetrimino:
         bne @restoreTetriminoX
 .endif
         lda #SFX_SHIFT
-        sta soundEffectSlot1Init
-.ifdef ANYDAS
-        lda anydasDASValue
-.else
+        ldx repeatWarningFlag
+        beq @noWarning
+        ; lda #3
+        ; sta soundEffectSlot2Init
+        ; alien
+        lda #1
+        sta soundEffectSlot3Init
         lda #$00
-.endif
-        sta autorepeatX
+@noWarning:
+        sta soundEffectSlot1Init
+        lda #$00
         dec @repeatTmp
         beq @resetAfterShift
         bne @repeatedShift
@@ -609,13 +614,15 @@ keyboardActiveTetrimino:
         lda newlyPressedButtons
         and #BUTTON_A|BUTTON_B
         beq @checkDrop
-.ifdef UNSAFE
         cmp previous
-        beq @checkDrop
+        bne @notADouble
+        jsr setWarningFlag
+        bne @carryOn
+@notADouble:
         sta previous
-.endif
+@carryOn:
         ldx repeats
-        bmi @checkDrop ; prevent 255 rotations
+        bmi @checkDrop ; 0 means no action
         inx
         stx @repeatTmp
 @repeatedRotate:
@@ -636,7 +643,15 @@ keyboardActiveTetrimino:
         sta currentPiece
         jsr isPositionValid
         bne @restoreCurrentPiece
-        lda #SFX_ROTATE
+        ldx repeatWarningFlag
+        beq @noAlert
+        ; lda #3
+        ; sta soundEffectSlot2Init
+        ; alien
+        lda #1
+        sta soundEffectSlot3Init
+        lda #$00
+@noAlert:
         sta soundEffectSlot1Init
         dec @repeatTmp
         beq @resetAfterRotate
@@ -683,7 +698,7 @@ keyboardActiveTetrimino:
         bne @sonic
         beq @notSonic
 @sonic:
-        lda #$A0
+        lda #$EE ; 18 frames is the goal
         sta autorepeatY
 @notSonic:
 .else
@@ -718,6 +733,8 @@ keyboardActiveTetrimino:
 @lock:
 .endif
         sta autorepeatY
+        lda #3
+        sta holdDownPoints
         lda #$02
         sta playState
         jsr updatePlayfield
@@ -732,5 +749,56 @@ keyboardActiveTetrimino:
         beq @ret
         lda #$00
         sta repeats
+
+        lda repeatWarningFlag
+        beq @ret
+.repeat 4,i
+        lda binScore+(3-i)
+        bne @ret
+.endrepeat
+        jmp normalTopout
 @ret:   rts
+
+
+
+reduceScore:
+.repeat 4,i
+        lda binScore+i
+        sta binary32+i
+.endrepeat
+        ldx #4
+@divide:
+        lsr binary32+3
+        ror binary32+2
+        ror binary32+1
+        ror binary32
+        dex
+        bne @divide
+.repeat 3,i
+        lda binary32+1+i
+        bne @noMinimum
+.endrepeat
+        lda #15
+        cmp binary32
+        bcc @noMinimum
+        sta binary32
+@noMinimum:
+        sec
+.repeat 4,i
+        lda binScore+i
+        sbc binary32+i
+        sta binScore+i
+.endrepeat
+        bpl @noUnderflow
+        lda #$00
+        sta binScore
+        sta binScore+1
+        sta binScore+2
+        sta binScore+3
+@noUnderflow:
+        jsr setupScoreForRender
+        lda #RENDER_SCORE
+        ora renderFlags
+        sta renderFlags
+        rts
 .endif
