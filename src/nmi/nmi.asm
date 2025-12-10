@@ -34,6 +34,8 @@ nmi:    pha
 .endif
         lda #$01
         sta verticalBlankingInterval
+        lda musicSelection
+        sta musicType
         pla
         tay
         tsx

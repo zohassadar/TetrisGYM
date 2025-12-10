@@ -101,9 +101,10 @@ MODE_LINECAP
 MODE_DASONLY
 MODE_QUAL
 MODE_PAL
+MODE_MUSIC
 .endenum
 
-MODE_QUANTITY = MODE_PAL + 1
+MODE_QUANTITY = MODE_MUSIC + 1
 MODE_GAME_QUANTITY = MODE_HARDDROP + 1
 
 SCORING_CLASSIC := 0 ; for scoringModifier
@@ -169,6 +170,7 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $1    ; MODE_DASONLY
     .byte $1    ; MODE_QUAL
     .byte $1    ; MODE_PAL
+    .byte $3    ; MODE_MUSIC
 .endmacro
 
 .macro MODENAMES

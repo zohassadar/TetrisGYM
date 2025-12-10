@@ -163,12 +163,10 @@ checkIfAboveLowStackLine:
 
 ; canon is adjustMusicSpeed
 setMusicTrack:
-.if !NO_MUSIC
         sta musicTrack
         lda gameMode
         cmp #$05
         bne @ret
         lda #$FF
         sta musicTrack
-.endif
 @ret:   rts

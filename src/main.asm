@@ -17,7 +17,6 @@
 
 ; region code at start of page to keep cycle count consistent
 .include "util/check_region.asm"
-.include "audio.asm"
 
 initRam:
 
@@ -93,6 +92,11 @@ mainLoop:
 .include "modes/garbage.asm"
 
 .code
+updateAudio_jmp := $E000
+updateAudio2 := $E003
+LE006 := $E006
+.segment "AUDIO"
+    .incbin "clean.nes", $6010, $19EB
 
 .segment    "PRG_chunk3": absolute
 

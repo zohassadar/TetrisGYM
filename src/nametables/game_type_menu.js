@@ -76,7 +76,7 @@ drawTiles(buffer, lookup, `
 #a    DAS ONLY                d#
 #a    QUAL MODE               d#
 #a    PAL MODE                d#
-#a                            d#
+#a    MUSIC                   d#
 #a                            d#
 #a V6                         d#
 #a                            d#
