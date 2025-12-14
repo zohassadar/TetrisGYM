@@ -122,9 +122,6 @@ updateMusicSpeed:
         beq @ret
         lda #$00
         sta allegro
-        ldx musicType
-        lda musicSelectionTable,x
-        jsr setMusicTrack
         jmp @ret
 
 @foundBlockInRow:
@@ -134,12 +131,6 @@ updateMusicSpeed:
         bne @ret
         lda #$FF
         sta allegro
-        lda musicType
-        clc
-        adc #$04
-        tax
-        lda musicSelectionTable,x
-        jsr setMusicTrack
 @ret:   rts
 
 checkIfAboveLowStackLine:
