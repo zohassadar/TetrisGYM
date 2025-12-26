@@ -1,7 +1,7 @@
 render: lda renderMode
         jsr switch_s_plus_2a
         .addr   render_mode_static
-        .addr   render_mode_scroll
+        .addr   render_mode_static ; to be new menu
         .addr   render_mode_congratulations_screen
         .addr   render_mode_play_and_demo
         .addr   render_mode_pause
@@ -23,7 +23,6 @@ render_mode_static:
 .include "render_mode_pause.asm"
 .include "render_mode_congratulations_screen.asm"
 .include "render_mode_rocket.asm"
-.include "render_mode_scroll.asm"
 .include "render_mode_speed_test.asm"
 .include "render_mode_play_and_demo.asm"
 
