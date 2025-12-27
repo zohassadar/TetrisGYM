@@ -1,7 +1,7 @@
 render: lda renderMode
         jsr switch_s_plus_2a
         .addr   render_mode_static
-        .addr   render_mode_static ; to be new menu
+        .addr   render_mode_menu
         .addr   render_mode_congratulations_screen
         .addr   render_mode_play_and_demo
         .addr   render_mode_pause
