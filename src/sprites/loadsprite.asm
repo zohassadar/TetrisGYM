@@ -79,6 +79,7 @@ oamContentLookup:
         .addr   spriteReady ; $20
         .addr   spriteCustomLevelCursor ; $21
         .addr   spriteIngameHeart ; $22
+        .addr   spriteMenuPageSelect ; $23
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
 sprite00LevelSelectCursor:
@@ -87,6 +88,10 @@ sprite00LevelSelectCursor:
         .byte   $FF
 sprite01GameTypeCursor:
         .byte   $00,$27,$00,$00,$00,$27,$40,$3A
+        .byte   $FF
+spriteMenuPageSelect:
+        .byte   $00,$27,$40,$00
+        .byte   $00,$27,$00,$D9
         .byte   $FF
 ; Used as a sort of NOOP for cursors
 sprite02Blank:

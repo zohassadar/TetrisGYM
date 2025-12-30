@@ -57,7 +57,7 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
-#a                            d#
+#a V67                        d#
 #a                            d#
 #a                            d#
 `);
@@ -100,9 +100,10 @@ drawTiles(buffer, lookup, background);
 drawRect(buffer, 8, 2, 10, 5, 0xB0); // draw logo
 
 const urlX = 3;
-const urlY = 17;
-drawRect(extra, urlX, urlY, 12, 1, 0x74);
-drawRect(extra, urlX+12, urlY, 12, 1, 0x84);
+const urlY = 27;
+
+drawRect(buffer, urlX, urlY, 12, 1, 0x74);
+drawRect(buffer, urlX+12, urlY, 12, 1, 0x84);
 
 drawAttrs(buffer, [`
     2222222222222222
@@ -119,7 +120,7 @@ drawAttrs(buffer, [`
     2222222222222222
     2222222222222222
     2222222222222222
-    2222222222222222
+    2333333333333332
     2222222222222222
     2222222222222222
 `]);
@@ -128,4 +129,3 @@ writeRLE(
     __dirname + '/game_type_menu_nametable_practise.bin',
     buffer,
 );
-

@@ -97,6 +97,15 @@ if (args.includes('--')) {
 
 console.log();
 
+if (args.includes('--no-menu-build')) {
+    console.log('skipping menu build');
+} else {
+    // build menu
+    console.time('menu');
+    require('./src/gamemode/gametypemenu/menu');
+    console.timeEnd('menu');
+}
+
 // build / compress nametables
 
 console.time('nametables');

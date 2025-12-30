@@ -202,7 +202,7 @@ levelControlClearHighScores:
         sta spriteXOffset
         lda #$C8
         sta spriteYOffset
-        lda #$C
+        lda #STRING_CLEAR
         sta spriteIndexInOamContentLookup
         jsr stringSprite
 
@@ -223,7 +223,7 @@ levelControlClearHighScoresConfirm:
         sta spriteXOffset
         lda #$C8
         sta spriteYOffset
-        lda #$D
+        lda #STRING_SURE
         sta spriteIndexInOamContentLookup
         jsr stringSprite
 
