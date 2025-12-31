@@ -9,356 +9,524 @@ STRING_CONFETTI = stringConfetti-stringTable
 
 .enum
 MAIN_MENU
-SUBMENU_GODEEP
-SUBMENU_GODEEPER
-SUBMENU_GODEEPERER
+SUBMENU_NUMBERINPUTS
+SUBMENU_BOOLEANINPUTS
+SUBMENU_DIGITINPUTS
+SUBMENU_NESTEDSUBMENUS
+SUBMENU_MORENESTED
+SUBMENU_EVENMORE
+SUBMENU_ANDMORE
+SUBMENU_LASTONE
+SUBMENU_V7MENUIDEAS
+SUBMENU_TOURNAMENT
+SUBMENU_DISPLAY
+SUBMENU_CUSTOMCOLORS
+SUBMENU_SETTINGS
 .endenum
 
 .enum
 STRINGLIST_BOOL
+STRINGLIST_ONOFF
 STRINGLIST_SCORE
+STRINGLIST_COLORS
+STRINGLIST_STATS
 STRINGLIST_CRASH
+STRINGLIST_SPS
+STRINGLIST_KILLWHEN
+STRINGLIST_KILLHOW
 STRINGLIST_DARK
-STRINGLIST_MODES
+STRINGLIST_EXAMPLES
+STRINGLIST_EXAMPLES2
 .endenum
 
 firstPages:
     .byte $00
+    .byte $02
+    .byte $03
+    .byte $04
     .byte $06
     .byte $07
     .byte $08
+    .byte $09
+    .byte $0A
+    .byte $0B
+    .byte $0C
+    .byte $0D
+    .byte $0E
+    .byte $10
 
 lastPages:
+    .byte $02
+    .byte $03
+    .byte $04
     .byte $06
     .byte $07
     .byte $08
+    .byte $09
     .byte $0A
+    .byte $0B
+    .byte $0C
+    .byte $0D
+    .byte $0E
+    .byte $10
+    .byte $11
 
 firstItems:
     .byte $00
-    .byte $03
-    .byte $0C
-    .byte $15
-    .byte $1E
-    .byte $27
-    .byte $29
-    .byte $2E
-    .byte $33
-    .byte $37
-
-lastItems:
-    .byte $02
-    .byte $0B
+    .byte $05
+    .byte $07
+    .byte $0F
     .byte $14
-    .byte $1D
+    .byte $19
+    .byte $1E
+    .byte $20
+    .byte $22
+    .byte $24
     .byte $26
     .byte $28
-    .byte $2D
-    .byte $32
-    .byte $36
-    .byte $3A
+    .byte $2C
+    .byte $34
+    .byte $3D
+    .byte $43
+    .byte $49
+
+lastItems:
+    .byte $04
+    .byte $06
+    .byte $0E
+    .byte $13
+    .byte $18
+    .byte $1D
+    .byte $1F
+    .byte $21
+    .byte $23
+    .byte $25
+    .byte $27
+    .byte $2B
+    .byte $33
+    .byte $3C
+    .byte $42
+    .byte $48
+    .byte $51
 
 memoryMap:
     .byte 0
     .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
     .byte <MEMORY_BASE + $00
-    .byte 0
-    .byte 0
-    .byte 0
     .byte <MEMORY_BASE + $01
-    .byte 0
+    .byte <MEMORY_BASE + $02
+    .byte <MEMORY_BASE + $03
     .byte <MEMORY_BASE + $04
     .byte <MEMORY_BASE + $05
     .byte <MEMORY_BASE + $06
-    .byte <MEMORY_BASE + $07
     .byte 0
+    .byte <MEMORY_BASE + $07
     .byte <MEMORY_BASE + $08
     .byte <MEMORY_BASE + $09
     .byte <MEMORY_BASE + $0A
+    .byte 0
     .byte <MEMORY_BASE + $0B
     .byte <MEMORY_BASE + $0C
-    .byte <MEMORY_BASE + $0D
     .byte <MEMORY_BASE + $0E
-    .byte <MEMORY_BASE + $0F
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <MEMORY_BASE + $10
     .byte <MEMORY_BASE + $11
-    .byte <MEMORY_BASE + $12
-    .byte <MEMORY_BASE + $13
-    .byte <MEMORY_BASE + $14
     .byte 0
     .byte <MEMORY_BASE + $15
     .byte <MEMORY_BASE + $16
-    .byte <MEMORY_BASE + $17
     .byte <MEMORY_BASE + $18
-    .byte <MEMORY_BASE + $19
-    .byte <MEMORY_BASE + $1A
     .byte <MEMORY_BASE + $1B
-    .byte <MEMORY_BASE + $1C
-    .byte 0
-    .byte <MEMORY_BASE + $1D
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <MEMORY_BASE + $1E
     .byte 0
     .byte 0
     .byte 0
     .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte <MEMORY_BASE + $1F
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte <MEMORY_BASE + $20
     .byte <MEMORY_BASE + $21
-    .byte 0
-    .byte 0
-    .byte 0
     .byte <MEMORY_BASE + $24
-    .byte 0
-    .byte 0
-    .byte 0
+    .byte <MEMORY_BASE + $26
     .byte <MEMORY_BASE + $27
+    .byte <MEMORY_BASE + $28
+    .byte <MEMORY_BASE + $29
     .byte 0
+    .byte <MEMORY_BASE + $2B
+    .byte <MEMORY_BASE + $2C
+    .byte <MEMORY_BASE + $2D
+    .byte <MEMORY_BASE + $2E
+    .byte <MEMORY_BASE + $2F
+    .byte <MEMORY_BASE + $30
+    .byte 0
+    .byte <MEMORY_BASE + $31
+    .byte 0
+    .byte <MEMORY_BASE + $32
+    .byte <MEMORY_BASE + $35
+    .byte <MEMORY_BASE + $38
+    .byte <MEMORY_BASE + $3B
+    .byte <MEMORY_BASE + $3E
+    .byte 0
+    .byte <MEMORY_BASE + $41
+    .byte <MEMORY_BASE + $44
+    .byte <MEMORY_BASE + $47
+    .byte <MEMORY_BASE + $4A
+    .byte <MEMORY_BASE + $4D
+    .byte 0
+    .byte <MEMORY_BASE + $50
+    .byte <MEMORY_BASE + $51
+    .byte <MEMORY_BASE + $52
+    .byte <MEMORY_BASE + $53
+    .byte <MEMORY_BASE + $54
+    .byte <MEMORY_BASE + $55
+    .byte <MEMORY_BASE + $56
+    .byte <MEMORY_BASE + $57
 
 itemTypes:
-    .byte TYPE_TITLE ; Fun Stuff
-    .byte TYPE_SUBMENU | SUBMENU_GODEEP ; Go Deep
-    .byte TYPE_NUMBER | $00 ; 
-    .byte TYPE_TITLE ; Main Menu
-    .byte TYPE_MODE_ONLY ; Tetris
-    .byte TYPE_MODE_ONLY ; T-Spins
-    .byte TYPE_HEX | $06 ; Seed
-    .byte TYPE_MODE_ONLY ; Pace
-    .byte TYPE_NUMBER | $08 ; Setups
-    .byte TYPE_NUMBER | $09 ; B Type
-    .byte TYPE_NUMBER | $10 ; Crunch
-    .byte TYPE_NUMBER | $11 ; Quick Tap
-    .byte TYPE_TITLE ; Page 2
-    .byte TYPE_NUMBER | $11 ; Transition
-    .byte TYPE_NUMBER | $05 ; Marathon
-    .byte TYPE_NUMBER | $11 ; Tap Quantity
-    .byte TYPE_NUMBER | $09 ; Checkerboard
-    .byte TYPE_NUMBER | $05 ; Garbage
-    .byte TYPE_NUMBER | $13 ; Drought
-    .byte TYPE_NUMBER | $11 ; Das Delay
-    .byte TYPE_NUMBER | $13 ; Low Stack
-    .byte TYPE_TITLE ; Page 3
-    .byte TYPE_MODE_ONLY ; KILLSCREEN X2
-    .byte TYPE_MODE_ONLY ; Invisible
-    .byte TYPE_MODE_ONLY ; Hard Drop
+    .byte TYPE_TITLE ; New Menu!
+    .byte TYPE_SUBMENU | SUBMENU_NUMBERINPUTS ; number inputs
+    .byte TYPE_SUBMENU | SUBMENU_BOOLEANINPUTS ; boolean inputs
+    .byte TYPE_SUBMENU | SUBMENU_DIGITINPUTS ; Digit Inputs
+    .byte TYPE_SUBMENU | SUBMENU_NESTEDSUBMENUS ; nested submenus
+    .byte TYPE_TITLE ; Second Page
+    .byte TYPE_SUBMENU | SUBMENU_V7MENUIDEAS ; v7 menu ideas
+    .byte TYPE_TITLE | 1 ; Numbers
+    .byte TYPE_NUMBER | $02 ; Min Limit 2
+    .byte TYPE_NUMBER | $1F ; Max Limit 30
+    .byte TYPE_NUMBER | $00 ; Or Unlimited
+    .byte TYPE_FF_OFF | $05 ; when -1 is off
+    .byte TYPE_CHOICES | STRINGLIST_EXAMPLES2 ; from word list
+    .byte TYPE_HEX | $02 ; by digit
+    .byte TYPE_BCD | $02 ; by bcd digit
+    .byte TYPE_TITLE | 1 ; boolean
+    .byte TYPE_BOOL ; Off On
+    .byte TYPE_CHOICES | STRINGLIST_ONOFF ; if 0 is default
+    .byte TYPE_NUMBER | $02 ; As Number
+    .byte TYPE_CHOICES | STRINGLIST_EXAMPLES ; as words
+    .byte TYPE_TITLE ; BCD Inputs
+    .byte TYPE_BCD | $02 ; BCD 2 Digit
+    .byte TYPE_BCD | $04 ; BCD 4 Digit
+    .byte TYPE_BCD | $06 ; BCD 6 Digit
+    .byte TYPE_BCD | $08 ; BCD 8 Digit
+    .byte TYPE_TITLE ; Hex Inputs
+    .byte TYPE_HEX | $02 ; HEX 2 Digit
+    .byte TYPE_HEX | $04 ; HEX 4 Digit
+    .byte TYPE_HEX | $06 ; HEX 6 Digit
+    .byte TYPE_HEX | $08 ; HEX 8 Digit
+    .byte TYPE_TITLE | 1 ; Nested
+    .byte TYPE_SUBMENU | SUBMENU_MORENESTED ; more nested
+    .byte TYPE_TITLE | 1 ; more nested
+    .byte TYPE_SUBMENU | SUBMENU_EVENMORE ; even more
+    .byte TYPE_TITLE | 1 ; even more
+    .byte TYPE_SUBMENU | SUBMENU_ANDMORE ; and more
+    .byte TYPE_TITLE | 1 ; and more
+    .byte TYPE_SUBMENU | SUBMENU_LASTONE ; last one
+    .byte TYPE_TITLE | 1 ; last one
+    .byte TYPE_NUMBER | $08 ; foo
+    .byte TYPE_TITLE | 1 ; Main Menu
+    .byte TYPE_SUBMENU | SUBMENU_TOURNAMENT ; Tournament
+    .byte TYPE_SUBMENU | SUBMENU_DISPLAY ; Display
+    .byte TYPE_SUBMENU | SUBMENU_SETTINGS ; Settings
+    .byte TYPE_TITLE | 1 ; Tournament
+    .byte TYPE_CHOICES | STRINGLIST_SPS ; SPS
+    .byte TYPE_HEX | $06 ; Piece Seed
+    .byte TYPE_HEX | $04 ; B Seed
+    .byte TYPE_CHOICES | STRINGLIST_KILLWHEN ; Killscreen
+    .byte TYPE_CHOICES | STRINGLIST_KILLHOW ; how
+    .byte TYPE_NUMBER | $00 ; Level
+    .byte TYPE_BCD | $04 ; Lines
+    .byte TYPE_TITLE | 1 ; Display Options
     .byte TYPE_CHOICES | STRINGLIST_SCORE ; Scoring
+    .byte TYPE_FF_OFF | $10 ; Pace Display
+    .byte TYPE_CHOICES | STRINGLIST_STATS ; Stats Box
+    .byte TYPE_BOOL ; Input Display
+    .byte TYPE_CHOICES | STRINGLIST_DARK ; Dark Mode
+    .byte TYPE_CHOICES | STRINGLIST_COLORS ; Colors
+    .byte TYPE_SUBMENU | SUBMENU_CUSTOMCOLORS ; Custom Colors
+    .byte TYPE_BOOL ; Disable Flash
+    .byte TYPE_TITLE ; Custom x0-x4
+    .byte TYPE_HEX | $06 ; Lvl x0
+    .byte TYPE_HEX | $06 ; Lvl x1
+    .byte TYPE_HEX | $06 ; Lvl x2
+    .byte TYPE_HEX | $06 ; Lvl x3
+    .byte TYPE_HEX | $06 ; Lvl x4
+    .byte TYPE_TITLE ; Custom x5-x9
+    .byte TYPE_HEX | $06 ; Lvl x5
+    .byte TYPE_HEX | $06 ; Lvl x6
+    .byte TYPE_HEX | $06 ; Lvl x7
+    .byte TYPE_HEX | $06 ; Lvl x8
+    .byte TYPE_HEX | $06 ; Lvl x9
+    .byte TYPE_TITLE | 1 ; Settings
     .byte TYPE_CHOICES | STRINGLIST_CRASH ; Crash
     .byte TYPE_BOOL ; Strict Crash
-    .byte TYPE_BOOL ; HZ Display
-    .byte TYPE_BOOL ; Input Display
-    .byte TYPE_TITLE ; Page 4
-    .byte TYPE_BOOL ; Disable Flash
     .byte TYPE_BOOL ; Disable Pause
-    .byte TYPE_CHOICES | STRINGLIST_DARK ; Dark Mode
     .byte TYPE_BOOL ; Goofy Foot
-    .byte TYPE_BOOL ; Block Tool
-    .byte TYPE_BOOL ; Linecap
-    .byte TYPE_BOOL ; DAS Only
+    .byte TYPE_BOOL ; Das Only
     .byte TYPE_BOOL ; Qual Mode
-    .byte TYPE_TITLE ; Page 5
+    .byte TYPE_BOOL ; Block Tool
     .byte TYPE_BOOL ; Pal Mode
-    .byte TYPE_TITLE | 1 ; Deep One
-    .byte TYPE_SUBMENU | SUBMENU_GODEEPER ; Go deeper
-    .byte TYPE_MODE_ONLY ; T-Spins
-    .byte TYPE_HEX | $06 ; Seed
-    .byte TYPE_MODE_ONLY ; Pace
-    .byte TYPE_TITLE | 1 ; Deep Two
-    .byte TYPE_SUBMENU | SUBMENU_GODEEPERER ; go deeperer
-    .byte TYPE_MODE_ONLY ; T-Spins
-    .byte TYPE_HEX | $06 ; Seed
-    .byte TYPE_MODE_ONLY ; Pace
-    .byte TYPE_TITLE ; you went deep
-    .byte TYPE_MODE_ONLY ; T-Spins
-    .byte TYPE_HEX | $06 ; Seed
-    .byte TYPE_MODE_ONLY ; Pace
-    .byte TYPE_TITLE ; nothing here
-    .byte TYPE_MODE_ONLY ; T-Spins
-    .byte TYPE_HEX | $06 ; Seed
-    .byte TYPE_MODE_ONLY ; Pace
 
 stringListHi:
-    .byte >stringFunStuff
-    .byte >stringGoDeep
-    .byte >string
+    .byte >stringNewMenu
+    .byte >stringnumberinputs
+    .byte >stringbooleaninputs
+    .byte >stringDigitInputs
+    .byte >stringnestedsubmenus
+    .byte >stringSecondPage
+    .byte >stringv7menuideas
+    .byte >stringNumbers
+    .byte >stringMinLimit2
+    .byte >stringMaxLimit30
+    .byte >stringOrUnlimited
+    .byte >stringwhen1isoff
+    .byte >stringfromwordlist
+    .byte >stringbydigit
+    .byte >stringbybcddigit
+    .byte >stringboolean
+    .byte >stringOffOn
+    .byte >stringif0isdefault
+    .byte >stringAsNumber
+    .byte >stringaswords
+    .byte >stringBCDInputs
+    .byte >stringBCD2Digit
+    .byte >stringBCD4Digit
+    .byte >stringBCD6Digit
+    .byte >stringBCD8Digit
+    .byte >stringHexInputs
+    .byte >stringHEX2Digit
+    .byte >stringHEX4Digit
+    .byte >stringHEX6Digit
+    .byte >stringHEX8Digit
+    .byte >stringNested
+    .byte >stringmorenested
+    .byte >stringmorenested
+    .byte >stringevenmore
+    .byte >stringevenmore
+    .byte >stringandmore
+    .byte >stringandmore
+    .byte >stringlastone
+    .byte >stringlastone
+    .byte >stringfoo
     .byte >stringMainMenu
-    .byte >stringTetris
-    .byte >stringTSpins
-    .byte >stringSeed
-    .byte >stringPace
-    .byte >stringSetups
-    .byte >stringBType
-    .byte >stringCrunch
-    .byte >stringQuickTap
-    .byte >stringPage2
-    .byte >stringTransition
-    .byte >stringMarathon
-    .byte >stringTapQuantity
-    .byte >stringCheckerboard
-    .byte >stringGarbage
-    .byte >stringDrought
-    .byte >stringDasDelay
-    .byte >stringLowStack
-    .byte >stringPage3
-    .byte >stringKILLSCREENX2
-    .byte >stringInvisible
-    .byte >stringHardDrop
+    .byte >stringTournament
+    .byte >stringDisplay
+    .byte >stringSettings
+    .byte >stringTournament
+    .byte >stringSPS
+    .byte >stringPieceSeed
+    .byte >stringBSeed
+    .byte >stringKillscreen
+    .byte >stringhow
+    .byte >stringLevel
+    .byte >stringLines
+    .byte >stringDisplayOptions
     .byte >stringScoring
+    .byte >stringPaceDisplay
+    .byte >stringStatsBox
+    .byte >stringInputDisplay
+    .byte >stringDarkMode
+    .byte >stringColors
+    .byte >stringCustomColors
+    .byte >stringDisableFlash
+    .byte >stringCustomx0x4
+    .byte >stringLvlx0
+    .byte >stringLvlx1
+    .byte >stringLvlx2
+    .byte >stringLvlx3
+    .byte >stringLvlx4
+    .byte >stringCustomx5x9
+    .byte >stringLvlx5
+    .byte >stringLvlx6
+    .byte >stringLvlx7
+    .byte >stringLvlx8
+    .byte >stringLvlx9
+    .byte >stringSettings
     .byte >stringCrash
     .byte >stringStrictCrash
-    .byte >stringHZDisplay
-    .byte >stringInputDisplay
-    .byte >stringPage4
-    .byte >stringDisableFlash
     .byte >stringDisablePause
-    .byte >stringDarkMode
     .byte >stringGoofyFoot
-    .byte >stringBlockTool
-    .byte >stringLinecap
-    .byte >stringDASOnly
+    .byte >stringDasOnly
     .byte >stringQualMode
-    .byte >stringPage5
+    .byte >stringBlockTool
     .byte >stringPalMode
-    .byte >stringDeepOne
-    .byte >stringGodeeper
-    .byte >stringTSpins
-    .byte >stringSeed
-    .byte >stringPace
-    .byte >stringDeepTwo
-    .byte >stringgodeeperer
-    .byte >stringTSpins
-    .byte >stringSeed
-    .byte >stringPace
-    .byte >stringyouwentdeep
-    .byte >stringTSpins
-    .byte >stringSeed
-    .byte >stringPace
-    .byte >stringnothinghere
-    .byte >stringTSpins
-    .byte >stringSeed
-    .byte >stringPace
 
 stringListLo:
-    .byte <stringFunStuff
-    .byte <stringGoDeep
-    .byte <string
+    .byte <stringNewMenu
+    .byte <stringnumberinputs
+    .byte <stringbooleaninputs
+    .byte <stringDigitInputs
+    .byte <stringnestedsubmenus
+    .byte <stringSecondPage
+    .byte <stringv7menuideas
+    .byte <stringNumbers
+    .byte <stringMinLimit2
+    .byte <stringMaxLimit30
+    .byte <stringOrUnlimited
+    .byte <stringwhen1isoff
+    .byte <stringfromwordlist
+    .byte <stringbydigit
+    .byte <stringbybcddigit
+    .byte <stringboolean
+    .byte <stringOffOn
+    .byte <stringif0isdefault
+    .byte <stringAsNumber
+    .byte <stringaswords
+    .byte <stringBCDInputs
+    .byte <stringBCD2Digit
+    .byte <stringBCD4Digit
+    .byte <stringBCD6Digit
+    .byte <stringBCD8Digit
+    .byte <stringHexInputs
+    .byte <stringHEX2Digit
+    .byte <stringHEX4Digit
+    .byte <stringHEX6Digit
+    .byte <stringHEX8Digit
+    .byte <stringNested
+    .byte <stringmorenested
+    .byte <stringmorenested
+    .byte <stringevenmore
+    .byte <stringevenmore
+    .byte <stringandmore
+    .byte <stringandmore
+    .byte <stringlastone
+    .byte <stringlastone
+    .byte <stringfoo
     .byte <stringMainMenu
-    .byte <stringTetris
-    .byte <stringTSpins
-    .byte <stringSeed
-    .byte <stringPace
-    .byte <stringSetups
-    .byte <stringBType
-    .byte <stringCrunch
-    .byte <stringQuickTap
-    .byte <stringPage2
-    .byte <stringTransition
-    .byte <stringMarathon
-    .byte <stringTapQuantity
-    .byte <stringCheckerboard
-    .byte <stringGarbage
-    .byte <stringDrought
-    .byte <stringDasDelay
-    .byte <stringLowStack
-    .byte <stringPage3
-    .byte <stringKILLSCREENX2
-    .byte <stringInvisible
-    .byte <stringHardDrop
+    .byte <stringTournament
+    .byte <stringDisplay
+    .byte <stringSettings
+    .byte <stringTournament
+    .byte <stringSPS
+    .byte <stringPieceSeed
+    .byte <stringBSeed
+    .byte <stringKillscreen
+    .byte <stringhow
+    .byte <stringLevel
+    .byte <stringLines
+    .byte <stringDisplayOptions
     .byte <stringScoring
+    .byte <stringPaceDisplay
+    .byte <stringStatsBox
+    .byte <stringInputDisplay
+    .byte <stringDarkMode
+    .byte <stringColors
+    .byte <stringCustomColors
+    .byte <stringDisableFlash
+    .byte <stringCustomx0x4
+    .byte <stringLvlx0
+    .byte <stringLvlx1
+    .byte <stringLvlx2
+    .byte <stringLvlx3
+    .byte <stringLvlx4
+    .byte <stringCustomx5x9
+    .byte <stringLvlx5
+    .byte <stringLvlx6
+    .byte <stringLvlx7
+    .byte <stringLvlx8
+    .byte <stringLvlx9
+    .byte <stringSettings
     .byte <stringCrash
     .byte <stringStrictCrash
-    .byte <stringHZDisplay
-    .byte <stringInputDisplay
-    .byte <stringPage4
-    .byte <stringDisableFlash
     .byte <stringDisablePause
-    .byte <stringDarkMode
     .byte <stringGoofyFoot
-    .byte <stringBlockTool
-    .byte <stringLinecap
-    .byte <stringDASOnly
+    .byte <stringDasOnly
     .byte <stringQualMode
-    .byte <stringPage5
+    .byte <stringBlockTool
     .byte <stringPalMode
-    .byte <stringDeepOne
-    .byte <stringGodeeper
-    .byte <stringTSpins
-    .byte <stringSeed
-    .byte <stringPace
-    .byte <stringDeepTwo
-    .byte <stringgodeeperer
-    .byte <stringTSpins
-    .byte <stringSeed
-    .byte <stringPace
-    .byte <stringyouwentdeep
-    .byte <stringTSpins
-    .byte <stringSeed
-    .byte <stringPace
-    .byte <stringnothinghere
-    .byte <stringTSpins
-    .byte <stringSeed
-    .byte <stringPace
 
 stringListIndexes:
     .byte stringlistbool-stringLists
+    .byte stringlistonoff-stringLists
     .byte stringlistscore-stringLists
+    .byte stringlistcolors-stringLists
+    .byte stringliststats-stringLists
     .byte stringlistcrash-stringLists
+    .byte stringlistsps-stringLists
+    .byte stringlistkillwhen-stringLists
+    .byte stringlistkillhow-stringLists
     .byte stringlistdark-stringLists
-    .byte stringlistmodes-stringLists
+    .byte stringlistexamples-stringLists
+    .byte stringlistexamples2-stringLists
 
 stringListCounts:
     .byte $02
+    .byte $02
     .byte $05
     .byte $04
+    .byte $04
+    .byte $04
+    .byte $03
+    .byte $03
+    .byte $04
     .byte $05
-    .byte $15
+    .byte $02
+    .byte $03
 
 stringLists:
 stringlistbool:
     .byte stringOff-stringTable
     .byte stringOn-stringTable
+stringlistonoff:
+    .byte stringOn-stringTable
+    .byte stringOff-stringTable
 stringlistscore:
     .byte stringClassic-stringTable
     .byte stringLetters-stringTable
     .byte string7Digit-stringTable
     .byte stringM-stringTable
     .byte stringHidden-stringTable
+stringlistcolors:
+    .byte stringVanilla-stringTable
+    .byte stringPride-stringTable
+    .byte stringWhite-stringTable
+    .byte stringCustom-stringTable
+stringliststats:
+    .byte stringStats-stringTable
+    .byte stringHZDsply-stringTable
+    .byte stringDASMeter-stringTable
+    .byte stringNothing-stringTable
 stringlistcrash:
     .byte stringOff-stringTable
     .byte stringShown-stringTable
     .byte stringTopout-stringTable
     .byte stringCrash-stringTable
+stringlistsps:
+    .byte stringOff-stringTable
+    .byte stringOn-stringTable
+    .byte stringSimilar-stringTable
+stringlistkillwhen:
+    .byte stringOff-stringTable
+    .byte stringlines-stringTable
+    .byte stringlevel-stringTable
+stringlistkillhow:
+    .byte stringKSX2-stringTable
+    .byte stringFloor-stringTable
+    .byte stringInviz-stringTable
+    .byte stringHalt-stringTable
 stringlistdark:
     .byte stringOff-stringTable
     .byte stringOn-stringTable
     .byte stringLite-stringTable
     .byte stringTeal-stringTable
     .byte stringOG-stringTable
-stringlistmodes:
-    .byte stringTETRIS-stringTable
-    .byte stringTSPINS-stringTable
-    .byte stringSEED-stringTable
-    .byte stringSTACKN-stringTable
-    .byte stringPACE-stringTable
-    .byte stringSETUPS-stringTable
-    .byte stringBTYPE-stringTable
-    .byte stringFLOOR-stringTable
-    .byte stringCRUNCH-stringTable
-    .byte stringQCKTAP-stringTable
-    .byte stringTRNSTN-stringTable
-    .byte stringMARTHN-stringTable
-    .byte stringTAPQTY-stringTable
-    .byte stringCKRBRD-stringTable
-    .byte stringGARBGE-stringTable
-    .byte stringLOBARS-stringTable
-    .byte stringDASDLY-stringTable
-    .byte stringLOWSTK-stringTable
-    .byte stringKILLX2-stringTable
-    .byte stringINVZBL-stringTable
-    .byte stringHRDDRP-stringTable
+stringlistexamples:
+    .byte stringfoo-stringTable
+    .byte stringbar-stringTable
+stringlistexamples2:
+    .byte stringa-stringTable
+    .byte stringaa-stringTable
+    .byte stringaaa-stringTable
 
 stringTable:
 stringOff:
@@ -375,60 +543,58 @@ stringM:
     .byte $01,"M"
 stringHidden:
     .byte $06,"HIDDEN"
+stringVanilla:
+    .byte $07,"VANILLA"
+stringPride:
+    .byte $05,"PRIDE"
+stringWhite:
+    .byte $05,"WHITE"
+stringCustom:
+    .byte $06,"CUSTOM"
+stringStats:
+    .byte $05,"STATS"
+stringHZDsply:
+    .byte $08,"HZ",$FF,"DSPLY"
+stringDASMeter:
+    .byte $08,"DASMETER"
+stringNothing:
+    .byte $07,"NOTHING"
 stringShown:
     .byte $05,"SHOWN"
 stringTopout:
     .byte $06,"TOPOUT"
 stringCrash:
     .byte $05,"CRASH"
+stringSimilar:
+    .byte $07,"SIMILAR"
+stringlines:
+    .byte $05,"LINES"
+stringlevel:
+    .byte $05,"LEVEL"
+stringKSX2:
+    .byte $04,"KSX2"
+stringFloor:
+    .byte $05,"FLOOR"
+stringInviz:
+    .byte $05,"INVIZ"
+stringHalt:
+    .byte $04,"HALT"
 stringLite:
     .byte $04,"LITE"
 stringTeal:
     .byte $04,"TEAL"
 stringOG:
     .byte $02,"OG"
-stringTETRIS:
-    .byte $06,"TETRIS"
-stringTSPINS:
-    .byte $06,"TSPINS"
-stringSEED:
-    .byte $06,"",$FF,"SEED",$FF,""
-stringSTACKN:
-    .byte $06,"STACKN"
-stringPACE:
-    .byte $06,"",$FF,"PACE",$FF,""
-stringSETUPS:
-    .byte $06,"SETUPS"
-stringBTYPE:
-    .byte $06,"B-TYPE"
-stringFLOOR:
-    .byte $06,"FLOOR",$FF,""
-stringCRUNCH:
-    .byte $06,"CRUNCH"
-stringQCKTAP:
-    .byte $06,"QCKTAP"
-stringTRNSTN:
-    .byte $06,"TRNSTN"
-stringMARTHN:
-    .byte $06,"MARTHN"
-stringTAPQTY:
-    .byte $06,"TAPQTY"
-stringCKRBRD:
-    .byte $06,"CKRBRD"
-stringGARBGE:
-    .byte $06,"GARBGE"
-stringLOBARS:
-    .byte $06,"LOBARS"
-stringDASDLY:
-    .byte $06,"DASDLY"
-stringLOWSTK:
-    .byte $06,"LOWSTK"
-stringKILLX2:
-    .byte $06,"KILLX2"
-stringINVZBL:
-    .byte $06,"INVZBL"
-stringHRDDRP:
-    .byte $06,"HRDDRP"
+stringfoo:
+    .byte $03,"FOO"
+stringbar:
+    .byte $03,"BAR"
+stringa:
+    .byte $01,"A"
+stringaa:
+    .byte $02,"AA"
+stringaaa:
+    .byte $03,"AAA"
 stringPause:
     .byte $05,"PAUSE"
 stringBlock:
@@ -442,98 +608,154 @@ stringConfetti:
 
 .out .sprintf("%d/256 sprite string bytes", * - stringTable)
 
-stringFunStuff:
-    .byte $09,"FUN",$FF,"STUFF"
-stringGoDeep:
-    .byte $07,"GO",$FF,"DEEP"
-string:
-    .byte $00,""
+stringNewMenu:
+    .byte $09,"NEW",$FF,"MENU!"
+stringnumberinputs:
+    .byte $0D,"NUMBER",$FF,"INPUTS"
+stringbooleaninputs:
+    .byte $0E,"BOOLEAN",$FF,"INPUTS"
+stringDigitInputs:
+    .byte $0C,"DIGIT",$FF,"INPUTS"
+stringnestedsubmenus:
+    .byte $0F,"NESTED",$FF,"SUBMENUS"
+stringSecondPage:
+    .byte $0B,"SECOND",$FF,"PAGE"
+stringv7menuideas:
+    .byte $0D,"V7",$FF,"MENU",$FF,"IDEAS"
+stringNumbers:
+    .byte $07,"NUMBERS"
+stringMinLimit2:
+    .byte $0B,"MIN",$FF,"LIMIT",$FF,"2"
+stringMaxLimit30:
+    .byte $0C,"MAX",$FF,"LIMIT",$FF,"30"
+stringOrUnlimited:
+    .byte $0C,"OR",$FF,"UNLIMITED"
+stringwhen1isoff:
+    .byte $0E,"WHEN",$FF,"-1",$FF,"IS",$FF,"OFF"
+stringfromwordlist:
+    .byte $0E,"FROM",$FF,"WORD",$FF,"LIST"
+stringbydigit:
+    .byte $08,"BY",$FF,"DIGIT"
+stringbybcddigit:
+    .byte $0C,"BY",$FF,"BCD",$FF,"DIGIT"
+stringboolean:
+    .byte $07,"BOOLEAN"
+stringOffOn:
+    .byte $06,"OFF",$FF,"ON"
+stringif0isdefault:
+    .byte $0F,"IF",$FF,"0",$FF,"IS",$FF,"DEFAULT"
+stringAsNumber:
+    .byte $09,"AS",$FF,"NUMBER"
+stringaswords:
+    .byte $08,"AS",$FF,"WORDS"
+stringBCDInputs:
+    .byte $0A,"BCD",$FF,"INPUTS"
+stringBCD2Digit:
+    .byte $0B,"BCD",$FF,"2",$FF,"DIGIT"
+stringBCD4Digit:
+    .byte $0B,"BCD",$FF,"4",$FF,"DIGIT"
+stringBCD6Digit:
+    .byte $0B,"BCD",$FF,"6",$FF,"DIGIT"
+stringBCD8Digit:
+    .byte $0B,"BCD",$FF,"8",$FF,"DIGIT"
+stringHexInputs:
+    .byte $0A,"HEX",$FF,"INPUTS"
+stringHEX2Digit:
+    .byte $0B,"HEX",$FF,"2",$FF,"DIGIT"
+stringHEX4Digit:
+    .byte $0B,"HEX",$FF,"4",$FF,"DIGIT"
+stringHEX6Digit:
+    .byte $0B,"HEX",$FF,"6",$FF,"DIGIT"
+stringHEX8Digit:
+    .byte $0B,"HEX",$FF,"8",$FF,"DIGIT"
+stringNested:
+    .byte $06,"NESTED"
+stringmorenested:
+    .byte $0B,"MORE",$FF,"NESTED"
+stringevenmore:
+    .byte $09,"EVEN",$FF,"MORE"
+stringandmore:
+    .byte $08,"AND",$FF,"MORE"
+stringlastone:
+    .byte $08,"LAST",$FF,"ONE"
 stringMainMenu:
     .byte $09,"MAIN",$FF,"MENU"
-stringTetris:
-    .byte $06,"TETRIS"
-stringTSpins:
-    .byte $07,"T-SPINS"
-stringSeed:
-    .byte $04,"SEED"
-stringPace:
-    .byte $04,"PACE"
-stringSetups:
-    .byte $06,"SETUPS"
-stringBType:
-    .byte $06,"B",$FF,"TYPE"
-stringCrunch:
-    .byte $06,"CRUNCH"
-stringQuickTap:
-    .byte $09,"QUICK",$FF,"TAP"
-stringPage2:
-    .byte $06,"PAGE",$FF,"2"
-stringTransition:
-    .byte $0A,"TRANSITION"
-stringMarathon:
-    .byte $08,"MARATHON"
-stringTapQuantity:
-    .byte $0C,"TAP",$FF,"QUANTITY"
-stringCheckerboard:
-    .byte $0C,"CHECKERBOARD"
-stringGarbage:
-    .byte $07,"GARBAGE"
-stringDrought:
-    .byte $07,"DROUGHT"
-stringDasDelay:
-    .byte $09,"DAS",$FF,"DELAY"
-stringLowStack:
-    .byte $09,"LOW",$FF,"STACK"
-stringPage3:
-    .byte $06,"PAGE",$FF,"3"
-stringKILLSCREENX2:
-    .byte $0D,"KILLSCREEN",$FF,"X2"
-stringInvisible:
-    .byte $09,"INVISIBLE"
-stringHardDrop:
-    .byte $09,"HARD",$FF,"DROP"
+stringTournament:
+    .byte $0A,"TOURNAMENT"
+stringDisplay:
+    .byte $07,"DISPLAY"
+stringSettings:
+    .byte $08,"SETTINGS"
+stringSPS:
+    .byte $03,"SPS"
+stringPieceSeed:
+    .byte $0A,"PIECE",$FF,"SEED"
+stringBSeed:
+    .byte $06,"B",$FF,"SEED"
+stringKillscreen:
+    .byte $0A,"KILLSCREEN"
+stringhow:
+    .byte $03,"HOW"
+stringLevel:
+    .byte $05,"LEVEL"
+stringLines:
+    .byte $05,"LINES"
+stringDisplayOptions:
+    .byte $0F,"DISPLAY",$FF,"OPTIONS"
 stringScoring:
     .byte $07,"SCORING"
-stringStrictCrash:
-    .byte $0C,"STRICT",$FF,"CRASH"
-stringHZDisplay:
-    .byte $0A,"HZ",$FF,"DISPLAY"
+stringPaceDisplay:
+    .byte $0C,"PACE",$FF,"DISPLAY"
+stringStatsBox:
+    .byte $09,"STATS",$FF,"BOX"
 stringInputDisplay:
     .byte $0D,"INPUT",$FF,"DISPLAY"
-stringPage4:
-    .byte $06,"PAGE",$FF,"4"
-stringDisableFlash:
-    .byte $0D,"DISABLE",$FF,"FLASH"
-stringDisablePause:
-    .byte $0D,"DISABLE",$FF,"PAUSE"
 stringDarkMode:
     .byte $09,"DARK",$FF,"MODE"
+stringColors:
+    .byte $06,"COLORS"
+stringCustomColors:
+    .byte $0D,"CUSTOM",$FF,"COLORS"
+stringDisableFlash:
+    .byte $0D,"DISABLE",$FF,"FLASH"
+stringCustomx0x4:
+    .byte $0C,"CUSTOM",$FF,"X0-X4"
+stringLvlx0:
+    .byte $06,"LVL",$FF,"X0"
+stringLvlx1:
+    .byte $06,"LVL",$FF,"X1"
+stringLvlx2:
+    .byte $06,"LVL",$FF,"X2"
+stringLvlx3:
+    .byte $06,"LVL",$FF,"X3"
+stringLvlx4:
+    .byte $06,"LVL",$FF,"X4"
+stringCustomx5x9:
+    .byte $0C,"CUSTOM",$FF,"X5-X9"
+stringLvlx5:
+    .byte $06,"LVL",$FF,"X5"
+stringLvlx6:
+    .byte $06,"LVL",$FF,"X6"
+stringLvlx7:
+    .byte $06,"LVL",$FF,"X7"
+stringLvlx8:
+    .byte $06,"LVL",$FF,"X8"
+stringLvlx9:
+    .byte $06,"LVL",$FF,"X9"
+stringStrictCrash:
+    .byte $0C,"STRICT",$FF,"CRASH"
+stringDisablePause:
+    .byte $0D,"DISABLE",$FF,"PAUSE"
 stringGoofyFoot:
     .byte $0A,"GOOFY",$FF,"FOOT"
-stringBlockTool:
-    .byte $0A,"BLOCK",$FF,"TOOL"
-stringLinecap:
-    .byte $07,"LINECAP"
-stringDASOnly:
+stringDasOnly:
     .byte $08,"DAS",$FF,"ONLY"
 stringQualMode:
     .byte $09,"QUAL",$FF,"MODE"
-stringPage5:
-    .byte $06,"PAGE",$FF,"5"
+stringBlockTool:
+    .byte $0A,"BLOCK",$FF,"TOOL"
 stringPalMode:
     .byte $08,"PAL",$FF,"MODE"
-stringDeepOne:
-    .byte $08,"DEEP",$FF,"ONE"
-stringGodeeper:
-    .byte $09,"GO",$FF,"DEEPER"
-stringDeepTwo:
-    .byte $08,"DEEP",$FF,"TWO"
-stringgodeeperer:
-    .byte $0B,"GO",$FF,"DEEPERER"
-stringyouwentdeep:
-    .byte $0D,"YOU",$FF,"WENT",$FF,"DEEP"
-stringnothinghere:
-    .byte $0C,"NOTHING",$FF,"HERE"
 
 .out .sprintf("%d total string bytes", * - stringTable)
 

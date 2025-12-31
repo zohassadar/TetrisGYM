@@ -1,7 +1,7 @@
 ; mathRAM is 18 bytes of unused zeropage
 SCRATCH = mathRAM
 SCRATCH2 = $80
-MEMORY_BASE = $0790
+MEMORY_BASE = $0500
 
 MENU_TITLE_PPU = $210B
 MENU_ROW_PPU = $2104

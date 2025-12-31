@@ -8,6 +8,7 @@ function checkStringSanity(string) {
     if (string.length > 16) {
         throw new Error(`${string} is more than 16 chars`);
     }
+    console.log(string)
     if ((match = string.match(/[^- a-z0-9_?!]/i))) {
         throw new Error(`${string} has invalid char '${match[0]}'`);
     }
@@ -167,7 +168,9 @@ processPageSet = (pages, name) => {
     pages.forEach((page) => {
         pageIndex++;
         firstItems.push(getByteLine(getHexByte(index)));
+        console.log(page)
         page.forEach((item) => {
+            console.log(item[0])
             parseNewString(item[1]);
             if (item[0] == "TYPE_TITLE") {
                 items.push(labelMap[item[0]](...item, pages.length));
