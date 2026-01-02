@@ -9,9 +9,9 @@ nmi:    pha
         lda sleepCounter
         beq @noSleep
         dec sleepCounter
+@noSleep:
         inc frameCounter
         bne @noCarry
-@noSleep:
         inc frameCounter+1
 @noCarry:
         ldx #rng_seed
