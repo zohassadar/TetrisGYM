@@ -1,9 +1,5 @@
-digitsExample = [
-    [
-        [
-            "TYPE_TITLE",
-            "BCD Inputs",
-        ],
+digitsExample = {
+    "BCD Inputs": [
         [
             "TYPE_BCD",
             "BCD 2 Digit",
@@ -25,11 +21,7 @@ digitsExample = [
             8,
         ],
     ],
-    [
-        [
-            "TYPE_TITLE",
-            "Hex Inputs",
-        ],
+    "Hex Inputs": [
         [
             "TYPE_HEX",
             "HEX 2 Digit",
@@ -51,78 +43,59 @@ digitsExample = [
             8,
         ],
     ],
-]
+}
 
 
-nestedExample = [
-    [
-        [
-            "TYPE_TITLE",
-            "Nested",
-        ],
+nestedExample = {
+    "Nested": [
         [
             "TYPE_SUBMENU",
             "more nested",
-            [
-                [
-                    [
-                        "TYPE_TITLE",
-                        "more nested",
-                    ],
+            {
+                "more nested": [
                     [
                         "TYPE_SUBMENU",
                         "even more",
-                        [
-                            [
-                                [
-                                    "TYPE_TITLE",
-                                    "even more",
-                                ],
+                        {
+                            "even more": [
                                 [
                                     "TYPE_SUBMENU",
                                     "and more",
-                                    [
-                                        [
-                                            [
-                                                "TYPE_TITLE",
-                                                "and more",
-                                            ],
+                                    {
+                                        "and more": [
                                             [
                                                 "TYPE_SUBMENU",
                                                 "last one",
-                                                [
-                                                    [
-                                                        [
-                                                            "TYPE_TITLE",
-                                                            "last one",
-                                                        ],
+                                                {
+                                                    "last one": [
                                                         [
                                                             "TYPE_NUMBER",
                                                             "foo",
                                                             8,
                                                         ],
+                                                        [
+                                                            "TYPE_CHOICES",
+                                                            "Dont do",
+                                                            "this",
+                                                        ],
                                                     ],
-                                                ],
+                                                },
                                             ],
                                         ],
-                                    ],
+                                    },
                                 ],
                             ],
-                        ],
+                        },
                     ],
                 ],
-            ],
+            },
         ],
     ],
-]
+}
 
 
-tournamentSubmenu = [
-    [
-        [
-            "TYPE_TITLE",
-            "Tournament",
-        ],
+tournamentSubmenu = {
+    "Tournament [mode=default]": [
         [
             "TYPE_CHOICES",
             "SPS",
@@ -159,15 +132,11 @@ tournamentSubmenu = [
             4,
         ],
     ]
-]
+}
 
 
-customColorSubmenu = [
-    [
-        [
-            "TYPE_TITLE",
-            "Custom x0-x4",
-        ],
+customColorSubmenu = {
+    "Custom x0-x4": [
         [
             "TYPE_HEX",
             "Lvl x0",
@@ -194,11 +163,7 @@ customColorSubmenu = [
             6,
         ],
     ],
-    [
-        [
-            "TYPE_TITLE",
-            "Custom x5-x9",
-        ],
+    "Custom x5-x9": [
         [
             "TYPE_HEX",
             "Lvl x5",
@@ -225,14 +190,10 @@ customColorSubmenu = [
             6,
         ],
     ],
-]
+}
 
-displaySubmenu = [
-    [
-        [
-            "TYPE_TITLE",
-            "Display Options",
-        ],
+displaySubmenu = {
+    "Display Options": [
         [
             "TYPE_CHOICES",
             "Scoring",
@@ -273,14 +234,10 @@ displaySubmenu = [
             "Disable Flash",
         ],
     ],
-]
+}
 
-settingsSubmenu = [
-    [
-        [
-            "TYPE_TITLE",
-            "Settings",
-        ],
+settingsSubmenu = {
+    "Settings": [
         [
             "TYPE_CHOICES",
             "Crash",
@@ -315,14 +272,10 @@ settingsSubmenu = [
             "Pal Mode",
         ],
     ],
-]
+}
 
-v7IdeaMenu = [
-    [
-        [
-            "TYPE_TITLE",
-            "Main Menu",
-        ],
+v7IdeaMenu = {
+    "Main Menu": [
         [
             "TYPE_SUBMENU",
             "Tournament",
@@ -339,13 +292,9 @@ v7IdeaMenu = [
             settingsSubmenu,
         ],
     ],
-]
-numberExample = [
-    [
-        [
-            "TYPE_TITLE",
-            "Numbers",
-        ],
+}
+numberExample = {
+    "Numbers": [
         [
             "TYPE_NUMBER",
             "Min Limit 2",
@@ -382,13 +331,9 @@ numberExample = [
             2,
         ],
     ],
-]
-booleanExample = [
-    [
-        [
-            "TYPE_TITLE",
-            "boolean",
-        ],
+}
+booleanExample = {
+    "boolean": [
         [
             "TYPE_BOOL",
             "Off On",
@@ -410,13 +355,29 @@ booleanExample = [
             "examples",
         ],
     ],
-]
+}
 
-pages = [
-    [
+pages = {
+    "New Menu!": [
         [
-            "TYPE_TITLE",
-            "New Menu!",
+            "TYPE_FF_OFF",
+            "A",
+            7,
+        ],
+        [
+            "TYPE_CHOICES",
+            "B",
+            "examples2",
+        ],
+        [
+            "TYPE_HEX",
+            "C",
+            8,
+        ],
+        [
+            "TYPE_BCD",
+            "D",
+            8,
         ],
         [
             "TYPE_SUBMENU",
@@ -439,18 +400,14 @@ pages = [
             nestedExample,
         ],
     ],
-    [
-        [
-            "TYPE_TITLE",
-            "Second Page",
-        ],
+    "Second Page": [
         [
             "TYPE_SUBMENU",
             "v7 menu ideas",
             v7IdeaMenu,
         ],
     ],
-]
+}
 
 strings = {
     bool: [
@@ -497,7 +454,7 @@ strings = {
         "level",
     ],
     killhow: [
-        "KSX2",
+        "KS*2",
         "Floor",
         "Inviz",
         "Halt",
@@ -512,6 +469,9 @@ strings = {
     examples: [
         "foo",
         "bar",
+    ],
+    this: [
+        "this",
     ],
     examples2: [
         "foo",

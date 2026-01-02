@@ -1,15 +1,38 @@
-; mathRAM is 18 bytes of unused zeropage
-SCRATCH = mathRAM
-SCRATCH2 = $80
+; to do
+; get into game
+; do arbitrary action
+; get back into menu from game or level menu
+; get back into menu from game w/block tool on
+; each title associated with action
+; memorylabel as input
+; shared memory labels between options
+; more sanity checks
+; set defaults
+; save/restore to/from sram
+
+
 MEMORY_BASE = $0500
 
-MENU_TITLE_PPU = $210B
-MENU_ROW_PPU = $2104
+; valid background chars are 0-253
+EOL = $FE
+EOF = $FF
+
+MENU_TITLE_PPU = $2104
+MENU_STRIPE_WIDTH = 16
+MENU_ROWS = 9
+
+MODE_DEFAULT = 0
 
 menuDataStart:
 .include "menudata.asm"
 .out .sprintf("Menu data: %d", *-menuDataStart)
 
+; t.. mmmmm t = page type m = mode
+PAGE_MULTI = %10000000
+PAGE_SINGLE = %00000000
+
+; table of first items instead
+; + table of item counts
 
 VALUE_MASK = %00011111
 TYPE_MASK = %11100000
@@ -70,63 +93,95 @@ gameMode_gameTypeMenu:
 
     lda #MENU_STACK
     sta menuStackPtr
+    lda #>MEMORY_BASE
+    sta byteSpriteAddr+1
     lda #$1
     sta renderMode
     lda #0
-    sta activeMenu
     sta hideNextPiece
+    sta byteSpriteTile
     jsr enterMenu
-
 gameTypeLoop:
+    ; todo: write down which vars are used by which func
+    jsr collectControllerInput
+    jsr setScratch
+    jsr addInputs
+    jsr respondToInput
 
-    jsr collectControls
-    jsr debugSpriteStaging
-
-;     lda newlyPressedButtons_player1
-;     cmp #BUTTON_START
-;     bne @wait
-;     inc gameMode
-;     rts
-; @wait:
-    jsr stageBackgroundTiles
-    jsr stageCurrentValues
     jsr stageCursor
+    jsr stageCurrentValues
+
+    ; scratch is not important anymore
+    jsr stageBackgroundTiles
+    jsr debugSpriteStaging
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
 
+
+; .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
 
 enterSubMenu:
     ldy #$02
     sty soundEffectSlot1Init
     pha
     tsx
-    stx generalCounter
+    stx stackPtr
     ldx menuStackPtr
     txs
-    lda activeMenu
-    pha
-    lda activeItem
+    lda activeRow
     pha
     lda activePage
     pha
+    lda activeMenu
+    pha
     tsx
     stx menuStackPtr
-    ldx generalCounter
+    ldx stackPtr
     txs
     pla
 enterMenu:
+    sta activeMenu
     tax
-    stx activeMenu
-    ldy firstPages,x
-    sty activePage
-    ldx firstItems,y
-    lda itemTypes,x
+    lda firstPages,x
+enterPage:
+    sta activePage
+    sta originalPage
+    tax
+
+    lda pageTypes,x
     and #VALUE_MASK
-    beq @normal
-    inx
-@normal:
-    stx activeItem
-    rts
+    sta unpackedPageValue
+
+    ldy #$00
+    sty activeColumn
+    lda pageTypes,x
+    and #TYPE_MASK
+    sta unpackedPageType
+    bpl @storeRow
+    dey ; start at page select row for multipage
+@storeRow:
+
+    sty activeRow
+
+setScratch:
+    ldx activePage
+    lda activeRow
+    clc
+    adc firstItems,x
+    sta activeItem
+    tax
+    lda itemTypes,x
+    tay
+    and #VALUE_MASK
+    sta unpackedItemValue
+
+    tya
+    and #TYPE_MASK
+    sta unpackedItemType
+
+    jsr setupLR
+    jmp setupUD
+
 
 exitSubmenu:
     ldy #$02
@@ -136,451 +191,403 @@ exitSubmenu:
     ldx menuStackPtr
     txs
     pla
-    sta activePage
+    jsr enterMenu
     pla
-    sta activeItem
+    jsr enterPage
     pla
-    sta activeMenu
+    jsr setScratch
     tsx
     stx menuStackPtr
     ldx generalCounter
     txs
     rts
 
+; .out .sprintf("setup: %d", *-enterSubMenu)
 
-collectControls:
-    @digitTemp := SCRATCH2
-    @digitPtr := SCRATCH2 + 1 ; 2
-    @originalPage := SCRATCH2 + 3
-    @originalType := SCRATCH2 + 4
-    @originalCol := SCRATCH2 + 5
-
-; activeItem, @digitTemp
-    @upDownPtr := SCRATCH2 + 6 ; 2
-    @upDownAdjust := SCRATCH2 + 8 ; 1 or -1
-    @upDownMin := SCRATCH2 + 9
-    @upDownMax := SCRATCH2 + 10
-
-; pages, mem values, columns
-    @leftRightPtr := SCRATCH2 + 12 ; 2
-    @leftRightAdjust := SCRATCH2 + 14 ; 1 or -1
-    @leftRightMin := SCRATCH2 + 15
-    @leftRightMax := SCRATCH2 + 16
-
-    ldx activePage
-    stx @originalPage
-
-    ldx activeItem
-    lda itemTypes,x
-    sta @originalType
-
-    lda newlyPressedButtons_player1
-    tax
-    and #BUTTON_START | BUTTON_A ; do different things for these instead?
-    beq @checkB
-
-    ldx activeItem
-    lda itemTypes,x
-    and #TYPE_MASK
-    cmp #TYPE_SUBMENU
-    bne @checkB
-    lda itemTypes,x
-    and #VALUE_MASK
-    tax
-    jmp enterSubMenu
-
-@checkB:
-    txa
-    and #BUTTON_B
-    beq @checkSelect
-
-    lda activeMenu
-    beq @checkSelect
-    jmp exitSubmenu
-
-@checkSelect:
-    txa
-    and #BUTTON_SELECT
-    beq @checkCardinals
-; scramble if TYPE_DIGIT
-
-@checkCardinals:
-    lda #$00
-    sta @upDownAdjust
-    sta @leftRightAdjust
-
-    lda #BUTTON_UP
-    jsr menuThrottle
-    beq @upNotPressed
-    inc @upDownAdjust
-@upNotPressed:
-    lda #BUTTON_DOWN
-    jsr menuThrottle
-    beq @downNotPressed
-    dec @upDownAdjust
-@downNotPressed:
-    lda #BUTTON_LEFT
-    jsr menuThrottle
-    beq @leftNotPressed
-    dec @leftRightAdjust
-@leftNotPressed:
-    lda #BUTTON_RIGHT
-    jsr menuThrottle
-    beq @rightNotPressed
-    inc @leftRightAdjust
-@rightNotPressed:
-
-; upDownConditions
+setupUD:
     ldy activeColumn
-    sty @originalCol
-    beq @setupItemSelect
+    bne setupUDDigitChange
 
-; setup digit input
+setupUDRowChange:
+; ud change row 1/2 - activeColumn == 0
+    ldy #$00
+    lda unpackedPageType
+    bpl @storeMin ; no page select row for single page
     dey
-    tya
-    lsr
-    tay
-    php
-    lda #$0
-    sta @upDownMin
-    sta @upDownPtr+1 ; won't work if SCRATCH is not zeropage
-    lda #<@digitTemp
-    sta @upDownPtr
-    lda #$10
-    bit @originalType ; check if bcd
-    bvc @storeDigitMax
-    lda #$A
-@storeDigitMax:
-    sta @upDownMax
-
-    lda #>MEMORY_BASE
-    sta @digitPtr+1
-    ldx activeItem
-    lda memoryMap,x
-
-    sta @digitPtr
-    lda (@digitPtr),y
-    plp
-    bcs @andAndStore
-
-    lsr
-    lsr
-    lsr
-    lsr
-@andAndStore:
-    and #$F
-    sta @digitTemp
-    jmp @checkLeftRightConditions
-
-@setupItemSelect:
+@storeMin:
+    sty udMin
     ldx activePage
-    ldy firstItems,x
-    lda itemTypes,y
-    and #TYPE_MASK
-    bne @normal
-    lda itemTypes,y
-    and #VALUE_MASK
-    beq @normal
-    iny
+    lda pageCounts,x
+    sta udMax
 
-@normal:
-    sty @upDownMin
-    ldy lastItems,x
-    iny
-    sty @upDownMax
-    lda #>activeItem
-    sta @upDownPtr+1
-    lda #<activeItem
-    sta @upDownPtr
-    lda @upDownAdjust
+    lda #>activeRow
+    sta udPointer+1
+    lda #<activeRow
+    sta udPointer
+
+    lda udAdjust
     eor #$FF
     clc
     adc #$01
-    sta @upDownAdjust
+    sta udAdjust
+    rts
 
-@checkLeftRightConditions:
-    ldx activePage
-    lda firstItems,x
-    cmp activeItem
-    bne @notFirstItem
-
-; setup left right page select
-    lda #>activePage
-    sta @leftRightPtr+1
-    lda #<activePage
-    sta @leftRightPtr
-    ldy activeMenu
-    lda lastPages,y
-    sta @leftRightMax
-    lda firstPages,y
-    sta @leftRightMin
-    jmp @addThenCheckActivePage
-
-
-
-@notFirstItem:
-    ldx activeItem
-    lda itemTypes,x
-    and #DIGIT_MASK
-    cmp #DIGIT_COMPARE
-    bne @notColumnSelect
-
-; setup left right column select
-    lda #0
-    sta @leftRightMin
-    lda #>activeColumn
-    sta @leftRightPtr+1
-    lda #<activeColumn
-    sta @leftRightPtr
-    ldx activeItem
-    lda itemTypes,x
-    and #%1111
-    tay
-    iny
-    sty @leftRightMax
-    jmp @addThenCheckActivePage
-
-
-; setup memory adjust probably
-@notColumnSelect:
-    lda itemTypes,x
-    and #TYPE_MASK
-    cmp #TYPE_SUBMENU
-    beq @doNothing
-    cmp #TYPE_MODE_ONLY
-    beq @doNothing
+setupUDDigitChange:
+; ud change digit 2/2 - activeColumn > 0
+    dey
+    tya
+    lsr
+    tay ; y points to digit
+    php ; save for later, carry clear if hi byte
+    lda #$0
+    sta udMin
+    sta udPointer+1 ; won't work if nybbleTemp is not zeropage
+    lda #<nybbleTemp
+    sta udPointer
+    lda #$10
+    bit unpackedItemType ; check if bcd
+    bvc @storeDigitMax
+    lda #$A
+@storeDigitMax:
+    sta udMax
 
     lda #>MEMORY_BASE
-    sta @leftRightPtr+1
+    sta digitPtr+1
     ldx activeItem
     lda memoryMap,x
-    sta @leftRightPtr
+
+    sta digitPtr
+    lda (digitPtr),y
+    plp
+    bcs @storeNybble
+
+    lsr
+    lsr
+    lsr
+    lsr
+@storeNybble:
+    and #$F
+    sta nybbleTemp
+    rts
+
+setupLR:
+    lda activeRow
+    bmi setupLRPageSelect
+
+    lda unpackedItemType
+    bpl setupLRValueChange
+
+    and #DIGIT_MASK
+    cmp #DIGIT_COMPARE
+    beq setupLRColumnChange
+
+    lda #$00
+    sta lrAdjust
+    rts
+
+
+setupLRPageSelect:
+; setupLRPageSelect  - activeRow < 0
+    lda #>activePage
+    sta lrPointer+1
+    lda #<activePage
+    sta lrPointer
+    ldy activeMenu
+    lda lastPages,y
+    sta lrMax
+    lda firstPages,y
+    sta lrMin
+    rts
+
+
+setupLRValueChange:
+; setupLRValueChange - activeRow >= 0 && itemType < 128
+    lda #>MEMORY_BASE
+    sta lrPointer+1
+    ldx activeItem
+    lda memoryMap,x
+    sta lrPointer
     ldy #$0
-    lda itemTypes,x
+    lda unpackedItemType
     and #TYPE_MASK
     cmp #TYPE_FF_OFF
     bne @storeMin
     dey
 @storeMin:
-    sty @leftRightMin
+    sty lrMin
+    ldx unpackedItemValue
     cmp #TYPE_CHOICES
-    php
-    lda itemTypes,x
-    and #%11111
-    plp
     bne @storeMax
-    tax
     lda stringListCounts,x
+    tax
 @storeMax:
-    sta @leftRightMax
+    stx lrMax
+    rts
+
+setupLRColumnChange:
+; setupLRColumnChange itemType & %10100000 == %10000000
+    lda #0
+    sta lrMin
+    lda #>activeColumn
+    sta lrPointer+1
+    lda #<activeColumn
+    sta lrPointer
+    lda unpackedItemValue
+    tay
+    iny
+    sty lrMax
+    rts
 
 
-    jmp @addThenCheckActivePage
-@doNothing:
+collectControllerInput:
     lda #$00
-    sta @leftRightAdjust
+    sta selectPressed
+    sta startOrAPressed
+    sta BPressed
+    sta udAdjust
+    sta lrAdjust
+
+    lda newlyPressedButtons_player1
+    tax
+    and #BUTTON_START | BUTTON_A ; do different things for these instead?
+    beq @checkB
+    inc startOrAPressed
+    jmp @checkCardinals
+@checkB:
+    txa
+    and #BUTTON_B
+    beq @checkSelect
+    inc BPressed
+    jmp @checkCardinals
+@checkSelect:
+    txa
+    and #BUTTON_SELECT
+    beq @checkCardinals
+    inc selectPressed
+
+@checkCardinals:
 
 
-@addThenCheckActivePage:
-    jsr addInputs
+; maybe also folded saves bytes?
+    lda #BUTTON_UP
+    jsr menuThrottle
+    beq @upNotPressed
+    inc udAdjust
+    rts
+@upNotPressed:
+    lda #BUTTON_DOWN
+    jsr menuThrottle
+    beq @downNotPressed
+    dec udAdjust
+    rts
+@downNotPressed:
+    lda #BUTTON_LEFT
+    jsr menuThrottle
+    beq @leftNotPressed
+    dec lrAdjust
+    rts
+@leftNotPressed:
+    lda #BUTTON_RIGHT
+    jsr menuThrottle
+    beq @rightNotPressed
+    inc lrAdjust
+    rts
+@rightNotPressed:
+    rts
 
-    ldy @originalCol
-    beq @noRePack
+
+respondToInput:
+    ldy activeColumn
+    beq enterNewPage
+    lda udAdjust
+    beq enterNewPage
+
+rePackDigit:
     dey
     tya
     lsr
     tay
     bcs @smallDigit
-    lda (@digitPtr),y
+    lda (digitPtr),y
     and #$0F
-    sta (@digitPtr),y
-    lda @digitTemp
+    sta (digitPtr),y
+    lda nybbleTemp
     asl
     asl
     asl
     asl
-    ora (@digitPtr),y
-    sta (@digitPtr),y
+    ora (digitPtr),y
+    sta (digitPtr),y
 
-    jmp @noRePack
+    jmp enterNewPage
+
 @smallDigit:
-    lda (@digitPtr),y
+    lda (digitPtr),y
     and #$F0
-    ora @digitTemp
-    sta (@digitPtr),y
-@noRePack:
+    ora nybbleTemp
+    sta (digitPtr),y
 
-    ldx activePage
-    cpx @originalPage
-    beq @ret
-    lda firstItems,x
-    sta activeItem
+enterNewPage:
+    lda activePage
+    cmp originalPage
+    beq goSomewhere
+    jmp enterPage
 
-@ret:
+goSomewhere:
+    lda startOrAPressed
+    beq leaveSomewhere
+
+    lda unpackedItemType
+    cmp #TYPE_SUBMENU
+    bne startGame
+
+    lda unpackedItemValue
+    jmp enterSubMenu
+
+startGame:
+    ; todo - put code here
     rts
 
+leaveSomewhere:
+    lda BPressed
+    beq doSomethingWithSelect
+    lda activeMenu
+    beq doSomethingWithSelect
+    jmp exitSubmenu
 
+
+doSomethingWithSelect:
+    ; lda selectPressed
+    ; placeholder
+    rts
 
 
 addInputs:
     ldx #0 ; upDown
     jsr @doActualAdd
-    ldx #6 ; leftRight
+    ldx #MENU_PTR_DISTANCE ; leftRight
 @doActualAdd:
-    @ptr = SCRATCH2 + 6 ; 2
-    @adjust = SCRATCH2 + 8 ; 1 or -1
-    @min = SCRATCH2 + 9 ; actual minimum
-    @max = SCRATCH2 + 10 ; 1 above actual maximum
-    lda @adjust,x
-    beq @ret
+    lda soundEffectSlot1Init
+    bne @ret ; skip leftRight if up/down input was received
+    lda udAdjust,x
+    beq @ret ; skip if nothing to do
     clc
-    adc (@ptr,x)
-    sta (@ptr,x)
-    ldy @max,x
+    adc (udPointer,x)
+    sta (udPointer,x)
+    ldy udMax,x
     beq @sfx ; 0 means unlimited.  expected values 2-31
-    cmp @max,x
+    cmp udMax,x
     beq @rollToMin
     clc
     adc #$1
-    cmp @min,x
+    cmp udMin,x
     bne @sfx
-    ldy @max,x
+    ldy udMax,x
     dey
     tya
     bne @storeDigit
 @rollToMin:
-    lda @min,x
+    lda udMin,x
 @storeDigit:
-    sta (@ptr,x)
+    sta (udPointer,x)
 @sfx:
-    lda #$01
-    sta soundEffectSlot1Init
+    inc soundEffectSlot1Init
 @ret:
     rts
+
 
 
 stageBackgroundTiles:
-    @stackPtr = SCRATCH
-    @stringPtr = SCRATCH+2
-    @ppuAddr = SCRATCH+4
-    @counter = SCRATCH+16
-    @renderItem = SCRATCH+17
+; page index points to split address tables
+; tables are pointers into strings
+; word1,0,word2,0,word3,-1
 
     ldx activePage
-    lda firstItems,x
-    sta @renderItem
+    @blankCounter = blankCounter
+    @rowCounter = rowCounter
+    @stringPtr = stringSetPtr
 
-    lda #>stack
-    sta @stackPtr+1
-    ldx #$00
-    lda #>MENU_TITLE_PPU
-    sta stack,x
-    inx
-    lda #<MENU_TITLE_PPU
-    sta stack,x
-    inx
-    lda #>MENU_ROW_PPU
-    sta @ppuAddr+1
-    lda #<MENU_ROW_PPU
-    sta @ppuAddr
-    stx @stackPtr
-    jsr @draw16BlanksToStackPlusX
-    jsr @drawStringToStackBuffer
-    ldy #$8
-@nextRow:
-    clc
-    lda @ppuAddr
-    adc #$40
-    sta @ppuAddr
-    sta stack+1,x
-    lda #$00
-    adc @ppuAddr+1
-    sta @ppuAddr+1
-    sta stack,x
-    inx
-    inx
-    stx @stackPtr
-    jsr @draw16BlanksToStackPlusX
-    jsr @drawStringToStackBuffer
-    dey
-    bne @nextRow
-    rts
-
-@draw16BlanksToStackPlusX:
-    lda #$10
-    sta @counter
-    lda #$FF
-@nextTile:
-    sta stack,x
-    inx
-    dec @counter
-    bne @nextTile
-    rts
-
-@drawStringToStackBuffer:
-    txa
-    pha
-    tya
-    pha
-    ldy #$00
-
-    ldx activePage
-    lda lastItems,x
-    cmp @renderItem
-    bcc @noString
-
-    ldx @renderItem
-    inc @renderItem
-    lda stringListLo,x
+    lda pageStringsetsLo,x
     sta @stringPtr
-    lda stringListHi,x
+    lda pageStringsetsHi,x
     sta @stringPtr+1
 
-; store length then bump pointer so y can start loop at 0
-    lda (@stringPtr),y
-    beq @noString ; allow for blank strings
-    tax
-    inc @stringPtr
-    bne @copy
-    inc @stringPtr+1
-@copy:
-    lda (@stringPtr),y
-    sta (@stackPtr),y
-    iny
-    dex
-    bne @copy
+    lda #>MENU_TITLE_PPU
+    sta stack
+    lda #<MENU_TITLE_PPU
+    sta stack+1
+    lda #MENU_ROWS
+    sta @rowCounter
+    ldx #$2
 
-@noString:
-    pla
+@nextRow:
+    lda #MENU_STRIPE_WIDTH-2
+    sta @blankCounter
+
+@loop:
+    ldy #0
+    lda (@stringPtr),y
     tay
-    pla
-    tax
-@ret:
+    iny
+    beq @fillBlank ; stop advancing pointer when $FF is reached
+    inc @stringPtr
+    bne @noCarry
+    inc @stringPtr+1
+@noCarry:
+    iny
+    beq @fillBlank ; $FE also blanks line but after advancing pointer
+    sta stack,x
+    dec @blankCounter
+    inx
+    bne @loop ; always taken
+@fillBlank: ; should only be entered directly when end of string reached
+    dec @blankCounter
+    bmi @finishRow
+    lda #$FF
+    sta stack,x
+    inx
+    bne @fillBlank ; always taken
+
+
+
+@finishRow:
+; check if all rows drawn
+    dec @rowCounter
+    beq @shiftTitleRow
+
+; set next row based on last row
+    lda stack-(MENU_STRIPE_WIDTH-1),x
+    clc
+    adc #$40
+    sta stack+1,x
+    lda stack-MENU_STRIPE_WIDTH,x
+    adc #$00
+    sta stack,x
+    inx
+    inx
+    bne @nextRow ; always taken
+@shiftTitleRow:
+; bump title row 4 tiles to the right
+    lda stack+1
+    eor #%1100
+    sta stack+1
     rts
+
+.out .sprintf("background staging: %d", *-stageBackgroundTiles)
 
 stageCurrentValues:
-    @counter = SCRATCH
-    @stageItem = SCRATCH + 1
-    @lastItem = SCRATCH + 2
-    @bcdIndex = SCRATCH + 3
-    @stringList = SCRATCH + 14 ; 2
-    @memoryIndex = SCRATCH + 16 ; 2
-    lda #>MEMORY_BASE
-    sta @memoryIndex+1
-    ldx activePage
-    lda firstItems,x
-    cmp lastItems,x
-    bne @stageValues
-    rts
-@stageValues:
-    tay
-    iny
-    sty @stageItem
-    lda lastItems,x
-    sta @lastItem
+    @counter = blankCounter
+    @itemCount = rowCounter
 
     lda #$00
     sta @counter
+    lda #>MEMORY_BASE
+    sta byteSpriteAddr+1
+    ldx activePage
+    lda firstItems,x
+    sta activeItem
+    lda pageCounts,x
+    sta @itemCount
 
 @memoryStageLoop:
     lda @counter
@@ -591,15 +598,12 @@ stageCurrentValues:
     clc
     adc #$50
     sta spriteYOffset
-    lda #$B0
+    lda #$D0
     sta spriteXOffset
 
-    lda @stageItem
-    clc
-    adc @counter
-    tay
+    ldy activeItem
     lda memoryMap,y
-    sta @memoryIndex
+    sta byteSpriteAddr
     lda itemTypes,y
     tax
     ldy #0
@@ -613,7 +617,7 @@ stageCurrentValues:
     beq @drawNumber
 
 ; set bool stringlist
-    lda (@memoryIndex),y
+    lda (byteSpriteAddr),y
     bpl @drawNumber
     ldx #0
     jsr @setStringList
@@ -624,10 +628,14 @@ stageCurrentValues:
     and #%11111
     tax
     jsr @setStringList
-    lda (@memoryIndex),y
+    lda (byteSpriteAddr),y
     tay
 @pullFromStringList:
-    lda (@stringList),y
+    lda spriteXOffset
+    clc
+    adc #$10
+    sta spriteXOffset
+    lda (stringSetPtr),y
     jsr stringSpriteAlignRightA
 
     jmp @nextByte
@@ -636,10 +644,10 @@ stageCurrentValues:
     lda stringListIndexes,x
     clc
     adc #<stringLists
-    sta @stringList
+    sta stringSetPtr
     lda #$00
     adc #>stringLists
-    sta @stringList+1
+    sta stringSetPtr+1
     rts
 
 @digitInputOrEdge:
@@ -653,46 +661,43 @@ stageCurrentValues:
     sec
     sbc #1
     lsr
-    sta generalCounter
-    ldy #$00
-@bcdInput:
-    lda (@memoryIndex),y
-    jsr drawByteToOamStaging
-    lda spriteXOffset
     clc
-    adc #$10
+    adc #1
+    sta byteSpriteLen
+    asl
+    asl
+    asl
+    asl
+    sta generalCounter2
+    sec
+    lda spriteXOffset
+    sbc generalCounter2
+    sec
+    sbc #$F0
     sta spriteXOffset
-    iny
-    dec generalCounter
-    bpl @bcdInput
-    bmi @nextByte
+    jsr byteSprite
+    jmp @nextByte
 
 @drawNumber:
-    lda (@memoryIndex),y
-
-@stageSprite:
-    jsr drawByteToOamStaging
+    lda #$01
+    sta byteSpriteLen
+    jsr byteSprite
 
 @nextByte:
+    inc activeItem
     inc @counter
     lda @counter
-    clc
-    adc @stageItem
-    sec
-    sbc @lastItem
-    cmp #1
+    cmp @itemCount
     beq @ret
     jmp @memoryStageLoop
 @ret:
     rts
+.out .sprintf("value staging: %d", *-stageCurrentValues)
 
 
 stageCursor:
-    ldx activePage
-    lda activeItem
-    sec
-    sbc firstItems,x
-    bne @notTitle
+    lda activeRow
+    bpl @notTitle
 
     lda #$3F
     sta spriteYOffset
@@ -700,7 +705,7 @@ stageCursor:
     sta spriteXOffset
     lda #$23 ; page select
     sta spriteIndexInOamContentLookup
-    jmp @stage
+    jmp loadSpriteIntoOamStaging
 
 @notTitle:
     asl
@@ -708,7 +713,7 @@ stageCursor:
     asl
     asl
     clc
-    adc #$3F
+    adc #$4F
     sta spriteYOffset
 ; digit input
     ldx activeColumn
@@ -721,7 +726,23 @@ stageCursor:
     asl
     asl
     clc
-    adc #$A9
+    adc #$C9
+    sta spriteXOffset
+    ldx activeItem
+    lda itemTypes,x
+    and #VALUE_MASK
+    sec
+    sbc #1
+    lsr
+    asl
+    asl
+    asl
+    asl
+    eor #$FF
+    clc
+    adc #$01
+    clc
+    adc spriteXOffset
     sta spriteXOffset
     lda #$1B  ; digit select
     bne @store
@@ -736,55 +757,19 @@ stageCursor:
 gotoEdgeCase:
     rts
 
-drawByteToOamStaging:
-    ldx oamStagingLength
-; tile
-    pha
-    lsr
-    lsr
-    lsr
-    lsr
-    sta oamStaging+1,x
-    pla
-    and #$F
-    sta oamStaging+5,x
-; y
-    lda spriteYOffset
-    sta oamStaging,x
-    sta oamStaging+4,x
-; attr
-    lda #$00
-    sta oamStaging+2,x
-    sta oamStaging+6,x
-; x
-    lda spriteXOffset
-    sta oamStaging+3,x
-    clc
-    adc #$08
-    sta oamStaging+7,x
-
-; bump length
-    txa
-    clc
-    adc #$8
-    sta oamStagingLength
-
-    rts
-
-
 render_mode_menu:
     tsx
     txa
     ldx #$ff
     txs
     tax
-    ldy #$9
+    ldy #MENU_ROWS
 @nextRow:
     pla
     sta PPUADDR
     pla
     sta PPUADDR
-    .repeat 16
+    .repeat MENU_STRIPE_WIDTH - 2
     pla
     sta PPUDATA
     .endrepeat
@@ -793,31 +778,25 @@ render_mode_menu:
     txs
     rts
 
+.out .sprintf("cursor staging: %d", *-stageCursor)
 
 debugSpriteStaging:
     lda #$30
     sta spriteYOffset
-
     lda #$A8
     sta spriteXOffset
-    lda activeMenu
-    jsr drawByteToOamStaging
+    lda #$00
+    sta byteSpriteAddr+1
+    lda #activeMenu
+    sta byteSpriteAddr
+    lda #4
+    sta byteSpriteLen
+    jsr byteSprite
+    lda #>MEMORY_BASE
+    sta byteSpriteAddr+1
+    rts
 
-    lda #$B8
-    sta spriteXOffset
-    lda activePage
-    jsr drawByteToOamStaging
-
-    lda #$C8
-    sta spriteXOffset
-    lda activeItem
-    jsr drawByteToOamStaging
-
-    lda #$D8
-    sta spriteXOffset
-    lda activeColumn
-    jmp drawByteToOamStaging
-
+.out .sprintf("debug staging: %d", *-debugSpriteStaging)
 
 
 menuEnd:

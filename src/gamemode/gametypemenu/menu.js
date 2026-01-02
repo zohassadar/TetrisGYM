@@ -8,14 +8,14 @@ function checkStringSanity(string) {
     if (string.length > 16) {
         throw new Error(`${string} is more than 16 chars`);
     }
-    console.log(string)
-    if ((match = string.match(/[^- a-z0-9_?!]/i))) {
+    if ((match = string.match(/[^- a-z0-9_?!*]/i))) {
         throw new Error(`${string} has invalid char '${match[0]}'`);
     }
 }
 
 function cleanWord(word) {
-    return word.replace(/[- ?!]/g, "");
+    word = word.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+    return word.replace(/[- *?!]/g, "");
 }
 
 function getStringName(word) {
@@ -23,7 +23,7 @@ function getStringName(word) {
 }
 
 function getStringListName(word) {
-    return `stringlist${cleanWord(word)}`;
+    return `stringList${cleanWord(word)}`;
 }
 
 function getStringConstant(name) {
@@ -45,15 +45,52 @@ function getHexByte(number) {
 
 function getOutputLines(itemType, string, memory) {
     return {
-        hibytes: getByteLine(`>${getStringName(string)}`),
-        lobytes: getByteLine(`<${getStringName(string)}`),
+        // hibytes: getByteLine(`>${getStringName(string)}`),
+        // lobytes: getByteLine(`<${getStringName(string)}`),
         label: getByteLine(`${itemType} ; ${string}`),
         memory: memory, // has to be processed separately to get output line
     };
 }
 
-function typeTitle(label, string, pageLength) {
-    return getOutputLines(pageLength > 1 ? label : `${label} | 1`, string);
+function getPageLines(title, page, pages, index) {
+    label = Object.values(pages).length > 1 ? "PAGE_MULTI" : "PAGE_SINGLE";
+    [_, string, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
+    const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
+    const stringset = `stringset${cleanWord(string)}`;
+
+    const endString = getByteLine("EOL");
+    const endStringset = getByteLine("EOF");
+
+    getMultiLineString = (s) =>
+        s
+            .split("")
+            .map((c) => getByteLine(getStringByte(c)))
+            .join("\n");
+
+    getSingleLineString = (s) => getByteLine(getStringBytes(s));
+
+    stringSetLines = [];
+    stringSetLines.push(`${stringset}:`);
+    stringSetLines.push(getSingleLineString(string));
+    stringSetLines.push(endString);
+    page.forEach((p, i) => {
+        stringSetLines.push(getSingleLineString(p[1]));
+        if (i + 1 != page.length) stringSetLines.push(endString);
+    });
+    stringSetLines.push(endStringset);
+
+    return {
+        label: getByteLine(`${label} | ${modifier} ; ${string}`),
+        count: getByteLine(getHexByte(page.length)),
+        hibytes: getByteLine(`>${stringset} ; ${string}`),
+        lobytes: getByteLine(`<${stringset} ; ${string}`),
+        stringsets: stringSetLines.join(`\n`),
+        // index: getByteLine(`<${index} ; ${string}`),
+    };
+}
+
+function typeTitle(label, string) {
+    return getOutputLines(label, string);
 }
 
 function typeDigit(label, string, digits) {
@@ -64,13 +101,14 @@ function typeDigit(label, string, digits) {
     return getOutputLines(`${label} | ${getHexByte(digits)}`, string, memory);
 }
 
-function typeWords(label, string, stringlist) {
+function typeWords(label, string, stringList) {
     return getOutputLines(
-        `${label} | ${getStringListConstant(stringlist)}`,
+        `${label} | ${getStringListConstant(stringList)}`,
         string,
         1,
     );
 }
+
 function typeNumber(label, string, limit) {
     return getOutputLines(`${label} | ${getHexByte(limit)}`, string, 1);
 }
@@ -105,29 +143,42 @@ lookupConstants = [];
 addedStrings = [];
 newStringLines = [];
 
+function getStringByte(c) {
+    replaceMap = {
+        "*": "$69",
+        " ": "$EF",
+    };
+    return replaceMap[c] ? replaceMap[c] : `"${c.toUpperCase()}"`;
+}
+
+function getStringBytes(string) {
+    return [...string.split("").map((c) => getStringByte(c))].join(",");
+}
+
 function parseNewString(string) {
+    string = string.toLowerCase();
     checkStringSanity(string);
     if (!addedStrings.includes(string)) {
         addedStrings.push(string);
         newStringLines.push(`${getStringName(string)}:`);
         newStringLines.push(
             getByteLine(
-                `${getHexByte(string.length)},"${string.toUpperCase().replace(/\s+/g, '",$FF,"')}"`,
+                `${getHexByte(string.length)},${getStringBytes(string)}`,
             ),
         );
     }
 }
 
-Object.entries(strings).forEach(([name, stringlist]) => {
+Object.entries(strings).forEach(([name, stringList]) => {
     if (name != "lookup") {
         stringEnums.push(getStringListConstant(name));
-        stringCounts.push(getByteLine(getHexByte(stringlist.length)));
+        stringCounts.push(getByteLine(getHexByte(stringList.length)));
         stringIndexes.push(
             getByteLine(`${getStringListName(name)}-stringLists`),
         );
         stringLists.push(`${getStringListName(name)}:`);
     }
-    stringlist.forEach((string) => {
+    stringList.forEach((string) => {
         parseNewString(string);
         if (name == "lookup") {
             lookupConstants.push(
@@ -156,31 +207,34 @@ menuCount = 0;
 index = 0;
 pageIndex = 0;
 firstItems = [];
-lastItems = [];
+// lastItems = [];
 memoryMap = [];
 items = [];
+
+// like items but different
+pagesOutput = [];
 
 processPageSet = (pages, name) => {
     if (name) menuEnums.push(`SUBMENU_${cleanWord(name).toUpperCase()}`);
     firstPages.push(getByteLine(getHexByte(pageIndex)));
     // collect submenus to process after all pages
     let subPageSets = {};
-    pages.forEach((page) => {
+    Object.entries(pages).forEach(([title, page]) => {
         pageIndex++;
-        firstItems.push(getByteLine(getHexByte(index)));
-        console.log(page)
+        firstItems.push(
+            getByteLine(`${getHexByte(index)} ; ${cleanWord(title)}`),
+        );
+        pagesOutput.push(getPageLines(title, page, pages, index));
         page.forEach((item) => {
-            console.log(item[0])
-            parseNewString(item[1]);
-            if (item[0] == "TYPE_TITLE") {
-                items.push(labelMap[item[0]](...item, pages.length));
-            } else {
-                items.push(labelMap[item[0]](...item));
-            }
+            items.push(labelMap[item[0]](...item));
             index++;
             if (item[0] === "TYPE_SUBMENU") subPageSets[item[1]] = item[2];
         });
-        lastItems.push(getByteLine(getHexByte(index - 1)));
+        // lastItems.push(
+        //     getByteLine(
+        //         getHexByte(`${getHexByte(index)} ; ${cleanWord(title)}`),
+        //     ),
+        // );
     });
     lastPages.push(getByteLine(getHexByte(pageIndex)));
 
@@ -191,9 +245,10 @@ processPageSet = (pages, name) => {
 };
 processPageSet(pages);
 
-newStringLines.push("");
-newStringLines.push('.out .sprintf("%d total string bytes", * - stringTable)');
-newStringLines.push("");
+// newStringLines.push("");
+// newStringLines.push('.out .sprintf("%d total string bytes", * - stringTable)');
+// newStringLines.push("");
+
 let o = 0;
 items.forEach((i) => {
     line = getByteLine(i.memory ? `<MEMORY_BASE + ${getHexByte(o)}` : "0");
@@ -202,7 +257,7 @@ items.forEach((i) => {
 });
 
 buffer.push("; generated by menu.js");
-buffer.push("; will be overwritten unless built with --no-menu-build");
+buffer.push("; will be overwritten unless built with -M");
 buffer.push("");
 
 buffer.push(...lookupConstants);
@@ -219,6 +274,7 @@ buffer.push(...stringEnums);
 buffer.push(".endenum");
 buffer.push("");
 
+buffer.push("; index activeMenu");
 buffer.push("firstPages:");
 buffer.push(...firstPages);
 buffer.push("");
@@ -227,14 +283,36 @@ buffer.push("lastPages:");
 buffer.push(...lastPages);
 buffer.push("");
 
+buffer.push("; index activePage");
+buffer.push("pageTypes:");
+buffer.push(...pagesOutput.map((p) => p.label));
+buffer.push("");
+
+buffer.push("pageCounts:");
+buffer.push(...pagesOutput.map((p) => p.count));
+buffer.push("");
+
+// buffer.push("pageStarts:");
+// buffer.push(...pagesOutput.map((p) => p.index));
+// buffer.push("");
+
+buffer.push("pageStringsetsHi:");
+buffer.push(...pagesOutput.map((p) => p.hibytes));
+buffer.push("");
+
+buffer.push("pageStringsetsLo:");
+buffer.push(...pagesOutput.map((p) => p.lobytes));
+buffer.push("");
+
 buffer.push("firstItems:");
 buffer.push(...firstItems);
 buffer.push("");
 
-buffer.push("lastItems:");
-buffer.push(...lastItems);
-buffer.push("");
+// buffer.push("lastItems:");
+// buffer.push(...lastItems);
+// buffer.push("");
 
+buffer.push("; index activeItem");
 buffer.push("memoryMap:");
 buffer.push(...memoryMap);
 buffer.push("");
@@ -243,13 +321,13 @@ buffer.push("itemTypes:");
 buffer.push(...items.map((i) => i.label));
 buffer.push("");
 
-buffer.push("stringListHi:");
-buffer.push(...items.map((i) => i.hibytes));
-buffer.push("");
-
-buffer.push("stringListLo:");
-buffer.push(...items.map((i) => i.lobytes));
-buffer.push("");
+// buffer.push("stringListHi:");
+// buffer.push(...items.map((i) => i.hibytes));
+// buffer.push("");
+//
+// buffer.push("stringListLo:");
+// buffer.push(...items.map((i) => i.lobytes));
+// buffer.push("");
 
 buffer.push("stringListIndexes:");
 buffer.push(...stringIndexes);
@@ -266,5 +344,10 @@ buffer.push("");
 buffer.push("stringTable:");
 buffer.push(...newStringLines);
 buffer.push("");
+
+buffer.push(...pagesOutput.map((p) => p.stringsets));
+buffer.push("");
+buffer.push("");
+
 
 writeFileSync(__dirname + "/menudata.asm", [...buffer, ""].join("\n"));
