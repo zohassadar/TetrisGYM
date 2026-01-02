@@ -3,30 +3,22 @@ nmi:    pha
         pha
         tya
         pha
-        lda #$00
-        sta oamStagingLength
         jsr render
-        lda currentPpuCtrl
-        sta PPUCTRL
-        dec sleepCounter
-        lda sleepCounter
-        cmp #$FF
-        bne @jumpOverIncrement
-        inc sleepCounter
-@jumpOverIncrement:
+        jsr copyCurrentScrollAndCtrlToPPU
         jsr copyOamStagingToOam
-        lda frameCounter
-        clc
-        adc #$01
-        sta frameCounter
-        lda #$00
-        adc frameCounter+1
-        sta frameCounter+1
+        lda sleepCounter
+        beq @noSleep
+        dec sleepCounter
+        inc frameCounter
+        bne @noCarry
+@noSleep:
+        inc frameCounter+1
+@noCarry:
         ldx #rng_seed
         jsr generateNextPseudorandomNumber
-        jsr copyCurrentScrollAndCtrlToPPU
         jsr pollControllerButtons
         lda #$00
+        sta oamStagingLength
         sta lagState ; clear flag after lag frame achieved
 .if KEYBOARD
 ; Read Family BASIC Keyboard

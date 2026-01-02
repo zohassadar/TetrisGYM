@@ -18,7 +18,7 @@ EOL = $FE
 EOF = $FF
 
 MENU_TITLE_PPU = $2104
-MENU_STRIPE_WIDTH = 16
+MENU_STRIPE_WIDTH = 22
 MENU_ROWS = 9
 
 MODE_DEFAULT = 0
@@ -118,7 +118,7 @@ gameTypeLoop:
     jmp gameTypeLoop
 
 
-; .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
+.out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
 
 enterSubMenu:
     ldy #$02
@@ -202,7 +202,6 @@ exitSubmenu:
     txs
     rts
 
-; .out .sprintf("setup: %d", *-enterSubMenu)
 
 setupUD:
     ldy activeColumn
@@ -338,6 +337,8 @@ setupLRColumnChange:
     sty lrMax
     rts
 
+
+.out .sprintf("setup: %d", *-enterSubMenu)
 
 collectControllerInput:
     lda #$00
@@ -496,6 +497,7 @@ addInputs:
     rts
 
 
+.out .sprintf("input handling: %d", *-collectControllerInput)
 
 stageBackgroundTiles:
 ; page index points to split address tables
@@ -757,6 +759,8 @@ stageCursor:
 gotoEdgeCase:
     rts
 
+.out .sprintf("cursor staging: %d", *-stageCursor)
+
 render_mode_menu:
     tsx
     txa
@@ -778,7 +782,7 @@ render_mode_menu:
     txs
     rts
 
-.out .sprintf("cursor staging: %d", *-stageCursor)
+.out .sprintf("render dump: %d", *-render_mode_menu)
 
 debugSpriteStaging:
     lda #$30
@@ -797,8 +801,4 @@ debugSpriteStaging:
     rts
 
 .out .sprintf("debug staging: %d", *-debugSpriteStaging)
-
-
-menuEnd:
-
-.out .sprintf("Menu code: %d", *-gameMode_gameTypeMenu)
+.out .sprintf("total: %d", *-gameMode_gameTypeMenu)
