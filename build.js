@@ -20,17 +20,10 @@ const args = process.argv.slice(2);
 
 if (args.includes('-h')) {
     console.log(`usage: node build.js [-h] [-v] [-m<${Object.keys(mappers).join('|')}>] [-a] [-s] [-k] [-w] [-- (ca65 args)]
-
--m  mapper
--a  faster aeppoz + press select to end game
--s  disable highscores/SRAM
--k  Famicom Keyboard support
--w  force WASM compiler
--c  force PNG to CHR conversion
--o  override autodetect mmc1 header with cnrom
--t  run tests (requires cargo)
--T  run single test
--h  you are here
+E = everdrive
+S = scp to working mesen computer
+M = skip menu build, use edits to menudata.asm
+F = hacked format.js on menu.asm only
 `);
     process.exit(0);
 }
@@ -97,24 +90,22 @@ if (args.includes('--')) {
 
 console.log();
 
-if (args.includes('--no-menu-build')) {
-    console.log('skipping menu build');
-} else {
-    // build menu
-    console.time('menu');
+// build menu
+if (!args.includes('-M')) {
+    // console.time('menu');
     require('./src/gamemode/gametypemenu/menu');
-    console.timeEnd('menu');
+    // console.timeEnd('menu');
 }
 
 // build / compress nametables
 
-console.time('nametables');
+// console.time('nametables');
 require('./src/nametables/build');
-console.timeEnd('nametables');
+// console.timeEnd('nametables');
 
 // PNG -> CHR
 
-console.time('CHR');
+// console.time('CHR');
 
 const png2chr = require('./tools/png2chr/convert');
 
@@ -137,7 +128,7 @@ fs.readdirSync(dir)
         }
     });
 
-console.timeEnd('CHR');
+// console.timeEnd('CHR');
 
 // build object files
 
@@ -152,6 +143,7 @@ function execArgs(exe, args) {
         console.log(result.stdout.toString());
     }
     if (result.status) {
+        // console.error(`failed to exec: ${exe} ${args.join(' ')}`);
         process.exit(result.status);
     }
 }
@@ -164,38 +156,38 @@ function exec(cmd) {
 const ca65bin = nativeCC65 ? 'ca65' : 'node ./tools/assemble/ca65.js';
 const flags = compileFlags.join(' ');
 
-console.time('assemble');
+// console.time('assemble');
 
 exec(`${ca65bin} ${flags} -g src/header.asm -o header.o`);
 exec(`${ca65bin} ${flags} -l tetris.lst -g src/main.asm -o main.o`);
 
-console.timeEnd('assemble');
+// console.timeEnd('assemble');
 
 // link object files
 
 const ld65bin = nativeCC65 ? 'ld65' : 'node ./tools/assemble/ld65.js';
 
-console.time('link');
+// console.time('link');
 
 exec(`${ld65bin} -m tetris.map -Ln tetris.lbl --dbgfile tetris.dbg -o tetris.nes -C src/tetris.nes.cfg main.o header.o`);
 
-console.timeEnd('link');
+// console.timeEnd('link');
 
 // create patch
 
 if (!fs.existsSync('clean.nes')) {
     console.log('clean.nes not found, skipping patch creation');
 } else {
-    console.time('patch');
+    // console.time('patch');
     const patcher = require('./tools/patch/create');
     const pct = patcher('clean.nes', 'tetris.nes', 'tetris.bps');
-    console.timeEnd('patch');
-    console.log(`\nusing ${pct}% of original file`);
+    // console.timeEnd('patch');
+    // console.log(`\nusing ${pct}% of original file`);
 }
 
 // stats
 
-console.log();
+// console.log();
 
 if (fs.existsSync('tetris.map')) {
     const memMap = fs.readFileSync('tetris.map', 'utf8');
@@ -205,23 +197,25 @@ if (fs.existsSync('tetris.map')) {
     const used = parseInt(memMap.match(/PRG_chunk1\s+\w+\s+\w+\s+(\w+)/)?.[1]??'', 16) + 0x100; // 0x100 for reset chunk
 
     console.log(`${0x8000 - used} PRG bytes free`);
+    diff = (0x8000 - used)-9135
+    console.log(diff > 0 ? `+${diff}` : diff ? diff : 'unchanged');
 }
 
 function hashFile(filename) {
     if (fs.existsSync(filename)) {
         const shasum = crypto.createHash('sha1');
         shasum.update(fs.readFileSync(filename));
-        console.log(`\n${filename} => ${shasum.digest('hex')}`);
-        console.log(`${fs.statSync(filename).size} bytes`);
+        // console.log(`\n${filename} => ${shasum.digest('hex')}`);
+        // console.log(`${fs.statSync(filename).size} bytes`);
     }
 }
 
 hashFile('tetris.nes');
 hashFile('tetris.bps');
 
-console.log();
+// console.log();
 
-console.timeEnd('build');
+// console.timeEnd('build');
 
 // tests
 
@@ -235,3 +229,20 @@ if (args.includes('-T')) {
     console.log(`\nrunning single test: ${singleTest}`);
     execArgs('cargo', [...'run --release --manifest-path tests/Cargo.toml -- -T'.split(' '), singleTest]);
 }
+
+exec('python debugview.py tetris.nes');
+
+if (args.includes('-F')) {
+    cmd = 'node tools/format.js';
+    console.log(cmd)
+    exec(cmd);
+    }
+if (args.includes('-S')) {
+    // can't remember which of these exactly mesen responds to
+    cmd = 'scp tetris.map tetris.dbg tetris.lbl tetris.lst tetris.nes ntc@192.168.42.209:'
+    console.log(cmd)
+    exec(cmd);
+    }
+if (args.includes('-E')) {
+    exec('edlinkn8 tetris.nes');
+    }
