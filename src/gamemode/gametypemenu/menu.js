@@ -1,12 +1,15 @@
 const { pages, strings } = require("./menudata");
 const { writeFileSync } = require("fs");
 
+MAX_LENGTH_NAME = 14;
+MAX_LENGTH_VALUE = 8;
+
 function checkStringSanity(string) {
     // if (!string.length) {
     //     throw new Error(`${string} cannot be blank`);
     // }
-    if (string.length > 16) {
-        throw new Error(`${string} is more than 16 chars`);
+    if (string.length > MAX_LENGTH_VALUE) {
+        throw new Error(`${string} is more than MAX_LENGTH_VALUE chars`);
     }
     if ((match = string.match(/[^- a-z0-9_?!*]/i))) {
         throw new Error(`${string} has invalid char '${match[0]}'`);
@@ -52,6 +55,19 @@ function getOutputLines(itemType, string, memory) {
     };
 }
 
+function getLineString(string, multiline = false) {
+    if (string.length > MAX_LENGTH_NAME) {
+        throw new Error(`${string} is more than MAX_LENGTH_NAME chars`);
+    }
+
+    return multiline
+        ? string
+              .split("")
+              .map((c) => getByteLine(getStringByte(c)))
+              .join("\n")
+        : getByteLine(getStringBytes(string));
+}
+
 function getPageLines(title, page, pages, index) {
     label = Object.values(pages).length > 1 ? "PAGE_MULTI" : "PAGE_SINGLE";
     [_, string, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
@@ -61,20 +77,12 @@ function getPageLines(title, page, pages, index) {
     const endString = getByteLine("EOL");
     const endStringset = getByteLine("EOF");
 
-    getMultiLineString = (s) =>
-        s
-            .split("")
-            .map((c) => getByteLine(getStringByte(c)))
-            .join("\n");
-
-    getSingleLineString = (s) => getByteLine(getStringBytes(s));
-
     stringSetLines = [];
     stringSetLines.push(`${stringset}:`);
-    stringSetLines.push(getSingleLineString(string));
+    stringSetLines.push(getLineString(string));
     stringSetLines.push(endString);
     page.forEach((p, i) => {
-        stringSetLines.push(getSingleLineString(p[1]));
+        stringSetLines.push(getLineString(p[1]));
         if (i + 1 != page.length) stringSetLines.push(endString);
     });
     stringSetLines.push(endStringset);
@@ -348,6 +356,5 @@ buffer.push("");
 buffer.push(...pagesOutput.map((p) => p.stringsets));
 buffer.push("");
 buffer.push("");
-
 
 writeFileSync(__dirname + "/menudata.asm", [...buffer, ""].join("\n"));

@@ -12,7 +12,7 @@ MAIN_MENU
 SUBMENU_NUMBERINPUTS
 SUBMENU_BOOLEANINPUTS
 SUBMENU_DIGITINPUTS
-SUBMENU_NESTEDSUBMENUS
+SUBMENU_NESTEDMENUS
 SUBMENU_MORENESTED
 SUBMENU_EVENMORE
 SUBMENU_ANDMORE
@@ -88,7 +88,7 @@ pageTypes:
     .byte PAGE_SINGLE | MODE_DEFAULT ; last one
     .byte PAGE_SINGLE | MODE_DEFAULT ; Main Menu
     .byte PAGE_SINGLE | MODE_DEFAULT ; Tournament 
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Display Options
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Display Menu
     .byte PAGE_MULTI | MODE_DEFAULT ; Custom x0-x4
     .byte PAGE_MULTI | MODE_DEFAULT ; Custom x5-x9
     .byte PAGE_SINGLE | MODE_DEFAULT ; Settings
@@ -126,7 +126,7 @@ pageStringsetsHi:
     .byte >stringsetLastOne ; last one
     .byte >stringsetMainMenu ; Main Menu
     .byte >stringsetTournament ; Tournament 
-    .byte >stringsetDisplayOptions ; Display Options
+    .byte >stringsetDisplayMenu ; Display Menu
     .byte >stringsetCustomX0X4 ; Custom x0-x4
     .byte >stringsetCustomX5X9 ; Custom x5-x9
     .byte >stringsetSettings ; Settings
@@ -145,7 +145,7 @@ pageStringsetsLo:
     .byte <stringsetLastOne ; last one
     .byte <stringsetMainMenu ; Main Menu
     .byte <stringsetTournament ; Tournament 
-    .byte <stringsetDisplayOptions ; Display Options
+    .byte <stringsetDisplayMenu ; Display Menu
     .byte <stringsetCustomX0X4 ; Custom x0-x4
     .byte <stringsetCustomX5X9 ; Custom x5-x9
     .byte <stringsetSettings ; Settings
@@ -164,7 +164,7 @@ firstItems:
     .byte $20 ; LastOne
     .byte $22 ; MainMenu
     .byte $25 ; Tournament[Mode=Default]
-    .byte $2C ; DisplayOptions
+    .byte $2C ; DisplayMenu
     .byte $34 ; CustomX0X4
     .byte $39 ; CustomX5X9
     .byte $3E ; Settings
@@ -243,14 +243,14 @@ memoryMap:
     .byte <MEMORY_BASE + $62
 
 itemTypes:
-    .byte TYPE_FF_OFF | $07 ; A
-    .byte TYPE_CHOICES | STRINGLIST_EXAMPLES2 ; B
+    .byte TYPE_FF_OFF | $07 ; 0123456789ABCD
+    .byte TYPE_CHOICES | STRINGLIST_EXAMPLES2 ; DCBA9876543210
     .byte TYPE_HEX | $08 ; C
     .byte TYPE_BCD | $08 ; D
     .byte TYPE_SUBMENU | SUBMENU_NUMBERINPUTS ; number inputs
     .byte TYPE_SUBMENU | SUBMENU_BOOLEANINPUTS ; boolean inputs
     .byte TYPE_SUBMENU | SUBMENU_DIGITINPUTS ; Digit Inputs
-    .byte TYPE_SUBMENU | SUBMENU_NESTEDSUBMENUS ; nested submenus
+    .byte TYPE_SUBMENU | SUBMENU_NESTEDMENUS ; nested menus
     .byte TYPE_SUBMENU | SUBMENU_V7MENUIDEAS ; v7 menu ideas
     .byte TYPE_NUMBER | $02 ; Min Limit 2
     .byte TYPE_NUMBER | $1F ; Max Limit 30
@@ -260,7 +260,7 @@ itemTypes:
     .byte TYPE_HEX | $02 ; by digit
     .byte TYPE_BCD | $02 ; by bcd digit
     .byte TYPE_BOOL ; Off On
-    .byte TYPE_CHOICES | STRINGLIST_ONOFF ; if 0 is default
+    .byte TYPE_CHOICES | STRINGLIST_ONOFF ; ff means off
     .byte TYPE_NUMBER | $02 ; As Number
     .byte TYPE_CHOICES | STRINGLIST_EXAMPLES ; as words
     .byte TYPE_BCD | $02 ; BCD 2 Digit
@@ -483,9 +483,9 @@ stringConfetti:
 stringsetNewMenu:
     .byte "N","E","W",$EF,"M","E","N","U","!"
     .byte EOL
-    .byte "A"
+    .byte "0","1","2","3","4","5","6","7","8","9","A","B","C","D"
     .byte EOL
-    .byte "B"
+    .byte "D","C","B","A","9","8","7","6","5","4","3","2","1","0"
     .byte EOL
     .byte "C"
     .byte EOL
@@ -497,7 +497,7 @@ stringsetNewMenu:
     .byte EOL
     .byte "D","I","G","I","T",$EF,"I","N","P","U","T","S"
     .byte EOL
-    .byte "N","E","S","T","E","D",$EF,"S","U","B","M","E","N","U","S"
+    .byte "N","E","S","T","E","D",$EF,"M","E","N","U","S"
     .byte EOF
 stringsetSecondPage:
     .byte "S","E","C","O","N","D",$EF,"P","A","G","E"
@@ -526,7 +526,7 @@ stringsetBoolean:
     .byte EOL
     .byte "O","F","F",$EF,"O","N"
     .byte EOL
-    .byte "I","F",$EF,"0",$EF,"I","S",$EF,"D","E","F","A","U","L","T"
+    .byte "F","F",$EF,"M","E","A","N","S",$EF,"O","F","F"
     .byte EOL
     .byte "A","S",$EF,"N","U","M","B","E","R"
     .byte EOL
@@ -607,8 +607,8 @@ stringsetTournament:
     .byte EOL
     .byte "L","I","N","E","S"
     .byte EOF
-stringsetDisplayOptions:
-    .byte "D","I","S","P","L","A","Y",$EF,"O","P","T","I","O","N","S"
+stringsetDisplayMenu:
+    .byte "D","I","S","P","L","A","Y",$EF,"M","E","N","U"
     .byte EOL
     .byte "S","C","O","R","I","N","G"
     .byte EOL

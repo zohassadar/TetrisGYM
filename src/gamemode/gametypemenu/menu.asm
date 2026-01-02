@@ -550,8 +550,6 @@ stageBackgroundTiles:
     inx
     bne @fillBlank ; always taken
 
-
-
 @finishRow:
 ; check if all rows drawn
     dec @rowCounter

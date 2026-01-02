@@ -193,7 +193,7 @@ customColorSubmenu = {
 }
 
 displaySubmenu = {
-    "Display Options": [
+    "Display Menu": [
         [
             "TYPE_CHOICES",
             "Scoring",
@@ -341,7 +341,7 @@ booleanExample = {
         ],
         [
             "TYPE_CHOICES",
-            "if 0 is default",
+            "ff means off",
             "onoff",
         ],
         [
@@ -361,12 +361,12 @@ pages = {
     "New Menu!": [
         [
             "TYPE_FF_OFF",
-            "A",
+            "0123456789ABCD",
             7,
         ],
         [
             "TYPE_CHOICES",
-            "B",
+            "DCBA9876543210",
             "examples2",
         ],
         [
@@ -396,7 +396,7 @@ pages = {
         ],
         [
             "TYPE_SUBMENU",
-            "nested submenus",
+            "nested menus",
             nestedExample,
         ],
     ],
