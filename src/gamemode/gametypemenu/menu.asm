@@ -18,7 +18,7 @@ EOL = $FE
 EOF = $FF
 
 MENU_TITLE_PPU = $2104
-MENU_STRIPE_WIDTH = 22
+MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 9
 
 MODE_DEFAULT = 0
@@ -523,7 +523,7 @@ stageBackgroundTiles:
     ldx #$2
 
 @nextRow:
-    lda #MENU_STRIPE_WIDTH-2
+    lda #MENU_STRIPE_WIDTH
     sta @blankCounter
 
 @loop:
@@ -556,11 +556,11 @@ stageBackgroundTiles:
     beq @shiftTitleRow
 
 ; set next row based on last row
-    lda stack-(MENU_STRIPE_WIDTH-1),x
+    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
     clc
     adc #$40
     sta stack+1,x
-    lda stack-MENU_STRIPE_WIDTH,x
+    lda stack-(MENU_STRIPE_WIDTH+2),x
     adc #$00
     sta stack,x
     inx
@@ -771,7 +771,7 @@ render_mode_menu:
     sta PPUADDR
     pla
     sta PPUADDR
-    .repeat MENU_STRIPE_WIDTH - 2
+    .repeat MENU_STRIPE_WIDTH
     pla
     sta PPUDATA
     .endrepeat

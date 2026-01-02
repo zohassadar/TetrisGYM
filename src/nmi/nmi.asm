@@ -4,8 +4,16 @@ nmi:    pha
         tya
         pha
         jsr render
-        jsr copyCurrentScrollAndCtrlToPPU
-        jsr copyOamStagingToOam
+        lda ppuScrollX
+        sta PPUSCROLL
+        lda ppuScrollY
+        sta PPUSCROLL
+        lda currentPpuCtrl
+        sta PPUCTRL
+        lda #$00
+        sta OAMADDR
+        lda #$02
+        sta OAMDMA
         lda sleepCounter
         beq @noSleep
         dec sleepCounter
