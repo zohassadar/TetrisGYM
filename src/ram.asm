@@ -409,4 +409,7 @@ dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
 
+
+.include "gamemode/gametypemenu/menuram.asm"
+
 ; ... $7FF

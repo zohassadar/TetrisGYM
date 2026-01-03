@@ -198,83 +198,83 @@ memoryMap:
     .byte 0
     .byte 0
     .byte 0
-    .byte <MEMORY_BASE + $00
-    .byte <MEMORY_BASE + $01
-    .byte <MEMORY_BASE + $02
-    .byte <MEMORY_BASE + $03
-    .byte <MEMORY_BASE + $04
-    .byte <MEMORY_BASE + $05
-    .byte <MEMORY_BASE + $06
-    .byte <MEMORY_BASE + $07
-    .byte <MEMORY_BASE + $08
-    .byte <MEMORY_BASE + $09
-    .byte <MEMORY_BASE + $0A
-    .byte <MEMORY_BASE + $0B
-    .byte <MEMORY_BASE + $0C
-    .byte <MEMORY_BASE + $0E
-    .byte <MEMORY_BASE + $11
-    .byte <MEMORY_BASE + $15
-    .byte <MEMORY_BASE + $16
-    .byte <MEMORY_BASE + $18
-    .byte <MEMORY_BASE + $1B
+    .byte <menuVarMinLimit2
+    .byte <menuVarMaxLimit30
+    .byte <menuVarOrUnlimited
+    .byte <menuVarWhen1IsOff
+    .byte <menuVarFromWordList
+    .byte <menuVarByDigit
+    .byte <menuVarByBcdDigit
+    .byte <menuVarOffOn
+    .byte <menuVarOnOff
+    .byte <menuVarAsNumber
+    .byte <menuVarAsWords
+    .byte <menuVarBcd2Digit
+    .byte <menuVarBcd4Digit
+    .byte <menuVarBcd6Digit
+    .byte <menuVarBcd8Digit
+    .byte <menuVarHex2Digit
+    .byte <menuVarHex4Digit
+    .byte <menuVarHex6Digit
+    .byte <menuVarHex8Digit
     .byte 0
     .byte 0
     .byte 0
     .byte 0
-    .byte <MEMORY_BASE + $1F
-    .byte <MEMORY_BASE + $20
-    .byte <MEMORY_BASE + $21
-    .byte <MEMORY_BASE + $25
-    .byte <MEMORY_BASE + $29
-    .byte <MEMORY_BASE + $2D
-    .byte <MEMORY_BASE + $31
-    .byte <MEMORY_BASE + $35
-    .byte <MEMORY_BASE + $39
-    .byte <MEMORY_BASE + $3D
-    .byte <MEMORY_BASE + $41
-    .byte <MEMORY_BASE + $42
-    .byte <MEMORY_BASE + $43
-    .byte <MEMORY_BASE + $44
-    .byte <MEMORY_BASE + $45
-    .byte <MEMORY_BASE + $46
-    .byte <MEMORY_BASE + $47
-    .byte <MEMORY_BASE + $48
+    .byte <menuVarFoo
+    .byte <menuVarDontDo
+    .byte <menuVar0003
+    .byte <menuVar0407
+    .byte <menuVar080b
+    .byte <menuVar0c0f
+    .byte <menuVar1013
+    .byte <menuVar1417
+    .byte <menuVar181b
+    .byte <menuVar1c1f
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
     .byte 0
     .byte 0
     .byte 0
-    .byte <MEMORY_BASE + $49
-    .byte <MEMORY_BASE + $4A
-    .byte <MEMORY_BASE + $4D
-    .byte <MEMORY_BASE + $4F
-    .byte <MEMORY_BASE + $50
-    .byte <MEMORY_BASE + $51
-    .byte <MEMORY_BASE + $52
-    .byte <MEMORY_BASE + $54
-    .byte <MEMORY_BASE + $55
-    .byte <MEMORY_BASE + $56
-    .byte <MEMORY_BASE + $57
-    .byte <MEMORY_BASE + $58
-    .byte <MEMORY_BASE + $59
+    .byte <menuVarSps
+    .byte <menuVarPieceSeed
+    .byte <menuVarBSeed
+    .byte <menuVarKillscreen
+    .byte <menuVarHow
+    .byte <menuVarLevel
+    .byte <menuVarLines
+    .byte <menuVarScoring
+    .byte <menuVarPaceDisplay
+    .byte <menuVarStatsBox
+    .byte <menuVarInputDisplay
+    .byte <menuVarDarkMode
+    .byte <menuVarColors
     .byte 0
-    .byte <MEMORY_BASE + $5A
-    .byte <MEMORY_BASE + $5B
-    .byte <MEMORY_BASE + $5E
-    .byte <MEMORY_BASE + $61
-    .byte <MEMORY_BASE + $64
-    .byte <MEMORY_BASE + $67
-    .byte <MEMORY_BASE + $6A
-    .byte <MEMORY_BASE + $6D
-    .byte <MEMORY_BASE + $70
-    .byte <MEMORY_BASE + $73
-    .byte <MEMORY_BASE + $76
-    .byte <MEMORY_BASE + $79
-    .byte <MEMORY_BASE + $7A
-    .byte <MEMORY_BASE + $7B
-    .byte <MEMORY_BASE + $7C
-    .byte <MEMORY_BASE + $7D
-    .byte <MEMORY_BASE + $7E
-    .byte <MEMORY_BASE + $7F
-    .byte <MEMORY_BASE + $80
+    .byte <menuVarDisableFlash
+    .byte <menuVar0
+    .byte <menuVar1
+    .byte <menuVar2
+    .byte <menuVar3
+    .byte <menuVar4
+    .byte <menuVar5
+    .byte <menuVar6
+    .byte <menuVar7
+    .byte <menuVar8
+    .byte <menuVar9
+    .byte <menuVarCrash
+    .byte <menuVarStrictCrash
+    .byte <menuVarDisablePause
+    .byte <menuVarGoofyFoot
+    .byte <menuVarDasOnly
+    .byte <menuVarQualMode
+    .byte <menuVarBlockTool
+    .byte <menuVarPalMode
 
 itemTypes:
     .byte TYPE_SUBMENU | SUBMENU_NUMBERINPUTS ; number inputs

@@ -11,7 +11,7 @@
 ; save/restore to/from sram
 
 
-MEMORY_BASE = $0500
+MEMORY_BASE = >autoMenuVars
 
 ; valid background chars are 0-253
 EOL = $FE
