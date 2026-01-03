@@ -5,9 +5,6 @@ MAX_LENGTH_NAME = 14;
 MAX_LENGTH_VALUE = 8;
 
 function checkStringSanity(string) {
-    // if (!string.length) {
-    //     throw new Error(`${string} cannot be blank`);
-    // }
     if (string.length > MAX_LENGTH_VALUE) {
         throw new Error(`${string} is more than MAX_LENGTH_VALUE chars`);
     }
@@ -48,8 +45,6 @@ function getHexByte(number) {
 
 function getOutputLines(itemType, string, memory) {
     return {
-        // hibytes: getByteLine(`>${getStringName(string)}`),
-        // lobytes: getByteLine(`<${getStringName(string)}`),
         label: getByteLine(`${itemType} ; ${string}`),
         memory: memory, // has to be processed separately to get output line
     };
@@ -96,7 +91,6 @@ function getPageLines(title, page, pages, index) {
         hibytes: getByteLine(`>${stringset} ; ${string}`),
         lobytes: getByteLine(`<${stringset} ; ${string}`),
         stringsets: stringSetLines.join(`\n`),
-        // index: getByteLine(`<${index} ; ${string}`),
     };
 }
 
@@ -218,7 +212,6 @@ menuCount = 0;
 index = 0;
 pageIndex = 0;
 firstItems = [];
-// lastItems = [];
 memoryMap = [];
 items = [];
 
@@ -241,11 +234,6 @@ processPageSet = (pages, name) => {
             index++;
             if (item[0] === "TYPE_SUBMENU") subPageSets[item[1]] = item[2];
         });
-        // lastItems.push(
-        //     getByteLine(
-        //         getHexByte(`${getHexByte(index)} ; ${cleanWord(title)}`),
-        //     ),
-        // );
     });
     lastPages.push(getByteLine(getHexByte(pageIndex)));
 
@@ -255,10 +243,6 @@ processPageSet = (pages, name) => {
     });
 };
 processPageSet(pages);
-
-// newStringLines.push("");
-// newStringLines.push('.out .sprintf("%d total string bytes", * - stringTable)');
-// newStringLines.push("");
 
 let o = 0;
 items.forEach((i) => {
@@ -303,10 +287,6 @@ buffer.push("pageCounts:");
 buffer.push(...pagesOutput.map((p) => p.count));
 buffer.push("");
 
-// buffer.push("pageStarts:");
-// buffer.push(...pagesOutput.map((p) => p.index));
-// buffer.push("");
-
 buffer.push("pageStringsetsHi:");
 buffer.push(...pagesOutput.map((p) => p.hibytes));
 buffer.push("");
@@ -319,10 +299,6 @@ buffer.push("firstItems:");
 buffer.push(...firstItems);
 buffer.push("");
 
-// buffer.push("lastItems:");
-// buffer.push(...lastItems);
-// buffer.push("");
-
 buffer.push("; index activeItem");
 buffer.push("memoryMap:");
 buffer.push(...memoryMap);
@@ -331,14 +307,6 @@ buffer.push("");
 buffer.push("itemTypes:");
 buffer.push(...items.map((i) => i.label));
 buffer.push("");
-
-// buffer.push("stringListHi:");
-// buffer.push(...items.map((i) => i.hibytes));
-// buffer.push("");
-//
-// buffer.push("stringListLo:");
-// buffer.push(...items.map((i) => i.lobytes));
-// buffer.push("");
 
 buffer.push("stringListIndexes:");
 buffer.push(...stringIndexes);
