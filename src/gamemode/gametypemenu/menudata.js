@@ -644,6 +644,123 @@ mainMenu = {
             v7IdeaMenu,
         ],
     ],
+    "Third Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Fourth Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Fifth Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Sixth Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Seventh Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Eighth Page": [
+        [
+            "TYPE_CHOICES",
+            "choice",
+            [
+                "this",
+                "that",
+            ],
+        ],
+    ],
+    "Break Things": menuVarsPage,
 }
 
 extraSpriteStrings = [

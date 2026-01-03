@@ -741,6 +741,48 @@ stageCursor:
 ;
 ; @noToggleDanceCounter:
 
+
+    ldx activeMenu
+    lda pageCountByMenu,x
+    cmp #$1
+    beq @singlePage
+    ldx oamStagingLength
+    sta oamStaging+9,x
+    lda #$4F
+    sta oamStaging+5,x
+
+
+    lda #$CB
+    sta oamStaging+0,x
+    sta oamStaging+4,x
+    sta oamStaging+8,x
+
+    lda #$C8
+    sta oamStaging+3,x
+    clc
+    adc #$08
+    sta oamStaging+7,x
+    adc #$08
+    sta oamStaging+11,x
+
+    lda #$00
+    sta oamStaging+2,x
+    sta oamStaging+6,x
+    sta oamStaging+10,x
+
+    ldy activePage
+    iny
+    tya
+    sta oamStaging+1,x
+    txa
+    clc
+    adc #$C
+    sta oamStagingLength
+
+@singlePage:
+
+
+
     ldx actualPage
     lda pageTypes,x
     lda activeRow
