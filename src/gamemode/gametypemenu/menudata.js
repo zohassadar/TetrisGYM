@@ -37,16 +37,19 @@ digitsExample = {
             "TYPE_BCD",
             "BCD 2 Digit",
             2,
+            "menuVarBcd8Digit",
         ],
         [
             "TYPE_BCD",
             "BCD 4 Digit",
             4,
+            "menuVarBcd8Digit",
         ],
         [
             "TYPE_BCD",
             "BCD 6 Digit",
             6,
+            "menuVarBcd8Digit",
         ],
         [
             "TYPE_BCD",
@@ -59,16 +62,19 @@ digitsExample = {
             "TYPE_HEX",
             "HEX 2 Digit",
             2,
+            "menuVarHex8Digit",
         ],
         [
             "TYPE_HEX",
             "HEX 4 Digit",
             4,
+            "menuVarHex8Digit",
         ],
         [
             "TYPE_HEX",
             "HEX 6 Digit",
             6,
+            "menuVarHex8Digit",
         ],
         [
             "TYPE_HEX",
@@ -76,6 +82,7 @@ digitsExample = {
             8,
         ],
     ],
+    "Break Things": menuVarsPage,
 }
 
 
@@ -114,23 +121,23 @@ nestedExample = {
                                                             ["this"],
                                                         ],
                                                     ],
-                                                    "break last": menuVarsPage,
+                                                    "break things": menuVarsPage,
                                                 },
                                             ],
                                         ],
-                                        "break and more": menuVarsPage,
+                                        "break things": menuVarsPage,
                                     },
                                 ],
                             ],
-                            "break even mor": menuVarsPage,
+                            "break things": menuVarsPage,
                         },
                     ],
                 ],
-                "break more": menuVarsPage,
+                "break things": menuVarsPage,
             },
         ],
     ],
-    "break nested": menuVarsPage,
+    "break things": menuVarsPage,
 }
 
 tournamentSubmenu = {
@@ -182,7 +189,8 @@ tournamentSubmenu = {
             "Lines",
             4,
         ],
-    ]
+    ],
+    "break things": menuVarsPage,
 }
 
 
@@ -241,6 +249,7 @@ customColorSubmenu = {
             6,
         ],
     ],
+    "break things": menuVarsPage,
 }
 
 displaySubmenu = {
@@ -305,6 +314,7 @@ displaySubmenu = {
             "Disable Flash",
         ],
     ],
+    "break things": menuVarsPage,
 }
 
 settingsSubmenu = {
@@ -348,6 +358,7 @@ settingsSubmenu = {
             "Pal Mode",
         ],
     ],
+    "break things": menuVarsPage,
 }
 
 v7IdeaMenu = {
@@ -368,6 +379,7 @@ v7IdeaMenu = {
             settingsSubmenu,
         ],
     ],
+    "break things": menuVarsPage,
 }
 
 numberExample = {
@@ -381,33 +393,40 @@ numberExample = {
             "TYPE_NUMBER",
             "Max Limit 30",
             31,
+            "menuVarMinLimit2",
         ],
         [
             "TYPE_NUMBER",
             "Or Unlimited",
             0,
+            "menuVarMinLimit2",
         ],
         [
             "TYPE_FF_OFF",
             "when -1 is off",
             5,
+            "menuVarMinLimit2",
         ],
         [
             "TYPE_CHOICES",
             "from word list",
             ["foo", "bar"],
+            "menuVarMinLimit2",
         ],
         [
             "TYPE_HEX",
             "by digit",
             2,
+            "menuVarMinLimit2",
         ],
         [
             "TYPE_BCD",
             "by bcd digit",
             2,
+            "menuVarMinLimit2",
         ],
     ],
+    "break things": menuVarsPage,
 }
 
 booleanExample = {
@@ -439,52 +458,61 @@ booleanExample = {
             "menuVarOffOn",
         ],
     ],
+    "break things": menuVarsPage,
 }
 debugVars = {
     "break things": menuVarsPage,
 }
 
 fullExample = {
-    "32 bytes": [
+    "highscores/700": [
         [
             "TYPE_HEX",
             "00-03",
             8,
+            "highscores",
         ],
         [
             "TYPE_HEX",
             "04-07",
             8,
+            "highscores+4",
         ],
         [
             "TYPE_HEX",
             "08-0B",
             8,
+            "highscores+8",
         ],
         [
             "TYPE_HEX",
             "0C-0F",
             8,
+            "highscores+12",
         ],
         [
             "TYPE_HEX",
             "10-13",
             8,
+            "highscores+16",
         ],
         [
             "TYPE_HEX",
             "14-17",
             8,
+            "highscores+20",
         ],
         [
             "TYPE_HEX",
             "18-1B",
             8,
+            "highscores+24",
         ],
         [
             "TYPE_HEX",
             "1C-1F",
             8,
+            "highscores+28",
         ],
     ]
 }

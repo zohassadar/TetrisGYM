@@ -16,7 +16,7 @@ function checkStringSanity(string) {
 
 function cleanWord(word) {
     word = word.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
-    return word.replace(/[- *?!]/g, "");
+    return word.replace(/[- *?!/]/g, "");
 }
 
 function getStringName(word) {
@@ -65,6 +65,7 @@ function getLineString(string, multiline = false) {
         : getByteLine(getStringBytes(string));
 }
 
+stringSets = {};
 function getPageLines(title, page, pages) {
     DEBUG && console.log(`getPageLines`, title, page, pages);
     label = Object.values(pages).length > 1 ? "PAGE_MULTI" : "PAGE_SINGLE";
@@ -87,13 +88,16 @@ function getPageLines(title, page, pages) {
         if (i + 1 != page.length) stringSetLines.push(endString);
     });
     stringSetLines.push(endStringset);
+    joined = stringSetLines.join("\n");
+    existing = stringSets[joined];
+    if (!existing) stringSets[joined] = stringset;
 
     return {
         label: getByteLine(`${label} | ${modifier} ; ${string}`),
         count: getByteLine(getHexByte(page.length)),
-        hibytes: getByteLine(`>${stringset} ; ${string}`),
-        lobytes: getByteLine(`<${stringset} ; ${string}`),
-        stringsets: stringSetLines.join(`\n`),
+        hibytes: getByteLine(`>${existing ? existing : stringset} ; ${string}`),
+        lobytes: getByteLine(`<${existing ? existing : stringset} ; ${string}`),
+        stringsets: existing ? "" : joined,
     };
 }
 
@@ -101,11 +105,11 @@ function typeTitle(label, string) {
     return getOutputLines(label, string);
 }
 
-function typeDigit(label, string, digits) {
+function typeDigit(label, string, digits, memoryLabel) {
     if (digits < 2 || digits > 8 || digits & 1) {
         throw new Error(`${string}: digits can only be 2, 4, 6 or 8`);
     }
-    memory = (digits + 1) >> 1;
+    memory = memoryLabel ? memoryLabel : (digits + 1) >> 1;
     return getOutputLines(`${label} | ${getHexByte(digits)}`, string, memory);
 }
 
@@ -174,6 +178,7 @@ newStringLines = [];
 
 function getStringByte(c) {
     replaceMap = {
+        "/": "$4F",
         "*": "$69",
         " ": "$EF",
     };
@@ -231,7 +236,7 @@ processPageSet(mainMenu);
 // memory into separate file
 memoryReservations = {};
 function getMemoryLabel(string, bytes) {
-    if (isNaN(bytes)) return bytes // if label is specified use that instead
+    if (isNaN(bytes)) return bytes; // if label is specified use that instead
     label = `menuVar${cleanWord(string)}`;
     memoryReservations[label] = bytes;
     return label;
