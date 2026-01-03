@@ -43,10 +43,9 @@ STRINGLIST_EXAMPLES2
 ; index activeMenu
 firstPages:
     .byte $00
-    .byte $02
     .byte $03
     .byte $04
-    .byte $06
+    .byte $05
     .byte $07
     .byte $08
     .byte $09
@@ -55,13 +54,13 @@ firstPages:
     .byte $0C
     .byte $0D
     .byte $0E
-    .byte $10
+    .byte $0F
+    .byte $11
 
 lastPages:
-    .byte $02
     .byte $03
     .byte $04
-    .byte $06
+    .byte $05
     .byte $07
     .byte $08
     .byte $09
@@ -70,12 +69,14 @@ lastPages:
     .byte $0C
     .byte $0D
     .byte $0E
-    .byte $10
+    .byte $0F
     .byte $11
+    .byte $12
 
 ; index activePage
 pageTypes:
-    .byte PAGE_MULTI | MODE_DEFAULT ; New Menu!
+    .byte PAGE_MULTI | MODE_DEFAULT ; 0123456789ABCD
+    .byte PAGE_MULTI | MODE_DEFAULT ; other page
     .byte PAGE_MULTI | MODE_DEFAULT ; Second Page
     .byte PAGE_SINGLE | MODE_DEFAULT ; Numbers
     .byte PAGE_SINGLE | MODE_DEFAULT ; boolean
@@ -94,7 +95,8 @@ pageTypes:
     .byte PAGE_SINGLE | MODE_DEFAULT ; Settings
 
 pageCounts:
-    .byte $08
+    .byte $03
+    .byte $07
     .byte $01
     .byte $07
     .byte $04
@@ -113,7 +115,8 @@ pageCounts:
     .byte $08
 
 pageStringsetsHi:
-    .byte >stringsetNewMenu ; New Menu!
+    .byte >stringset0123456789abcd ; 0123456789ABCD
+    .byte >stringsetOtherPage ; other page
     .byte >stringsetSecondPage ; Second Page
     .byte >stringsetNumbers ; Numbers
     .byte >stringsetBoolean ; boolean
@@ -132,7 +135,8 @@ pageStringsetsHi:
     .byte >stringsetSettings ; Settings
 
 pageStringsetsLo:
-    .byte <stringsetNewMenu ; New Menu!
+    .byte <stringset0123456789abcd ; 0123456789ABCD
+    .byte <stringsetOtherPage ; other page
     .byte <stringsetSecondPage ; Second Page
     .byte <stringsetNumbers ; Numbers
     .byte <stringsetBoolean ; boolean
@@ -151,23 +155,24 @@ pageStringsetsLo:
     .byte <stringsetSettings ; Settings
 
 firstItems:
-    .byte $00 ; NewMenu
-    .byte $08 ; SecondPage
-    .byte $09 ; Numbers
-    .byte $10 ; Boolean
-    .byte $14 ; BcdInputs
-    .byte $18 ; HexInputs
-    .byte $1C ; Nested
-    .byte $1D ; MoreNested
-    .byte $1E ; EvenMore
-    .byte $1F ; AndMore
-    .byte $20 ; LastOne
-    .byte $22 ; MainMenu
-    .byte $25 ; Tournament[Mode=Default]
-    .byte $2C ; DisplayMenu
-    .byte $34 ; CustomX0X4
-    .byte $39 ; CustomX5X9
-    .byte $3E ; Settings
+    .byte $00 ; 0123456789abcd
+    .byte $03 ; OtherPage
+    .byte $0A ; SecondPage
+    .byte $0B ; Numbers
+    .byte $12 ; Boolean
+    .byte $16 ; BcdInputs
+    .byte $1A ; HexInputs
+    .byte $1E ; Nested
+    .byte $1F ; MoreNested
+    .byte $20 ; EvenMore
+    .byte $21 ; AndMore
+    .byte $22 ; LastOne
+    .byte $24 ; MainMenu
+    .byte $27 ; Tournament[Mode=Default]
+    .byte $2E ; DisplayMenu
+    .byte $36 ; CustomX0X4
+    .byte $3B ; CustomX5X9
+    .byte $40 ; Settings
 
 ; index activeItem
 memoryMap:
@@ -175,16 +180,13 @@ memoryMap:
     .byte <MEMORY_BASE + $01
     .byte <MEMORY_BASE + $02
     .byte <MEMORY_BASE + $06
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <MEMORY_BASE + $0A
+    .byte <MEMORY_BASE + $07
     .byte <MEMORY_BASE + $0B
-    .byte <MEMORY_BASE + $0C
-    .byte <MEMORY_BASE + $0D
-    .byte <MEMORY_BASE + $0E
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
     .byte <MEMORY_BASE + $0F
     .byte <MEMORY_BASE + $10
     .byte <MEMORY_BASE + $11
@@ -193,57 +195,64 @@ memoryMap:
     .byte <MEMORY_BASE + $14
     .byte <MEMORY_BASE + $15
     .byte <MEMORY_BASE + $16
+    .byte <MEMORY_BASE + $17
     .byte <MEMORY_BASE + $18
+    .byte <MEMORY_BASE + $19
+    .byte <MEMORY_BASE + $1A
     .byte <MEMORY_BASE + $1B
-    .byte <MEMORY_BASE + $1F
+    .byte <MEMORY_BASE + $1D
     .byte <MEMORY_BASE + $20
-    .byte <MEMORY_BASE + $22
+    .byte <MEMORY_BASE + $24
     .byte <MEMORY_BASE + $25
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <MEMORY_BASE + $29
+    .byte <MEMORY_BASE + $27
     .byte <MEMORY_BASE + $2A
     .byte 0
     .byte 0
     .byte 0
-    .byte <MEMORY_BASE + $2B
-    .byte <MEMORY_BASE + $2C
+    .byte 0
+    .byte <MEMORY_BASE + $2E
     .byte <MEMORY_BASE + $2F
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte <MEMORY_BASE + $30
     .byte <MEMORY_BASE + $31
-    .byte <MEMORY_BASE + $32
-    .byte <MEMORY_BASE + $33
     .byte <MEMORY_BASE + $34
     .byte <MEMORY_BASE + $36
     .byte <MEMORY_BASE + $37
     .byte <MEMORY_BASE + $38
     .byte <MEMORY_BASE + $39
-    .byte <MEMORY_BASE + $3A
     .byte <MEMORY_BASE + $3B
-    .byte 0
     .byte <MEMORY_BASE + $3C
     .byte <MEMORY_BASE + $3D
+    .byte <MEMORY_BASE + $3E
+    .byte <MEMORY_BASE + $3F
     .byte <MEMORY_BASE + $40
-    .byte <MEMORY_BASE + $43
-    .byte <MEMORY_BASE + $46
-    .byte <MEMORY_BASE + $49
-    .byte <MEMORY_BASE + $4C
-    .byte <MEMORY_BASE + $4F
-    .byte <MEMORY_BASE + $52
-    .byte <MEMORY_BASE + $55
-    .byte <MEMORY_BASE + $58
-    .byte <MEMORY_BASE + $5B
-    .byte <MEMORY_BASE + $5C
+    .byte 0
+    .byte <MEMORY_BASE + $41
+    .byte <MEMORY_BASE + $42
+    .byte <MEMORY_BASE + $45
+    .byte <MEMORY_BASE + $48
+    .byte <MEMORY_BASE + $4B
+    .byte <MEMORY_BASE + $4E
+    .byte <MEMORY_BASE + $51
+    .byte <MEMORY_BASE + $54
+    .byte <MEMORY_BASE + $57
+    .byte <MEMORY_BASE + $5A
     .byte <MEMORY_BASE + $5D
-    .byte <MEMORY_BASE + $5E
-    .byte <MEMORY_BASE + $5F
     .byte <MEMORY_BASE + $60
     .byte <MEMORY_BASE + $61
     .byte <MEMORY_BASE + $62
+    .byte <MEMORY_BASE + $63
+    .byte <MEMORY_BASE + $64
+    .byte <MEMORY_BASE + $65
+    .byte <MEMORY_BASE + $66
+    .byte <MEMORY_BASE + $67
 
 itemTypes:
-    .byte TYPE_FF_OFF | $07 ; 0123456789ABCD
+    .byte TYPE_CHOICES | STRINGLIST_EXAMPLES ; 0123456789ABCD
+    .byte TYPE_CHOICES | STRINGLIST_THIS ; words
+    .byte TYPE_BCD | $08 ; 0123456789ABCD
     .byte TYPE_CHOICES | STRINGLIST_EXAMPLES2 ; DCBA9876543210
     .byte TYPE_HEX | $08 ; C
     .byte TYPE_BCD | $08 ; D
@@ -340,9 +349,9 @@ stringListCounts:
     .byte $03
     .byte $04
     .byte $05
-    .byte $02
+    .byte $04
     .byte $01
-    .byte $03
+    .byte $02
 
 stringLists:
 stringListBool:
@@ -392,14 +401,15 @@ stringListDark:
     .byte stringTeal-stringTable
     .byte stringOg-stringTable
 stringListExamples:
+    .byte string12345678-stringTable
     .byte stringFoo-stringTable
     .byte stringBar-stringTable
+    .byte stringBaz-stringTable
 stringListThis:
     .byte stringThis-stringTable
 stringListExamples2:
     .byte stringFoo-stringTable
     .byte stringBar-stringTable
-    .byte stringBaz-stringTable
 
 stringTable:
 stringOff:
@@ -458,14 +468,16 @@ stringTeal:
     .byte $04,"T","E","A","L"
 stringOg:
     .byte $02,"O","G"
+string12345678:
+    .byte $08,"1","2","3","4","5","6","7","8"
 stringFoo:
     .byte $03,"F","O","O"
 stringBar:
     .byte $03,"B","A","R"
-stringThis:
-    .byte $04,"T","H","I","S"
 stringBaz:
     .byte $03,"B","A","Z"
+stringThis:
+    .byte $04,"T","H","I","S"
 stringPause:
     .byte $05,"P","A","U","S","E"
 stringBlock:
@@ -480,10 +492,17 @@ stringConfetti:
 .out .sprintf("%d/256 sprite string bytes", * - stringTable)
 
 
-stringsetNewMenu:
-    .byte "N","E","W",$EF,"M","E","N","U","!"
+stringset0123456789abcd:
+    .byte "0","1","2","3","4","5","6","7","8","9","A","B","C","D"
     .byte EOL
     .byte "0","1","2","3","4","5","6","7","8","9","A","B","C","D"
+    .byte EOL
+    .byte "W","O","R","D","S"
+    .byte EOL
+    .byte "0","1","2","3","4","5","6","7","8","9","A","B","C","D"
+    .byte EOF
+stringsetOtherPage:
+    .byte $EF,$EF,"O","T","H","E","R",$EF,"P","A","G","E"
     .byte EOL
     .byte "D","C","B","A","9","8","7","6","5","4","3","2","1","0"
     .byte EOL
@@ -500,12 +519,12 @@ stringsetNewMenu:
     .byte "N","E","S","T","E","D",$EF,"M","E","N","U","S"
     .byte EOF
 stringsetSecondPage:
-    .byte "S","E","C","O","N","D",$EF,"P","A","G","E"
+    .byte $EF,$EF,"S","E","C","O","N","D",$EF,"P","A","G","E"
     .byte EOL
     .byte "V","7",$EF,"M","E","N","U",$EF,"I","D","E","A","S"
     .byte EOF
 stringsetNumbers:
-    .byte "N","U","M","B","E","R","S"
+    .byte $EF,$EF,$EF,$EF,"N","U","M","B","E","R","S"
     .byte EOL
     .byte "M","I","N",$EF,"L","I","M","I","T",$EF,"2"
     .byte EOL
@@ -522,7 +541,7 @@ stringsetNumbers:
     .byte "B","Y",$EF,"B","C","D",$EF,"D","I","G","I","T"
     .byte EOF
 stringsetBoolean:
-    .byte "B","O","O","L","E","A","N"
+    .byte $EF,$EF,$EF,$EF,"B","O","O","L","E","A","N"
     .byte EOL
     .byte "O","F","F",$EF,"O","N"
     .byte EOL
@@ -533,7 +552,7 @@ stringsetBoolean:
     .byte "A","S",$EF,"W","O","R","D","S"
     .byte EOF
 stringsetBcdInputs:
-    .byte "B","C","D",$EF,"I","N","P","U","T","S"
+    .byte $EF,$EF,"B","C","D",$EF,"I","N","P","U","T","S"
     .byte EOL
     .byte "B","C","D",$EF,"2",$EF,"D","I","G","I","T"
     .byte EOL
@@ -544,7 +563,7 @@ stringsetBcdInputs:
     .byte "B","C","D",$EF,"8",$EF,"D","I","G","I","T"
     .byte EOF
 stringsetHexInputs:
-    .byte "H","E","X",$EF,"I","N","P","U","T","S"
+    .byte $EF,$EF,"H","E","X",$EF,"I","N","P","U","T","S"
     .byte EOL
     .byte "H","E","X",$EF,"2",$EF,"D","I","G","I","T"
     .byte EOL
@@ -555,34 +574,34 @@ stringsetHexInputs:
     .byte "H","E","X",$EF,"8",$EF,"D","I","G","I","T"
     .byte EOF
 stringsetNested:
-    .byte "N","E","S","T","E","D"
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D"
     .byte EOL
     .byte "M","O","R","E",$EF,"N","E","S","T","E","D"
     .byte EOF
 stringsetMoreNested:
-    .byte "M","O","R","E",$EF,"N","E","S","T","E","D"
+    .byte $EF,$EF,"M","O","R","E",$EF,"N","E","S","T","E","D"
     .byte EOL
     .byte "E","V","E","N",$EF,"M","O","R","E"
     .byte EOF
 stringsetEvenMore:
-    .byte "E","V","E","N",$EF,"M","O","R","E"
+    .byte $EF,$EF,$EF,"E","V","E","N",$EF,"M","O","R","E"
     .byte EOL
     .byte "A","N","D",$EF,"M","O","R","E"
     .byte EOF
 stringsetAndMore:
-    .byte "A","N","D",$EF,"M","O","R","E"
+    .byte $EF,$EF,$EF,"A","N","D",$EF,"M","O","R","E"
     .byte EOL
     .byte "L","A","S","T",$EF,"O","N","E"
     .byte EOF
 stringsetLastOne:
-    .byte "L","A","S","T",$EF,"O","N","E"
+    .byte $EF,$EF,$EF,"L","A","S","T",$EF,"O","N","E"
     .byte EOL
     .byte "F","O","O"
     .byte EOL
     .byte "D","O","N","T",$EF,"D","O"
     .byte EOF
 stringsetMainMenu:
-    .byte "M","A","I","N",$EF,"M","E","N","U"
+    .byte $EF,$EF,$EF,"M","A","I","N",$EF,"M","E","N","U"
     .byte EOL
     .byte "T","O","U","R","N","A","M","E","N","T"
     .byte EOL
@@ -591,7 +610,7 @@ stringsetMainMenu:
     .byte "S","E","T","T","I","N","G","S"
     .byte EOF
 stringsetTournament:
-    .byte "T","O","U","R","N","A","M","E","N","T",$EF
+    .byte $EF,$EF,"T","O","U","R","N","A","M","E","N","T",$EF
     .byte EOL
     .byte "S","P","S"
     .byte EOL
@@ -608,7 +627,7 @@ stringsetTournament:
     .byte "L","I","N","E","S"
     .byte EOF
 stringsetDisplayMenu:
-    .byte "D","I","S","P","L","A","Y",$EF,"M","E","N","U"
+    .byte $EF,"D","I","S","P","L","A","Y",$EF,"M","E","N","U"
     .byte EOL
     .byte "S","C","O","R","I","N","G"
     .byte EOL
@@ -627,7 +646,7 @@ stringsetDisplayMenu:
     .byte "D","I","S","A","B","L","E",$EF,"F","L","A","S","H"
     .byte EOF
 stringsetCustomX0X4:
-    .byte "C","U","S","T","O","M",$EF,"X","0","-","X","4"
+    .byte $EF,"C","U","S","T","O","M",$EF,"X","0","-","X","4"
     .byte EOL
     .byte "L","V","L",$EF,"X","0"
     .byte EOL
@@ -640,7 +659,7 @@ stringsetCustomX0X4:
     .byte "L","V","L",$EF,"X","4"
     .byte EOF
 stringsetCustomX5X9:
-    .byte "C","U","S","T","O","M",$EF,"X","5","-","X","9"
+    .byte $EF,"C","U","S","T","O","M",$EF,"X","5","-","X","9"
     .byte EOL
     .byte "L","V","L",$EF,"X","5"
     .byte EOL
@@ -653,7 +672,7 @@ stringsetCustomX5X9:
     .byte "L","V","L",$EF,"X","9"
     .byte EOF
 stringsetSettings:
-    .byte "S","E","T","T","I","N","G","S"
+    .byte $EF,$EF,$EF,"S","E","T","T","I","N","G","S"
     .byte EOL
     .byte "C","R","A","S","H"
     .byte EOL

@@ -17,7 +17,7 @@ MEMORY_BASE = $0500
 EOL = $FE
 EOF = $FF
 
-MENU_TITLE_PPU = $2104
+MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 9
 
@@ -109,10 +109,10 @@ gameTypeLoop:
     jsr respondToInput
 
     jsr stageCursor
-    jsr stageCurrentValues
 
     ; scratch is not important anymore
     jsr stageBackgroundTiles
+    jsr stageCurrentValues
     jsr debugSpriteStaging
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
@@ -195,6 +195,7 @@ exitSubmenu:
     pla
     jsr enterPage
     pla
+    sta activeRow
     jsr setScratch
     tsx
     stx menuStackPtr
@@ -569,7 +570,7 @@ stageBackgroundTiles:
 @shiftTitleRow:
 ; bump title row 4 tiles to the right
     lda stack+1
-    eor #%1100
+    eor #%1111
     sta stack+1
     rts
 
@@ -582,28 +583,30 @@ stageCurrentValues:
     lda #$00
     sta @counter
     lda #>MEMORY_BASE
-    sta byteSpriteAddr+1
+
     ldx activePage
     lda firstItems,x
+
     sta activeItem
     lda pageCounts,x
+
     sta @itemCount
 
+    lda#(MENU_STRIPE_WIDTH+2) - 8
+    sta stackPtr
+
 @memoryStageLoop:
-    lda @counter
-    asl
-    asl
-    asl
-    asl
+    lda stackPtr
     clc
-    adc #$50
-    sta spriteYOffset
-    lda #$D0
-    sta spriteXOffset
+    adc #MENU_STRIPE_WIDTH+2
+    sta stackPtr
+    tax
 
     ldy activeItem
     lda memoryMap,y
     sta byteSpriteAddr
+    lda #>MEMORY_BASE
+    sta byteSpriteAddr+1
     lda itemTypes,y
     tax
     ldy #0
@@ -614,14 +617,17 @@ stageCurrentValues:
     beq @drawString
 
     cmp #TYPE_NUMBER
-    beq @drawNumber
+    bne @drawFFOff
+@setupOneByte:
+    lda #$02
+    bne @drawOneByte
 
-; set bool stringlist
+@drawFFOff:
     lda (byteSpriteAddr),y
-    bpl @drawNumber
-    ldx #0
+    bpl @setupOneByte
+    ldx #0 ; should be a constant
     jsr @setStringList
-    jmp @pullFromStringList
+    jmp @startCopy
 
 @drawString:
     txa
@@ -630,14 +636,23 @@ stageCurrentValues:
     jsr @setStringList
     lda (byteSpriteAddr),y
     tay
-@pullFromStringList:
-    lda spriteXOffset
-    clc
-    adc #$10
-    sta spriteXOffset
+@startCopy:
     lda (stringSetPtr),y
-    jsr stringSpriteAlignRightA
+    tay
+    lda stringTable,y
+    beq @endCopy
+    sta generalCounter
+    jsr setStackOffset
+    iny
+@nextChar:
+    lda stringTable,y
+    sta stack,x
+    inx
+    iny
+    dec generalCounter
+    bne @nextChar
 
+@endCopy:
     jmp @nextByte
 
 @setStringList:
@@ -658,30 +673,35 @@ stageCurrentValues:
     beq @nextByte
     txa
     and #%11111
+@drawOneByte:
+    pha
     sec
     sbc #1
     lsr
     clc
-    adc #1
-    sta byteSpriteLen
-    asl
-    asl
-    asl
-    asl
-    sta generalCounter2
-    sec
-    lda spriteXOffset
-    sbc generalCounter2
-    sec
-    sbc #$F0
-    sta spriteXOffset
-    jsr byteSprite
-    jmp @nextByte
+    adc #$1
+    sta generalCounter
+    pla
 
-@drawNumber:
-    lda #$01
-    sta byteSpriteLen
-    jsr byteSprite
+    jsr setStackOffset
+    ldy #$00
+@digitLoop:
+    lda (byteSpriteAddr),y
+    pha
+    lsr
+    lsr
+    lsr
+    lsr
+    sta stack,x
+    inx
+    pla
+    and #$0F
+    sta stack,x
+    inx
+    iny
+    dec generalCounter
+    bne @digitLoop
+    jmp @nextByte
 
 @nextByte:
     inc activeItem
@@ -692,11 +712,39 @@ stageCurrentValues:
     jmp @memoryStageLoop
 @ret:
     rts
+
+setStackOffset:
+    eor #$FF
+    clc
+    adc #$09
+    clc
+    adc stackPtr
+    tax
+    rts
+
+
 .out .sprintf("value staging: %d", *-stageCurrentValues)
 
+; CURSOR_TOGGLE_TIMER = 37
 
 stageCursor:
+;     lda sleepCounter
+;     bne @noToggleDanceCounter
+;
+;     lda cursorToggle
+;     eor #$01
+;     sta cursorToggle
+;
+;     lda #CURSOR_TOGGLE_TIMER
+;     sta sleepCounter
+;
+;
+; @noToggleDanceCounter:
+
+    ldx activePage
+    lda pageTypes,x
     lda activeRow
+;     bpl @noToggle
     bpl @notTitle
 
     lda #$3F
@@ -707,7 +755,17 @@ stageCursor:
     sta spriteIndexInOamContentLookup
     jmp loadSpriteIntoOamStaging
 
+;     lda cursorToggle
+;     beq @noToggle
+;
+;     inc spriteIndexInOamContentLookup
+; @noToggle:
+;     jsr loadSpriteIntoOamStaging
+;
+
 @notTitle:
+;     lda activeColumn
+;     beq @notColumn
     asl
     asl
     asl
@@ -726,7 +784,7 @@ stageCursor:
     asl
     asl
     clc
-    adc #$C9
+    adc #$B9
     sta spriteXOffset
     ldx activeItem
     lda itemTypes,x

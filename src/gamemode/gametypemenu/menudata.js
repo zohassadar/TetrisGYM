@@ -358,12 +358,24 @@ booleanExample = {
 }
 
 pages = {
-    "New Menu!": [
+    "0123456789ABCD": [
         [
-            "TYPE_FF_OFF",
+            "TYPE_CHOICES",
             "0123456789ABCD",
-            7,
+            "examples",
         ],
+        [
+            "TYPE_CHOICES",
+            "words",
+            "this",
+        ],
+        [
+            "TYPE_BCD",
+            "0123456789ABCD",
+            8,
+        ],
+    ],
+    "other page": [
         [
             "TYPE_CHOICES",
             "DCBA9876543210",
@@ -467,8 +479,10 @@ strings = {
         "OG",
     ],
     examples: [
+        "12345678",
         "foo",
         "bar",
+        "baz",
     ],
     this: [
         "this",
@@ -476,7 +490,6 @@ strings = {
     examples2: [
         "foo",
         "bar",
-        "baz",
     ],
     lookup: [
         "Pause",

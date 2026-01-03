@@ -79,7 +79,10 @@ function getPageLines(title, page, pages, index) {
 
     stringSetLines = [];
     stringSetLines.push(`${stringset}:`);
-    stringSetLines.push(getLineString(string));
+    padding = [...Array(Math.round((MAX_LENGTH_NAME - string.length) / 2))]
+        .map(() => " ")
+        .join("");
+    stringSetLines.push(getLineString(`${padding}${string}`));
     stringSetLines.push(endString);
     page.forEach((p, i) => {
         stringSetLines.push(getLineString(p[1]));

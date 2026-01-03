@@ -38,7 +38,7 @@ activePage: .res 1
 activeRow: .res 1
 activeColumn: .res 1
 menuStackPtr: .res 1
-    .res 1
+; cursorToggle:    .res 1
 
 tetriminoX: .res 1 ; $0040
 tetriminoY: .res 1 ; $0041
