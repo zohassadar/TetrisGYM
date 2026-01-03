@@ -1,8 +1,9 @@
-const { pages, strings } = require("./menudata");
+const { mainMenu, extraSpriteStrings } = require("./menudata");
 const { writeFileSync } = require("fs");
 
 MAX_LENGTH_NAME = 14;
 MAX_LENGTH_VALUE = 8;
+DEBUG = false;
 
 function checkStringSanity(string) {
     if (string.length > MAX_LENGTH_VALUE) {
@@ -63,7 +64,8 @@ function getLineString(string, multiline = false) {
         : getByteLine(getStringBytes(string));
 }
 
-function getPageLines(title, page, pages, index) {
+function getPageLines(title, page, pages) {
+    DEBUG && console.log(`getPageLines`, title, page, pages);
     label = Object.values(pages).length > 1 ? "PAGE_MULTI" : "PAGE_SINGLE";
     [_, string, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
@@ -106,9 +108,21 @@ function typeDigit(label, string, digits) {
     return getOutputLines(`${label} | ${getHexByte(digits)}`, string, memory);
 }
 
+unlabeledStringSets = {};
+
+// getStringSet = (choices) => {
+//     key = "" + choices;
+//     existing = unlabeledStringSets[key];
+//     if (existing) return existing;
+//     unlabeledStringSets[key] = stringsetIndex++;
+// };
+
 function typeWords(label, string, stringList) {
+    DEBUG && console.log(`Choice set ${string} with options ${stringList}`);
+    stringSet = [...stringList].map((c) => cleanWord(c.slice(0, 6))).join("");
+    unlabeledStringSets[stringSet] = stringList;
     return getOutputLines(
-        `${label} | ${getStringListConstant(stringList)}`,
+        `${label} | ${getStringListConstant(stringSet)}`,
         string,
         1,
     );
@@ -119,7 +133,7 @@ function typeNumber(label, string, limit) {
 }
 
 function typeBool(label, string) {
-    return getOutputLines(label, string, 1);
+    return typeWords("TYPE_CHOICES", string, ["off", "on"]);
 }
 function typeSubMenu(label, string) {
     return getOutputLines(
@@ -160,49 +174,6 @@ function getStringBytes(string) {
     return [...string.split("").map((c) => getStringByte(c))].join(",");
 }
 
-function parseNewString(string) {
-    string = string.toLowerCase();
-    checkStringSanity(string);
-    if (!addedStrings.includes(string)) {
-        addedStrings.push(string);
-        newStringLines.push(`${getStringName(string)}:`);
-        newStringLines.push(
-            getByteLine(
-                `${getHexByte(string.length)},${getStringBytes(string)}`,
-            ),
-        );
-    }
-}
-
-Object.entries(strings).forEach(([name, stringList]) => {
-    if (name != "lookup") {
-        stringEnums.push(getStringListConstant(name));
-        stringCounts.push(getByteLine(getHexByte(stringList.length)));
-        stringIndexes.push(
-            getByteLine(`${getStringListName(name)}-stringLists`),
-        );
-        stringLists.push(`${getStringListName(name)}:`);
-    }
-    stringList.forEach((string) => {
-        parseNewString(string);
-        if (name == "lookup") {
-            lookupConstants.push(
-                `${getStringConstant(string)} = ${getStringName(string)}-stringTable`,
-            );
-        } else {
-            stringLists.push(
-                getByteLine(`${getStringName(string)}-stringTable`),
-            );
-        }
-    });
-});
-
-newStringLines.push("");
-newStringLines.push(
-    '.out .sprintf("%d/256 sprite string bytes", * - stringTable)',
-);
-newStringLines.push("");
-
 menuEnums = [];
 firstPages = [];
 lastPages = [];
@@ -219,11 +190,14 @@ items = [];
 pagesOutput = [];
 
 processPageSet = (pages, name) => {
+    DEBUG && name && console.log(`submenu ${name}`);
+    DEBUG && !name && console.log(`main menu`);
     if (name) menuEnums.push(`SUBMENU_${cleanWord(name).toUpperCase()}`);
     firstPages.push(getByteLine(getHexByte(pageIndex)));
     // collect submenus to process after all pages
     let subPageSets = {};
     Object.entries(pages).forEach(([title, page]) => {
+        DEBUG && console.log(`${title} with ${page.length} entries`);
         pageIndex++;
         firstItems.push(
             getByteLine(`${getHexByte(index)} ; ${cleanWord(title)}`),
@@ -242,7 +216,7 @@ processPageSet = (pages, name) => {
         processPageSet(pages, name);
     });
 };
-processPageSet(pages);
+processPageSet(mainMenu);
 
 let o = 0;
 items.forEach((i) => {
@@ -250,6 +224,45 @@ items.forEach((i) => {
     o += isNaN(i.memory) ? 0 : i.memory;
     memoryMap.push(line);
 });
+
+[
+    ["extraSpriteStrings", extraSpriteStrings],
+    ...Object.entries(unlabeledStringSets),
+].forEach(([name, stringList]) => {
+    DEBUG && console.log(`stringlist`, name, stringList);
+    if (name != "extraSpriteStrings") {
+        stringEnums.push(getStringListConstant(name));
+        stringCounts.push(getByteLine(getHexByte(stringList.length)));
+        stringIndexes.push(
+            getByteLine(`${getStringListName(name)}-stringLists`),
+        );
+        stringLists.push(`${getStringListName(name)}:`);
+    }
+    DEBUG && console.log(`stringList: `, stringList);
+    stringList.forEach((string) => {
+        string = string.toLowerCase();
+        checkStringSanity(string);
+        if (!addedStrings.includes(string)) {
+            addedStrings.push(string);
+            newStringLines.push(`${getStringName(string)}:`);
+            newStringLines.push(
+                getByteLine(
+                    `${getHexByte(string.length)},${getStringBytes(string)}`,
+                ),
+            );
+        }
+        if (name == "extraSpriteStrings") {
+            lookupConstants.push(
+                `${getStringConstant(string)} = ${getStringName(string)}-stringTable`,
+            );
+        } else {
+            stringLists.push(
+                getByteLine(`${getStringName(string)}-stringTable`),
+            );
+        }
+    });
+});
+
 
 buffer.push("; generated by menu.js");
 buffer.push("; will be overwritten unless built with -M");
@@ -322,6 +335,7 @@ buffer.push("");
 
 buffer.push("stringTable:");
 buffer.push(...newStringLines);
+buffer.push('.out .sprintf("%d/256 sprite string bytes", * - stringTable)')
 buffer.push("");
 
 buffer.push(...pagesOutput.map((p) => p.stringsets));

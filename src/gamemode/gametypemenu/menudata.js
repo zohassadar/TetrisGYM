@@ -71,12 +71,14 @@ nestedExample = {
                                                         [
                                                             "TYPE_NUMBER",
                                                             "foo",
-                                                            8,
+                                                            0,
                                                         ],
+                                                    ],
+                                                    "last two": [
                                                         [
                                                             "TYPE_CHOICES",
                                                             "Dont do",
-                                                            "this",
+                                                            ["this"],
                                                         ],
                                                     ],
                                                 },
@@ -93,13 +95,15 @@ nestedExample = {
     ],
 }
 
-
 tournamentSubmenu = {
     "Tournament [mode=default]": [
         [
             "TYPE_CHOICES",
             "SPS",
-            "sps",
+            [
+                "Off",
+                "On",
+            ],
         ],
         [
             "TYPE_HEX",
@@ -114,12 +118,21 @@ tournamentSubmenu = {
         [
             "TYPE_CHOICES",
             "Killscreen",
-            "killwhen",
+            [
+                "Off",
+                "lines",
+                "level",
+            ],
         ],
         [
             "TYPE_CHOICES",
             "how",
-            "killhow",
+            [
+                "KS*2",
+                "Floor",
+                "Inviz",
+                "Halt",
+            ],
         ],
         [
             "TYPE_NUMBER",
@@ -136,57 +149,57 @@ tournamentSubmenu = {
 
 
 customColorSubmenu = {
-    "Custom x0-x4": [
+    "0-4": [
         [
             "TYPE_HEX",
-            "Lvl x0",
+            "0",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x1",
+            "1",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x2",
+            "2",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x3",
+            "3",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x4",
+            "4",
             6,
         ],
     ],
-    "Custom x5-x9": [
+    "5-9": [
         [
             "TYPE_HEX",
-            "Lvl x5",
+            "5",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x6",
+            "6",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x7",
+            "7",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x8",
+            "8",
             6,
         ],
         [
             "TYPE_HEX",
-            "Lvl x9",
+            "9",
             6,
         ],
     ],
@@ -197,7 +210,13 @@ displaySubmenu = {
         [
             "TYPE_CHOICES",
             "Scoring",
-            "score",
+            [
+                "Classic",
+                "Letters",
+                "7Digit",
+                "M",
+                "Hidden",
+            ],
         ],
         [
             "TYPE_FF_OFF",
@@ -207,22 +226,36 @@ displaySubmenu = {
         [
             "TYPE_CHOICES",
             "Stats Box",
-            "stats",
+            [
+                "Stats",
+                "HZ Dsply",
+                "DASMeter",
+                "Nothing",
+            ],
         ],
         [
             "TYPE_BOOL",
             "Input Display",
-            "stats",
         ],
         [
             "TYPE_CHOICES",
             "Dark Mode",
-            "dark",
+            [
+                "Off",
+                "On",
+                "Lite",
+                "Teal",
+                "OG",
+            ],
         ],
         [
             "TYPE_CHOICES",
             "Colors",
-            "colors",
+            [
+                "Orig",
+                "Pride",
+                "Cust",
+            ],
         ],
         [
             "TYPE_SUBMENU",
@@ -241,7 +274,12 @@ settingsSubmenu = {
         [
             "TYPE_CHOICES",
             "Crash",
-            "crash",
+            [
+                "off",
+                "show",
+                "topout",
+                "crash",
+            ],
         ],
         [
             "TYPE_BOOL",
@@ -293,6 +331,7 @@ v7IdeaMenu = {
         ],
     ],
 }
+
 numberExample = {
     "Numbers": [
         [
@@ -318,7 +357,7 @@ numberExample = {
         [
             "TYPE_CHOICES",
             "from word list",
-            "examples2",
+            ["foo", "bar"],
         ],
         [
             "TYPE_HEX",
@@ -332,6 +371,7 @@ numberExample = {
         ],
     ],
 }
+
 booleanExample = {
     "boolean": [
         [
@@ -341,8 +381,8 @@ booleanExample = {
         ],
         [
             "TYPE_CHOICES",
-            "ff means off",
-            "onoff",
+            "On Off",
+            ["On", "Off"],
         ],
         [
             "TYPE_NUMBER",
@@ -352,45 +392,117 @@ booleanExample = {
         [
             "TYPE_CHOICES",
             "as words",
-            "examples",
+            [
+                "foo",
+                "bar",
+            ],
         ],
     ],
 }
 
-pages = {
-    "0123456789ABCD": [
+fullExample = {
+    "32 bytes": [
         [
-            "TYPE_CHOICES",
-            "0123456789ABCD",
-            "examples",
-        ],
-        [
-            "TYPE_CHOICES",
-            "words",
-            "this",
-        ],
-        [
-            "TYPE_BCD",
-            "0123456789ABCD",
+            "TYPE_HEX",
+            "00-03",
             8,
-        ],
-    ],
-    "other page": [
-        [
-            "TYPE_CHOICES",
-            "DCBA9876543210",
-            "examples2",
         ],
         [
             "TYPE_HEX",
-            "C",
+            "04-07",
             8,
         ],
         [
-            "TYPE_BCD",
-            "D",
+            "TYPE_HEX",
+            "08-0B",
             8,
         ],
+        [
+            "TYPE_HEX",
+            "0C-0F",
+            8,
+        ],
+        [
+            "TYPE_HEX",
+            "10-13",
+            8,
+        ],
+        [
+            "TYPE_HEX",
+            "14-17",
+            8,
+        ],
+        [
+            "TYPE_HEX",
+            "18-1B",
+            8,
+        ],
+        [
+            "TYPE_HEX",
+            "1C-1F",
+            8,
+        ],
+    ]
+}
+
+aChoices = [
+    "A",
+    "AA",
+    "AAA",
+    "AAAA",
+    "AAAAA",
+    "AAAAAA",
+    "AAAAAAA",
+    "AAAAAAAA",
+]
+
+a = {
+    "aaaaaaaaaaaaaa": [
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+    ],
+}
+
+mainMenu = {
+    "other page": [
         [
             "TYPE_SUBMENU",
             "number inputs",
@@ -411,6 +523,16 @@ pages = {
             "nested menus",
             nestedExample,
         ],
+        [
+            "TYPE_SUBMENU",
+            "full",
+            fullExample,
+        ],
+        [
+            "TYPE_SUBMENU",
+            "a",
+            a,
+        ],
     ],
     "Second Page": [
         [
@@ -421,83 +543,12 @@ pages = {
     ],
 }
 
-strings = {
-    bool: [
-        "Off",
-        "On",
-    ],
-    onoff: [
-        "On",
-        "Off",
-    ],
-    score: [
-        "Classic",
-        "Letters",
-        "7Digit",
-        "M",
-        "Hidden",
-    ],
-    colors: [
-        "Vanilla",
-        "Pride",
-        "White",
-        "Custom",
-    ],
-    stats: [
-        "Stats",
-        "HZ Dsply",
-        "DASMeter",
-        "Nothing",
-    ],
-    crash: [
-        "Off",
-        "Shown",
-        "Topout",
-        "Crash",
-    ],
-    sps: [
-        "Off",
-        "On",
-        "Similar",
-    ],
-    killwhen: [
-        "Off",
-        "lines",
-        "level",
-    ],
-    killhow: [
-        "KS*2",
-        "Floor",
-        "Inviz",
-        "Halt",
-    ],
-    dark: [
-        "Off",
-        "On",
-        "Lite",
-        "Teal",
-        "OG",
-    ],
-    examples: [
-        "12345678",
-        "foo",
-        "bar",
-        "baz",
-    ],
-    this: [
-        "this",
-    ],
-    examples2: [
-        "foo",
-        "bar",
-    ],
-    lookup: [
-        "Pause",
-        "Block",
-        "Clear?",
-        "Sure?!",
-        "Confetti",
-    ],
-}
+extraSpriteStrings = [
+    "Pause",
+    "Block",
+    "Clear?",
+    "Sure?!",
+    "Confetti",
+]
 
-module.exports = {pages, strings}
+module.exports = {mainMenu, extraSpriteStrings}

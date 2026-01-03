@@ -52,7 +52,6 @@ TYPE_CHOICES = %01000000
 TYPE_FF_OFF = %01100000
 
 ; shortcut
-TYPE_BOOL = TYPE_CHOICES | STRINGLIST_BOOL
 
 TYPE_HEX = %10000000
 TYPE_BCD = %11000000
@@ -625,7 +624,7 @@ stageCurrentValues:
 @drawFFOff:
     lda (byteSpriteAddr),y
     bpl @setupOneByte
-    ldx #0 ; should be a constant
+    ldx #STRINGLIST_OFFON
     jsr @setStringList
     jmp @startCopy
 
