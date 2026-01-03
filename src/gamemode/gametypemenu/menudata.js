@@ -85,59 +85,140 @@ digitsExample = {
     "Break Things": menuVarsPage,
 }
 
+aChoices = [
+    "A",
+    "AA",
+    "AAA",
+    "AAAA",
+    "AAAAA",
+    "AAAAAA",
+    "AAAAAAA",
+    "AAAAAAAA",
+]
+a = {
+    "aaaaaaaaaaaaaa": [
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+        [
+            "TYPE_CHOICES",
+            "AAAAAAAAAAAA",
+            aChoices,
+        ],
+    ],
+}
+
 
 nestedExample = {
-    "Nested": [
+    "Nested1": [
         [
             "TYPE_SUBMENU",
-            "more nested",
+            "Nested2",
             {
-                "more nested": [
+                "Nested2": [
                     [
                         "TYPE_SUBMENU",
-                        "even more",
+                        "Nested3",
                         {
-                            "even more": [
+                            "Nested3": [
                                 [
                                     "TYPE_SUBMENU",
-                                    "and more",
+                                    "Nested4",
                                     {
-                                        "and more": [
+                                        "Nested4": [
                                             [
                                                 "TYPE_SUBMENU",
-                                                "last one",
+                                                "Nested5",
                                                 {
-                                                    "last one": [
+                                                    "Nested5": [
                                                         [
-                                                            "TYPE_NUMBER",
-                                                            "foo",
-                                                            0,
+                                                            "TYPE_SUBMENU",
+                                                            "Nested6",
+                                                            {
+                                                                "Nested6": [
+                                                                    [
+                                                                        "TYPE_SUBMENU",
+                                                                        "Nested7",
+                                                                        {
+                                                                            "Nested7": [
+                                                                                [
+                                                                                    "TYPE_SUBMENU",
+                                                                                    "Nested8",
+                                                                                    {
+                                                                                        "Nested8": [
+                                                                                            [
+                                                                                                "TYPE_SUBMENU",
+                                                                                                "Nested9",
+                                                                                                {
+                                                                                                    "very nested": [
+                                                                                                        [
+                                                                                                            "TYPE_CHOICES",
+                                                                                                            "you are",
+                                                                                                            [
+                                                                                                                "here"
+                                                                                                            ],
+                                                                                                        ],
+                                                                                                    ],
+                                                                                                    "break things": menuVarsPage,
+                                                                                                    "aaaaaaaaaaaaaa": a[
+                                                                                                        "aaaaaaaaaaaaaa"
+                                                                                                    ],
+                                                                                                },
+                                                                                            ],
+                                                                                        ],
+                                                                                    },
+                                                                                ],
+                                                                            ],
+                                                                        },
+                                                                    ],
+                                                                ],
+                                                            },
                                                         ],
                                                     ],
-                                                    "last two": [
-                                                        [
-                                                            "TYPE_CHOICES",
-                                                            "Dont do",
-                                                            ["this"],
-                                                        ],
-                                                    ],
-                                                    "break things": menuVarsPage,
                                                 },
                                             ],
                                         ],
-                                        "break things": menuVarsPage,
                                     },
                                 ],
                             ],
-                            "break things": menuVarsPage,
                         },
                     ],
                 ],
-                "break things": menuVarsPage,
             },
         ],
     ],
-    "break things": menuVarsPage,
 }
 
 tournamentSubmenu = {
@@ -517,64 +598,9 @@ fullExample = {
     ]
 }
 
-aChoices = [
-    "A",
-    "AA",
-    "AAA",
-    "AAAA",
-    "AAAAA",
-    "AAAAAA",
-    "AAAAAAA",
-    "AAAAAAAA",
-]
-
-a = {
-    "aaaaaaaaaaaaaa": [
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-    ],
-}
 
 mainMenu = {
-    "other page": [
+    "(new menu,*)?!": [
         [
             "TYPE_SUBMENU",
             "number inputs",
@@ -592,7 +618,7 @@ mainMenu = {
         ],
         [
             "TYPE_SUBMENU",
-            "nested menus",
+            "nested1",
             nestedExample,
         ],
         [

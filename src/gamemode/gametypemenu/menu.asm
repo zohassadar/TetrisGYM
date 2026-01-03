@@ -4,8 +4,6 @@
 ; get back into menu from game or level menu
 ; get back into menu from game w/block tool on
 ; each title associated with action
-; memorylabel as input
-; shared memory labels between options
 ; more sanity checks
 ; set defaults
 ; save/restore to/from sram
@@ -20,14 +18,15 @@ EOF = $FF
 MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 9
+MENU_STACK = $DF ; $01C8 - $01DF intended range
 
-MODE_DEFAULT = 0
+MODE_DEFAULT = 0 ; needs to be auto generated
 
 menuDataStart:
 .include "menudata.asm"
 .out .sprintf("Menu data: %d", *-menuDataStart)
 
-; t.. mmmmm t = page type m = mode
+; tttnnnnnn n = mode
 PAGE_MULTI = %10000000
 PAGE_SINGLE = %00000000
 
@@ -37,33 +36,21 @@ PAGE_SINGLE = %00000000
 VALUE_MASK = %00011111
 TYPE_MASK = %11100000
 
-; n = mode?
-TYPE_TITLE = %00000000
-
-BLOCK_MODE_ONLY = 1 ; unused
-
 ; tttnnnnn
-; n = limit
-TYPE_NUMBER = %00100000
-; n = stringlist
-TYPE_CHOICES = %01000000
-; n = limit
-TYPE_FF_OFF = %01100000
+TYPE_UNUSED = %00000000
+TYPE_NUMBER = %00100000  ; n = limit
+TYPE_CHOICES = %01000000 ; n = wordlist index
+TYPE_FF_OFF = %01100000  ; n = limit
 
-; shortcut
-
-TYPE_HEX = %10000000
-TYPE_BCD = %11000000
+TYPE_HEX = %10000000 ; n = digits
+TYPE_MODE_ONLY = %10100000 ; n = mode
+TYPE_BCD = %11000000 ; n = digits, v bit to differentiate from hex
+TYPE_SUBMENU = %11100000 ; n = menu index
 
 DIGIT_MASK = %10100000
 DIGIT_COMPARE = %10000000
 
-TYPE_MODE_ONLY = %10100000
 
-; n = menu index
-TYPE_SUBMENU = %11100000
-
-MENU_STACK = $DF
 
 gameMode_gameTypeMenu:
 .if NO_MENU
@@ -138,11 +125,14 @@ enterSubMenu:
     pla
 enterMenu:
     sta activeMenu
-    tax
-    lda firstPages,x
+    lda 0
 enterPage:
     sta activePage
     sta originalPage
+    ldx activeMenu
+    clc
+    adc startPageByMenu,x
+    sta actualPage
     tax
 
     lda pageTypes,x
@@ -161,10 +151,10 @@ enterPage:
     sty activeRow
 
 setScratch:
-    ldx activePage
+    ldx actualPage
     lda activeRow
     clc
-    adc firstItems,x
+    adc startItemByPage,x
     sta activeItem
     tax
     lda itemTypes,x
@@ -213,8 +203,8 @@ setupUDRowChange:
     dey
 @storeMin:
     sty udMin
-    ldx activePage
-    lda pageCounts,x
+    ldx actualPage
+    lda itemCountByPage,x
     sta udMax
 
     lda #>activeRow
@@ -290,9 +280,9 @@ setupLRPageSelect:
     lda #<activePage
     sta lrPointer
     ldy activeMenu
-    lda lastPages,y
+    lda pageCountByMenu,y
     sta lrMax
-    lda firstPages,y
+    lda #0
     sta lrMin
     rts
 
@@ -436,15 +426,27 @@ goSomewhere:
     lda startOrAPressed
     beq leaveSomewhere
 
-    lda unpackedItemType
-    cmp #TYPE_SUBMENU
-    bne startGame
+    lda activeRow
+    bmi checkPageMode
 
+    lda unpackedItemType
+    cmp #TYPE_MODE_ONLY
+    beq startGameFromItem
+
+    cmp #TYPE_SUBMENU
+    beq goToSubMenu
+    jmp leaveSomewhere
+
+goToSubMenu:
     lda unpackedItemValue
     jmp enterSubMenu
 
-startGame:
-    ; todo - put code here
+startGameFromItem:
+    lda unpackedPageValue
+    rts
+
+checkPageMode:
+    lda unpackedPageValue
     rts
 
 leaveSomewhere:
@@ -502,7 +504,8 @@ stageBackgroundTiles:
 ; tables are pointers into strings
 ; word1,0,word2,0,word3,-1
 
-    ldx activePage
+    ldx actualPage
+
     @blankCounter = blankCounter
     @rowCounter = rowCounter
     @stringPtr = stringSetPtr
@@ -581,11 +584,11 @@ stageCurrentValues:
     sta @counter
     lda #AUTO_MENU_VARS_HI
 
-    ldx activePage
-    lda firstItems,x
+    ldx actualPage
+    lda startItemByPage,x
 
     sta activeItem
-    lda pageCounts,x
+    lda itemCountByPage,x
 
     sta @itemCount
 
@@ -738,7 +741,7 @@ stageCursor:
 ;
 ; @noToggleDanceCounter:
 
-    ldx activePage
+    ldx actualPage
     lda pageTypes,x
     lda activeRow
 ;     bpl @noToggle

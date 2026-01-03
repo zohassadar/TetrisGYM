@@ -12,11 +12,15 @@ MAIN_MENU
 SUBMENU_NUMBERINPUTS
 SUBMENU_BOOLEANINPUTS
 SUBMENU_DIGITINPUTS
-SUBMENU_NESTEDMENUS
-SUBMENU_MORENESTED
-SUBMENU_EVENMORE
-SUBMENU_ANDMORE
-SUBMENU_LASTONE
+SUBMENU_NESTED1
+SUBMENU_NESTED2
+SUBMENU_NESTED3
+SUBMENU_NESTED4
+SUBMENU_NESTED5
+SUBMENU_NESTED6
+SUBMENU_NESTED7
+SUBMENU_NESTED8
+SUBMENU_NESTED9
 SUBMENU_FULL
 SUBMENU_DEBUG
 SUBMENU_A
@@ -31,7 +35,7 @@ SUBMENU_SETTINGS
 STRINGLIST_FOOBAR
 STRINGLIST_OFFON
 STRINGLIST_ONOFF
-STRINGLIST_THIS
+STRINGLIST_HERE
 STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 STRINGLIST_OFFLINESLEVEL
 STRINGLIST_KS2FLOORINVIZHALT
@@ -43,15 +47,19 @@ STRINGLIST_OFFSHOWTOPOUTCRASH
 .endenum
 
 ; index activeMenu
-firstPages:
+startPageByMenu:
     .byte $00
     .byte $02
     .byte $04
     .byte $06
     .byte $09
+    .byte $0A
     .byte $0B
+    .byte $0C
     .byte $0D
+    .byte $0E
     .byte $0F
+    .byte $10
     .byte $11
     .byte $14
     .byte $15
@@ -62,28 +70,32 @@ firstPages:
     .byte $1D
     .byte $20
 
-lastPages:
+pageCountByMenu:
     .byte $02
-    .byte $04
-    .byte $06
-    .byte $09
-    .byte $0B
-    .byte $0D
-    .byte $0F
-    .byte $11
-    .byte $14
-    .byte $15
-    .byte $16
-    .byte $17
-    .byte $19
-    .byte $1B
-    .byte $1D
-    .byte $20
-    .byte $22
+    .byte $02
+    .byte $02
+    .byte $03
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $03
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $02
+    .byte $02
+    .byte $02
+    .byte $03
+    .byte $02
 
 ; index activePage
 pageTypes:
-    .byte PAGE_MULTI | MODE_DEFAULT ; other page
+    .byte PAGE_MULTI | MODE_DEFAULT ; (new menu,*)?!
     .byte PAGE_MULTI | MODE_DEFAULT ; Second Page
     .byte PAGE_MULTI | MODE_DEFAULT ; Numbers
     .byte PAGE_MULTI | MODE_DEFAULT ; break things
@@ -92,17 +104,17 @@ pageTypes:
     .byte PAGE_MULTI | MODE_DEFAULT ; BCD Inputs
     .byte PAGE_MULTI | MODE_DEFAULT ; Hex Inputs
     .byte PAGE_MULTI | MODE_DEFAULT ; Break Things
-    .byte PAGE_MULTI | MODE_DEFAULT ; Nested
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested1
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested2
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested3
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested4
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested5
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested6
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested7
+    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested8
+    .byte PAGE_MULTI | MODE_DEFAULT ; very nested
     .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; more nested
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; even more
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; and more
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; last one
-    .byte PAGE_MULTI | MODE_DEFAULT ; last two
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
+    .byte PAGE_MULTI | MODE_DEFAULT ; aaaaaaaaaaaaaa
     .byte PAGE_SINGLE | MODE_DEFAULT ; highscores/700
     .byte PAGE_SINGLE | MODE_DEFAULT ; break things
     .byte PAGE_SINGLE | MODE_DEFAULT ; aaaaaaaaaaaaaa
@@ -118,7 +130,7 @@ pageTypes:
     .byte PAGE_MULTI | MODE_DEFAULT ; Settings
     .byte PAGE_MULTI | MODE_DEFAULT ; break things
 
-pageCounts:
+itemCountByPage:
     .byte $07
     .byte $01
     .byte $07
@@ -129,16 +141,16 @@ pageCounts:
     .byte $04
     .byte $05
     .byte $01
-    .byte $05
-    .byte $01
-    .byte $05
-    .byte $01
-    .byte $05
-    .byte $01
-    .byte $05
     .byte $01
     .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
+    .byte $01
     .byte $05
+    .byte $08
     .byte $08
     .byte $05
     .byte $08
@@ -155,7 +167,7 @@ pageCounts:
     .byte $05
 
 pageStringsetsHi:
-    .byte >stringsetOtherPage ; other page
+    .byte >stringsetNewMenu ; (new menu,*)?!
     .byte >stringsetSecondPage ; Second Page
     .byte >stringsetNumbers ; Numbers
     .byte >stringsetBreakThings ; break things
@@ -164,17 +176,17 @@ pageStringsetsHi:
     .byte >stringsetBcdInputs ; BCD Inputs
     .byte >stringsetHexInputs ; Hex Inputs
     .byte >stringsetBreakThings ; Break Things
-    .byte >stringsetNested ; Nested
+    .byte >stringsetNested1 ; Nested1
+    .byte >stringsetNested2 ; Nested2
+    .byte >stringsetNested3 ; Nested3
+    .byte >stringsetNested4 ; Nested4
+    .byte >stringsetNested5 ; Nested5
+    .byte >stringsetNested6 ; Nested6
+    .byte >stringsetNested7 ; Nested7
+    .byte >stringsetNested8 ; Nested8
+    .byte >stringsetVeryNested ; very nested
     .byte >stringsetBreakThings ; break things
-    .byte >stringsetMoreNested ; more nested
-    .byte >stringsetBreakThings ; break things
-    .byte >stringsetEvenMore ; even more
-    .byte >stringsetBreakThings ; break things
-    .byte >stringsetAndMore ; and more
-    .byte >stringsetBreakThings ; break things
-    .byte >stringsetLastOne ; last one
-    .byte >stringsetLastTwo ; last two
-    .byte >stringsetBreakThings ; break things
+    .byte >stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
     .byte >stringsetHighscores700 ; highscores/700
     .byte >stringsetBreakThings ; break things
     .byte >stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
@@ -191,7 +203,7 @@ pageStringsetsHi:
     .byte >stringsetBreakThings ; break things
 
 pageStringsetsLo:
-    .byte <stringsetOtherPage ; other page
+    .byte <stringsetNewMenu ; (new menu,*)?!
     .byte <stringsetSecondPage ; Second Page
     .byte <stringsetNumbers ; Numbers
     .byte <stringsetBreakThings ; break things
@@ -200,17 +212,17 @@ pageStringsetsLo:
     .byte <stringsetBcdInputs ; BCD Inputs
     .byte <stringsetHexInputs ; Hex Inputs
     .byte <stringsetBreakThings ; Break Things
-    .byte <stringsetNested ; Nested
+    .byte <stringsetNested1 ; Nested1
+    .byte <stringsetNested2 ; Nested2
+    .byte <stringsetNested3 ; Nested3
+    .byte <stringsetNested4 ; Nested4
+    .byte <stringsetNested5 ; Nested5
+    .byte <stringsetNested6 ; Nested6
+    .byte <stringsetNested7 ; Nested7
+    .byte <stringsetNested8 ; Nested8
+    .byte <stringsetVeryNested ; very nested
     .byte <stringsetBreakThings ; break things
-    .byte <stringsetMoreNested ; more nested
-    .byte <stringsetBreakThings ; break things
-    .byte <stringsetEvenMore ; even more
-    .byte <stringsetBreakThings ; break things
-    .byte <stringsetAndMore ; and more
-    .byte <stringsetBreakThings ; break things
-    .byte <stringsetLastOne ; last one
-    .byte <stringsetLastTwo ; last two
-    .byte <stringsetBreakThings ; break things
+    .byte <stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
     .byte <stringsetHighscores700 ; highscores/700
     .byte <stringsetBreakThings ; break things
     .byte <stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
@@ -226,8 +238,8 @@ pageStringsetsLo:
     .byte <stringsetSettings ; Settings
     .byte <stringsetBreakThings ; break things
 
-firstItems:
-    .byte $00 ; OtherPage
+startItemByPage:
+    .byte $00 ; NewMenu
     .byte $07 ; SecondPage
     .byte $08 ; Numbers
     .byte $0F ; BreakThings
@@ -236,31 +248,31 @@ firstItems:
     .byte $1D ; BcdInputs
     .byte $21 ; HexInputs
     .byte $25 ; BreakThings
-    .byte $2A ; Nested
-    .byte $2B ; BreakThings
-    .byte $30 ; MoreNested
-    .byte $31 ; BreakThings
-    .byte $36 ; EvenMore
-    .byte $37 ; BreakThings
-    .byte $3C ; AndMore
-    .byte $3D ; BreakThings
-    .byte $42 ; LastOne
-    .byte $43 ; LastTwo
-    .byte $44 ; BreakThings
-    .byte $49 ; Highscores700
-    .byte $51 ; BreakThings
-    .byte $56 ; Aaaaaaaaaaaaaa
-    .byte $5E ; MainMenu
-    .byte $61 ; BreakThings
-    .byte $66 ; Tournament[Mode=Default]
-    .byte $6D ; BreakThings
-    .byte $72 ; DisplayMenu
-    .byte $7A ; BreakThings
-    .byte $7F ; 04
-    .byte $84 ; 59
-    .byte $89 ; BreakThings
-    .byte $8E ; Settings
-    .byte $96 ; BreakThings
+    .byte $2A ; Nested1
+    .byte $2B ; Nested2
+    .byte $2C ; Nested3
+    .byte $2D ; Nested4
+    .byte $2E ; Nested5
+    .byte $2F ; Nested6
+    .byte $30 ; Nested7
+    .byte $31 ; Nested8
+    .byte $32 ; VeryNested
+    .byte $33 ; BreakThings
+    .byte $38 ; Aaaaaaaaaaaaaa
+    .byte $40 ; Highscores700
+    .byte $48 ; BreakThings
+    .byte $4D ; Aaaaaaaaaaaaaa
+    .byte $55 ; MainMenu
+    .byte $58 ; BreakThings
+    .byte $5D ; Tournament[Mode=Default]
+    .byte $64 ; BreakThings
+    .byte $69 ; DisplayMenu
+    .byte $71 ; BreakThings
+    .byte $76 ; 04
+    .byte $7B ; 59
+    .byte $80 ; BreakThings
+    .byte $85 ; Settings
+    .byte $8D ; BreakThings
 
 ; index activeItem
 memoryMap:
@@ -307,36 +319,27 @@ memoryMap:
     .byte <activeColumn
     .byte <menuStackPtr
     .byte 0
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
     .byte 0
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
     .byte 0
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
     .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte <menuVarYouAre
     .byte <activeMenu
     .byte <activePage
     .byte <activeRow
     .byte <activeColumn
     .byte <menuStackPtr
-    .byte <menuVarFoo
-    .byte <menuVarDontDo
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
+    .byte <menuVarAaaaaaaaaaaa
     .byte <highscores
     .byte <highscores+4
     .byte <highscores+8
@@ -424,7 +427,7 @@ itemTypes:
     .byte TYPE_SUBMENU | SUBMENU_NUMBERINPUTS ; number inputs
     .byte TYPE_SUBMENU | SUBMENU_BOOLEANINPUTS ; boolean inputs
     .byte TYPE_SUBMENU | SUBMENU_DIGITINPUTS ; Digit Inputs
-    .byte TYPE_SUBMENU | SUBMENU_NESTEDMENUS ; nested menus
+    .byte TYPE_SUBMENU | SUBMENU_NESTED1 ; nested1
     .byte TYPE_SUBMENU | SUBMENU_FULL ; full
     .byte TYPE_SUBMENU | SUBMENU_DEBUG ; debug
     .byte TYPE_SUBMENU | SUBMENU_A ; a
@@ -463,37 +466,28 @@ itemTypes:
     .byte TYPE_NUMBER | $00 ; active row
     .byte TYPE_NUMBER | $00 ; active column
     .byte TYPE_NUMBER | $00 ; menu stack ptr
-    .byte TYPE_SUBMENU | SUBMENU_MORENESTED ; more nested
+    .byte TYPE_SUBMENU | SUBMENU_NESTED2 ; Nested2
+    .byte TYPE_SUBMENU | SUBMENU_NESTED3 ; Nested3
+    .byte TYPE_SUBMENU | SUBMENU_NESTED4 ; Nested4
+    .byte TYPE_SUBMENU | SUBMENU_NESTED5 ; Nested5
+    .byte TYPE_SUBMENU | SUBMENU_NESTED6 ; Nested6
+    .byte TYPE_SUBMENU | SUBMENU_NESTED7 ; Nested7
+    .byte TYPE_SUBMENU | SUBMENU_NESTED8 ; Nested8
+    .byte TYPE_SUBMENU | SUBMENU_NESTED9 ; Nested9
+    .byte TYPE_CHOICES | STRINGLIST_HERE ; you are
     .byte TYPE_NUMBER | $00 ; active menu
     .byte TYPE_NUMBER | $00 ; active page
     .byte TYPE_NUMBER | $00 ; active row
     .byte TYPE_NUMBER | $00 ; active column
     .byte TYPE_NUMBER | $00 ; menu stack ptr
-    .byte TYPE_SUBMENU | SUBMENU_EVENMORE ; even more
-    .byte TYPE_NUMBER | $00 ; active menu
-    .byte TYPE_NUMBER | $00 ; active page
-    .byte TYPE_NUMBER | $00 ; active row
-    .byte TYPE_NUMBER | $00 ; active column
-    .byte TYPE_NUMBER | $00 ; menu stack ptr
-    .byte TYPE_SUBMENU | SUBMENU_ANDMORE ; and more
-    .byte TYPE_NUMBER | $00 ; active menu
-    .byte TYPE_NUMBER | $00 ; active page
-    .byte TYPE_NUMBER | $00 ; active row
-    .byte TYPE_NUMBER | $00 ; active column
-    .byte TYPE_NUMBER | $00 ; menu stack ptr
-    .byte TYPE_SUBMENU | SUBMENU_LASTONE ; last one
-    .byte TYPE_NUMBER | $00 ; active menu
-    .byte TYPE_NUMBER | $00 ; active page
-    .byte TYPE_NUMBER | $00 ; active row
-    .byte TYPE_NUMBER | $00 ; active column
-    .byte TYPE_NUMBER | $00 ; menu stack ptr
-    .byte TYPE_NUMBER | $00 ; foo
-    .byte TYPE_CHOICES | STRINGLIST_THIS ; Dont do
-    .byte TYPE_NUMBER | $00 ; active menu
-    .byte TYPE_NUMBER | $00 ; active page
-    .byte TYPE_NUMBER | $00 ; active row
-    .byte TYPE_NUMBER | $00 ; active column
-    .byte TYPE_NUMBER | $00 ; menu stack ptr
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
+    .byte TYPE_CHOICES | STRINGLIST_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ; AAAAAAAAAAAA
     .byte TYPE_HEX | $08 ; 00-03
     .byte TYPE_HEX | $08 ; 04-07
     .byte TYPE_HEX | $08 ; 08-0B
@@ -581,7 +575,7 @@ stringListIndexes:
     .byte stringListFoobar-stringLists
     .byte stringListOffon-stringLists
     .byte stringListOnoff-stringLists
-    .byte stringListThis-stringLists
+    .byte stringListHere-stringLists
     .byte stringListAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-stringLists
     .byte stringListOfflineslevel-stringLists
     .byte stringListKs2floorinvizhalt-stringLists
@@ -615,8 +609,8 @@ stringListOffon:
 stringListOnoff:
     .byte stringOn-stringTable
     .byte stringOff-stringTable
-stringListThis:
-    .byte stringThis-stringTable
+stringListHere:
+    .byte stringHere-stringTable
 stringListAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:
     .byte stringA-stringTable
     .byte stringAa-stringTable
@@ -681,8 +675,8 @@ stringOff:
     .byte $03,"O","F","F"
 stringOn:
     .byte $02,"O","N"
-stringThis:
-    .byte $04,"T","H","I","S"
+stringHere:
+    .byte $04,"H","E","R","E"
 stringA:
     .byte $01,"A"
 stringAa:
@@ -749,8 +743,8 @@ stringCrash:
     .byte $05,"C","R","A","S","H"
 .out .sprintf("%d/256 sprite string bytes", * - stringTable)
 
-stringsetOtherPage:
-    .byte $EF,$EF,"O","T","H","E","R",$EF,"P","A","G","E"
+stringsetNewMenu:
+    .byte $5E,"N","E","W",$EF,"M","E","N","U",$25,$69,$5F,"?","!"
     .byte EOL
     .byte "N","U","M","B","E","R",$EF,"I","N","P","U","T","S"
     .byte EOL
@@ -758,7 +752,7 @@ stringsetOtherPage:
     .byte EOL
     .byte "D","I","G","I","T",$EF,"I","N","P","U","T","S"
     .byte EOL
-    .byte "N","E","S","T","E","D",$EF,"M","E","N","U","S"
+    .byte "N","E","S","T","E","D","1"
     .byte EOL
     .byte "F","U","L","L"
     .byte EOL
@@ -836,59 +830,50 @@ stringsetHexInputs:
     .byte "H","E","X",$EF,"8",$EF,"D","I","G","I","T"
     .byte EOF
 
-stringsetNested:
-    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D"
+stringsetNested1:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","1"
     .byte EOL
-    .byte "M","O","R","E",$EF,"N","E","S","T","E","D"
+    .byte "N","E","S","T","E","D","2"
     .byte EOF
-
-stringsetMoreNested:
-    .byte $EF,$EF,"M","O","R","E",$EF,"N","E","S","T","E","D"
+stringsetNested2:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","2"
     .byte EOL
-    .byte "E","V","E","N",$EF,"M","O","R","E"
+    .byte "N","E","S","T","E","D","3"
     .byte EOF
-
-stringsetEvenMore:
-    .byte $EF,$EF,$EF,"E","V","E","N",$EF,"M","O","R","E"
+stringsetNested3:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","3"
     .byte EOL
-    .byte "A","N","D",$EF,"M","O","R","E"
+    .byte "N","E","S","T","E","D","4"
     .byte EOF
-
-stringsetAndMore:
-    .byte $EF,$EF,$EF,"A","N","D",$EF,"M","O","R","E"
+stringsetNested4:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","4"
     .byte EOL
-    .byte "L","A","S","T",$EF,"O","N","E"
+    .byte "N","E","S","T","E","D","5"
     .byte EOF
-
-stringsetLastOne:
-    .byte $EF,$EF,$EF,"L","A","S","T",$EF,"O","N","E"
+stringsetNested5:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","5"
     .byte EOL
-    .byte "F","O","O"
+    .byte "N","E","S","T","E","D","6"
     .byte EOF
-stringsetLastTwo:
-    .byte $EF,$EF,$EF,"L","A","S","T",$EF,"T","W","O"
+stringsetNested6:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","6"
     .byte EOL
-    .byte "D","O","N","T",$EF,"D","O"
+    .byte "N","E","S","T","E","D","7"
     .byte EOF
-
-stringsetHighscores700:
-    .byte "H","I","G","H","S","C","O","R","E","S",$4F,"7","0","0"
+stringsetNested7:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","7"
     .byte EOL
-    .byte "0","0","-","0","3"
+    .byte "N","E","S","T","E","D","8"
+    .byte EOF
+stringsetNested8:
+    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","8"
     .byte EOL
-    .byte "0","4","-","0","7"
+    .byte "N","E","S","T","E","D","9"
+    .byte EOF
+stringsetVeryNested:
+    .byte $EF,$EF,"V","E","R","Y",$EF,"N","E","S","T","E","D"
     .byte EOL
-    .byte "0","8","-","0","B"
-    .byte EOL
-    .byte "0","C","-","0","F"
-    .byte EOL
-    .byte "1","0","-","1","3"
-    .byte EOL
-    .byte "1","4","-","1","7"
-    .byte EOL
-    .byte "1","8","-","1","B"
-    .byte EOL
-    .byte "1","C","-","1","F"
+    .byte "Y","O","U",$EF,"A","R","E"
     .byte EOF
 
 stringsetAaaaaaaaaaaaaa:
@@ -910,6 +895,27 @@ stringsetAaaaaaaaaaaaaa:
     .byte EOL
     .byte "A","A","A","A","A","A","A","A","A","A","A","A"
     .byte EOF
+stringsetHighscores700:
+    .byte "H","I","G","H","S","C","O","R","E","S",$4F,"7","0","0"
+    .byte EOL
+    .byte "0","0","-","0","3"
+    .byte EOL
+    .byte "0","4","-","0","7"
+    .byte EOL
+    .byte "0","8","-","0","B"
+    .byte EOL
+    .byte "0","C","-","0","F"
+    .byte EOL
+    .byte "1","0","-","1","3"
+    .byte EOL
+    .byte "1","4","-","1","7"
+    .byte EOL
+    .byte "1","8","-","1","B"
+    .byte EOL
+    .byte "1","C","-","1","F"
+    .byte EOF
+
+
 stringsetMainMenu:
     .byte $EF,$EF,$EF,"M","A","I","N",$EF,"M","E","N","U"
     .byte EOL

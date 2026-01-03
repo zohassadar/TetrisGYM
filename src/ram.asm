@@ -116,7 +116,7 @@ startOrAPressed: .res $1
 BPressed: .res $1
 selectPressed: .res $1
 
-.res $1
+actualPage: .res $1
 .res $1
 .res $1
 .res $1

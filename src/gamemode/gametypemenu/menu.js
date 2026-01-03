@@ -16,7 +16,7 @@ function checkStringSanity(string) {
 
 function cleanWord(word) {
     word = word.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
-    return word.replace(/[- *?!/]/g, "");
+    return word.replace(/[- *?!(),\/]/g, "");
 }
 
 function getStringName(word) {
@@ -178,7 +178,10 @@ newStringLines = [];
 
 function getStringByte(c) {
     replaceMap = {
+        ",": "$25",
         "/": "$4F",
+        "(": "$5E",
+        ")": "$5F",
         "*": "$69",
         " ": "$EF",
     };
@@ -190,14 +193,14 @@ function getStringBytes(string) {
 }
 
 menuEnums = [];
-firstPages = [];
-lastPages = [];
+startPageByMenu = [];
+pageCountByMenu = [];
 
 // tracks
 menuCount = 0;
 index = 0;
 pageIndex = 0;
-firstItems = [];
+startItemByPage = [];
 memoryMap = [];
 items = [];
 
@@ -208,13 +211,13 @@ processPageSet = (pages, name) => {
     DEBUG && name && console.log(`submenu ${name}`);
     DEBUG && !name && console.log(`main menu`);
     if (name) menuEnums.push(`SUBMENU_${cleanWord(name).toUpperCase()}`);
-    firstPages.push(getByteLine(getHexByte(pageIndex)));
+    startPageByMenu.push(getByteLine(getHexByte(pageIndex)));
     // collect submenus to process after all pages
     let subPageSets = {};
     Object.entries(pages).forEach(([title, page]) => {
         DEBUG && console.log(`${title} with ${page.length} entries`);
         pageIndex++;
-        firstItems.push(
+        startItemByPage.push(
             getByteLine(`${getHexByte(index)} ; ${cleanWord(title)}`),
         );
         pagesOutput.push(getPageLines(title, page, pages, index));
@@ -224,7 +227,7 @@ processPageSet = (pages, name) => {
             if (item[0] === "TYPE_SUBMENU") subPageSets[item[1]] = item[2];
         });
     });
-    lastPages.push(getByteLine(getHexByte(pageIndex)));
+    pageCountByMenu.push(getByteLine(getHexByte(Object.values(pages).length)));
 
     // process any submenus the same was as the main menu
     Object.entries(subPageSets).forEach(([name, pages]) => {
@@ -315,12 +318,12 @@ buffer.push(".endenum");
 buffer.push("");
 
 buffer.push("; index activeMenu");
-buffer.push("firstPages:");
-buffer.push(...firstPages);
+buffer.push("startPageByMenu:");
+buffer.push(...startPageByMenu);
 buffer.push("");
 
-buffer.push("lastPages:");
-buffer.push(...lastPages);
+buffer.push("pageCountByMenu:");
+buffer.push(...pageCountByMenu);
 buffer.push("");
 
 buffer.push("; index activePage");
@@ -328,7 +331,7 @@ buffer.push("pageTypes:");
 buffer.push(...pagesOutput.map((p) => p.label));
 buffer.push("");
 
-buffer.push("pageCounts:");
+buffer.push("itemCountByPage:");
 buffer.push(...pagesOutput.map((p) => p.count));
 buffer.push("");
 
@@ -340,8 +343,8 @@ buffer.push("pageStringsetsLo:");
 buffer.push(...pagesOutput.map((p) => p.lobytes));
 buffer.push("");
 
-buffer.push("firstItems:");
-buffer.push(...firstItems);
+buffer.push("startItemByPage:");
+buffer.push(...startItemByPage);
 buffer.push("");
 
 buffer.push("; index activeItem");

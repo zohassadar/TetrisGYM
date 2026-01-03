@@ -4,8 +4,7 @@ menuVarMinLimit2: .res $01
 menuVarOffOn: .res $02
 menuVarBcd8Digit: .res $04
 menuVarHex8Digit: .res $04
-menuVarFoo: .res $01
-menuVarDontDo: .res $01
+menuVarYouAre: .res $01
 menuVarAaaaaaaaaaaa: .res $01
 menuVarSps: .res $01
 menuVarPieceSeed: .res $03
