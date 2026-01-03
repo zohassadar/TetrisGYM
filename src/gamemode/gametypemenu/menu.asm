@@ -14,6 +14,7 @@ AUTO_MENU_VARS_HI = >autoMenuVars
 ; valid background chars are 0-253
 EOL = $FE
 EOF = $FF
+NORAM = $00
 
 MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
@@ -27,8 +28,7 @@ menuDataStart:
 .out .sprintf("Menu data: %d", *-menuDataStart)
 
 ; tttnnnnnn n = mode
-PAGE_MULTI = %10000000
-PAGE_SINGLE = %00000000
+PAGE_DEFAULT = %00000000
 
 ; table of first items instead
 ; + table of item counts
@@ -129,25 +129,27 @@ enterMenu:
 enterPage:
     sta activePage
     sta originalPage
-    ldx activeMenu
+    ldy activeMenu
     clc
-    adc startPageByMenu,x
+    adc startPageByMenu,y
     sta actualPage
     tax
 
     lda pageTypes,x
     and #VALUE_MASK
-    sta unpackedPageValue
+    sta unpackedPageValue ; always 0 for now
 
-    ldy #$00
-    sty activeColumn
     lda pageTypes,x
     and #TYPE_MASK
     sta unpackedPageType
-    bpl @storeRow
+
+    lda pageCountByMenu,y
+    ldy #$00
+    sty activeColumn
+    cmp #$1
+    beq @storeRow
     dey ; start at page select row for multipage
 @storeRow:
-
     sty activeRow
 
 setScratch:
@@ -781,12 +783,7 @@ stageCursor:
 
 @singlePage:
 
-
-
-    ldx actualPage
-    lda pageTypes,x
     lda activeRow
-;     bpl @noToggle
     bpl @notTitle
 
     lda #$3F

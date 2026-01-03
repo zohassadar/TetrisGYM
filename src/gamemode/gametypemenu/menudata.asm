@@ -49,137 +49,137 @@ STRINGLIST_OFFSHOWTOPOUTCRASH
 
 ; index activeMenu
 startPageByMenu:
-    .byte $00
-    .byte $09
-    .byte $0B
-    .byte $0D
-    .byte $10
-    .byte $11
-    .byte $12
-    .byte $13
-    .byte $14
-    .byte $15
-    .byte $16
-    .byte $17
-    .byte $18
-    .byte $1B
-    .byte $1C
-    .byte $1D
-    .byte $1E
-    .byte $20
-    .byte $22
-    .byte $24
-    .byte $27
+    .byte $00 ; main menu
+    .byte $09 ; number inputs
+    .byte $0B ; boolean inputs
+    .byte $0D ; Digit Inputs
+    .byte $10 ; nested1
+    .byte $11 ; Nested2
+    .byte $12 ; Nested3
+    .byte $13 ; Nested4
+    .byte $14 ; Nested5
+    .byte $15 ; Nested6
+    .byte $16 ; Nested7
+    .byte $17 ; Nested8
+    .byte $18 ; Nested9
+    .byte $1B ; full
+    .byte $1C ; debug
+    .byte $1D ; a
+    .byte $1E ; v7 menu ideas
+    .byte $20 ; Tournament
+    .byte $22 ; Display
+    .byte $24 ; Custom Colors
+    .byte $27 ; Settings
 
 pageCountByMenu:
-    .byte $09
-    .byte $02
-    .byte $02
-    .byte $03
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $03
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $02
-    .byte $02
-    .byte $02
-    .byte $03
-    .byte $02
+    .byte $09 ; main menu
+    .byte $02 ; number inputs
+    .byte $02 ; boolean inputs
+    .byte $03 ; Digit Inputs
+    .byte $01 ; nested1
+    .byte $01 ; Nested2
+    .byte $01 ; Nested3
+    .byte $01 ; Nested4
+    .byte $01 ; Nested5
+    .byte $01 ; Nested6
+    .byte $01 ; Nested7
+    .byte $01 ; Nested8
+    .byte $03 ; Nested9
+    .byte $01 ; full
+    .byte $01 ; debug
+    .byte $01 ; a
+    .byte $02 ; v7 menu ideas
+    .byte $02 ; Tournament
+    .byte $02 ; Display
+    .byte $03 ; Custom Colors
+    .byte $02 ; Settings
 
 ; index activePage
 pageTypes:
-    .byte PAGE_MULTI | MODE_DEFAULT ; (new menu,*)?!
-    .byte PAGE_MULTI | MODE_DEFAULT ; Second Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Third Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Fourth Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Fifth Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Sixth Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Seventh Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Eighth Page
-    .byte PAGE_MULTI | MODE_DEFAULT ; Break Things
-    .byte PAGE_MULTI | MODE_DEFAULT ; Numbers
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; boolean
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; BCD Inputs
-    .byte PAGE_MULTI | MODE_DEFAULT ; Hex Inputs
-    .byte PAGE_MULTI | MODE_DEFAULT ; Break Things
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested1
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested2
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested3
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested4
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested5
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested6
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested7
-    .byte PAGE_SINGLE | MODE_DEFAULT ; Nested8
-    .byte PAGE_MULTI | MODE_DEFAULT ; very nested
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; aaaaaaaaaaaaaa
-    .byte PAGE_SINGLE | MODE_DEFAULT ; highscores/700
-    .byte PAGE_SINGLE | MODE_DEFAULT ; break things
-    .byte PAGE_SINGLE | MODE_DEFAULT ; aaaaaaaaaaaaaa
-    .byte PAGE_MULTI | MODE_DEFAULT ; Main Menu
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; Tournament 
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; Display Menu
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; 0-4
-    .byte PAGE_MULTI | MODE_DEFAULT ; 5-9
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
-    .byte PAGE_MULTI | MODE_DEFAULT ; Settings
-    .byte PAGE_MULTI | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; (new menu,*)?!
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Second Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Third Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Fourth Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Fifth Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Sixth Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Seventh Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Eighth Page
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Break Things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Numbers
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; boolean
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; BCD Inputs
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Hex Inputs
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Break Things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested1
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested2
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested3
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested4
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested5
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested6
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested7
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested8
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; very nested
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; aaaaaaaaaaaaaa
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; highscores/700
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; aaaaaaaaaaaaaa
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Main Menu
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Tournament 
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Display Menu
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; 0-4
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; 5-9
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Settings
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
 
 itemCountByPage:
-    .byte $07
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $08
-    .byte $01
-    .byte $05
-    .byte $07
-    .byte $05
-    .byte $04
-    .byte $05
-    .byte $04
-    .byte $04
-    .byte $05
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $01
-    .byte $05
-    .byte $08
-    .byte $08
-    .byte $05
-    .byte $08
-    .byte $03
-    .byte $05
-    .byte $07
-    .byte $05
-    .byte $08
-    .byte $05
-    .byte $05
-    .byte $05
-    .byte $05
-    .byte $08
-    .byte $05
+    .byte $07 ; (new menu,*)?!
+    .byte $01 ; Second Page
+    .byte $01 ; Third Page
+    .byte $01 ; Fourth Page
+    .byte $01 ; Fifth Page
+    .byte $01 ; Sixth Page
+    .byte $08 ; Seventh Page
+    .byte $01 ; Eighth Page
+    .byte $05 ; Break Things
+    .byte $07 ; Numbers
+    .byte $05 ; break things
+    .byte $04 ; boolean
+    .byte $05 ; break things
+    .byte $04 ; BCD Inputs
+    .byte $04 ; Hex Inputs
+    .byte $05 ; Break Things
+    .byte $01 ; Nested1
+    .byte $01 ; Nested2
+    .byte $01 ; Nested3
+    .byte $01 ; Nested4
+    .byte $01 ; Nested5
+    .byte $01 ; Nested6
+    .byte $01 ; Nested7
+    .byte $01 ; Nested8
+    .byte $01 ; very nested
+    .byte $05 ; break things
+    .byte $08 ; aaaaaaaaaaaaaa
+    .byte $08 ; highscores/700
+    .byte $05 ; break things
+    .byte $08 ; aaaaaaaaaaaaaa
+    .byte $03 ; Main Menu
+    .byte $05 ; break things
+    .byte $07 ; Tournament 
+    .byte $05 ; break things
+    .byte $08 ; Display Menu
+    .byte $05 ; break things
+    .byte $05 ; 0-4
+    .byte $05 ; 5-9
+    .byte $05 ; break things
+    .byte $08 ; Settings
+    .byte $05 ; break things
 
 pageStringsetsHi:
     .byte >stringsetNewMenu ; (new menu,*)?!
@@ -312,170 +312,170 @@ startItemByPage:
 
 ; index activeItem
 memoryMap:
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <menuVarChoice
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <menuVarMinLimit2
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarOffOn
-    .byte <menuVarOffOn
-    .byte <menuVarOffOn
-    .byte <menuVarOffOn
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarBcd8Digit
-    .byte <menuVarBcd8Digit
-    .byte <menuVarBcd8Digit
-    .byte <menuVarBcd8Digit
-    .byte <menuVarHex8Digit
-    .byte <menuVarHex8Digit
-    .byte <menuVarHex8Digit
-    .byte <menuVarHex8Digit
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <menuVarYouAre
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <highscores
-    .byte <highscores+4
-    .byte <highscores+8
-    .byte <highscores+12
-    .byte <highscores+16
-    .byte <highscores+20
-    .byte <highscores+24
-    .byte <highscores+28
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte <menuVarAaaaaaaaaaaa
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarSps
-    .byte <menuVarPieceSeed
-    .byte <menuVarBSeed
-    .byte <menuVarKillscreen
-    .byte <menuVarHow
-    .byte <menuVarLevel
-    .byte <menuVarLines
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarScoring
-    .byte <menuVarPaceDisplay
-    .byte <menuVarStatsBox
-    .byte <menuVarInputDisplay
-    .byte <menuVarDarkMode
-    .byte <menuVarColors
-    .byte 0
-    .byte <menuVarDisableFlash
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVar0
-    .byte <menuVar1
-    .byte <menuVar2
-    .byte <menuVar3
-    .byte <menuVar4
-    .byte <menuVar5
-    .byte <menuVar6
-    .byte <menuVar7
-    .byte <menuVar8
-    .byte <menuVar9
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
-    .byte <menuVarCrash
-    .byte <menuVarStrictCrash
-    .byte <menuVarDisablePause
-    .byte <menuVarGoofyFoot
-    .byte <menuVarDasOnly
-    .byte <menuVarQualMode
-    .byte <menuVarBlockTool
-    .byte <menuVarPalMode
-    .byte <activeMenu
-    .byte <activePage
-    .byte <activeRow
-    .byte <activeColumn
-    .byte <menuStackPtr
+    .byte NORAM ; number inputs
+    .byte NORAM ; boolean inputs
+    .byte NORAM ; Digit Inputs
+    .byte NORAM ; nested1
+    .byte NORAM ; full
+    .byte NORAM ; debug
+    .byte NORAM ; a
+    .byte NORAM ; v7 menu ideas
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <menuVarChoice ; choice
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarMinLimit2 ; Min Limit 2
+    .byte <menuVarMinLimit2 ; Max Limit 30
+    .byte <menuVarMinLimit2 ; Or Unlimited
+    .byte <menuVarMinLimit2 ; when -1 is off
+    .byte <menuVarMinLimit2 ; from word list
+    .byte <menuVarMinLimit2 ; by digit
+    .byte <menuVarMinLimit2 ; by bcd digit
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarOffOn ; Off On
+    .byte <menuVarOffOn ; On Off
+    .byte <menuVarOffOn ; As Number
+    .byte <menuVarOffOn ; as words
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarBcd8Digit ; BCD 2 Digit
+    .byte <menuVarBcd8Digit ; BCD 4 Digit
+    .byte <menuVarBcd8Digit ; BCD 6 Digit
+    .byte <menuVarBcd8Digit ; BCD 8 Digit
+    .byte <menuVarHex8Digit ; HEX 2 Digit
+    .byte <menuVarHex8Digit ; HEX 4 Digit
+    .byte <menuVarHex8Digit ; HEX 6 Digit
+    .byte <menuVarHex8Digit ; HEX 8 Digit
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte NORAM ; Nested2
+    .byte NORAM ; Nested3
+    .byte NORAM ; Nested4
+    .byte NORAM ; Nested5
+    .byte NORAM ; Nested6
+    .byte NORAM ; Nested7
+    .byte NORAM ; Nested8
+    .byte NORAM ; Nested9
+    .byte <menuVarYouAre ; you are
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <highscores ; 00-03
+    .byte <highscores+4 ; 04-07
+    .byte <highscores+8 ; 08-0B
+    .byte <highscores+12 ; 0C-0F
+    .byte <highscores+16 ; 10-13
+    .byte <highscores+20 ; 14-17
+    .byte <highscores+24 ; 18-1B
+    .byte <highscores+28 ; 1C-1F
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte <menuVarAaaaaaaaaaaa ; AAAAAAAAAAAA
+    .byte NORAM ; Tournament
+    .byte NORAM ; Display
+    .byte NORAM ; Settings
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarSps ; SPS
+    .byte <menuVarPieceSeed ; Piece Seed
+    .byte <menuVarBSeed ; B Seed
+    .byte <menuVarKillscreen ; Killscreen
+    .byte <menuVarHow ; how
+    .byte <menuVarLevel ; Level
+    .byte <menuVarLines ; Lines
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarScoring ; Scoring
+    .byte <menuVarPaceDisplay ; Pace Display
+    .byte <menuVarStatsBox ; Stats Box
+    .byte <menuVarInputDisplay ; Input Display
+    .byte <menuVarDarkMode ; Dark Mode
+    .byte <menuVarColors ; Colors
+    .byte NORAM ; Custom Colors
+    .byte <menuVarDisableFlash ; Disable Flash
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVar0 ; 0
+    .byte <menuVar1 ; 1
+    .byte <menuVar2 ; 2
+    .byte <menuVar3 ; 3
+    .byte <menuVar4 ; 4
+    .byte <menuVar5 ; 5
+    .byte <menuVar6 ; 6
+    .byte <menuVar7 ; 7
+    .byte <menuVar8 ; 8
+    .byte <menuVar9 ; 9
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
+    .byte <menuVarCrash ; Crash
+    .byte <menuVarStrictCrash ; Strict Crash
+    .byte <menuVarDisablePause ; Disable Pause
+    .byte <menuVarGoofyFoot ; Goofy Foot
+    .byte <menuVarDasOnly ; Das Only
+    .byte <menuVarQualMode ; Qual Mode
+    .byte <menuVarBlockTool ; Block Tool
+    .byte <menuVarPalMode ; Pal Mode
+    .byte <activeMenu ; active menu
+    .byte <activePage ; active page
+    .byte <activeRow ; active row
+    .byte <activeColumn ; active column
+    .byte <menuStackPtr ; menu stack ptr
 
 itemTypes:
     .byte TYPE_SUBMENU | SUBMENU_NUMBERINPUTS ; number inputs

@@ -68,7 +68,7 @@ function getLineString(string, multiline = false) {
 stringSets = {};
 function getPageLines(title, page, pages) {
     DEBUG && console.log(`getPageLines`, title, page, pages);
-    label = Object.values(pages).length > 1 ? "PAGE_MULTI" : "PAGE_SINGLE";
+    label = "PAGE_DEFAULT";
     [_, string, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
     const stringset = `stringset${cleanWord(string)}`;
@@ -94,7 +94,7 @@ function getPageLines(title, page, pages) {
 
     return {
         label: getByteLine(`${label} | ${modifier} ; ${string}`),
-        count: getByteLine(getHexByte(page.length)),
+        count: getByteLine(`${getHexByte(page.length)} ; ${string}`),
         hibytes: getByteLine(`>${existing ? existing : stringset} ; ${string}`),
         lobytes: getByteLine(`<${existing ? existing : stringset} ; ${string}`),
         stringsets: existing ? "" : joined,
@@ -211,7 +211,9 @@ processPageSet = (pages, name) => {
     DEBUG && name && console.log(`submenu ${name}`);
     DEBUG && !name && console.log(`main menu`);
     if (name) menuEnums.push(`SUBMENU_${cleanWord(name).toUpperCase()}`);
-    startPageByMenu.push(getByteLine(getHexByte(pageIndex)));
+    startPageByMenu.push(
+        `${getByteLine(getHexByte(pageIndex))} ; ${name ? name : "main menu"}`,
+    );
     // collect submenus to process after all pages
     let subPageSets = {};
     Object.entries(pages).forEach(([title, page]) => {
@@ -227,7 +229,11 @@ processPageSet = (pages, name) => {
             if (item[0] === "TYPE_SUBMENU") subPageSets[item[1]] = item[2];
         });
     });
-    pageCountByMenu.push(getByteLine(getHexByte(Object.values(pages).length)));
+    pageCountByMenu.push(
+        getByteLine(
+            `${getHexByte(Object.values(pages).length)} ; ${name ? name : "main menu"}`,
+        ),
+    );
 
     // process any submenus the same was as the main menu
     Object.entries(subPageSets).forEach(([name, pages]) => {
@@ -247,7 +253,7 @@ function getMemoryLabel(string, bytes) {
 
 items.forEach((i) => {
     line = getByteLine(
-        i.memory ? `<${getMemoryLabel(i.string, i.memory)}` : "0",
+        `${i.memory ? '<' + getMemoryLabel(i.string, i.memory) : 'NORAM'} ; ${i.string}`,
     );
     memoryMap.push(line);
 });
