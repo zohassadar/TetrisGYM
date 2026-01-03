@@ -112,7 +112,7 @@ blankCounter: .res $1
 rowCounter: .res $1
 
 ; probably no value here
-startOrAPressed: .res $1
+APressed: .res $1
 BPressed: .res $1
 selectPressed: .res $1
 

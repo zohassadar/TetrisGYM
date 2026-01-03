@@ -88,6 +88,17 @@ gameMode_gameTypeMenu:
     jsr enterMenu
 gameTypeLoop:
     ; todo: write down which vars are used by which func
+
+    lda newlyPressedButtons_player1
+    tax
+    and #BUTTON_START
+    beq @noGame
+    lda #$2
+    sta soundEffectSlot1Init
+    inc gameMode
+    rts
+
+@noGame:
     jsr collectControllerInput
     jsr setScratch
     jsr addInputs
@@ -104,24 +115,32 @@ gameTypeLoop:
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
 
-enterSubMenu:
-    ldy #$02
-    sty soundEffectSlot1Init
-    pha
+.macro switchToMenuStack
     tsx
     stx stackPtr
     ldx menuStackPtr
     txs
+.endmacro
+
+.macro switchToNormalStack
+    tsx
+    stx menuStackPtr
+    ldx stackPtr
+    txs
+.endmacro
+
+enterSubMenu:
+    ldy #$02
+    sty soundEffectSlot1Init
+    pha
+    switchToMenuStack
     lda activeRow
     pha
     lda activePage
     pha
     lda activeMenu
     pha
-    tsx
-    stx menuStackPtr
-    ldx stackPtr
-    txs
+    switchToNormalStack
     pla
 enterMenu:
     sta activeMenu
@@ -149,6 +168,7 @@ enterPage:
     cmp #$1
     beq @storeRow
     dey ; start at page select row for multipage
+    dec unpackedPageType ; hack for now
 @storeRow:
     sty activeRow
 
@@ -172,24 +192,30 @@ setScratch:
     jmp setupUD
 
 
+
+
 exitSubmenu:
     ldy #$02
     sty soundEffectSlot1Init
-    tsx
-    stx generalCounter
-    ldx menuStackPtr
-    txs
+
+    switchToMenuStack
     pla
+    switchToNormalStack
+
     jsr enterMenu
+
+    switchToMenuStack
     pla
+    switchToNormalStack
+
     jsr enterPage
+
+    switchToMenuStack
     pla
+    switchToNormalStack
+
     sta activeRow
     jsr setScratch
-    tsx
-    stx menuStackPtr
-    ldx generalCounter
-    txs
     rts
 
 
@@ -333,16 +359,17 @@ setupLRColumnChange:
 collectControllerInput:
     lda #$00
     sta selectPressed
-    sta startOrAPressed
+    sta APressed
     sta BPressed
     sta udAdjust
     sta lrAdjust
 
     lda newlyPressedButtons_player1
     tax
-    and #BUTTON_START | BUTTON_A ; do different things for these instead?
+
+    and #BUTTON_A ; do different things for these instead?
     beq @checkB
-    inc startOrAPressed
+    inc APressed
     jmp @checkCardinals
 @checkB:
     txa
@@ -425,7 +452,7 @@ enterNewPage:
     jmp enterPage
 
 goSomewhere:
-    lda startOrAPressed
+    lda APressed
     beq leaveSomewhere
 
     lda activeRow

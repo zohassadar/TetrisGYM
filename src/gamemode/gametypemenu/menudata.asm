@@ -20,7 +20,6 @@ SUBMENU_NESTED5
 SUBMENU_NESTED6
 SUBMENU_NESTED7
 SUBMENU_NESTED8
-SUBMENU_NESTED9
 SUBMENU_FULL
 SUBMENU_DEBUG
 SUBMENU_A
@@ -61,15 +60,14 @@ startPageByMenu:
     .byte $15 ; Nested6
     .byte $16 ; Nested7
     .byte $17 ; Nested8
-    .byte $18 ; Nested9
-    .byte $1B ; full
-    .byte $1C ; debug
-    .byte $1D ; a
-    .byte $1E ; v7 menu ideas
-    .byte $20 ; Tournament
-    .byte $22 ; Display
-    .byte $24 ; Custom Colors
-    .byte $27 ; Settings
+    .byte $1A ; full
+    .byte $1B ; debug
+    .byte $1C ; a
+    .byte $1D ; v7 menu ideas
+    .byte $1F ; Tournament
+    .byte $21 ; Display
+    .byte $23 ; Custom Colors
+    .byte $26 ; Settings
 
 pageCountByMenu:
     .byte $09 ; main menu
@@ -83,8 +81,7 @@ pageCountByMenu:
     .byte $01 ; Nested5
     .byte $01 ; Nested6
     .byte $01 ; Nested7
-    .byte $01 ; Nested8
-    .byte $03 ; Nested9
+    .byte $03 ; Nested8
     .byte $01 ; full
     .byte $01 ; debug
     .byte $01 ; a
@@ -119,8 +116,7 @@ pageTypes:
     .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested5
     .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested6
     .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested7
-    .byte PAGE_DEFAULT | MODE_DEFAULT ; Nested8
-    .byte PAGE_DEFAULT | MODE_DEFAULT ; very nested
+    .byte PAGE_DEFAULT | MODE_DEFAULT ; Max Depth 8
     .byte PAGE_DEFAULT | MODE_DEFAULT ; break things
     .byte PAGE_DEFAULT | MODE_DEFAULT ; aaaaaaaaaaaaaa
     .byte PAGE_DEFAULT | MODE_DEFAULT ; highscores/700
@@ -162,8 +158,7 @@ itemCountByPage:
     .byte $01 ; Nested5
     .byte $01 ; Nested6
     .byte $01 ; Nested7
-    .byte $01 ; Nested8
-    .byte $01 ; very nested
+    .byte $01 ; Max Depth 8
     .byte $05 ; break things
     .byte $08 ; aaaaaaaaaaaaaa
     .byte $08 ; highscores/700
@@ -205,8 +200,7 @@ pageStringsetsHi:
     .byte >stringsetNested5 ; Nested5
     .byte >stringsetNested6 ; Nested6
     .byte >stringsetNested7 ; Nested7
-    .byte >stringsetNested8 ; Nested8
-    .byte >stringsetVeryNested ; very nested
+    .byte >stringsetMaxDepth8 ; Max Depth 8
     .byte >stringsetBreakThings ; break things
     .byte >stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
     .byte >stringsetHighscores700 ; highscores/700
@@ -248,8 +242,7 @@ pageStringsetsLo:
     .byte <stringsetNested5 ; Nested5
     .byte <stringsetNested6 ; Nested6
     .byte <stringsetNested7 ; Nested7
-    .byte <stringsetNested8 ; Nested8
-    .byte <stringsetVeryNested ; very nested
+    .byte <stringsetMaxDepth8 ; Max Depth 8
     .byte <stringsetBreakThings ; break things
     .byte <stringsetAaaaaaaaaaaaaa ; aaaaaaaaaaaaaa
     .byte <stringsetHighscores700 ; highscores/700
@@ -291,24 +284,23 @@ startItemByPage:
     .byte $40 ; Nested5
     .byte $41 ; Nested6
     .byte $42 ; Nested7
-    .byte $43 ; Nested8
-    .byte $44 ; VeryNested
-    .byte $45 ; BreakThings
-    .byte $4A ; Aaaaaaaaaaaaaa
-    .byte $52 ; Highscores700
-    .byte $5A ; BreakThings
-    .byte $5F ; Aaaaaaaaaaaaaa
-    .byte $67 ; MainMenu
-    .byte $6A ; BreakThings
-    .byte $6F ; Tournament[Mode=Default]
-    .byte $76 ; BreakThings
-    .byte $7B ; DisplayMenu
-    .byte $83 ; BreakThings
-    .byte $88 ; 04
-    .byte $8D ; 59
-    .byte $92 ; BreakThings
-    .byte $97 ; Settings
-    .byte $9F ; BreakThings
+    .byte $43 ; MaxDepth8
+    .byte $44 ; BreakThings
+    .byte $49 ; Aaaaaaaaaaaaaa
+    .byte $51 ; Highscores700
+    .byte $59 ; BreakThings
+    .byte $5E ; Aaaaaaaaaaaaaa
+    .byte $66 ; MainMenu
+    .byte $69 ; BreakThings
+    .byte $6E ; Tournament[Mode=Default]
+    .byte $75 ; BreakThings
+    .byte $7A ; DisplayMenu
+    .byte $82 ; BreakThings
+    .byte $87 ; 04
+    .byte $8C ; 59
+    .byte $91 ; BreakThings
+    .byte $96 ; Settings
+    .byte $9E ; BreakThings
 
 ; index activeItem
 memoryMap:
@@ -379,7 +371,6 @@ memoryMap:
     .byte NORAM ; Nested6
     .byte NORAM ; Nested7
     .byte NORAM ; Nested8
-    .byte NORAM ; Nested9
     .byte <menuVarYouAre ; you are
     .byte <activeMenu ; active menu
     .byte <activePage ; active page
@@ -545,7 +536,6 @@ itemTypes:
     .byte TYPE_SUBMENU | SUBMENU_NESTED6 ; Nested6
     .byte TYPE_SUBMENU | SUBMENU_NESTED7 ; Nested7
     .byte TYPE_SUBMENU | SUBMENU_NESTED8 ; Nested8
-    .byte TYPE_SUBMENU | SUBMENU_NESTED9 ; Nested9
     .byte TYPE_CHOICES | STRINGLIST_HERE ; you are
     .byte TYPE_NUMBER | $00 ; active menu
     .byte TYPE_NUMBER | $00 ; active page
@@ -991,13 +981,8 @@ stringsetNested7:
     .byte EOL
     .byte "N","E","S","T","E","D","8"
     .byte EOF
-stringsetNested8:
-    .byte $EF,$EF,$EF,$EF,"N","E","S","T","E","D","8"
-    .byte EOL
-    .byte "N","E","S","T","E","D","9"
-    .byte EOF
-stringsetVeryNested:
-    .byte $EF,$EF,"V","E","R","Y",$EF,"N","E","S","T","E","D"
+stringsetMaxDepth8:
+    .byte $EF,$EF,"M","A","X",$EF,"D","E","P","T","H",$EF,"8"
     .byte EOL
     .byte "Y","O","U",$EF,"A","R","E"
     .byte EOF

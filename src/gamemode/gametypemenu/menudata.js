@@ -177,26 +177,18 @@ nestedExample = {
                                                                                     "TYPE_SUBMENU",
                                                                                     "Nested8",
                                                                                     {
-                                                                                        "Nested8": [
+                                                                                        "Max Depth 8": [
                                                                                             [
-                                                                                                "TYPE_SUBMENU",
-                                                                                                "Nested9",
-                                                                                                {
-                                                                                                    "very nested": [
-                                                                                                        [
-                                                                                                            "TYPE_CHOICES",
-                                                                                                            "you are",
-                                                                                                            [
-                                                                                                                "here"
-                                                                                                            ],
-                                                                                                        ],
-                                                                                                    ],
-                                                                                                    "break things": menuVarsPage,
-                                                                                                    "aaaaaaaaaaaaaa": a[
-                                                                                                        "aaaaaaaaaaaaaa"
-                                                                                                    ],
-                                                                                                },
+                                                                                                "TYPE_CHOICES",
+                                                                                                "you are",
+                                                                                                [
+                                                                                                    "here"
+                                                                                                ],
                                                                                             ],
+                                                                                        ],
+                                                                                        "break things": menuVarsPage,
+                                                                                        "aaaaaaaaaaaaaa": a[
+                                                                                            "aaaaaaaaaaaaaa"
                                                                                         ],
                                                                                     },
                                                                                 ],
