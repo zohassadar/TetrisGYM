@@ -32,13 +32,7 @@ verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
 
-; menu
-activeMenu: .res 1
-activePage: .res 1
-activeRow: .res 1
-activeColumn: .res 1
-menuStackPtr: .res 1
-; cursorToggle:    .res 1
+.res 6
 
 tetriminoX: .res 1 ; $0040
 tetriminoY: .res 1 ; $0041
@@ -409,6 +403,14 @@ dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
 
+
+; menu
+activeMenu: .res 1
+activePage: .res 1
+activeRow: .res 1
+activeColumn: .res 1
+menuStackPtr: .res 1
+; cursorToggle:    .res 1
 
 .include "gamemode/gametypemenu/menuram.asm"
 

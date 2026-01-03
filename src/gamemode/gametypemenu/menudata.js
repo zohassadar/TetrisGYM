@@ -1,3 +1,36 @@
+menuVarsPage = [
+    [
+        "TYPE_NUMBER",
+        "active menu",
+        0,
+        "activeMenu",
+    ],
+    [
+        "TYPE_NUMBER",
+        "active page",
+        0,
+        "activePage",
+    ],
+    [
+        "TYPE_NUMBER",
+        "active row",
+        0,
+        "activeRow",
+    ],
+    [
+        "TYPE_NUMBER",
+        "active column",
+        0,
+        "activeColumn",
+    ],
+    [
+        "TYPE_NUMBER",
+        "menu stack ptr",
+        0,
+        "menuStackPtr",
+    ],
+]
+
 digitsExample = {
     "BCD Inputs": [
         [
@@ -81,18 +114,23 @@ nestedExample = {
                                                             ["this"],
                                                         ],
                                                     ],
+                                                    "break last": menuVarsPage,
                                                 },
                                             ],
                                         ],
+                                        "break and more": menuVarsPage,
                                     },
                                 ],
                             ],
+                            "break even mor": menuVarsPage,
                         },
                     ],
                 ],
+                "break more": menuVarsPage,
             },
         ],
     ],
+    "break nested": menuVarsPage,
 }
 
 tournamentSubmenu = {
@@ -383,11 +421,13 @@ booleanExample = {
             "TYPE_CHOICES",
             "On Off",
             ["On", "Off"],
+            "menuVarOffOn",
         ],
         [
             "TYPE_NUMBER",
             "As Number",
             2,
+            "menuVarOffOn",
         ],
         [
             "TYPE_CHOICES",
@@ -396,8 +436,12 @@ booleanExample = {
                 "foo",
                 "bar",
             ],
+            "menuVarOffOn",
         ],
     ],
+}
+debugVars = {
+    "break things": menuVarsPage,
 }
 
 fullExample = {
@@ -527,6 +571,11 @@ mainMenu = {
             "TYPE_SUBMENU",
             "full",
             fullExample,
+        ],
+        [
+            "TYPE_SUBMENU",
+            "debug",
+            debugVars,
         ],
         [
             "TYPE_SUBMENU",

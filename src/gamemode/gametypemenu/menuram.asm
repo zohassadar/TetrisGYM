@@ -7,10 +7,7 @@ menuVarWhen1IsOff: .res $01
 menuVarFromWordList: .res $01
 menuVarByDigit: .res $01
 menuVarByBcdDigit: .res $01
-menuVarOffOn: .res $01
-menuVarOnOff: .res $01
-menuVarAsNumber: .res $01
-menuVarAsWords: .res $01
+menuVarOffOn: .res $02
 menuVarBcd2Digit: .res $01
 menuVarBcd4Digit: .res $02
 menuVarBcd6Digit: .res $03

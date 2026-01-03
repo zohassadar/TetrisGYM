@@ -118,23 +118,32 @@ unlabeledStringSets = {};
 //     unlabeledStringSets[key] = stringsetIndex++;
 // };
 
-function typeWords(label, string, stringList) {
+function typeWords(label, string, stringList, memoryLabel) {
     DEBUG && console.log(`Choice set ${string} with options ${stringList}`);
     stringSet = [...stringList].map((c) => cleanWord(c.slice(0, 6))).join("");
     unlabeledStringSets[stringSet] = stringList;
     return getOutputLines(
         `${label} | ${getStringListConstant(stringSet)}`,
         string,
-        1,
+        memoryLabel ? memoryLabel : 1,
     );
 }
 
-function typeNumber(label, string, limit) {
-    return getOutputLines(`${label} | ${getHexByte(limit)}`, string, 1);
+function typeNumber(label, string, limit, memoryLabel) {
+    return getOutputLines(
+        `${label} | ${getHexByte(limit)}`,
+        string,
+        memoryLabel ? memoryLabel : 1,
+    );
 }
 
-function typeBool(label, string) {
-    return typeWords("TYPE_CHOICES", string, ["off", "on"]);
+function typeBool(label, string, memoryLabel) {
+    return typeWords(
+        "TYPE_CHOICES",
+        string,
+        ["off", "on"],
+        memoryLabel ? memoryLabel : 1,
+    );
 }
 function typeSubMenu(label, string) {
     return getOutputLines(
@@ -222,6 +231,7 @@ processPageSet(mainMenu);
 // memory into separate file
 memoryReservations = {};
 function getMemoryLabel(string, bytes) {
+    if (isNaN(bytes)) return bytes // if label is specified use that instead
     label = `menuVar${cleanWord(string)}`;
     memoryReservations[label] = bytes;
     return label;

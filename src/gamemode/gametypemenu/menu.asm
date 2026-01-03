@@ -11,7 +11,7 @@
 ; save/restore to/from sram
 
 
-MEMORY_BASE = >autoMenuVars
+AUTO_MENU_VARS_HI = >autoMenuVars
 
 ; valid background chars are 0-253
 EOL = $FE
@@ -41,7 +41,6 @@ TYPE_MASK = %11100000
 TYPE_TITLE = %00000000
 
 BLOCK_MODE_ONLY = 1 ; unused
-
 
 ; tttnnnnn
 ; n = limit
@@ -92,7 +91,7 @@ gameMode_gameTypeMenu:
 
     lda #MENU_STACK
     sta menuStackPtr
-    lda #>MEMORY_BASE
+    lda #AUTO_MENU_VARS_HI
     sta byteSpriteAddr+1
     lda #$1
     sta renderMode
@@ -112,7 +111,6 @@ gameTypeLoop:
     ; scratch is not important anymore
     jsr stageBackgroundTiles
     jsr stageCurrentValues
-    jsr debugSpriteStaging
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
 
@@ -250,7 +248,7 @@ setupUDDigitChange:
 @storeDigitMax:
     sta udMax
 
-    lda #>MEMORY_BASE
+    lda #AUTO_MENU_VARS_HI
     sta digitPtr+1
     ldx activeItem
     lda memoryMap,x
@@ -301,7 +299,7 @@ setupLRPageSelect:
 
 setupLRValueChange:
 ; setupLRValueChange - activeRow >= 0 && itemType < 128
-    lda #>MEMORY_BASE
+    lda #AUTO_MENU_VARS_HI
     sta lrPointer+1
     ldx activeItem
     lda memoryMap,x
@@ -581,7 +579,7 @@ stageCurrentValues:
 
     lda #$00
     sta @counter
-    lda #>MEMORY_BASE
+    lda #AUTO_MENU_VARS_HI
 
     ldx activePage
     lda firstItems,x
@@ -604,7 +602,7 @@ stageCurrentValues:
     ldy activeItem
     lda memoryMap,y
     sta byteSpriteAddr
-    lda #>MEMORY_BASE
+    lda #AUTO_MENU_VARS_HI
     sta byteSpriteAddr+1
     lda itemTypes,y
     tax
@@ -839,21 +837,4 @@ render_mode_menu:
 
 .out .sprintf("render dump: %d", *-render_mode_menu)
 
-debugSpriteStaging:
-    lda #$30
-    sta spriteYOffset
-    lda #$A8
-    sta spriteXOffset
-    lda #$00
-    sta byteSpriteAddr+1
-    lda #activeMenu
-    sta byteSpriteAddr
-    lda #4
-    sta byteSpriteLen
-    jsr byteSprite
-    lda #>MEMORY_BASE
-    sta byteSpriteAddr+1
-    rts
-
-.out .sprintf("debug staging: %d", *-debugSpriteStaging)
 .out .sprintf("total: %d", *-gameMode_gameTypeMenu)
