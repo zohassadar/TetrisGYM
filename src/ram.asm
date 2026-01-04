@@ -222,8 +222,7 @@ playfield: .res $c8 ; $0400
     .res $38 ; still technically part of playfield
 
     .res $100 ; $500 ; 2 player playfield
-
-practiseType: .res 1 ; $600
+.res 1
 spawnDelay: .res 1 ; $601
 dasValueDelay: .res 1 ; $602
 dasValuePeriod: .res 1 ; $603
@@ -404,6 +403,7 @@ qualFlag: .res 1
 palFlag: .res 1
 
 
+practiseType: .res 1 ; $600
 ; menu
 activeMenu: .res 1
 activePage: .res 1

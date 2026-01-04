@@ -74,10 +74,6 @@ gameMode_gameTypeMenu:
     jsr updateAudioWaitForNmiAndEnablePpuRendering
     jsr updateAudioWaitForNmiAndResetOamStaging
 
-    jsr makeNotReady
-
-    lda #MENU_STACK
-    sta menuStackPtr
     lda #AUTO_MENU_VARS_HI
     sta byteSpriteAddr+1
     lda #$1
@@ -85,18 +81,41 @@ gameMode_gameTypeMenu:
     lda #0
     sta hideNextPiece
     sta byteSpriteTile
+    jsr makeNotReady
+
+; check to see if returning from level menu or game
+    ldy activeMenu
+    iny
+    bne @initMenu
+    jsr exitSubmenuNoSfx
+    jmp gameTypeLoop
+@initMenu:
+    lda #MENU_STACK
+    sta menuStackPtr
+    lda #0
     jsr enterMenu
+
 gameTypeLoop:
     ; todo: write down which vars are used by which func
 
+@checkStart:
     lda newlyPressedButtons_player1
     tax
     and #BUTTON_START
     beq @noGame
+
+    lda activeRow
+    bmi @noLoadedItem
+    lda unpackedItemType
+    ; do something here
+
+
+@noLoadedItem:
     lda #$2
     sta soundEffectSlot1Init
     inc gameMode
-    rts
+    lda #$FF
+    jmp enterSubMenu
 
 @noGame:
     jsr collectControllerInput
@@ -109,6 +128,7 @@ gameTypeLoop:
     ; scratch is not important anymore
     jsr stageBackgroundTiles
     jsr stageCurrentValues
+gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
 
@@ -144,7 +164,12 @@ enterSubMenu:
     pla
 enterMenu:
     sta activeMenu
-    lda 0
+    tay
+    iny
+    bne @normalMenu
+    rts
+@normalMenu:
+    lda #0
 enterPage:
     sta activePage
     sta originalPage
@@ -192,12 +217,11 @@ setScratch:
     jmp setupUD
 
 
-
-
 exitSubmenu:
     ldy #$02
     sty soundEffectSlot1Init
 
+exitSubmenuNoSfx:
     switchToMenuStack
     pla
     switchToNormalStack
@@ -215,8 +239,7 @@ exitSubmenu:
     switchToNormalStack
 
     sta activeRow
-    jsr setScratch
-    rts
+    jmp setScratch
 
 
 setupUD:
@@ -355,6 +378,7 @@ setupLRColumnChange:
 
 
 .out .sprintf("setup: %d", *-enterSubMenu)
+
 
 collectControllerInput:
     lda #$00
@@ -528,6 +552,7 @@ addInputs:
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
+
 stageBackgroundTiles:
 ; page index points to split address tables
 ; tables are pointers into strings
@@ -603,7 +628,9 @@ stageBackgroundTiles:
     sta stack+1
     rts
 
+
 .out .sprintf("background staging: %d", *-stageBackgroundTiles)
+
 
 stageCurrentValues:
     @counter = blankCounter
@@ -754,23 +781,8 @@ setStackOffset:
 
 .out .sprintf("value staging: %d", *-stageCurrentValues)
 
-; CURSOR_TOGGLE_TIMER = 37
 
 stageCursor:
-;     lda sleepCounter
-;     bne @noToggleDanceCounter
-;
-;     lda cursorToggle
-;     eor #$01
-;     sta cursorToggle
-;
-;     lda #CURSOR_TOGGLE_TIMER
-;     sta sleepCounter
-;
-;
-; @noToggleDanceCounter:
-
-
     ldx activeMenu
     lda pageCountByMenu,x
     cmp #$1
@@ -779,7 +791,6 @@ stageCursor:
     sta oamStaging+9,x
     lda #$4F
     sta oamStaging+5,x
-
 
     lda #$CB
     sta oamStaging+0,x
@@ -821,17 +832,7 @@ stageCursor:
     sta spriteIndexInOamContentLookup
     jmp loadSpriteIntoOamStaging
 
-;     lda cursorToggle
-;     beq @noToggle
-;
-;     inc spriteIndexInOamContentLookup
-; @noToggle:
-;     jsr loadSpriteIntoOamStaging
-;
-
 @notTitle:
-;     lda activeColumn
-;     beq @notColumn
     asl
     asl
     asl
@@ -881,7 +882,9 @@ stageCursor:
 gotoEdgeCase:
     rts
 
+
 .out .sprintf("cursor staging: %d", *-stageCursor)
+
 
 render_mode_menu:
     tsx
@@ -904,6 +907,8 @@ render_mode_menu:
     txs
     rts
 
+
 .out .sprintf("render dump: %d", *-render_mode_menu)
+
 
 .out .sprintf("total: %d", *-gameMode_gameTypeMenu)

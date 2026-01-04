@@ -67,21 +67,13 @@ RENDER_HIGH_SCORE_LETTER = $80
 .enum
 MODE_TETRIS
 MODE_TSPINS
-MODE_SEED
 MODE_PARITY
-MODE_PACE
 MODE_PRESETS
 MODE_TYPEB
-MODE_FLOOR
-MODE_CRUNCH
 MODE_TAP
-MODE_TRANSITION
-MODE_MARATHON
 MODE_TAPQTY
 MODE_CHECKERBOARD
 MODE_GARBAGE
-MODE_DROUGHT
-MODE_DAS
 MODE_LOWSTACK
 MODE_KILLX2
 MODE_INVISIBLE
@@ -101,6 +93,15 @@ MODE_LINECAP
 MODE_DASONLY
 MODE_QUAL
 MODE_PAL
+; temporary
+MODE_SEED
+MODE_PACE
+MODE_FLOOR
+MODE_CRUNCH
+MODE_TRANSITION
+MODE_MARATHON
+MODE_DROUGHT
+MODE_DAS
 .endenum
 
 MODE_QUANTITY = MODE_PAL + 1
@@ -174,23 +175,23 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
 .macro MODENAMES
     .byte   "TETRIS"
     .byte   "TSPINS"
-    .byte   " SEED "
+    ; .byte   " SEED "
     .byte   "STACKN"
-    .byte   " PACE "
+    ; .byte   " PACE "
     .byte   "SETUPS"
     .byte   "B-TYPE"
-    .byte   "FLOOR "
-    .byte   "CRUNCH"
+    ; .byte   "FLOOR "
+    ; .byte   "CRUNCH"
     .byte   "QCKTAP"
-    .byte   "TRNSTN"
-    .byte   "MARTHN"
+    ; .byte   "TRNSTN"
+    ; .byte   "MARTHN"
     .byte   "TAPQTY"
     .byte   "CKRBRD"
     .byte   "GARBGE"
     .byte   "LOBARS"
-    .byte   "DASDLY"
+    ; .byte   "DASDLY"
     .byte   "LOWSTK"
-    .byte   "KILLX2"
-    .byte   "INVZBL"
-    .byte   "HRDDRP"
+    ; .byte   "KILLX2"
+    ; .byte   "INVZBL"
+    ; .byte   "HRDDRP"
 .endmacro

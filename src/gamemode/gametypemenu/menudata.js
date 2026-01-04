@@ -1,31 +1,31 @@
 menuVarsPage = [
     [
         "TYPE_NUMBER",
-        "active menu",
+        "menu",
         0,
         "activeMenu",
     ],
     [
         "TYPE_NUMBER",
-        "active page",
+        "page",
         0,
         "activePage",
     ],
     [
         "TYPE_NUMBER",
-        "active row",
+        "row",
         0,
         "activeRow",
     ],
     [
         "TYPE_NUMBER",
-        "active column",
+        "col",
         0,
         "activeColumn",
     ],
     [
         "TYPE_NUMBER",
-        "menu stack ptr",
+        "ptr",
         0,
         "menuStackPtr",
     ],
@@ -35,207 +35,66 @@ digitsExample = {
     "BCD Inputs": [
         [
             "TYPE_BCD",
-            "BCD 2 Digit",
+            "2",
             2,
-            "menuVarBcd8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_BCD",
-            "BCD 4 Digit",
+            "4",
             4,
-            "menuVarBcd8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_BCD",
-            "BCD 6 Digit",
+            "6",
             6,
-            "menuVarBcd8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_BCD",
-            "BCD 8 Digit",
+            "8",
             8,
         ],
     ],
     "Hex Inputs": [
         [
             "TYPE_HEX",
-            "HEX 2 Digit",
+            "2",
             2,
-            "menuVarHex8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_HEX",
-            "HEX 4 Digit",
+            "4",
             4,
-            "menuVarHex8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_HEX",
-            "HEX 6 Digit",
+            "6",
             6,
-            "menuVarHex8Digit",
+            "menuVar8",
         ],
         [
             "TYPE_HEX",
-            "HEX 8 Digit",
+            "8",
             8,
         ],
     ],
-    "Break Things": menuVarsPage,
-}
-
-aChoices = [
-    "A",
-    "AA",
-    "AAA",
-    "AAAA",
-    "AAAAA",
-    "AAAAAA",
-    "AAAAAAA",
-    "AAAAAAAA",
-]
-a = {
-    "aaaaaaaaaaaaaa": [
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-        [
-            "TYPE_CHOICES",
-            "AAAAAAAAAAAA",
-            aChoices,
-        ],
-    ],
-}
-
-
-nestedExample = {
-    "Nested1": [
-        [
-            "TYPE_SUBMENU",
-            "Nested2",
-            {
-                "Nested2": [
-                    [
-                        "TYPE_SUBMENU",
-                        "Nested3",
-                        {
-                            "Nested3": [
-                                [
-                                    "TYPE_SUBMENU",
-                                    "Nested4",
-                                    {
-                                        "Nested4": [
-                                            [
-                                                "TYPE_SUBMENU",
-                                                "Nested5",
-                                                {
-                                                    "Nested5": [
-                                                        [
-                                                            "TYPE_SUBMENU",
-                                                            "Nested6",
-                                                            {
-                                                                "Nested6": [
-                                                                    [
-                                                                        "TYPE_SUBMENU",
-                                                                        "Nested7",
-                                                                        {
-                                                                            "Nested7": [
-                                                                                [
-                                                                                    "TYPE_SUBMENU",
-                                                                                    "Nested8",
-                                                                                    {
-                                                                                        "Max Depth 8": [
-                                                                                            [
-                                                                                                "TYPE_CHOICES",
-                                                                                                "you are",
-                                                                                                [
-                                                                                                    "here"
-                                                                                                ],
-                                                                                            ],
-                                                                                        ],
-                                                                                        "break things": menuVarsPage,
-                                                                                        "aaaaaaaaaaaaaa": a[
-                                                                                            "aaaaaaaaaaaaaa"
-                                                                                        ],
-                                                                                    },
-                                                                                ],
-                                                                            ],
-                                                                        },
-                                                                    ],
-                                                                ],
-                                                            },
-                                                        ],
-                                                    ],
-                                                },
-                                            ],
-                                        ],
-                                    },
-                                ],
-                            ],
-                        },
-                    ],
-                ],
-            },
-        ],
-    ],
+    "dbg": menuVarsPage,
 }
 
 tournamentSubmenu = {
     "Tournament [mode=default]": [
         [
-            "TYPE_CHOICES",
-            "SPS",
-            [
-                "Off",
-                "On",
-            ],
-        ],
-        [
             "TYPE_HEX",
-            "Piece Seed",
+            "SEED",
             6,
         ],
         [
-            "TYPE_HEX",
-            "B Seed",
-            4,
-        ],
-        [
             "TYPE_CHOICES",
-            "Killscreen",
+            "linecap",
             [
                 "Off",
                 "lines",
@@ -262,67 +121,18 @@ tournamentSubmenu = {
             "Lines",
             4,
         ],
-    ],
-    "break things": menuVarsPage,
-}
-
-
-customColorSubmenu = {
-    "0-4": [
         [
-            "TYPE_HEX",
-            "0",
-            6,
+            "TYPE_BOOL",
+            "Das",
+            "dasOnlyFlag",
         ],
         [
-            "TYPE_HEX",
-            "1",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "2",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "3",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "4",
-            6,
+            "TYPE_BOOL",
+            "Qual",
+            "qualFlag",
         ],
     ],
-    "5-9": [
-        [
-            "TYPE_HEX",
-            "5",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "6",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "7",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "8",
-            6,
-        ],
-        [
-            "TYPE_HEX",
-            "9",
-            6,
-        ],
-    ],
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
 displaySubmenu = {
@@ -333,29 +143,32 @@ displaySubmenu = {
             [
                 "Classic",
                 "Letters",
-                "7Digit",
+                "7digit",
                 "M",
                 "Hidden",
             ],
+            "scoringModifier",
         ],
         [
             "TYPE_FF_OFF",
-            "Pace Display",
+            "Pace",
             16,
+            "paceModifier",
         ],
         [
-            "TYPE_CHOICES",
-            "Stats Box",
-            [
-                "Stats",
-                "HZ Dsply",
-                "DASMeter",
-                "Nothing",
-            ],
+            "TYPE_BOOL",
+            "HZ DISPLAY",
+            "hzFlag",
         ],
         [
             "TYPE_BOOL",
             "Input Display",
+            "inputDisplayFlag",
+        ],
+        [
+            "TYPE_BOOL",
+            "Disable Flash",
+            "disableFlashFlag",
         ],
         [
             "TYPE_CHOICES",
@@ -367,27 +180,10 @@ displaySubmenu = {
                 "Teal",
                 "OG",
             ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "Colors",
-            [
-                "Orig",
-                "Pride",
-                "Cust",
-            ],
-        ],
-        [
-            "TYPE_SUBMENU",
-            "Custom Colors",
-            customColorSubmenu,
-        ],
-        [
-            "TYPE_BOOL",
-            "Disable Flash",
+            "darkModifier",
         ],
     ],
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
 settingsSubmenu = {
@@ -401,140 +197,118 @@ settingsSubmenu = {
                 "topout",
                 "crash",
             ],
+            "crashModifier",
         ],
         [
             "TYPE_BOOL",
             "Strict Crash",
+            "strictFlag",
         ],
         [
             "TYPE_BOOL",
             "Disable Pause",
+            "disablePauseFlag",
         ],
         [
             "TYPE_BOOL",
             "Goofy Foot",
-        ],
-        [
-            "TYPE_BOOL",
-            "Das Only",
-        ],
-        [
-            "TYPE_BOOL",
-            "Qual Mode",
+            "goofyFlag",
         ],
         [
             "TYPE_BOOL",
             "Block Tool",
+            "debugFlag",
         ],
         [
             "TYPE_BOOL",
             "Pal Mode",
+            "palFlag",
         ],
     ],
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
-v7IdeaMenu = {
-    "Main Menu": [
-        [
-            "TYPE_SUBMENU",
-            "Tournament",
-            tournamentSubmenu,
-        ],
-        [
-            "TYPE_SUBMENU",
-            "Display",
-            displaySubmenu,
-        ],
-        [
-            "TYPE_SUBMENU",
-            "Settings",
-            settingsSubmenu,
-        ],
-    ],
-    "break things": menuVarsPage,
-}
 
 numberExample = {
     "Numbers": [
         [
             "TYPE_NUMBER",
-            "Min Limit 2",
+            "MAX 2",
             2,
         ],
         [
             "TYPE_NUMBER",
-            "Max Limit 30",
+            "MaX 30",
             31,
-            "menuVarMinLimit2",
+            "menuVarMax2",
         ],
         [
             "TYPE_NUMBER",
-            "Or Unlimited",
+            "no max",
             0,
-            "menuVarMinLimit2",
+            "menuVarMax2",
         ],
         [
             "TYPE_FF_OFF",
-            "when -1 is off",
+            "-1 is off",
             5,
-            "menuVarMinLimit2",
+            "menuVarMax2",
         ],
         [
             "TYPE_CHOICES",
-            "from word list",
-            ["foo", "bar"],
-            "menuVarMinLimit2",
+            "words",
+            ["a", "b"],
+            "menuVarMax2",
         ],
         [
             "TYPE_HEX",
             "by digit",
             2,
-            "menuVarMinLimit2",
+            "menuVarMax2",
         ],
         [
             "TYPE_BCD",
             "by bcd digit",
             2,
-            "menuVarMinLimit2",
+            "menuVarMax2",
         ],
     ],
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
 booleanExample = {
     "boolean": [
         [
             "TYPE_BOOL",
-            "Off On",
-            2,
+            "A",
+            "menuVarMax2",
         ],
         [
             "TYPE_CHOICES",
-            "On Off",
+            "B",
             ["On", "Off"],
-            "menuVarOffOn",
+            "menuVarMax2",
         ],
         [
             "TYPE_NUMBER",
-            "As Number",
+            "C",
             2,
-            "menuVarOffOn",
+            "menuVarMax2",
         ],
         [
             "TYPE_CHOICES",
-            "as words",
+            "D",
             [
-                "foo",
-                "bar",
+                "a",
+                "b",
             ],
-            "menuVarOffOn",
+            "menuVarMax2",
         ],
     ],
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 debugVars = {
-    "break things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
 fullExample = {
@@ -595,23 +369,18 @@ mainMenu = {
     "(new menu,*)?!": [
         [
             "TYPE_SUBMENU",
-            "number inputs",
+            "numbers",
             numberExample,
         ],
         [
             "TYPE_SUBMENU",
-            "boolean inputs",
+            "booleans",
             booleanExample,
         ],
         [
             "TYPE_SUBMENU",
-            "Digit Inputs",
+            "Digits",
             digitsExample,
-        ],
-        [
-            "TYPE_SUBMENU",
-            "nested1",
-            nestedExample,
         ],
         [
             "TYPE_SUBMENU",
@@ -623,136 +392,42 @@ mainMenu = {
             "debug",
             debugVars,
         ],
+    ],
+    "kinda working": [
+        [
+            "TYPE_CHOICES",
+            "practise",
+            [
+                "TETRIS",
+                "TSPINS",
+                "STACKN",
+                "SETUPS",
+                "BTYPE",
+                "QCKTAP",
+                "TAPQTY",
+                "CKRBRD",
+                "GARBGE",
+                "LOWSTK",
+            ],
+            "practiseType",
+        ],
         [
             "TYPE_SUBMENU",
-            "a",
-            a,
+            "Tournament",
+            tournamentSubmenu,
         ],
-    ],
-    "Second Page": [
         [
             "TYPE_SUBMENU",
-            "v7 menu ideas",
-            v7IdeaMenu,
+            "Display",
+            displaySubmenu,
+        ],
+        [
+            "TYPE_SUBMENU",
+            "Settings",
+            settingsSubmenu,
         ],
     ],
-    "Third Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Fourth Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Fifth Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Sixth Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Seventh Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Eighth Page": [
-        [
-            "TYPE_CHOICES",
-            "choice",
-            [
-                "this",
-                "that",
-            ],
-        ],
-    ],
-    "Break Things": menuVarsPage,
+    "dbg": menuVarsPage,
 }
 
 extraSpriteStrings = [
