@@ -26,7 +26,7 @@ STRINGLIST_OFFON
 STRINGLIST_ONOFF
 STRINGLIST_OFFLINESLEVEL
 STRINGLIST_KS2FLOORINVIZHALT
-STRINGLIST_CLASSILETTER7DIGITMHIDDEN
+STRINGLIST_CLASSILETTER7DIGITMCAPPEDHIDDEN
 STRINGLIST_OFFONLITETEALOG
 STRINGLIST_OFFSHOWTOPOUTCRASH
 .endenum
@@ -327,7 +327,7 @@ itemTypes:
     .byte TYPE_NUMBER | $00 ; row
     .byte TYPE_NUMBER | $00 ; col
     .byte TYPE_NUMBER | $00 ; ptr
-    .byte TYPE_CHOICES | STRINGLIST_CLASSILETTER7DIGITMHIDDEN ; Scoring
+    .byte TYPE_CHOICES | STRINGLIST_CLASSILETTER7DIGITMCAPPEDHIDDEN ; Scoring
     .byte TYPE_FF_OFF | $10 ; Pace
     .byte TYPE_CHOICES | STRINGLIST_OFFON ; HZ DISPLAY
     .byte TYPE_CHOICES | STRINGLIST_OFFON ; Input Display
@@ -357,7 +357,7 @@ stringListIndexes:
     .byte stringListOnoff-stringLists
     .byte stringListOfflineslevel-stringLists
     .byte stringListKs2floorinvizhalt-stringLists
-    .byte stringListClassiletter7digitmhidden-stringLists
+    .byte stringListClassiletter7digitmcappedhidden-stringLists
     .byte stringListOffonlitetealog-stringLists
     .byte stringListOffshowtopoutcrash-stringLists
 
@@ -368,7 +368,7 @@ stringListCounts:
     .byte $02
     .byte $03
     .byte $04
-    .byte $05
+    .byte $06
     .byte $05
     .byte $04
 
@@ -402,11 +402,12 @@ stringListKs2floorinvizhalt:
     .byte stringFloor-stringTable
     .byte stringInviz-stringTable
     .byte stringHalt-stringTable
-stringListClassiletter7digitmhidden:
+stringListClassiletter7digitmcappedhidden:
     .byte stringClassic-stringTable
     .byte stringLetters-stringTable
     .byte string7digit-stringTable
     .byte stringM-stringTable
+    .byte stringCapped-stringTable
     .byte stringHidden-stringTable
 stringListOffonlitetealog:
     .byte stringOff-stringTable
@@ -479,6 +480,8 @@ string7digit:
     .byte $06,"7","D","I","G","I","T"
 stringM:
     .byte $01,"M"
+stringCapped:
+    .byte $06,"C","A","P","P","E","D"
 stringHidden:
     .byte $06,"H","I","D","D","E","N"
 stringLite:

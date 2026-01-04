@@ -145,6 +145,7 @@ displaySubmenu = {
                 "Letters",
                 "7digit",
                 "M",
+                "Capped",
                 "Hidden",
             ],
             "scoringModifier",
