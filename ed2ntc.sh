@@ -2,7 +2,7 @@
 
 set -e
 
-bash build.sh -e
+node build.js -e
 
 cp tetris.nes ed2ntc.nes
 
