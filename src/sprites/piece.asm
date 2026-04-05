@@ -19,9 +19,10 @@ ghostPiece:
         jsr isPositionValid
         beq @loop
         dec tetriminoY
-
-        ; check if equal to current position
         lda tetriminoY
+        ; save value for use by hard/sonic drop in next frame
+        sta hardDropGhostY
+        ; check if equal to current position
         cmp tmp3
         beq @noGhost
 
@@ -38,12 +39,13 @@ ghostPiece:
         rts
 
 tileModifierForCurrentPiece:
+@currentTile = generalCounter5
         lda pieceTileModifier
         beq @tileNormal
         and #$80
         bne @tileSingle
 ; @tileMultiple:
-        lda orientationTable,x
+        lda @currentTile
         clc
         adc pieceTileModifier
         rts
@@ -51,10 +53,11 @@ tileModifierForCurrentPiece:
         lda pieceTileModifier
         rts
 @tileNormal:
-        lda orientationTable,x
+        lda @currentTile
         rts
 
 stageSpriteForCurrentPiece_actual:
+@currentTile = generalCounter5
         lda tetriminoX
         cmp #TETRIMINO_X_HIDE
         beq stageSpriteForCurrentPiece_return
@@ -70,21 +73,18 @@ stageSpriteForCurrentPiece_actual:
         rol a
         adc #$2F
         sta generalCounter4
-        lda currentPiece
-        sta generalCounter5
-        clc
-        lda generalCounter5
-        rol a
-        rol a
-        sta generalCounter
-        rol a
-        adc generalCounter
+        ldx currentPiece
+        lda tetriminoTileFromOrientation,x
+        sta @currentTile
+        txa
+        asl a
+        asl a
         tax
         ldy oamStagingLength
         lda #$04
         sta generalCounter2
-@stageMino:  
-        lda orientationTable,x
+@stageMino:
+        lda orientationTableY,x
         asl a
         asl a
         asl a
@@ -94,13 +94,11 @@ stageSpriteForCurrentPiece_actual:
         sta originalY
         inc oamStagingLength
         iny
-        inx
         jsr tileModifierForCurrentPiece ; used to just load from orientationTable
         ; lda orientationTable, x
         sta oamStaging,y
         inc oamStagingLength
         iny
-        inx
         lda #$02
         sta oamStaging,y
         lda originalY
@@ -116,17 +114,17 @@ stageSpriteForCurrentPiece_actual:
         sta oamStaging,y
         jmp @finishLoop
 
-@validYCoordinate:  
+@validYCoordinate:
         inc oamStagingLength
         iny
-        lda orientationTable,x
+        lda orientationTableX,x
         asl a
         asl a
         asl a
         clc
         adc generalCounter3
         sta oamStaging,y
-@finishLoop:  
+@finishLoop:
         inc oamStagingLength
         iny
         inx
@@ -136,18 +134,25 @@ stageSpriteForCurrentPiece_return:
         rts
 
 stageSpriteForNextPiece:
-        lda qualFlag
-        beq @alwaysNextBox
-        lda displayNextPiece
-        bne @ret
+        lda hideNextPiece
+        bne @maybeDisplayNextPiece
 
-@alwaysNextBox:
+@displayNextPiece:
         lda #$C8
         sta spriteXOffset
         lda #$77
         sta spriteYOffset
         ldx nextPiece
-        lda orientationToSpriteTable,x
+        lda tetriminoTypeFromOrientation,x
+        clc
+        adc #$6 ; piece sprites start at index 6
         sta spriteIndexInOamContentLookup
         jmp loadSpriteIntoOamStaging
-@ret:   rts
+
+@maybeDisplayNextPiece:
+        lda practiseType
+        cmp #MODE_HARDDROP
+        beq @displayNextPiece
+        lda debugFlag
+        bne @displayNextPiece
+        rts

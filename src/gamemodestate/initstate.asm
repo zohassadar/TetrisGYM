@@ -16,6 +16,10 @@ gameModeState_initGameState:
 .if ED2NTC = 1
         inc ntcGameStart
 .endif
+        ;init for crash frame parity
+        lda frameCounter
+        and #$01
+        sta startParity
 
         ; set seed init
         lda set_seed_input
@@ -44,6 +48,16 @@ gameModeState_initGameState:
         sta linecapState
         sta dasOnlyShiftDisabled
         sta invisibleFlag
+        sta currentFloor
+        sta crashState
+
+; initialize currentFloor if necessary
+        lda practiseType
+        cmp #MODE_FLOOR
+        bne @notFloor
+        lda floorModifier
+        sta currentFloor
+@notFloor:
 
         lda practiseType
         cmp #MODE_INVISIBLE
@@ -74,13 +88,8 @@ gameModeState_initGameState:
         sta lineClearStatsByType+2
         sta lineClearStatsByType+3
         sta allegro
-        sta demo_heldButtons
-        sta demo_repeats
-        sta demoIndex
-        sta demoButtonsAddr
+        sta holdDownPoints
         sta spawnID
-        lda #>demoButtonsTable
-        sta demoButtonsAddr+1
         lda #$03
         sta renderMode
         ldx #$A0
@@ -93,7 +102,6 @@ gameModeState_initGameState:
         sta currentPiece
         jsr incrementPieceStat
         ldx #rng_seed
-        ldy #$02
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
@@ -128,8 +136,8 @@ gameModeState_initGameState:
         jsr presetScoreFromBCD
 @noChecker:
 
-        lda #$57
-        sta outOfDateRenderFlags
+        lda #RENDER_STATS|RENDER_HZ|RENDER_SCORE|RENDER_LEVEL|RENDER_LINES
+        sta renderFlags
         jsr updateAudioWaitForNmiAndResetOamStaging
 
         lda practiseType
@@ -139,6 +147,8 @@ gameModeState_initGameState:
 @noTypeBPlayfield:
 
         jsr hzStart
+        lda #0
+        sta hzSpawnDelay
         jsr practiseInitGameState
         jsr resetScroll
 
@@ -259,8 +269,7 @@ L87E7:  lda generalCounter
         sta vramRow
         lda #$09
         sta generalCounter3
-L87FC:  ldx #$17
-        ldy #$02
+L87FC:  ldx #rng_seed
         jsr generateNextPseudorandomNumber
         lda rng_seed
         and #$07
@@ -279,8 +288,7 @@ L87FC:  ldx #$17
         dec generalCounter3
         jmp L87FC
 
-L8824:  ldx #$17
-        ldy #$02
+L8824:  ldx #rng_seed
         jsr generateNextPseudorandomNumber
         lda rng_seed
         and #$0F
@@ -294,7 +302,16 @@ L8824:  ldx #$17
         tay
         lda #EMPTY_TILE
         sta playfield,y
+.if KEYBOARD = 1
+        ; this can probably be the same whether keyboard or not.
+        ; the keyboard code adds the keyboard reading right before the oam staging reset.
+        ; the additional keyboard reading cycles causes the b type setup to crash.
+        ; Using the wait routine that skips the oam staging reset (and keyboard read) for now and
+        ; keeping separate until b-type board test is developed.
+        jsr updateAudioAndWaitForNmi
+.else
         jsr updateAudioWaitForNmiAndResetOamStaging
+.endif
         dec generalCounter
         bne L87E7
 L884A:
@@ -304,7 +321,7 @@ L884A:
         lda #EMPTY_TILE
 L885D:  sta playfield,y
         dey
-        cpy #$0
+        ; cpy #$0 ; dey sets z flag
         bne L885D
         lda #$00
         sta vramRow

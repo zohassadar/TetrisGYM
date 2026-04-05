@@ -6,28 +6,13 @@ linecapMenuCursorIndices := 3
         jsr updateAudioWaitForNmiAndDisablePpuRendering
         jsr disableNmi
 
-        ; clearNametable
-        lda #$20
-        sta PPUADDR
-        lda #$0
-        sta PPUADDR
-        lda #EMPTY_TILE
-        ldx #4
-        ldy #$BF
-@clearTile:
-        sta PPUDATA
-        dey
-        bne @clearTile
-        sta PPUDATA
-        ldy #$FF
-        dex
-        bne @clearTile
+        jsr clearNametable
 
         jsr bulkCopyToPpu
         .addr linecapMenuNametable
 
-        lda #1
-        sta outOfDateRenderFlags
+        lda #RENDER_LINES
+        sta renderFlags
 
         lda #$02
         sta soundEffectSlot1Init
@@ -119,19 +104,18 @@ linecapMenuControls:
         rts
 
 linecapMenuControlsLR:
-        lda linecapCursorIndex
-        jsr switch_s_plus_2a
-        .addr   linecapMenuControlsWhen
-        .addr   linecapMenuControlsLinesLevel
-        .addr   linecapMenuControlsHow
+        branchTo linecapCursorIndex, \
+            linecapMenuControlsWhen, \
+            linecapMenuControlsLinesLevel, \
+            linecapMenuControlsHow
 linecapMenuControlsWhen:
         lda newlyPressedButtons_player1
         and #BUTTON_LEFT|BUTTON_RIGHT
         beq @ret
         lda #$01
         sta soundEffectSlot1Init
-        lda #1
-        sta outOfDateRenderFlags
+        lda #RENDER_LINES
+        sta renderFlags
         lda linecapWhen
         eor #1
         sta linecapWhen
@@ -168,8 +152,8 @@ linecapMenuControlsAdjLevel:
 linecapMenuControlsBoopAndRender:
         lda #$01
         sta soundEffectSlot1Init
-        lda #1
-        sta outOfDateRenderFlags
+        lda #RENDER_LINES
+        sta renderFlags
         rts
 
 linecapMenuControlsAdjLinesUp:

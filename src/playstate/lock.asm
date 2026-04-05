@@ -1,10 +1,24 @@
 playState_lockTetrimino:
+@currentTile = generalCounter5
         jsr isPositionValid
         beq @notGameOver
-; gameOver:
-        lda outOfDateRenderFlags ; Flag needed to reveal hidden score
-        ora #$04
-        sta outOfDateRenderFlags
+@gameOver:
+        lda practiseType
+        cmp #MODE_TYPEB
+        bne @revealScore
+
+        ; bonus points if score >= 30000
+        lda score+3
+        bne @typeBBonus
+        lda score+2
+        cmp #$03
+        bcc @revealScore
+@typeBBonus:
+        jsr addBTypeBonus
+@revealScore:
+        lda renderFlags ; Flag needed to reveal hidden score
+        ora #RENDER_SCORE
+        sta renderFlags
         lda #$02
         sta soundEffectSlot0Init
         lda #$0A ; playState_checkStartGameOver
@@ -32,53 +46,59 @@ playState_lockTetrimino:
         lda vramRow
         cmp #$20
         bmi @ret
-        lda tetriminoY
-        asl a
-        sta generalCounter
-        asl a
-        asl a
+        ldy tetriminoY
+        lda multBy10Table,y
         clc
-        adc generalCounter
         adc tetriminoX
         sta generalCounter
-        lda currentPiece
-        sta currentPiece_copy
+        ldx currentPiece
+        lda tetriminoTileFromOrientation,x
+        sta @currentTile
+        txa
         asl a
         asl a
-        sta generalCounter2
-        asl a
-        clc
-        adc generalCounter2
         tax
         ldy #$00
         lda #$04
         sta generalCounter3
 ; Copies a single square of the tetrimino to the playfield
 @lockSquare:
-        lda orientationTable,x
-        asl a
-        sta generalCounter4
-        asl a
-        asl a
-        clc
-        adc generalCounter4
+        ldy orientationTableY,x
+        lda multBy10Table,y
         clc
         adc generalCounter
         sta positionValidTmp
-        inx
-        lda orientationTable,x
-        sta generalCounter5
-        inx
-        lda orientationTable,x
+        lda orientationTableX,x
         clc
         adc positionValidTmp
         tay
-        lda generalCounter5
+        lda @currentTile
         ; BLOCK_TILES
-        sta (playfieldAddr),y
+        sta playfield,y
         inx
         dec generalCounter3
         bne @lockSquare
+        lda practiseType
+        cmp #MODE_LOWSTACK
+        bne @notAboveLowStack
+        jsr checkIfAboveLowStackLine
+        bcc @notAboveLowStack
+        ldx #<lowStackNopeGraphic
+        ldy #>lowStackNopeGraphic
+        sec
+        lda #19
+        sbc lowStackRowModifier
+        cmp #$09
+        bcs @drawOnUpperHalf
+; draw on lower half
+        adc #$03 ; carry already clear
+        bne @copyGraphic
+@drawOnUpperHalf:
+        sbc #$04 ; carry already set
+@copyGraphic:
+        jsr copyGraphicToPlayfieldAtCustomRow
+        jmp @gameOver
+@notAboveLowStack:
         lda #$00
         sta lineIndex
         jsr updatePlayfield

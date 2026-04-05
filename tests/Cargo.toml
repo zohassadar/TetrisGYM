@@ -1,0 +1,14 @@
+[package]
+name = "gym-tests"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gumdrop = "0.8.1"
+rustico-core = { git = "https://github.com/zeta0134/rustico.git", rev = "d31d380b1e15bf7cc80e8827730e56a6df77ae46" }
+minifb = "0.27"
+
+# for patch testing
+flips = "0.2.1"
+flips-sys = "0.2.1"
+md5 = "0.7.0"
