@@ -58,9 +58,12 @@ playState_checkStartGameOver:
 
 @checkForStartButton:
         lda newlyPressedButtons_player1
-        cmp #$10
+        cmp #BUTTON_START
         bne @ret2
 @exitGame:
+.ifdef ED2NTC
+        jsr clearActiveGameData
+.endif
         lda #$00
         sta playState
         sta newlyPressedButtons_player1
@@ -247,3 +250,14 @@ handleRocket:
 @otherFrame:
         jsr loadRectIntoOamStaging
         rts
+
+
+.ifdef ED2NTC
+clearActiveGameData:
+        lda #$13
+        sta currentPiece
+        sta nextPiece
+        lda #$20
+        sta vramRow
+        jmp clearPlayfield
+.endif
