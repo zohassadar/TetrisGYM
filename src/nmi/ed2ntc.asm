@@ -287,15 +287,38 @@ sendNTCDataCompact:
 
         lda     rowY
         sta     FIFO_DATA
-
-        ldy     #$00
-@stateByte:
-        ldx     gameStateBytes,y
-        lda     tmp1,x
+        lda     completedRow
         sta     FIFO_DATA
-        iny
-        cpy     #gameStateBytesLength
-        bne     @stateByte
+        lda     completedRow+1
+        sta     FIFO_DATA
+        lda     completedRow+2
+        sta     FIFO_DATA
+        lda     completedRow+3
+        sta     FIFO_DATA
+        lda     lines
+        sta     FIFO_DATA
+        lda     lines+1
+        sta     FIFO_DATA
+        lda     levelNumber
+        sta     FIFO_DATA
+        lda     binScore
+        sta     FIFO_DATA
+        lda     binScore+1
+        sta     FIFO_DATA
+        lda     binScore+2
+        sta     FIFO_DATA
+        lda     binScore+3
+        sta     FIFO_DATA
+        lda     nextPiece
+        sta     FIFO_DATA
+        lda     currentPiece
+        sta     FIFO_DATA
+        lda     tetriminoX
+        sta     FIFO_DATA
+        lda     tetriminoY
+        sta     FIFO_DATA
+        lda     autorepeatX
+        sta     FIFO_DATA
 
         ; statsByType.  14
         ldx     #$00
@@ -353,25 +376,7 @@ padCompact:
 
 ; Only zero page values are valid
 .align $100 ; aligning to keep debug differences friendlier
-gameStateBytes:
-        .byte   completedRow
-        .byte   completedRow+1
-        .byte   completedRow+2
-        .byte   completedRow+3
-        .byte   lines
-        .byte   lines+1
-        .byte   levelNumber
-        .byte   binScore
-        .byte   binScore+1
-        .byte   binScore+2
-        .byte   binScore+3
-        .byte   nextPiece
-        .byte   currentPiece
-        .byte   tetriminoX
-        .byte   tetriminoY
-        .byte   autorepeatX
-gameStateBytesEnd:
-gameStateBytesLength = gameStateBytesEnd-gameStateBytes
+.byte $00
 
 ; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
 ; header, shared, frame type, state, stats, footer
