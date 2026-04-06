@@ -352,6 +352,7 @@ padCompact:
 
 
 ; Only zero page values are valid
+.align $100 ; aligning to keep debug differences friendlier
 gameStateBytes:
         .byte   completedRow
         .byte   completedRow+1
@@ -375,3 +376,5 @@ gameStateBytesLength = gameStateBytesEnd-gameStateBytes
 ; header 2, stats 14, frame type 1, shared 6, 2 bytes footer
 stateBytesPadding := (64-(2+14+2+6+2+gameStateBytesLength))
 .assert stateBytesPadding >= 0, error, "Too many gameStateBytes specified"
+
+.align $100 ; aligning to keep debug differences friendlier
