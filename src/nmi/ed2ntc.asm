@@ -257,15 +257,19 @@ sendNTCDataCompact:
         lda     #<COMPACT_HEADER
         sta     FIFO_DATA
 
-        ; shared 6
-        ldy     #$00
-@sharedByte:
-        ldx     sharedBytes,y
-        lda     tmp1,x
+        lda     frameCounter
         sta     FIFO_DATA
-        iny
-        cpy     #sharedBytesLength
-        bne     @sharedByte
+        lda     frameCounter+1
+        sta     FIFO_DATA
+        lda     gameModeState
+        sta     FIFO_DATA
+        lda     playState
+        sta     FIFO_DATA
+        lda     ntcGameStart
+        sta     FIFO_DATA
+        lda     gameMode
+        sta     FIFO_DATA
+        sharedBytesLength = 6
 
         ldx     vramRow
         cpx     #$20            ; send game data when playfield isn't rendering
@@ -345,16 +349,6 @@ padCompact:
 
         rts
 
-; Only zero page values are valid
-sharedBytes:
-        .byte   frameCounter
-        .byte   frameCounter+1
-        .byte   gameModeState
-        .byte   playState
-        .byte   ntcGameStart
-        .byte   gameMode
-sharedBytesEnd:
-sharedBytesLength = sharedBytesEnd-sharedBytes
 
 ; Only zero page values are valid
 gameStateBytes:
@@ -381,4 +375,3 @@ gameStateBytesLength = gameStateBytesEnd-gameStateBytes
 ; header 2, stats 14, frame type 1, shared 6, 2 bytes footer
 stateBytesPadding := (64-(2+14+1+6+2+gameStateBytesLength))
 .assert stateBytesPadding >= 0, error, "Too many gameStateBytes specified"
-
