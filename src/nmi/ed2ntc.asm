@@ -373,8 +373,9 @@ gameStateBytes:
 gameStateBytesEnd:
 gameStateBytesLength = gameStateBytesEnd-gameStateBytes
 
-; header 2, stats 14, frame type 1, shared 6, 2 bytes footer
-stateBytesPadding := (64-(2+14+2+6+2+gameStateBytesLength))
-.assert stateBytesPadding >= 0, error, "Too many gameStateBytes specified"
+; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
+; header, shared, frame type, state, stats, footer
+stateBytesPadding := (64-(2+6+1+17+14+2))
+.assert stateBytesPadding = 22, error, "alignment issue"
 
 .align $100 ; aligning to keep debug differences friendlier
