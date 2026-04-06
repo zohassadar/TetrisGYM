@@ -285,6 +285,8 @@ sendNTCDataCompact:
         lda     #COMPACT_UPDATE_STATE
         sta     FIFO_DATA
 
+        lda     rowY
+        sta     FIFO_DATA
 
         ldy     #$00
 @stateByte:
@@ -307,7 +309,6 @@ sendNTCDataCompact:
 
         ldx     #stateBytesPadding
         jmp     padCompact
-
 
 
 sendCompactField:
@@ -352,7 +353,6 @@ padCompact:
 
 ; Only zero page values are valid
 gameStateBytes:
-        .byte   rowY
         .byte   completedRow
         .byte   completedRow+1
         .byte   completedRow+2
@@ -373,5 +373,5 @@ gameStateBytesEnd:
 gameStateBytesLength = gameStateBytesEnd-gameStateBytes
 
 ; header 2, stats 14, frame type 1, shared 6, 2 bytes footer
-stateBytesPadding := (64-(2+14+1+6+2+gameStateBytesLength))
+stateBytesPadding := (64-(2+14+2+6+2+gameStateBytesLength))
 .assert stateBytesPadding >= 0, error, "Too many gameStateBytes specified"
