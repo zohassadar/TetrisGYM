@@ -1,5 +1,5 @@
 gameModeState_initGameBackground:
-.ifdef ED2NTC
+.if ED2NTC = 1
         jsr clearActiveGameData
 .endif
         jsr updateAudioWaitForNmiAndDisablePpuRendering

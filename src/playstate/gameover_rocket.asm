@@ -65,7 +65,7 @@ playState_checkStartGameOver:
         cmp #BUTTON_START
         bne @ret2
 @exitGame:
-.ifdef ED2NTC
+.if ED2NTC = 1
         jsr clearActiveGameData
 .endif
         lda #$00
@@ -259,7 +259,7 @@ handleRocket:
         rts
 
 
-.ifdef ED2NTC
+.if ED2NTC = 1
 clearActiveGameData:
         lda #$13
         sta currentPiece

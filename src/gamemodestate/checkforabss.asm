@@ -8,7 +8,7 @@ gameModeState_checkForResetKeyCombo:
         rts
 
 @reset: jsr updateAudio2
-.ifdef ED2NTC
+.if ED2NTC = 1
         jsr clearActiveGameData
 .endif
         lda #$2 ; straight to menu screen
