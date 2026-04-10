@@ -288,11 +288,7 @@ sendNTCDataCompact:
         sta     FIFO_DATA
         lda     playState
         sta     FIFO_DATA
-        lda     $00
-        sta     FIFO_DATA
-        lda     $00
-        sta     FIFO_DATA
-        sharedBytesLength = 6
+        sharedBytesLength = 4
 
         ldx     vramRow
         cpx     #$20            ; send game data when playfield isn't rendering
@@ -378,8 +374,8 @@ sendCompactField:
         bne     @sendFieldByte
         ; subtotal 50
 
-        ; padding 12
-        ldx     #12
+        ; padding 14
+        ldx     #14
 padCompact:
         lda     #0
 @pad:
@@ -399,5 +395,5 @@ padCompact:
 
 ; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
 ; header, shared, frame type, state, stats, footer
-stateBytesPadding := (64-(2+6+1+17+14+2))
-.assert stateBytesPadding = 22, error, "alignment issue"
+stateBytesPadding := (64-(2+4+1+17+14+2))
+.assert stateBytesPadding = 24, error, "alignment issue"
