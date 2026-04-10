@@ -71,7 +71,7 @@ sendNTCData:
         sta     FIFO_DATA
 
         ; gameStartGameMode. 1
-        lda     ntcGameStart
+        lda     $55
         asl
         asl
         asl
@@ -265,7 +265,7 @@ sendNTCDataCompact:
         sta     FIFO_DATA
         lda     playState
         sta     FIFO_DATA
-        lda     ntcGameStart
+        lda     $55
         sta     FIFO_DATA
         lda     gameMode
         sta     FIFO_DATA

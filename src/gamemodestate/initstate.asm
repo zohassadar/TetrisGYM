@@ -14,7 +14,8 @@ gameModeState_initGameState:
         sta tetriminoX
 
 .if ED2NTC = 1
-        inc ntcGameStart
+        nop
+        nop
 .endif
         ;init for crash frame parity
         lda frameCounter

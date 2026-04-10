@@ -48,11 +48,7 @@ lines: .res 2 ; $0050
 rowY: .res 1 ; $0052
 linesBCDHigh: .res 1 ; $53
 linesTileQueue: .res 1 ; $54
-.if ED2NTC = 1
-ntcGameStart: .res 1 ; $5D Counter incremented in gameModeState_initGameState
-.else
     .res 1
-.endif
 completedLines: .res 1 ; $0056
 lineIndex: .res 1 ; $0057                        ; Iteration count of playState_checkForCompletedRows
 startHeight: .res 1 ; $0058
