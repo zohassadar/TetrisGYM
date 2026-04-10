@@ -43,7 +43,6 @@ mainLoop:
 .if ED2NTC
 .include "nmi/ed2ntc.asm"
 .endif
-
 .include "gamemode/branch.asm"
     ; -> playAndEnding
 .include "gamemodestate/branch.asm"

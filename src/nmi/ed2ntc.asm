@@ -43,7 +43,7 @@ messageHeader:
 ; Total 237/0xed
 
 
-
+.align $100
 sendNTCData:
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
@@ -261,13 +261,13 @@ sendNTCDataCompact:
         sta     FIFO_DATA
         lda     frameCounter+1
         sta     FIFO_DATA
-        lda     gameModeState
+        lda     gameMode
         sta     FIFO_DATA
         lda     playState
         sta     FIFO_DATA
-        lda     $55
+        lda     $00
         sta     FIFO_DATA
-        lda     gameMode
+        lda     $00
         sta     FIFO_DATA
         sharedBytesLength = 6
 
