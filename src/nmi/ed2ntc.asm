@@ -13,6 +13,31 @@ COMPACT_FOOTER  = $5AA5
 COMPACT_UPDATE_STATE = $00
 COMPACT_UPDATE_FIELD = $01
 
+
+; note about everdrive's fifo queue
+
+; sta, lda, cmp, or any operation that puts $40F0 or $C0F0 on the
+; address bus will be interpreted the same by the everdrive.
+; for example the following all have the same effect of transferring a byte to
+; the fifo queue:
+;
+; lda $01
+; sta $40F0
+;
+; lda $01
+; sta $C0F0
+;
+; lda $01
+; lda $40F0
+;
+; lda $01
+; lda $C0F0
+;
+; lda $01
+; and $C0F0
+;
+; etc...
+
 ; FIFO_DATA reads unpredictable value when FIFO_STATUS != FIFO_PENDING
 FIFO_DATA :=    $40f0
 FIFO_STATUS :=  $40f1
@@ -42,8 +67,6 @@ messageHeader:
 ; footer : 2 * $AA
 ; Total 237/0xed
 
-
-.align $100
 sendNTCData:
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
@@ -374,13 +397,7 @@ padCompact:
         rts
 
 
-; Only zero page values are valid
-.align $100 ; aligning to keep debug differences friendlier
-.byte $00
-
 ; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
 ; header, shared, frame type, state, stats, footer
 stateBytesPadding := (64-(2+6+1+17+14+2))
 .assert stateBytesPadding = 22, error, "alignment issue"
-
-.align $100 ; aligning to keep debug differences friendlier

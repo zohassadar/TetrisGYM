@@ -16,8 +16,9 @@
 .linecont
 
 .segment    "PRG_chunk1": absolute
-
-; region code at start of page to keep cycle count consistent
+; these tables benefit from page alignment
+.include "data/mult_orient.asm"
+; region code at start of page boundary to keep cycle count consistent
 .include "util/check_region.asm"
 .include "audio.asm"
 
@@ -66,6 +67,12 @@ mainLoop:
 
 .include "sprites/bytesprite.asm"
 .include "sprites/drawrect.asm"
+
+.segment    "PRG_Unused": absolute
+; Prevent $C0F0 from being used
+; see note in ed2ntc.asm
+
+.segment    "PRG_chunk2": absolute
 .include "sprites/loadsprite.asm"
 .include "sprites/piece.asm"
 
@@ -95,9 +102,6 @@ mainLoop:
 .include "modes/qtap.asm"
 .include "modes/garbage.asm"
 
-.align $100
-; these tables benefit from page alignment
-.include "data/mult_orient.asm"
 
 .segment    "PRG_chunk3": absolute
 
