@@ -55,13 +55,20 @@ messageHeader:
 sendNTCData:
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
-        beq     @checkData
+        beq     @checkSeed
 @ret:
         rts
-@checkData:
+
+@checkSeed:
         lda     FIFO_DATA
+        cmp     #CMD_SEND_SEED
+        bne     @checkCompact
+        jmp     readySeed
+
+@checkCompact:
         cmp     #CMD_SEND_COMPACT
         bne     @ret
+
         lda     messageHeader
         sta     FIFO_DATA
         lda     messageHeader+1
@@ -176,6 +183,65 @@ sendNTCData:
         sta     FIFO_DATA
 
         rts
+
+
+readySeed:
+        ; ignore if game is active
+        lda     gameMode
+        cmp     #$04
+        bne     @setSeedAndReset
+
+        ; maybe topped out
+        lda     playState
+        cmp     #$0A
+        beq     @setSeedAndReset
+
+        ; maybe in high score entry screen
+        lda     gameModeState
+        cmp     #$03
+        beq     @setSeedAndReset
+
+        rts
+@setSeedAndReset:
+        ; clear stack
+        ldx     #$FF
+        txs
+
+        ; level select
+        lda     #$03
+        sta     gameMode
+
+        lda     #MODE_SEED
+        sta     practiseType
+
+        ; seed from controller
+        lda     FIFO_DATA
+        sta     set_seed_input
+        lda     FIFO_DATA
+        sta     set_seed_input+1
+        lda     FIFO_DATA
+        sta     set_seed_input+2
+
+        ; ready 18
+        lda     #8
+        sta     classicLevel
+
+        ; line cap on
+        lda     #1
+        sta     linecapFlag
+
+        ; default to classic level and double killscreen
+        lda     #0
+        sta     linecapHow
+        sta     linecapWhen
+        sta     levelControlMode
+
+        ; level 39
+        lda     #INITIAL_LINECAP_LEVEL
+        sta     linecapLevel
+
+        jmp     mainLoop
+
 
 
 ; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
