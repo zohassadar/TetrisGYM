@@ -6,7 +6,7 @@ CMD_SEND_COMPACT := $43
 
 PAYLOAD_SIZE    = $ed
 
-COMPACT_SIZE    = $40
+COMPACT_SIZE    = $36
 
 COMPACT_HEADER  = $A55A
 COMPACT_FOOTER  = $5AA5
@@ -46,218 +46,17 @@ messageHeader:
         ; $2b = "+". $22 = CMD_USB_WR
         .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
 
-; needed for nestrischamps:
-; gameStartGameMode 1 (4 bits each)
-; gameModeStatePlayState 1 (4 bits each)
-; rowY 1
-; completedRow 4
-; lines 2 (bcd)
-; levelNumber 1
-; binScore 4
-; nextPiece 1
-; currentPiece 1
-; tetriminoX 1 Needed to determine where piece is in playfield
-; tetriminoY 1 same
-; frameCounter 2 Used for line clearing animation
-; autoRepeatX 1 current DAS
-; statsByType 14
-; playfield 200
-; subtotal 235/0xeb
-
-; footer : 2 * $AA
-; Total 237/0xed
 
 sendNTCData:
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
-        bne     @ret
+        beq     @checkData
+@ret:
+        rts
+@checkData:
         lda     FIFO_DATA
-        cmp     #CMD_SEND_STATS
-        beq     @sendStats
         cmp     #CMD_SEND_COMPACT
         bne     @ret
-        jmp     sendNTCDataCompact
-@ret:   rts
-@sendStats:
-        lda     messageHeader
-        sta     FIFO_DATA
-        lda     messageHeader+1
-        sta     FIFO_DATA
-        lda     messageHeader+2
-        sta     FIFO_DATA
-        lda     messageHeader+3
-        sta     FIFO_DATA
-
-        lda     #PAYLOAD_SIZE   ; Length.  16 bit LE
-        sta     FIFO_DATA
-        lda     #$00
-        sta     FIFO_DATA
-
-        ; gameStartGameMode. 1
-        lda     $55
-        asl
-        asl
-        asl
-        asl
-        ora     gameMode
-        sta     FIFO_DATA
-
-        ; gameModeStatePlayState. 1
-        lda     gameModeState
-        asl
-        asl
-        asl
-        asl
-        ora     playState
-        sta     FIFO_DATA
-
-        ; rowY. 1
-        lda     rowY
-        sta     FIFO_DATA
-
-        ; completedRow.  4
-        lda     completedRow
-        sta     FIFO_DATA
-        lda     completedRow+1
-        sta     FIFO_DATA
-        lda     completedRow+2
-        sta     FIFO_DATA
-        lda     completedRow+3
-        sta     FIFO_DATA
-
-        ; lines.  2
-        lda     lines
-        sta     FIFO_DATA
-        lda     lines+1
-        sta     FIFO_DATA
-
-        ; level. 1
-        lda     levelNumber
-        sta     FIFO_DATA
-
-        ; score.  4
-        lda     binScore
-        sta     FIFO_DATA
-        lda     binScore+1
-        sta     FIFO_DATA
-        lda     binScore+2
-        sta     FIFO_DATA
-        lda     binScore+3
-        sta     FIFO_DATA
-
-        ; nextPiece.  1
-        lda     nextPiece
-        sta     FIFO_DATA
-
-        ; currentPiece.  1
-        lda     currentPiece
-        sta     FIFO_DATA
-
-        ; tetrimonoX.  1
-        lda     tetriminoX
-        sta     FIFO_DATA
-
-        ; tetriminoY.  1
-        lda     tetriminoY
-        sta     FIFO_DATA
-
-        ; frameCounter.  2
-        lda     frameCounter
-        sta     FIFO_DATA
-        lda     frameCounter+1
-        sta     FIFO_DATA
-
-        ; autorepeatX.  1
-        lda     autorepeatX
-        sta     FIFO_DATA
-
-        ; statsByType.  14
-        lda     statsByType
-        sta     FIFO_DATA
-        lda     statsByType+1
-        sta     FIFO_DATA
-        lda     statsByType+2
-        sta     FIFO_DATA
-        lda     statsByType+3
-        sta     FIFO_DATA
-        lda     statsByType+4
-        sta     FIFO_DATA
-        lda     statsByType+5
-        sta     FIFO_DATA
-        lda     statsByType+6
-        sta     FIFO_DATA
-        lda     statsByType+7
-        sta     FIFO_DATA
-        lda     statsByType+8
-        sta     FIFO_DATA
-        lda     statsByType+9
-        sta     FIFO_DATA
-        lda     statsByType+10
-        sta     FIFO_DATA
-        lda     statsByType+11
-        sta     FIFO_DATA
-        lda     statsByType+12
-        sta     FIFO_DATA
-        lda     statsByType+13
-        sta     FIFO_DATA
-
-        ; playfield.  200
-        ldy     #(256-20)       ; use offset to prevent needing cpy
-@playfieldChunk:
-        ldx     multBy10Table - (256-20),y
-        lda     playfield,x
-        sta     FIFO_DATA
-        lda     playfield+1,x
-        sta     FIFO_DATA
-        lda     playfield+2,x
-        sta     FIFO_DATA
-        lda     playfield+3,x
-        sta     FIFO_DATA
-        lda     playfield+4,x
-        sta     FIFO_DATA
-        lda     playfield+5,x
-        sta     FIFO_DATA
-        lda     playfield+6,x
-        sta     FIFO_DATA
-        lda     playfield+7,x
-        sta     FIFO_DATA
-        lda     playfield+8,x
-        sta     FIFO_DATA
-        lda     playfield+9,x
-        sta     FIFO_DATA
-        lda     playfield+10,x
-        sta     FIFO_DATA
-        lda     playfield+11,x
-        sta     FIFO_DATA
-        lda     playfield+12,x
-        sta     FIFO_DATA
-        lda     playfield+13,x
-        sta     FIFO_DATA
-        lda     playfield+14,x
-        sta     FIFO_DATA
-        lda     playfield+15,x
-        sta     FIFO_DATA
-        lda     playfield+16,x
-        sta     FIFO_DATA
-        lda     playfield+17,x
-        sta     FIFO_DATA
-        lda     playfield+18,x
-        sta     FIFO_DATA
-        lda     playfield+19,x
-        sta     FIFO_DATA
-        iny
-        iny
-        bne     @playfieldChunk
-
-
-@addFooter:
-        lda     #$AA
-        sta     FIFO_DATA
-        sta     FIFO_DATA
-        rts
-
-
-sendNTCDataCompact:
         lda     messageHeader
         sta     FIFO_DATA
         lda     messageHeader+1
@@ -340,18 +139,13 @@ sendNTCDataCompact:
         sta     FIFO_DATA
 
         ; statsByType.  14
-        ldx     #$00
-@statsLoop:
-        lda     statsByType,x
+        .repeat 14,i
+        lda     statsByType+i
         sta     FIFO_DATA
-        inx
-        cpx     #$0E
-        bne     @statsLoop
-        ; subtotal 40
+        .endrepeat
 
         ldx     #stateBytesPadding
         jmp     padCompact
-
 
 sendCompactField:
         ; subtotal 8
@@ -363,19 +157,13 @@ sendCompactField:
         stx     FIFO_DATA
 
         ldy     multBy10Table,x
-
-        ; playfield 40
-        ldx     #40
-@sendFieldByte:
-        lda     playfield,y
+.repeat 40,i
+        lda     playfield+i,y
         sta     FIFO_DATA
-        iny
-        dex
-        bne     @sendFieldByte
-        ; subtotal 50
+.endrepeat
 
-        ; padding 14
-        ldx     #14
+        ; padding 4
+        ldx     #4
 padCompact:
         lda     #0
 @pad:
@@ -395,5 +183,5 @@ padCompact:
 
 ; header 2, stats 14, frame type 1, shared 6, state 17, pad 22, footer 2
 ; header, shared, frame type, state, stats, footer
-stateBytesPadding := (64-(2+4+1+17+14+2))
-.assert stateBytesPadding = 24, error, "alignment issue"
+stateBytesPadding := (54-(2+4+1+17+14+2))
+.assert stateBytesPadding = 14, error, "alignment issue"
