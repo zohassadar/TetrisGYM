@@ -33,6 +33,7 @@ FIFO_IDLE = $C1
 CMD_SEND_STATS = $42 ; removed
 CMD_SEND_COMPACT = $43
 CMD_SEND_SEED = $44 ; not yet
+CMD_SEND_INPUT = $45
 
 PAYLOAD_SIZE    = $ED
 
@@ -67,8 +68,18 @@ sendNTCData:
 
 @checkCompact:
         cmp     #CMD_SEND_COMPACT
+        beq     @sendCompact
+
+        cmp     #CMD_SEND_INPUT
         bne     @ret
 
+        lda     FIFO_DATA
+        sta     cachedInputFromEverdrive
+        lda     #$01
+        sta     cachedInputFlag
+        rts
+
+@sendCompact:
         lda     messageHeader
         sta     FIFO_DATA
         lda     messageHeader+1

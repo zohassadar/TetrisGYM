@@ -357,5 +357,8 @@ palFlag: .res 1
 .if KEYBOARD = 1
 keyboardFlag: .res 1
 .endif
-
+.if ED2NTC = 1
+cachedInputFromEverdrive: .res 1
+cachedInputFlag: .res 1
+.endif
 ; ... $7FF

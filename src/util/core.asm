@@ -60,13 +60,24 @@ updateAudioWaitForNmiAndResetOamStaging:
         jsr updateAudio_jmp
         lda #$00
         sta verticalBlankingInterval
-.if ED2NTC
+.if ED2NTC = 1
         jsr sendNTCData
 .endif
         nop
 @checkForNmi:
         lda verticalBlankingInterval
         beq @checkForNmi
+
+.if ED2NTC = 1
+        lda cachedInputFlag
+        beq @noCachedInput
+        lda #$00
+        sta cachedInputFlag
+        lda cachedInputFromEverdrive
+        sta heldButtons_player1
+        sta newlyPressedButtons_player1
+@noCachedInput:
+.endif
 
 .if KEYBOARD = 1
 ; Read Family BASIC Keyboard
@@ -92,7 +103,7 @@ updateAudioAndWaitForNmi:
         jsr updateAudio_jmp
         lda #$00
         sta verticalBlankingInterval
-.if ED2NTC
+.if ED2NTC = 1
         jsr sendNTCData
 .endif
         nop
