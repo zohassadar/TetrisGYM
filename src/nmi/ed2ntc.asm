@@ -1,19 +1,3 @@
-EMU_UNKNOWN :=  $40
-FIFO_PENDING := $41
-FIFO_IDLE :=    $C1
-CMD_SEND_STATS := $42
-CMD_SEND_COMPACT := $43
-
-PAYLOAD_SIZE    = $ed
-
-COMPACT_SIZE    = $36
-
-COMPACT_HEADER  = $A55A
-COMPACT_FOOTER  = $5AA5
-COMPACT_UPDATE_STATE = $00
-COMPACT_UPDATE_FIELD = $01
-
-
 ; note about everdrive's fifo queue
 
 ; sta, lda, cmp, or any operation that puts $40F0 or $C0F0 on the
@@ -39,13 +23,34 @@ COMPACT_UPDATE_FIELD = $01
 ; etc...
 
 ; FIFO_DATA reads unpredictable value when FIFO_STATUS != FIFO_PENDING
-FIFO_DATA :=    $40f0
-FIFO_STATUS :=  $40f1
+FIFO_DATA = $40F0
+FIFO_STATUS =  $40F1
+
+EMU_UNKNOWN = $40
+FIFO_PENDING = $41
+FIFO_IDLE = $C1
+
+CMD_SEND_STATS = $42 ; removed
+CMD_SEND_COMPACT = $43
+CMD_SEND_SEED = $44 ; not yet
+
+PAYLOAD_SIZE    = $ED
+
+COMPACT_SIZE    = $36
+
+COMPACT_HEADER  = $A55A
+COMPACT_FOOTER  = $5AA5
+
+COMPACT_UPDATE_STATE = $00
+COMPACT_UPDATE_FIELD = $01
+
 
 messageHeader:
-        ; $2b = "+". $22 = CMD_USB_WR
-        .byte   $2b, $2b ^ $ff, $22, $22 ^ $ff
-
+        ; $2B = "+". $22 = CMD_USB_WR
+        .BYTE $2B
+        .BYTE $2B ^ $FF
+        .BYTE $22
+        .BYTE $22 ^ $FF
 
 sendNTCData:
         lda     FIFO_STATUS
@@ -71,8 +76,6 @@ sendNTCData:
         lda     #$00
         sta     FIFO_DATA
 
-; options for both kinds of updates
-        ; header 2
         lda     #>COMPACT_HEADER
         sta     FIFO_DATA
 
@@ -95,11 +98,9 @@ sendNTCData:
         lda     playState
         cmp     #$04            ; send game data when animation is showing
         beq     @sendState
-        jmp     sendCompactField
-@sendState:
-        ; subtotal 8
+        jmp     @sendCompactField
 
-        ; frame type 1
+@sendState:
         lda     #COMPACT_UPDATE_STATE
         sta     FIFO_DATA
 
@@ -138,40 +139,36 @@ sendNTCData:
         lda     autorepeatX
         sta     FIFO_DATA
 
-        ; statsByType.  14
         .repeat 14,i
         lda     statsByType+i
         sta     FIFO_DATA
         .endrepeat
 
-        ldx     #stateBytesPadding
-        jmp     padCompact
+        lda     #$00
+        jmp     @pad10
 
-sendCompactField:
-        ; subtotal 8
-
-        ; frame type 1
+@sendCompactField:
         lda     #COMPACT_UPDATE_FIELD
         sta     FIFO_DATA
-        ; vramRow 1
         stx     FIFO_DATA
 
         ldy     multBy10Table,x
-.repeat 40,i
+        .repeat 40,i
         lda     playfield+i,y
         sta     FIFO_DATA
-.endrepeat
+        .endrepeat
 
-        ; padding 4
-        ldx     #4
-padCompact:
-        lda     #0
-@pad:
+        lda     #$00
+        beq     @pad4
+@pad10:
+        .repeat 10
         sta     FIFO_DATA
-        dex
-        bne     @pad
+        .endrepeat
+@pad4:
+        .repeat 4
+        sta     FIFO_DATA
+        .endrepeat
 
-        ;footer 2
         lda     #>COMPACT_FOOTER
         sta     FIFO_DATA
 
