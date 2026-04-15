@@ -157,6 +157,15 @@ sendNTCData:
         lda     autorepeatX
         sta     FIFO_DATA
 
+        lda     set_seed_input
+        sta     FIFO_DATA
+        lda     set_seed_input+1
+        sta     FIFO_DATA
+        lda     set_seed_input+2
+        sta     FIFO_DATA
+        lda     heartsAndReady
+        sta     FIFO_DATA
+
         .repeat 14,i
         lda     statsByType+i
         sta     FIFO_DATA
@@ -179,7 +188,7 @@ sendNTCData:
         lda     #$00
         beq     @pad4
 @pad10:
-        .repeat 10
+        .repeat 6
         sta     FIFO_DATA
         .endrepeat
 @pad4:

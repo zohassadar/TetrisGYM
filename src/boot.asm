@@ -42,6 +42,10 @@
 
         jsr resetScores
 
+.if ED2NTC = 1
+        jsr clearActiveGameData
+.endif
+
 .if SAVE_HIGHSCORES
         jsr detectSRAM
         beq @noSRAM
