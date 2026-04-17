@@ -97,6 +97,25 @@ resetOAMStaging:
         inx
         inx
         bne @hideY
+.if ED2NTC = 1
+        lda gameMode
+        cmp #$2
+        bne @ret
+        lda everdrivePlayerId
+        bne @active
+        lda #$24 ; dash, hyphen, whatever
+@active:
+        sta oamStaging+1
+        lda #$37
+        sta oamStaging+0
+        lda #$98
+        sta oamStaging+3
+        lda #$00
+        sta oamStaging+2
+        lda #$4
+        sta oamStagingLength
+.endif
+@ret:
         rts
 
 updateAudioAndWaitForNmi:

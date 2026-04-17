@@ -33,11 +33,11 @@ drawTiles(buffer, lookup, `
 #a                            d#
 #a                            d#
 #a                            d#
+#a         TETRIS GYM         d#
 #a                            d#
+#a     CTWC PORTLAND 2026     d#
 #a                            d#
-#a                            d#
-#a                            d#
-#a                            d#
+#a          PLAYER            d#
 #a                            d#
 #a    TETRIS                  d#
 #a    T-SPINS                 d#
@@ -135,7 +135,7 @@ const background = `
 drawTiles(buffer, lookup, background);
 drawTiles(extra, lookup, background);
 
-drawRect(buffer, 8, 2, 10, 5, 0xB0); // draw logo
+// drawRect(buffer, 8, 2, 10, 5, 0xB0); // draw logo
 
 const urlX = 3;
 const urlY = 17;
@@ -144,9 +144,9 @@ drawRect(extra, urlX+12, urlY, 12, 1, 0x84);
 
 drawAttrs(buffer, [`
     2222222222222222
-    2222211111122222
-    2222211111122222
-    2222211111122222
+    2222222222222222
+    2222222222222222
+    2222222222222222
     2222222222222222
     2222222222222222
     2222222222222222

@@ -54,6 +54,8 @@ messageHeader:
         .BYTE $22 ^ $FF
 
 sendNTCData:
+        lda     #$0
+        sta     everdrivePlayerId
         lda     FIFO_STATUS
         cmp     #FIFO_PENDING
         beq     @checkSeed
@@ -80,6 +82,8 @@ sendNTCData:
         rts
 
 @sendCompact:
+        lda     FIFO_DATA
+        sta     everdrivePlayerId
         lda     messageHeader
         sta     FIFO_DATA
         lda     messageHeader+1
