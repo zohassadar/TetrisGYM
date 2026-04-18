@@ -1,4 +1,15 @@
 render_mode_scroll:
+.if ED2NTC = 1
+        lda #$20
+        sta PPUADDR
+        lda #$F3
+        sta PPUADDR
+        lda everdrivePlayerId
+        bne @notIdle
+        lda #$24 ; dash, hyphen, whatever
+@notIdle:
+        sta PPUDATA
+.endif
         ; handle scroll
         lda currentPpuCtrl
         and #$FC
