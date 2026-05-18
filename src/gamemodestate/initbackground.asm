@@ -12,6 +12,10 @@ gameModeState_initGameBackground:
         jsr scoringBackground
         jsr debugNametableUI
 
+        ldy #$20
+        ldx #$A2
+        jsr patchSeed
+
         ldy darkModifier
         beq @notDarkMode
         jsr drawDarkMode
@@ -44,9 +48,6 @@ gameModeState_initGameBackground:
         lda tmpZ
         sta PPUDATA
 @heartEnd:
-        ldy #$20
-        ldx #$A2
-        jsr patchSeed
         lda #NMIEnable|BGPattern1|SpritePattern1
         sta PPUCTRL
         sta currentPpuCtrl
