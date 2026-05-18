@@ -19,6 +19,10 @@ KEYBOARD := 0
 CNROM_OVERRIDE := 0
 .endif
 
+.ifndef ANYDAS
+ANYDAS = 0
+.endif
+
 NO_MUSIC := 1
 
 ; dev flags
@@ -81,7 +85,9 @@ MODE_TAPQTY
 MODE_CHECKERBOARD
 MODE_GARBAGE
 MODE_DROUGHT
+.if ANYDAS <> 1
 MODE_DAS
+.endif
 MODE_LOWSTACK
 MODE_KILLX2
 MODE_INVISIBLE
@@ -98,19 +104,21 @@ MODE_DARK
 MODE_GOOFY
 MODE_DEBUG
 MODE_LINECAP
+.if ANYDAS <> 1
 MODE_DASONLY
+.endif
 MODE_QUAL
 MODE_PAL
 .if KEYBOARD = 1
 MODE_KEYBOARD
 .endif
-.endenum
-
-.if KEYBOARD = 1
-MODE_QUANTITY = MODE_KEYBOARD + 1
-.else
-MODE_QUANTITY = MODE_PAL + 1
+.if ANYDAS = 1
+MODE_DAS_VALUE
+MODE_ARR_VALUE
+MODE_ARE_CHARGE
 .endif
+MODE_QUANTITY
+.endenum
 
 MODE_GAME_QUANTITY = MODE_HARDDROP + 1
 
@@ -157,7 +165,9 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $8    ; MODE_CHECKERBOARD
     .byte $4    ; MODE_GARBAGE
     .byte $12   ; MODE_DROUGHT
+.if ANYDAS <> 1
     .byte $10   ; MODE_DAS
+.endif
     .byte $12   ; MODE_LOWSTACK
     .byte $0    ; MODE_KILLX2
     .byte $0    ; MODE_INVISIBLE
@@ -174,11 +184,18 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte $1    ; MODE_GOOFY
     .byte $1    ; MODE_DEBUG
     .byte $1    ; MODE_LINECAP
+.if ANYDAS <> 1
     .byte $1    ; MODE_DASONLY
+.endif
     .byte $1    ; MODE_QUAL
     .byte $1    ; MODE_PAL
 .if KEYBOARD = 1
     .byte $1    ; MODE_KEYBOARD
+.endif
+.if ANYDAS = 1
+    .byte $40   ; MODE_DAS_VALUE
+    .byte $40   ; MODE_ARR_VALUE
+    .byte $2    ; MODE_ARE_CHARGE
 .endif
 .endmacro
 
@@ -199,7 +216,9 @@ MENU_TOP_MARGIN_SCROLL := 7 ; in blocks
     .byte   "CKRBRD"
     .byte   "GARBGE"
     .byte   "LOBARS"
+.if ANYDAS <> 1
     .byte   "DASDLY"
+.endif
     .byte   "LOWSTK"
     .byte   "KILLX2"
     .byte   "INVZBL"

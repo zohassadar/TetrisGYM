@@ -338,7 +338,9 @@ tapqtyModifier: .res 1
 checkerModifier: .res 1
 garbageModifier: .res 1
 droughtModifier: .res 1
+.if ANYDAS <> 1
 dasModifier: .res 1
+.endif
 lowStackRowModifier: .res 1
 scoringModifier: .res 1
 crashModifier: .res 1
@@ -351,11 +353,20 @@ darkModifier: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
 linecapFlag: .res 1
+.if ANYDAS <> 1
 dasOnlyFlag: .res 1
+.endif
 qualFlag: .res 1
 palFlag: .res 1
+
 .if KEYBOARD = 1
 keyboardFlag: .res 1
 .endif
+.if ANYDAS = 1
+anydasDASValue: .res 1
+anydasARRValue: .res 1
+anydasARECharge: .res 1
+.endif
+
 seededPieces: .res 1 ; 0 for not seeded, 1 for seeded pieces
 ; ... $7FF
