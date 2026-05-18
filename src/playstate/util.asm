@@ -1,53 +1,38 @@
 isPositionValid:
-        lda tetriminoY
-        asl a
-        sta generalCounter
-        asl a
-        asl a
+        ldy tetriminoY
+        lda multBy10Table,y
         clc
-        adc generalCounter
         adc tetriminoX
         sta generalCounter
         lda currentPiece
         asl a
         asl a
-        sta generalCounter2
-        asl a
-        clc
-        adc generalCounter2
         tax
         ldy #$00
         lda #$04
         sta generalCounter3
 ; Checks one square within the tetrimino
 @checkSquare:
-        lda orientationTable,x
+        lda orientationTableY,x
         clc
         adc tetriminoY
-        adc #$02
+        adc #$02 ; carry may be set for this add but doesn't have any noticeable impact
 
         cmp #$16
         bcs @invalid
-        lda orientationTable,x
-        asl a
-        sta generalCounter4
-        asl a
-        asl a
-        clc
-        adc generalCounter4
-        clc
+
+        ldy orientationTableY,x
+        lda multBy10Table,y
+        ; clc omitted, carry is clear from cmp instruction above that branches away on carry set
         adc generalCounter
         sta positionValidTmp
-        inx
-        inx
-        lda orientationTable,x
+        lda orientationTableX,x
         clc
         adc positionValidTmp
         tay
-        lda (playfieldAddr),y
-        cmp #EMPTY_TILE
-        bcc @invalid
-        lda orientationTable,x
+        lda playfield,y
+        bpl @invalid ; tiles do not set negative flag
+        lda orientationTableX,x
         clc
         adc tetriminoX
         cmp #$0A
@@ -77,10 +62,38 @@ updatePlayfield:
         sta vramRow
 @ret:   rts
 
+crunchLeftColumns = generalCounter3
+crunchRightColumns = generalCounter4
+
 updateMusicSpeed:
-        ldx #$05
-        lda multBy10Table,x
+
+        ; ldx #$05
+        ; lda multBy10Table,x ;this piece of code is parameterized for no reason but the crash checking code relies on the index being 50-59 so if you ever optimize this part out of the code please also adjust the crash test, specifically the part which handles cycles for allegro.
+        ; tay
+
+        ldy #50 ; replaces above
+
+; check if crunch mode
+        ldx practiseType
+        cpx #MODE_CRUNCH
+        bne @notCrunch
+
+        ; add crunch left columns to y
+        jsr unpackCrunchModifier
+        tya
+        clc
+        adc crunchLeftColumns ; offset y with left column count (generalCounter3)
         tay
+
+        ; set x to playable column count
+        lda #$0A
+        sec
+        sbc crunchLeftColumns ; generalCounter3
+        sbc crunchRightColumns ; generalCounter4
+        tax
+        bne @checkForBlockInRow ; unconditional, expected range 4 - 10
+
+@notCrunch:
         ldx #$0A
 @checkForBlockInRow:
         lda (playfieldAddr),y
@@ -90,6 +103,7 @@ updateMusicSpeed:
         dex
         bne @checkForBlockInRow
         lda allegro
+        sta wasAllegro
         beq @ret
         lda #$00
         sta allegro
@@ -99,7 +113,9 @@ updateMusicSpeed:
         jmp @ret
 
 @foundBlockInRow:
+        sty allegroIndex
         lda allegro
+        sta wasAllegro
         bne @ret
         lda #$FF
         sta allegro
@@ -111,6 +127,24 @@ updateMusicSpeed:
         jsr setMusicTrack
 @ret:   rts
 
+checkIfAboveLowStackLine:
+; carry set - block found
+        sec
+        lda #19
+        sbc lowStackRowModifier
+        tax
+        ldy multBy10Table,x
+        ldx #$0A
+        sec
+@checkForBlockInRow:
+        lda playfield,y
+        bpl @foundBlockInRow
+        iny
+        dex
+        bne @checkForBlockInRow
+        clc
+@foundBlockInRow:
+        rts
 
 ; canon is adjustMusicSpeed
 setMusicTrack:

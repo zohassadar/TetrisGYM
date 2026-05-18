@@ -3,7 +3,7 @@
 
 checkDebugGameplay:
         lda debugFlag
-        cmp #0
+        ; cmp #0 ; lda sets z flag
         beq @done
 
         ; sprite
@@ -91,7 +91,7 @@ DEBUG_ORIGINAL_Y := tmp1
 DEBUG_ORIGINAL_CURRENT_PIECE := tmp2
 
         lda debugFlag
-        cmp #0
+        ; cmp #0 ; lda sets z flag
         beq debugPauseDrawPieces
 
         jmp debugSelectMenuControls
@@ -149,22 +149,24 @@ debugContinue:
 @notPressedBothA:
 
         ; change current piece
-        lda newlyPressedButtons_player1
-        and #BUTTON_B
+        lda #BUTTON_B
+        jsr menuThrottle
         beq @notPressedB
-        lda currentPiece
-        cmp #$1
-        bmi @notPressedB
         dec currentPiece
+        bpl @notPressedB
+        lda #$12
+        sta currentPiece
 @notPressedB:
 
-        lda newlyPressedButtons_player1
-        and #BUTTON_A
+        lda #BUTTON_A
+        jsr menuThrottle
         beq @notPressedA
-        lda currentPiece
-        cmp #$12
-        bpl @notPressedA
         inc currentPiece
+        lda currentPiece
+        cmp #$13
+        bne @notPressedA
+        lda #$00
+        sta currentPiece
 @notPressedA:
 
         ; handle piece
@@ -298,9 +300,9 @@ renderStateGameplay:
         rts
 
 renderDebugSaveSlot:
-        lda pausedOutOfDateRenderFlags
-        ora #$2
-        sta pausedOutOfDateRenderFlags
+        lda renderFlags
+        ora #RENDER_DEBUG
+        sta renderFlags
         rts
 
 renderDebugHUD:

@@ -9,21 +9,7 @@ gameMode_gameTypeMenu:
         jsr calc_menuScrollY
         sta menuScrollY
         lda #0
-        sta displayNextPiece
-        RESET_MMC1
-.if HAS_MMC
-        ; switch to blank charmap
-        ; (stops glitching when resetting)
-        lda #$03
-        jsr changeCHRBank1
-.endif
-.if INES_MAPPER = 4
-        ; Horizontal mirroring
-        lda #$1
-        sta MMC3_MIRRORING
-.endif
-        lda #%10011 ; used to be $10 (enable horizontal mirroring)
-        jsr setMMC1Control
+        sta hideNextPiece
         lda #$1
         sta renderMode
         jsr updateAudioWaitForNmiAndDisablePpuRendering
@@ -36,15 +22,12 @@ gameMode_gameTypeMenu:
         sta tmp3
         jsr copyRleNametableToPpuOffset
         .addr   game_type_menu_nametable_extra
-        lda #$00
-        jsr changeCHRBank0
-        lda #$00
-        jsr changeCHRBank1
-.if INES_MAPPER = 3
-CNROM_CHR_MENU:
-        lda #1
-        sta CNROM_CHR_MENU+1
+.if INES_MAPPER <> 0
+        lda #CHRBankSet0
+        jsr changeCHRBanks
 .endif
+        lda #NMIEnable
+        sta currentPpuCtrl
         jsr waitForVBlankAndEnableNmi
         jsr updateAudioWaitForNmiAndResetOamStaging
         jsr updateAudioWaitForNmiAndEnablePpuRendering
@@ -68,8 +51,6 @@ gameTypeLoopCheckStart:
         lda practiseType
         cmp #MODE_KILLX2
         bne @checkSpeedTest
-        lda #$10
-        jsr setMMC1Control
         lda #29
         sta startLevel
         sta levelNumber
@@ -90,6 +71,17 @@ gameTypeLoopCheckStart:
         beq changeGameTypeToSpeedTest
         cmp #MODE_LINECAP
         beq gotoLinecapMenu
+
+        ; check for seed of 0000XX
+        cmp #MODE_SEED
+        bne @checkSelectable
+        lda set_seed_input
+        bne @checkSelectable
+        lda set_seed_input+1
+        and #$FE ; treat 0001 like 0000
+        beq gameTypeLoopNext
+
+@checkSelectable:
         lda practiseType
         cmp #MODE_GAME_QUANTITY
         bpl gameTypeLoopNext
@@ -155,6 +147,7 @@ seedControls:
         lda #BUTTON_RIGHT
         jsr menuThrottle
         beq @skipSeedRight
+@moveRight:
         lda #$01
         sta soundEffectSlot1Init
         inc menuSeedCursorIndex
@@ -166,7 +159,44 @@ seedControls:
 @skipSeedRight:
 
         lda menuSeedCursorIndex
+
+.if KEYBOARD = 1
+@kbSeedLow = generalCounter
+@kbSeedHigh = generalCounter2
+        bne @checkForKbSeedEntry
+        jmp @skipSeedControl
+@checkForKbSeedEntry:
+        jsr readKbSeedEntry
+        bmi @noKeysPressed
+        sta @kbSeedLow
+        asl
+        asl
+        asl
+        asl
+        sta @kbSeedHigh
+        ldy menuSeedCursorIndex
+        dey
+        tya
+        lsr
+        tay
+        ; y = (index-1) // 2
+        ; c = (index-1) % 2
+        lda set_seed_input,y
+        bcc @highByte
+; low byte:
+        and #$F0
+        ora @kbSeedLow
+        bcs @storeSeed
+@highByte:
+        and #$0F
+        ora @kbSeedHigh
+@storeSeed:
+        sta set_seed_input,y
+        jmp @moveRight
+@noKeysPressed:
+.else
         beq @skipSeedControl
+.endif
 
         lda menuSeedCursorIndex
         sbc #1
@@ -224,10 +254,9 @@ seedControls:
         jmp @skipSeedDown
 @lowNybbleDown:
         lda set_seed_input, x
-        clc
         tay
         and #$F
-        cmp #$0
+        ; cmp #$0 ; and sets z flag
         bne @noWrapDown
         tya
         and #$F0
@@ -237,6 +266,7 @@ seedControls:
         jmp @skipSeedDown
 @noWrapDown:
         tya
+        sec
         sbc #1
         sta set_seed_input, x
 @skipSeedDown:
@@ -276,7 +306,7 @@ menuConfigControls:
         beq @skipLeftConfig
         ; check if zero
         lda menuVars, x
-        cmp #0
+        ; cmp #0 ; lda sets z flag
         beq @skipLeftConfig
         ; dec value
         dec menuVars, x
@@ -302,7 +332,7 @@ menuConfigControls:
         rts
 
 menuConfigSizeLookup:
-        .byte   MENUSIZES
+        MENUSIZES
 
 assertValues:
         ; make sure you can only have block or qual
@@ -407,6 +437,7 @@ renderMenuVars:
         lda set_seed_input
         bne @renderIndicator
         lda set_seed_input+1
+        and #$FE ; treat 0001 like 0000
         beq @cursorFinished
 @renderIndicator:
         ldx #$E
@@ -479,15 +510,18 @@ menuYTmp := tmp2
         cmp #MODE_SCORE_DISPLAY
         beq @renderScoreName
 
+        cmp #MODE_CRASH
+        beq @renderCrashMode
+
+        cmp #MODE_DARK
+        beq @renderDarkMode
+
+        jsr menuItemY16Offset
+        bne @loopNext
+        txa
+
         ldx oamStagingLength
 
-        ; get Y offset
-        lda menuCounter
-        asl
-        asl
-        asl
-        adc #MENU_SPRITE_Y_BASE + 1
-        sbc menuScrollY
         sta oamStaging, x
         inx
         lda menuVars, y
@@ -531,12 +565,39 @@ menuYTmp := tmp2
         lda scoringModifier
         sta spriteIndexInOamContentLookup
         lda #(MODE_SCORE_DISPLAY*8) + MENU_SPRITE_Y_BASE + 1
+        jmp @renderOption
+
+@renderCrashMode:
+        jsr menuItemY16Offset
+        bne @loopNext
+        ldx crashModifier
+        lda crashOptions, x
+        sta spriteIndexInOamContentLookup
+        lda #(MODE_CRASH*8) + MENU_SPRITE_Y_BASE + 1
+        jmp @renderOption
+
+@renderDarkMode:
+        jsr menuItemY16Offset
+        bne @loopNext
+        ldx darkModifier
+        lda darkOptions, x
+        sta spriteIndexInOamContentLookup
+        lda #<((MODE_DARK*8) + MENU_SPRITE_Y_BASE + 1)
+
+@renderOption:
+        sec
         sbc menuScrollY
         sta spriteYOffset
         lda #$e9
         sta spriteXOffset
         jsr stringSpriteAlignRight
         jmp @loopNext
+
+crashOptions:
+        .byte $8, $16, $17, $18
+
+darkOptions:
+        .byte $8, $9, $1B, $1C, $1D, $1e
 
 ; <- menu item index in A
 ; -> high byte of offset in A

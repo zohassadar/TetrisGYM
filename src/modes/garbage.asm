@@ -1,11 +1,11 @@
 prepareNextGarbage:
-        lda garbageModifier
-        jsr switch_s_plus_2a
-        .addr garbageAlwaysTetrisReady
-        .addr garbageNormal
-        .addr garbageSmart
-        .addr garbageHard
-        .addr garbageTypeC ; infinite dig
+        branchTo garbageModifier, \
+            garbageAlwaysTetrisReady, \
+            garbageNormal, \
+            garbageSmart, \
+            garbageHard, \
+            garbageTypeC
+            ; garbageTypeC = infinite dig
 
 garbageTypeC:
         jsr findTopBulky
@@ -93,7 +93,7 @@ randomGarbage:
         bcc @done
 
         lda garbageDelay
-        cmp #0
+        ; cmp #0 ; lda sets z flag
         bne @delay
 
         jsr random10
