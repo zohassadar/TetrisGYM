@@ -62,6 +62,7 @@ INPUT DISPLAY
 DISABLE FLASH
 DISABLE PAUSE
 DARK MODE
+PRIDE COLORS
 GOOFY FOOT
 BLOCK TOOL
 LINECAP
@@ -83,7 +84,7 @@ const modeOffset = 6;
 const modeIdx = modeStartRow * 32 + modeOffset;
 
 const urlX = 3;
-const urlY = 17;
+const urlY = 19;
 
 menuScreens = [...Array(30 * 2)]
     .map(() => '#a                            d#'.split(''))
@@ -173,8 +174,8 @@ drawAttrs(extra, [`
     2222222222222222
     2222222222222222
 `, `
-    2333333333333332
     2222222222222222
+    2333333333333332
     2222222222222222
     2222222222222222
     2222222222222222
