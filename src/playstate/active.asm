@@ -417,13 +417,13 @@ shift_tetrimino:
         sec
         sbc arrModifier
         sta dasValuePeriod
-        ldy palFlag
-        ; cpy #0 ; ldy sets z flag
-        beq @shiftTetrimino
-        lda #PAL_DAS
-        sta dasValueDelay
-        lda #PAL_DAS - PAL_ARR
-        sta dasValuePeriod
+        ; ldy palFlag
+        ; ; cpy #0 ; ldy sets z flag
+        ; beq @shiftTetrimino
+        ; lda #PAL_DAS
+        ; sta dasValueDelay
+        ; lda #PAL_DAS - PAL_ARR
+        ; sta dasValuePeriod
 @shiftTetrimino:
 
         lda tetriminoX
