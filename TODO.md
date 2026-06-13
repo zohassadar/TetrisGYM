@@ -7,11 +7,10 @@
 * option to default all
 * multiple scoreboards
 * clear scoreboard individually
-* lowstack & crunch compatibility
-
 
 # Bugs
+* goofy foot toggle is difficult
+* lowstack & crunch do not work together
+* garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
-* ghost piece briefly flashes at the bottom of the board during entry delay
-* harddrop current piece sprite glitchy during lineclears
