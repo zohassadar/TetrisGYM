@@ -28,13 +28,71 @@ displayModeText:
         cpy arrModifier
         beq @notanydas
 @anydas:
-        inc anydasFlag
+        jsr @notanydas
+        ldx #MODE_ANYDAS*6
+        lda tmp2
+        sec
+        sbc #33
+        sta tmp2
+        lda tmp1
+        sbc #0
+        sta tmp1
+        sta PPUADDR
+        lda tmp2
+        sta PPUADDR
+
+; lots of opportunity for efficiency here
+        lda gameMode
+        cmp #3
+        beq @setupMenuAnydas
+        lda #$35
+        sta PPUDATA
+        jsr @startLoop
+        lda #$36
+        sta PPUDATA
+        jmp @setupTopOfBox
+
+@setupMenuAnydas:
+        lda #$3B
+        sta PPUDATA
+        jsr @startLoop
+        lda #$3C
+        sta PPUDATA
+
+@setupTopOfBox:
+        lda tmp2
+        sec
+        sbc #32
+        sta tmp2
+        lda tmp1
+        sbc #0
+        sta PPUADDR
+        lda tmp2
+        sta PPUADDR
+
+
+        ldx #7
+        lda gameMode
+        cmp #3
+        beq @menuAnydasBoxLoop
+
+@gameAnydasBoxLoop:
+        lda topOfBoxGame,x
+        sta PPUDATA
+        dex
+        bpl @gameAnydasBoxLoop
+        rts
+
+@menuAnydasBoxLoop:
+        lda topOfBoxMenu,x
+        sta PPUDATA
+        dex
+        bpl @menuAnydasBoxLoop
+        rts
+
+
 
 @notanydas:
-        ldx #MODE_ANYDAS*6
-        lda anydasFlag
-        bne @drawMode
-        ; practiseType * 6
         lda practiseType
         asl
         sta generalCounter
@@ -47,7 +105,7 @@ displayModeText:
         sta PPUADDR
         lda tmp2
         sta PPUADDR
-
+@startLoop:
         ldy #6
 @writeChar:
         lda modeText-6, x
@@ -124,3 +182,7 @@ bottomOfBoxMenu:
         .byte $3F,$3E,$3E,$3E,$3E,$3E,$3E,$3D
 bottomOfBoxGame:
         .byte $77,$37,$37,$37,$37,$37,$37,$76
+topOfBoxMenu:
+        .byte $3A,$39,$39,$39,$39,$39,$39,$38
+topOfBoxGame:
+        .byte $75,$34,$34,$34,$34,$34,$34,$74
