@@ -10,7 +10,6 @@
 * seed should work with drought mode (provided same modifier)
 
 # Bugs
-* ghost piece displays during entry delay
 * goofy foot toggle is difficult
 * exiting tap/roll speed causes scroll glitch
 * lowstack & crunch do not work together

@@ -13,11 +13,11 @@ stageSpriteForCurrentPiece:
         rts
 
 ghostPiece:
-        lda playState
-        cmp #3
-        bpl @noGhost
         lda tetriminoY
         sta tmp3
+        lda playState
+        cmp #2
+        bpl @noGhost
 @loop:
         inc tetriminoY
         jsr isPositionValid
@@ -35,8 +35,8 @@ ghostPiece:
 
 ; no ghost piece during entry delay
         lda playState
-        cmp #1
-        beq @ghost
+        cmp #2
+        bpl @ghost
         cmp #8
         bne @noGhost
 
