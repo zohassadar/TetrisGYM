@@ -94,10 +94,12 @@ gameMode_levelMenu_processPlayer1Navigation:
         lda #0
         sta levelControlMode
         jsr resetScores
+        jsr resetMenuVars
 .if SAVE_HIGHSCORES
         jsr detectSRAM
         beq @notResettingSavedScores
         jsr resetSavedScores
+        jsr resetSavedVars
 @notResettingSavedScores:
 .endif
         jsr updateAudioWaitForNmiAndResetOamStaging

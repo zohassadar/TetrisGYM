@@ -616,6 +616,7 @@ addInputs:
     sta (udPointer,x)
 @sfx:
     inc soundEffectSlot1Init
+    jsr copyVarsToSram
 @ret:
     rts
 

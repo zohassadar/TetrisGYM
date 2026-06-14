@@ -17,33 +17,6 @@
         jmp @continueWarmBootInit
 
 @coldBoot:
-        ; zero out config memory
-        lda #$0
-        ldx #$A0
-@loop:
-        dex
-        sta menuRAM, x
-        ; cpx #0 ; dex sets z flag
-        bne @loop
-
-        lda #$FF
-        sta paceModifier
-        sta floorModifier
-
-        lda #NTSC_DAS
-        sta dasModifier
-        lda #NTSC_ARR
-        sta arrModifier
-
-        lda #MODE_TETRIS
-        sta practiseType
-
-        lda #INITIAL_LINECAP_LEVEL
-        sta linecapLevel
-        lda #INITIAL_LINECAP_LINES_LO
-        sta linecapLines+1
-        lda #INITIAL_LINECAP_LINES_HI
-        sta linecapLines
 
         jsr resetScores
 

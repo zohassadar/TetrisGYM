@@ -45,6 +45,11 @@ displayModeText:
         lda gameMode
         cmp #3
         beq @setupMenuAnydas
+        lda gameModeState
+        beq @setupGameAnydas
+        rts ; skip when in high score entry screen
+
+@setupGameAnydas:
         lda #$35
         sta PPUDATA
         jsr @startLoop

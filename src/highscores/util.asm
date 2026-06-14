@@ -1,12 +1,10 @@
 resetScores:
-        ldx #$0
+        ldx #highScoreLength * highScoreQuantity - 1
         lda #$0
 @initHighScoreTable:
-        cpx #highScoreLength * highScoreQuantity
-        beq @continue
         sta highscores,x
-        inx
-        jmp @initHighScoreTable
+        dex
+        bpl @initHighScoreTable
 @continue:
         rts
 
@@ -18,6 +16,26 @@ resetMenuVars:
         sta menuVars,x
         dex
         bpl @loop
+
+        lda #$FF
+        sta paceModifier
+        sta floorModifier
+
+        lda #NTSC_DAS
+        sta dasModifier
+        lda #NTSC_ARR
+        sta arrModifier
+
+        lda #MODE_TETRIS
+        sta practiseType
+
+        lda #INITIAL_LINECAP_LEVEL
+        sta linecapLevel
+        lda #INITIAL_LINECAP_LINES_LO
+        sta linecapLines+1
+        lda #INITIAL_LINECAP_LINES_HI
+        sta linecapLines
+
         rts
 
 
@@ -54,16 +72,28 @@ resetSavedScores:
         lda #$D2
         sta SRAM_hsMagic+3
 
-        ldx #$0
+        ldx #highScoreLength * highScoreQuantity - 1
         lda #$0
 @copyLoop:
-        cpx #highScoreLength * highScoreQuantity
-        beq @continue
         sta SRAM_highscores,x
-        inx
-        jmp @copyLoop
+        dex
+        bpl @copyLoop
+
+; copy variables
+
+
+resetSavedVars:
+        jsr resetMenuVars
+copyVarsToSram:
+        ldx #sramVariableLength - 1
+@varsLoop:
+        lda menuVars,x
+        sta SRAM_variables,x
+        dex
+        bpl @varsLoop
 @continue:
         rts
+
 
 copyScoresFromSRAM:
         ldx #highScoreLength * highScoreQuantity - 1
@@ -95,13 +125,4 @@ copyVarsFromSRAM:
 @continue:
         rts
 
-copyVarsToSRAM:
-        ldx #sramVariableLength - 1
-@copyLoop:
-        lda menuVars,x
-        sta SRAM_variables,x
-        dex
-        bpl @copyLoop
-@continue:
-        rts
 .endif
