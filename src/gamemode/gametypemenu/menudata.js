@@ -75,6 +75,8 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 
 const presetModifier = ["TYPE_NUMBER", "preset", 8, "presetModifier"];
 const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
+const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
+const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];
 const checkerModifier = ["TYPE_NUMBER", "height", 9, "checkerModifier"];
 const quickTapLeftModifier = ["TYPE_NUMBER", "left", 20, "tapLeftModifier"];
 const quickTapRightModifier = ["TYPE_NUMBER", "right", 20, "tapRightModifier"];
@@ -160,6 +162,7 @@ const displaySubMenu = {
     ],
 };
 
+
 const moreSubMenu = {
     "more options[mode=default]": [
         crashModifier,
@@ -194,12 +197,24 @@ const goToMore = ["TYPE_SUBMENU", "more", moreSubMenu];
 
 const shared = [goToMods, goToInfo, goToDisplay, goToDas, goToMore];
 
+const optionsSubMenu = {
+    "options[mode=default]": [
+        ...shared,
+    ],
+};
+const goToShared = ["TYPE_SUBMENU", "options", optionsSubMenu];
 const mainMenu = {
     "play tetris[mode=tetris]": [goToTournament, ...shared],
     "t-spins[mode=tspins]": [...shared],
     "setups[mode=presets]": [presetModifier, ...shared],
     "stacking[mode=stacking]": [goToTournament, ...shared],
-    "b-type[mode=typeb]": [typeBModifier, ...shared],
+    "b-type[mode=typeb]": [
+        typeBModifier,
+        typeBSeed,
+        typeBSeedFlag,
+        goToTournament,
+        goToShared,
+    ],
     "(quick)tap[mode=tap]": [
         quickTapLeftModifier,
         quickTapRightModifier,

@@ -247,6 +247,27 @@ presetScoreFromBCD:
         rts
 
 initPlayfieldForTypeB:
+; decide which seed to use
+        lda typeBSeedFlag
+        beq @notSeeded
+
+; seeded
+        lda b_seed_input
+        sta b_seed
+        lda b_seed_input+1
+        sta b_seed+1
+        jmp @checkModifier
+
+@notSeeded:
+        lda rng_seed
+        sta b_seed
+        sta b_seed_input
+        lda rng_seed+1
+        sta b_seed+1
+        sta b_seed_input+1
+
+
+@checkModifier:
         lda typeBModifier
         cmp #$6
         bmi @normalStart
@@ -268,9 +289,9 @@ L87E7:  lda generalCounter
         sta vramRow
         lda #$09
         sta generalCounter3
-L87FC:  ldx #rng_seed
+L87FC:  ldx #b_seed
         jsr generateNextPseudorandomNumber
-        lda rng_seed
+        lda b_seed
         and #$07
         tay
         lda rngTable,y
@@ -287,9 +308,9 @@ L87FC:  ldx #rng_seed
         dec generalCounter3
         jmp L87FC
 
-L8824:  ldx #rng_seed
+L8824:  ldx #b_seed
         jsr generateNextPseudorandomNumber
-        lda rng_seed
+        lda b_seed
         and #$0F
         cmp #$0A
         bpl L8824

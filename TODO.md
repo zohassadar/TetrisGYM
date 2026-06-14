@@ -3,11 +3,8 @@
 * pressing b on multi page should go to top of page
 * rework tests to fit multi mode
 * add animation to cursor arrows
-* menu options stored in sram
-* option to default all
 * multiple scoreboards
 * clear scoreboard individually
-* seed should work with drought mode (provided same modifier)
 
 # Bugs
 * goofy foot toggle is difficult

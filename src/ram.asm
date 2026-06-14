@@ -13,7 +13,7 @@ nmiReturnAddr: .res 1 ; $0010 ; used for crash
 crashState: .res 1 ; $0011 ; used for crash
 cycleCount: .res 2 ; $0012 ; 2 bytes ; used for crash
 oneThirdPRNG: .res 1 ; $0014 ; used for crash
-    .res $2
+b_seed: .res 2 ; loaded with rng_seed unless seeded
 
 rng_seed: .res 2 ; $0017
 spawnID: .res 1 ; $0019
@@ -431,6 +431,8 @@ noWallChargeFlag: .res 1
 disableDasFlag: .res 1
 noLineClearDelayFlag: .res 1
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
+b_seed_input: .res 2
+typeBSeedFlag: .res 1
 
 sramVariableLength := * - menuVars
 

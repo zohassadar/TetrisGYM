@@ -28,6 +28,8 @@ renderComplete:
 
         ldx #rng_seed
         jsr generateNextPseudorandomNumber
+        ldx #b_seed
+        jsr generateNextPseudorandomNumber
 
         jsr pollControllerButtons
 

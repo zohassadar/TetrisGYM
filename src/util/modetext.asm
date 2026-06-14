@@ -118,6 +118,24 @@ displayModeText:
         inx
         dey
         bne @writeChar
+
+; cover TYPE with seed if seeded b type
+        lda practiseType
+        cmp #MODE_TYPEB
+        bne @ret
+        lda typeBSeedFlag
+        beq @ret
+        lda tmp1
+        sta PPUADDR
+        lda tmp2
+        clc
+        adc #2
+        sta PPUADDR
+        lda b_seed_input
+        jsr twoDigsToPPU
+        lda b_seed_input+1
+        jsr twoDigsToPPU
+@ret:
         rts
 
 patchSeed:

@@ -1,7 +1,6 @@
 const { mainMenu, extraSpriteStrings } = require("./menudata");
 const { writeFileSync } = require("fs");
 
-
 MAX_LENGTH_NAME = 14;
 MAX_LENGTH_VALUE = 8;
 DEBUG = false;
@@ -207,7 +206,10 @@ function getMemoryLabel(string, bytes) {
 processPageSet = (pages, name) => {
     DEBUG && name && console.log(`submenu ${name}`);
     DEBUG && !name && console.log(`main menu`);
-    if (name) menuEnums.push(`SUBMENU_${cleanWord(name).toUpperCase()}`);
+    if (name) {
+        const enunName = `SUBMENU_${cleanWord(name).toUpperCase()}`;
+        if (!menuEnums.includes(enunName)) menuEnums.push(enunName);
+    }
     startPageByMenu.push(
         `${getByteLine(getHexByte(pageIndex))} ; ${name ? name : "main menu"}`,
     );
