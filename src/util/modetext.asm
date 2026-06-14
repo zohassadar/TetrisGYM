@@ -119,6 +119,8 @@ displayModeText:
         dey
         bne @writeChar
 
+        cpx #MODE_ANYDAS*6+6
+        beq @ret
 ; cover TYPE with seed if seeded b type
         lda practiseType
         cmp #MODE_TYPEB
