@@ -63,8 +63,12 @@ waitScreenLoad:
         lda #1
         sta byteSpriteLen
         jsr byteSprite
+        lda newlyPressedButtons_player1
+        and #BUTTON_START
+        bne @exitLoop
         lda sleepCounter
         bne @loop
+@exitLoop:
         inc screenStage
         jmp @justLegal
 
