@@ -10,7 +10,13 @@ CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         bne @notZero
         ldx #$BE
 @notZero:
+        lda seededPieces
+        beq @random
+        lda set_seed_input+1
+        jmp @branch
+@random:
         lda frameCounter
+@branch:
         and #1
         beq @checkerStartA
         lda #CHECKERBOARD_TILE
