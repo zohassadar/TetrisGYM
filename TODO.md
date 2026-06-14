@@ -8,7 +8,6 @@
 
 # Bugs
 * goofy foot toggle is difficult
-* exiting tap/roll speed causes scroll glitch
 * lowstack & crunch do not work together
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag

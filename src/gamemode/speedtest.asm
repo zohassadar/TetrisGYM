@@ -48,6 +48,11 @@ gameMode_speedTest:
         jmp @loop
 
 @back:
+        lda #00
+        sta renderMode
+        lda currentPpuMask
+        and #$E7
+        sta PPUMASK
         lda #$02
         sta soundEffectSlot1Init
         sta gameMode
