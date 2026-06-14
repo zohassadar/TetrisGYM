@@ -21,6 +21,12 @@ MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 9
 MENU_STACK = $DF ; $01C8 - $01DF intended range
 
+.enum
+GOOFY_TOGGLE
+RESET_DEFAULTS
+CLEAR_SCOREBOARD
+.endenum
+
 menuDataStart:
 .include "menudata.asm"
 .out .sprintf("Menu data: %d", *-menuDataStart)
@@ -35,7 +41,7 @@ VALUE_MASK = %00011111
 TYPE_MASK = %11100000
 
 ; tttnnnnn
-TYPE_UNUSED = %00000000
+TYPE_CUSTOM = %00000000
 TYPE_NUMBER = %00100000  ; n = limit
 TYPE_CHOICES = %01000000 ; n = wordlist index
 TYPE_FF_OFF = %01100000  ; n = limit
@@ -547,7 +553,41 @@ checkIfGameStartOrSubmenu:
 
     cmp #TYPE_SUBMENU
     beq goToSubMenu
+
+    cmp #TYPE_CUSTOM
+    beq @goToCustom
+
+@checkPageMode:
     jmp checkPageMode
+
+
+@goToCustom:
+    lda newlyPressedButtons_player1
+    and #BUTTON_A+BUTTON_START
+    beq customClearScoreboard
+    branchTo unpackedItemValue, \
+        customToggleGoofy, \
+        customResetDefaults, \
+        customClearScoreboard
+
+customToggleGoofy:
+    lda goofyFlag
+    eor #1
+    sta goofyFlag
+    lda heldButtons_player1
+    asl
+    and #$AA
+    sta tmp3
+    lda heldButtons_player1
+    and #$AA
+    lsr
+    ora tmp3
+    sta heldButtons_player1
+customResetDefaults:
+customClearScoreboard:
+    rts
+
+
 
 goToSubMenu:
     lda unpackedItemValue

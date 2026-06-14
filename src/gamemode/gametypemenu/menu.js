@@ -14,6 +14,7 @@ labelMap = {
     TYPE_MODE_ONLY: getOutputLines,
     TYPE_SUBMENU: typeSubMenu,
     TYPE_BOOL: typeBool,
+    TYPE_CUSTOM: typeCustom,
 };
 
 addedStrings = [];
@@ -193,6 +194,13 @@ function typeSubMenu(label, string) {
     return getOutputLines(
         `${label} | SUBMENU_${cleanWord(string).toUpperCase()}`,
         `${string}`,
+    );
+}
+function typeCustom(label, string, subroutine, memoryLabel) {
+    return getOutputLines(
+        `${label} | ${subroutine}`,
+        `${string}`,
+        memoryLabel ? memoryLabel : 1,
     );
 }
 

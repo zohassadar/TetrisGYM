@@ -47,7 +47,7 @@ const crashModifier = [
 ];
 const strictCrashFlag = ["TYPE_BOOL", "strict crash", "strictFlag"];
 const disablePause = ["TYPE_BOOL", "disable pause", "disablePauseFlag"];
-const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
+const goofyFlag = ["TYPE_CUSTOM", "toggle goofy", "GOOFY_TOGGLE", "goofyFlag"];
 const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
 const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard"];
@@ -168,11 +168,11 @@ const moreSubMenu = {
         crashModifier,
         strictCrashFlag,
         disablePause,
-        goofyFlag,
         debugFlag,
         palFlag,
         qualFlag,
-        keyboardFlag,
+        // keyboardFlag,
+        goofyFlag,
     ],
 };
 
