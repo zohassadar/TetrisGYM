@@ -16,7 +16,9 @@
 .linecont
 
 .segment    "PRG_chunk1": absolute
-
+.align $100
+; these tables benefit from page alignment
+.include "data/mult_orient.asm"
 ; region code at start of page to keep cycle count consistent
 .include "util/check_region.asm"
 .include "audio.asm"
@@ -89,10 +91,6 @@ mainLoop:
 .include "modes/garbage.asm"
 .include "seeds.asm"
 .include "modes/dasmeter.asm"
-
-.align $100
-; these tables benefit from page alignment
-.include "data/mult_orient.asm"
 
 .segment    "PRG_chunk3": absolute
 
