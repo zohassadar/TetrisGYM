@@ -17,6 +17,14 @@
         jmp @continueWarmBootInit
 
 @coldBoot:
+        ; zero out config memory
+        lda #$0
+        ldx #$A0
+@loop:
+        dex
+        sta menuRAM, x
+        ; cpx #0 ; dex sets z flag
+        bne @loop
 
         jsr resetScores
 
