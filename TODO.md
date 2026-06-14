@@ -5,9 +5,9 @@
 * add animation to cursor arrows
 * multiple scoreboards
 * clear scoreboard individually
+* decimal display
 
 # Bugs
-* goofy foot toggle is difficult
 * lowstack & crunch do not work together
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
