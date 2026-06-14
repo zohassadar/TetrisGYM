@@ -429,6 +429,7 @@ trtFlag: .res 1
 dasMeterFlag: .res 1
 noWallChargeFlag: .res 1
 disableDasFlag: .res 1
+noLineClearDelayFlag: .res 1
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
 
 sramVariableLength := * - menuVars

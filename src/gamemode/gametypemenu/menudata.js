@@ -54,8 +54,18 @@ const keyboardFlag = ["TYPE_BOOL", "keyboard"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 
 const floorModifier = ["TYPE_FF_OFF", "floor", 16, "floorModifier"];
-const crunchLeftModifier = ["TYPE_NUMBER", "crunch left", 4, "crunchLeftModifier"];
-const crunchRightModifier = ["TYPE_NUMBER", "crunch right", 4, "crunchRightModifier"];
+const crunchLeftModifier = [
+    "TYPE_NUMBER",
+    "crunch left",
+    4,
+    "crunchLeftModifier",
+];
+const crunchRightModifier = [
+    "TYPE_NUMBER",
+    "crunch right",
+    4,
+    "crunchRightModifier",
+];
 const invisibleFlag = ["TYPE_BOOL", "invisible", "invisibleOptionFlag"];
 const ghostPiece = ["TYPE_BOOL", "ghost", "ghostPieceFlag"];
 const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
@@ -66,18 +76,8 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const presetModifier = ["TYPE_NUMBER", "preset", 8, "presetModifier"];
 const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
 const checkerModifier = ["TYPE_NUMBER", "height", 9, "checkerModifier"];
-const quickTapLeftModifier = [
-    "TYPE_NUMBER",
-    "left",
-    20,
-    "tapLeftModifier",
-];
-const quickTapRightModifier = [
-    "TYPE_NUMBER",
-    "right",
-    20,
-    "tapRightModifier",
-];
+const quickTapLeftModifier = ["TYPE_NUMBER", "left", 20, "tapLeftModifier"];
+const quickTapRightModifier = ["TYPE_NUMBER", "right", 20, "tapRightModifier"];
 const transitionModifier = [
     "TYPE_NUMBER",
     "modifier",
@@ -86,6 +86,11 @@ const transitionModifier = [
 ];
 const marathonModifier = ["TYPE_NUMBER", "modifier", 5, "marathonModifier"];
 const tapqtyModifier = ["TYPE_NUMBER", "height", 16, "tapqtyModifier"];
+const noLineClearDelayFlag = [
+    "TYPE_BOOL",
+    "no line clear",
+    "noLineClearDelayFlag",
+];
 const garbageModifier = ["TYPE_NUMBER", "modifier", 5, "garbageModifier"];
 const droughtModifier = ["TYPE_NUMBER", "modifier", 20, "droughtModifier"];
 const lowStackRowModifier = [
@@ -200,7 +205,11 @@ const mainMenu = {
         quickTapRightModifier,
         ...shared,
     ],
-    "tap quantity[mode=tapqty]": [tapqtyModifier, ...shared],
+    "tap quantity[mode=tapqty]": [
+        tapqtyModifier,
+        noLineClearDelayFlag,
+        ...shared,
+    ],
     "transition[mode=transition]": [
         transitionModifier,
         goToTournament,

@@ -122,14 +122,11 @@ playState_checkForCompletedRows:
         cmp #MODE_TAPQTY
         bne @tapQtyEnd
         lda completedLines
-        ; cmp #0 ; lda sets z flag
         beq @tapQtyEnd
         ; mark as complete
         lda tqtyNext
         sta tqtyCurrent
-        ; handle no burns
-        lda tapqtyModifier
-        and #$F0
+        lda noLineClearDelayFlag
         beq @tapQtyEnd
         lda #0
         sta vramRow
