@@ -135,6 +135,18 @@ gameTypeLoop:
     ; todo: write down which vars are used by which func
     jsr collectControllerInput
     jsr setScratch
+
+    ldx activeItem
+    lda itemTypes,x
+    cmp #TYPE_CUSTOM | GOOFY_TOGGLE
+    bne @notGoofyToggle
+
+    lda #0
+    sta lrAdjust
+
+
+
+@notGoofyToggle:
     jsr addInputs
     jsr respondToInput
     jsr stageCursor
