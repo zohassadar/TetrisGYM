@@ -97,8 +97,7 @@ L9934:  tax
         lda spawnTable,x
 useNewSpawnID:
         sta spawnID
-        jsr pickTetriminoPost
-        rts
+        jmp pickTetriminoPost
 
 pickTetriminoPre:
         lda practiseType
@@ -190,7 +189,7 @@ pickTetriminoSeed:
         lda spawnTable,x
 @useNewSpawnID:
         sta spawnID
-        rts
+        jmp pickTetriminoPost
 
 setSeedNextRNG:
         ldx #set_seed
@@ -237,10 +236,15 @@ pickTetriminoPost:
         rts
 
 pickTetriminoDrought:
+        ldx #rng_seed+1
+        lda seedEnabled
+        beq @notSeeded
+        ldx #set_seed+1
+@notSeeded:
         lda spawnID ; restore A
         cmp #$12
         bne @droughtDone
-        lda rng_seed+1
+        lda $00,x
         and #$F
         adc #1 ; always adds 1 so code continues as normal if droughtModifier is 0
         cmp droughtModifier
@@ -249,4 +253,8 @@ pickTetriminoDrought:
 @droughtDone:
         rts
 @pickRando:
+        lda seedEnabled
+        beq @vanillaRng
+        jmp pickTetriminoSeed
+@vanillaRng:
         jmp pickRandomTetrimino

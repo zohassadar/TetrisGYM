@@ -10,8 +10,6 @@ checkIfSeeded:
         beq @noSeed
         cmp #MODE_PRESETS
         beq @noSeed
-        cmp #MODE_DROUGHT
-        beq @noSeed
         inc seededPieces
 @noSeed:
         rts
