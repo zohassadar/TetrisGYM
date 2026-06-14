@@ -52,6 +52,7 @@
         beq @noSRAM
         jsr checkSavedInit
         jsr copyScoresFromSRAM
+        jsr copyVarsFromSRAM
 @noSRAM:
 .endif
 

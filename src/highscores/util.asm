@@ -10,6 +10,17 @@ resetScores:
 @continue:
         rts
 
+
+resetMenuVars:
+        ldx #sramVariableLength -1
+        lda #$0
+@loop:
+        sta menuVars,x
+        dex
+        bpl @loop
+        rts
+
+
 .if SAVE_HIGHSCORES
 detectSRAM:
         lda #$37
@@ -55,27 +66,42 @@ resetSavedScores:
         rts
 
 copyScoresFromSRAM:
-        ldx #$0
+        ldx #highScoreLength * highScoreQuantity - 1
 @copyLoop:
-        cpx #highScoreLength * highScoreQuantity
-        beq @continue
         lda SRAM_highscores,x
         sta highscores,x
-        inx
-        jmp @copyLoop
+        dex
+        bpl @copyLoop
 @continue:
         rts
 
 copyScoresToSRAM:
-        ldx #$0
+        ldx #highScoreLength * highScoreQuantity - 1
 @copyLoop:
-        cpx #highScoreLength * highScoreQuantity
-        beq @continue
         lda highscores,x
         sta SRAM_highscores,x
-        inx
-        jmp @copyLoop
+        dex
+        bpl @copyLoop
 @continue:
         rts
 
+copyVarsFromSRAM:
+        ldx #sramVariableLength - 1
+@copyLoop:
+        lda SRAM_variables,x
+        sta menuVars,x
+        dex
+        bpl @copyLoop
+@continue:
+        rts
+
+copyVarsToSRAM:
+        ldx #sramVariableLength - 1
+@copyLoop:
+        lda menuVars,x
+        sta SRAM_variables,x
+        dex
+        bpl @copyLoop
+@continue:
+        rts
 .endif

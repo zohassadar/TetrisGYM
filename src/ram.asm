@@ -364,27 +364,32 @@ highScoreLength := highScoreNameLength + highScoreScoreLength + highScoreLinesLe
 initMagic: .res 5 ; $075B                        ; Initialized to a hard-coded number. When resetting, if not correct number then it knows this is a cold boot
 
 menuRAM:  ; $760
-menuSeedCursorIndex: .res 1
-menuScrollY: .res 1
 menuMoveThrottle: .res 1
 menuThrottleTmp: .res 1
 levelControlMode: .res 1
 customLevel: .res 1
 classicLevel: .res 1
 heartsAndReady: .res 1   ; high nybble used for ready
-linecapCursorIndex: .res 1
+practiseType: .res 1
+
+; menu
+activeMenu: .res 1
+activePage: .res 1
+activeRow: .res 1
+activeColumn: .res 1
+menuStackPtr: .res 1
+
+menuVars:
 linecapWhen: .res 1
 linecapHow: .res 1
 linecapLevel: .res 1
 linecapLines: .res 2
-menuVars: ; $76E
 paceModifier: .res 1
 presetModifier: .res 1
 typeBModifier: .res 1
 floorModifier: .res 1
 crunchLeftModifier: .res 1
 crunchRightModifier: .res 1
-tapModifier: .res 1
 transitionModifier: .res 1
 marathonModifier: .res 1
 tapqtyModifier: .res 1
@@ -403,7 +408,6 @@ disablePauseFlag: .res 1
 darkModifier: .res 1
 goofyFlag: .res 1
 debugFlag: .res 1
-linecapFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
@@ -412,7 +416,6 @@ seedEnabled: .res 1
 seededPieces: .res 1
 ghostPieceFlag: .res 1
 hardDropFlag: .res 1
-noEntryDelayFlag: .res 1
 invisibleOptionFlag: .res 1
 killX2Flag: .res 1
 tapLeftModifier: .res 1
@@ -426,22 +429,14 @@ trtFlag: .res 1
 dasMeterFlag: .res 1
 noWallChargeFlag: .res 1
 disableDasFlag: .res 1
+set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
 
+sramVariableLength := * - menuVars
 
 .if KEYBOARD = 1
 keyboardFlag: .res 1
 .endif
 
-
-set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
-practiseType: .res 1 ; $600
-; menu
-activeMenu: .res 1
-activePage: .res 1
-activeRow: .res 1
-activeColumn: .res 1
-menuStackPtr: .res 1
-; cursorToggle:    .res 1  ; change this to flag if you need it later
 
 .include "gamemode/gametypemenu/menuram.asm"
 

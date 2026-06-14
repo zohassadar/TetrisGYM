@@ -4,7 +4,6 @@ gameMode_bootScreen: ; boot
         ; reset cursors
         lda #$0
         sta practiseType
-        sta menuSeedCursorIndex
 
         ; levelMenu stuff
         sta levelControlMode
