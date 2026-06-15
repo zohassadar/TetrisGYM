@@ -41,15 +41,15 @@ resetMenuVars:
 
 .if SAVE_HIGHSCORES
 detectSRAM:
-        lda #$37
+        lda #HIGH_SCORE_MAGIC0
         sta SRAM_hsMagic
-        lda #$64
+        lda #HIGH_SCORE_MAGIC1
         sta SRAM_hsMagic+1
         lda SRAM_hsMagic
-        cmp #$37
+        cmp #HIGH_SCORE_MAGIC0
         bne @noSRAM
         lda SRAM_hsMagic+1
-        cmp #$64
+        cmp #HIGH_SCORE_MAGIC1
         bne @noSRAM
         lda #1
         rts
@@ -59,17 +59,17 @@ detectSRAM:
 
 checkSavedInit:
         lda SRAM_hsMagic+2
-        cmp #$4B
+        cmp #HIGH_SCORE_MAGIC2
         bne resetSavedScores
         lda SRAM_hsMagic+3
-        cmp #$D2
+        cmp #HIGH_SCORE_MAGIC3
         bne resetSavedScores
         rts
 
 resetSavedScores:
-        lda #$4B
+        lda #HIGH_SCORE_MAGIC2
         sta SRAM_hsMagic+2
-        lda #$D2
+        lda #HIGH_SCORE_MAGIC3
         sta SRAM_hsMagic+3
 
         ldx #highScoreLength * highScoreQuantity - 1
