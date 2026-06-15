@@ -67,10 +67,12 @@ drawTiles(
 `,
 );
 
-const gitTag = spawnSync("git", ["describe", "--tags"]).stdout.toString();
-[...gitTag.trim()].forEach(
-    (c, i) => (buffer[32 * 28 + 6 + i] = lookup.indexOf(c.toUpperCase())),
-);
+spawnSync("git", ["describe", "--tags"])
+    .stdout.toString()
+    .match(/./g)
+    .forEach(
+        (c, i) => (buffer[32 * 28 + 6 + i] = lookup.indexOf(c.toUpperCase())),
+    );
 
 const background = `
 ɢ##############################ɳ
