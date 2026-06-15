@@ -1,16 +1,39 @@
 stageDasMeterSprites:
-    lda dasMeterFlag
-    beq @ret
-    lda playState
-    beq @ret
-
 @dasValue = generalCounter
 @tile = generalCounter2
 @redCompare = generalCounter3
 @orangeCompare = generalCounter4
+@dasMax = generalCounter5
+@halfTile = tmpX
+    lda #0
+    sta @halfTile
 @yCoordinate = 211
 @xStart = 103
+    lda dasMeterFlag
+    beq @noMeter
+    lda playState
+    bne @meter
+@noMeter:
+    rts
+@meter:
+    lda autorepeatX
+    bpl @notNegative
+    lda #0
+@notNegative:
+    sta @dasValue
+
     lda dasModifier
+    sta @dasMax
+
+    cmp #17
+    bcc @setCompare
+
+; half values for 17 or more (max 30 currently)
+    lsr @dasMax
+    lsr @dasValue
+
+@setCompare:
+    lda @dasMax
     lsr
     lsr
     sta @orangeCompare
@@ -21,10 +44,10 @@ stageDasMeterSprites:
 
     lda #$FE
     sta @tile
-    lda autorepeatX
+    lda @dasValue
     lsr
-    php
     sta @dasValue
+    rol @halfTile
     cmp @orangeCompare
     bcs @stageSprites
     dec @tile
@@ -33,9 +56,13 @@ stageDasMeterSprites:
     dec @tile
 @stageSprites:
     ldx oamStagingLength
-    lda #0
     ldy #@xStart
-
+    lda @dasValue
+    beq @drawHalfTile
+    cmp #9
+    bcc @loop
+    lda #8
+    sta @dasValue
 @loop:
     lda @tile
     sta oamStaging+1,x
@@ -55,9 +82,12 @@ stageDasMeterSprites:
     tay
     dec @dasValue
     stx oamStagingLength
-    bpl @loop
-    plp
-    bcc @ret
+    bne @loop
+
+; check to see if carry was set for half width tile
+    lda @halfTile
+    beq @ret
+@drawHalfTile:
     lda @tile
     sec
     sbc #32

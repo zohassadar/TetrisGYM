@@ -109,8 +109,8 @@ const noWallChargeFlag = [
     "noWallChargeFlag",
 ];
 const disableDasFlag = ["TYPE_CHOICES", "das", ["on", "off"], "disableDasFlag"];
-const anydasDas = ["TYPE_NUMBER", "delay", 32, "dasModifier"];
-const anydasArr = ["TYPE_NUMBER", "arrrr", 32, "arrModifier"];
+const anydasDas = ["TYPE_NUMBER", "delay", 31, "dasModifier"];
+const anydasArr = ["TYPE_NUMBER", "arrrr", 31, "arrModifier"];
 const anydasEntryDelay = [
     "TYPE_CHOICES",
     "entry charge",

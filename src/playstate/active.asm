@@ -439,10 +439,10 @@ shift_tetrimino:
         beq @ret
         lda disableDasFlag
         bne @ret
-        inc autorepeatX
         lda autorepeatX
+        inc autorepeatX
         cmp dasValueDelay
-        bmi @ret
+        bne @ret
 @zeroDas:
         lda dasValuePeriod
         cmp dasValueDelay
