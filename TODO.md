@@ -6,6 +6,7 @@
 * multiple scoreboards
 * clear scoreboard individually
 * decimal display
+* height 6-8 logic can be rearranged to be closer to vanilla
 
 # Bugs
 * lowstack & crunch do not work together

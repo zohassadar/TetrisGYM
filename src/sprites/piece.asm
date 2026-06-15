@@ -15,9 +15,6 @@ stageSpriteForCurrentPiece:
 ghostPiece:
         lda tetriminoY
         sta tmp3
-        lda playState
-        cmp #2
-        bpl @noGhost
 @loop:
         inc tetriminoY
         jsr isPositionValid
@@ -29,17 +26,14 @@ ghostPiece:
         ; check if equal to current position
         cmp tmp3
         beq @noGhost
-
         lda ghostPieceFlag
         beq @noGhost
-
 ; no ghost piece during entry delay
         lda playState
-        cmp #2
-        bpl @ghost
+        cmp #1
+        beq @ghost
         cmp #8
         bne @noGhost
-
 @ghost:
         lda frameCounter
         and #1
