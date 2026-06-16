@@ -28,7 +28,7 @@ playState_updateLinesAndStatistics:
         sec
         sbc generalCounter
         sta lines
-        bpl @checkForBorrow
+        bcs @checkForBorrow
         lda #$00
         sta lines
         jmp addPoints

@@ -36,6 +36,9 @@ resetMenuVars:
         lda #INITIAL_LINECAP_LINES_HI
         sta linecapLines
 
+        lda #BTYPE_START_LINES
+        sta bTypeLines
+
         rts
 
 

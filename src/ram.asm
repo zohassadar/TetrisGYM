@@ -437,6 +437,7 @@ b_seed_input: .res 2
 typeBSeedFlag: .res 1
 vitsScoreFlag: .res 1
 gameTimerFlag: .res 1
+bTypeLines: .res 1
 
 sramVariableLength := * - menuVars
 

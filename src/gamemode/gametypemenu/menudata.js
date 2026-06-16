@@ -78,6 +78,7 @@ const presetModifier = ["TYPE_NUMBER", "preset", 8, "presetModifier"];
 const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
 const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
 const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];
+const bTypeLines = ["TYPE_BCD", "lines", 2, "bTypeLines"];
 const checkerModifier = ["TYPE_NUMBER", "height", 9, "checkerModifier"];
 const quickTapLeftModifier = ["TYPE_NUMBER", "left", 20, "tapLeftModifier"];
 const quickTapRightModifier = ["TYPE_NUMBER", "right", 20, "tapRightModifier"];
@@ -216,6 +217,7 @@ const mainMenu = {
         typeBModifier,
         typeBSeed,
         typeBSeedFlag,
+        bTypeLines,
         goToTournament,
         goToShared,
     ],
