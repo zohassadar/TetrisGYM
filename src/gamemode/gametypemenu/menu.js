@@ -1,11 +1,11 @@
 const { mainMenu, extraSpriteStrings } = require("./menudata");
 const { writeFileSync } = require("fs");
 
-MAX_LENGTH_NAME = 14;
-MAX_LENGTH_VALUE = 8;
-DEBUG = false;
+const MAX_LENGTH_NAME = 14;
+const MAX_LENGTH_VALUE = 8;
+const DEBUG = false;
 
-labelMap = {
+const labelMap = {
     TYPE_BCD: typeDigit,
     TYPE_HEX: typeDigit,
     TYPE_NUMBER: typeNumber,
@@ -17,41 +17,41 @@ labelMap = {
     TYPE_CUSTOM: typeCustom,
 };
 
-addedStrings = [];
-buffer = [];
-choiceSetCounts = [];
-choiceSetEnums = [];
-choiceSetIndexes = [];
-choiceSets = [];
-index = 0;
-items = [];
-lookupConstants = [];
-memoryBuffer = [];
-memoryMap = [];
-memoryReservations = {};
-menuCount = 0;
-menuEnums = [];
-newStringLines = [];
-pageCountByMenu = [];
-pageIndex = 0;
-pageLabelText = {};
-pagesOutput = [];
-startItemByPage = [];
-startPageByMenu = [];
-unlabeledStringSets = {};
+const addedStrings = [];
+const buffer = [];
+const choiceSetCounts = [];
+const choiceSetEnums = [];
+const choiceSetIndexes = [];
+const choiceSets = [];
+let index = 0;
+const items = [];
+const lookupConstants = [];
+const memoryBuffer = [];
+const memoryMap = [];
+const memoryReservations = {};
+const menuEnums = [];
+const newStringLines = [];
+const pageCountByMenu = [];
+let pageIndex = 0;
+const pageLabelText = {};
+const pagesOutput = [];
+const startItemByPage = [];
+const startPageByMenu = [];
+const unlabeledStringSets = {};
 
 function checkStringSanity(string) {
     if (string.length > MAX_LENGTH_VALUE) {
         throw new Error(`${string} is more than MAX_LENGTH_VALUE chars`);
     }
-    if ((match = string.match(/[^-\/ a-z0-9_?!*]/i))) {
+    let match;
+    if ((match = string.match(/[^-/ a-z0-9_?!*]/i))) {
         throw new Error(`${string} has invalid char '${match[0]}'`);
     }
 }
 
 function cleanWord(word) {
     word = word.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
-    return word.replace(/[- *?!(),\/]/g, "");
+    return word.replace(/[- *?!(),/]/g, "");
 }
 
 function getStringName(word) {
@@ -88,7 +88,7 @@ function getOutputLines(itemType, string, memory) {
 }
 
 function getStringByte(c) {
-    replaceMap = {
+    const replaceMap = {
         ",": "$25",
         "/": "$4F",
         "(": "$5E",
@@ -118,17 +118,19 @@ function getLineString(string, multiline = false) {
 
 function getPageLines(title, page, pages) {
     DEBUG && console.log(`getPageLines`, title, page, pages);
-    pageType = "PAGE_DEFAULT";
-    [_, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
+    const pageType = "PAGE_DEFAULT";
+    let label;
+    let mode;
+    [, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
     const pagelabelsName = `pageLabels${cleanWord(label)}`;
 
     const endLabel = getByteLine("EOL");
     const endLabelSet = getByteLine("EOF");
 
-    pageLabelTextLines = [];
+    const pageLabelTextLines = [];
     pageLabelTextLines.push(`${pagelabelsName}:`);
-    padding = [...Array(Math.round((MAX_LENGTH_NAME - label.length) / 2))]
+    const padding = [...Array(Math.round((MAX_LENGTH_NAME - label.length) / 2))]
         .map(() => " ")
         .join("");
     pageLabelTextLines.push(getLineString(`${padding}${label}`));
@@ -138,8 +140,8 @@ function getPageLines(title, page, pages) {
         if (i + 1 != page.length) pageLabelTextLines.push(endLabel);
     });
     pageLabelTextLines.push(endLabelSet);
-    joined = pageLabelTextLines.join("\n");
-    existing = pageLabelText[joined];
+    const joined = pageLabelTextLines.join("\n");
+    const existing = pageLabelText[joined];
     if (!existing) pageLabelText[joined] = pagelabelsName;
 
     return {
@@ -159,13 +161,13 @@ function typeDigit(label, string, digits, memoryLabel) {
     if (digits < 2 || digits > 8 || digits & 1) {
         throw new Error(`${string}: digits can only be 2, 4, 6 or 8`);
     }
-    memory = memoryLabel ? memoryLabel : (digits + 1) >> 1;
+    const memory = memoryLabel ? memoryLabel : (digits + 1) >> 1;
     return getOutputLines(`${label} | ${getHexByte(digits)}`, string, memory);
 }
 
 function typeChoices(label, string, choiceSet, memoryLabel) {
     DEBUG && console.log(`Choice set ${string} with options ${choiceSet}`);
-    stringSet = [...choiceSet].map((c) => cleanWord(c.slice(0, 6))).join("");
+    const stringSet = [...choiceSet].map((c) => cleanWord(c.slice(0, 6))).join("");
     unlabeledStringSets[stringSet] = choiceSet;
     return getOutputLines(
         `${label} | ${getChoiceSetConstant(stringSet)}`,
@@ -182,7 +184,7 @@ function typeNumber(label, string, limit, memoryLabel) {
     );
 }
 
-function typeBool(label, string, memoryLabel) {
+function typeBool(_, string, memoryLabel) {
     return typeChoices(
         "TYPE_CHOICES",
         string,
@@ -206,12 +208,12 @@ function typeCustom(label, string, subroutine, memoryLabel) {
 
 function getMemoryLabel(string, bytes) {
     if (isNaN(bytes)) return bytes; // if label is specified use that instead
-    label = `menuVar${cleanWord(string)}`;
+    const label = `menuVar${cleanWord(string)}`;
     memoryReservations[label] = bytes;
     return label;
 }
 
-processPageSet = (pages, name) => {
+const processPageSet = (pages, name) => {
     DEBUG && name && console.log(`submenu ${name}`);
     DEBUG && !name && console.log(`main menu`);
     if (name) {
@@ -250,7 +252,7 @@ processPageSet = (pages, name) => {
 processPageSet(mainMenu);
 
 items.forEach((i) => {
-    line = getByteLine(
+    const line = getByteLine(
         `${i.memory ? "<" + getMemoryLabel(i.string, i.memory) : "NORAM"} ; ${i.string}`,
     );
     memoryMap.push(line);
