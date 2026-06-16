@@ -1,4 +1,21 @@
 stageSpriteForCurrentPiece:
+        lda gameTimerFlag
+        beq @noGameTimer
+        lda #$C0
+        sta spriteXOffset
+        lda #$17
+        sta spriteYOffset
+        lda #gameTimer
+        sta byteSpriteAddr
+        lda #0
+        sta byteSpriteAddr+1
+        lda #0
+        sta byteSpriteTile
+        lda #2
+        sta byteSpriteLen
+        jsr byteSprite
+
+@noGameTimer:
         lda #$0
         sta pieceTileModifier
         lda renderMode

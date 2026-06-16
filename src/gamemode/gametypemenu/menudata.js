@@ -120,6 +120,7 @@ const anydasEntryDelay = [
 ];
 const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
 const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
+const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
 
 const modsSubMenu = {
     "mods[mode=default]": [
@@ -151,6 +152,7 @@ const infoSubMenu = {
         paceModifier,
         trtFlag,
         dasMeterFlag,
+        gameTimerFlag,
     ],
 };
 

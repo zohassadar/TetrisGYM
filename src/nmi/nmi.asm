@@ -39,6 +39,13 @@ renderComplete:
         lda #$01
         sta verticalBlankingInterval
 
+        ; advance game timer
+        lda gameTimerStop
+        bne :+
+        inc gameTimer+1
+        bne :+
+        inc gameTimer
+:
         pla
         tay
         tsx

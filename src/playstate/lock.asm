@@ -5,6 +5,7 @@ VITS_SCORE = 100000
         jsr isPositionValid
         beq @notGameOver
 @gameOver:
+        inc gameTimerStop
         lda practiseType
         cmp #MODE_TYPEB
         bne @revealScore

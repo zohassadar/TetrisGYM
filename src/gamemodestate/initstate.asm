@@ -35,6 +35,9 @@ gameModeState_initGameState:
         sta paceSign
         sta paceResult+1
         sta paceResult+2
+        sta gameTimer
+        sta gameTimer+1
+        sta gameTimerStop
 
         ; misc
         sta spawnDelay

@@ -173,7 +173,9 @@ endingSleepCounter: .res 2 ; $00C4
 endingRocketCounter: .res 1 ; $00C6
 endingRocketX: .res 1 ; $C7
 endingRocketY: .res 1 ; $C8
-    .res 5
+gameTimer: .res 2
+gameTimerStop: .res 1
+    .res 2
     .res 6 ; used to be demo stuff
 highScoreEntryNameOffsetForLetter: .res 1 ; $00D4   ; Relative to current row
 highScoreEntryRawPos: .res 1 ; $00D5                ; High score position 0=1st type A, 1=2nd... 4=1st type B... 7=4th/extra type B
@@ -434,6 +436,7 @@ set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGam
 b_seed_input: .res 2
 typeBSeedFlag: .res 1
 vitsScoreFlag: .res 1
+gameTimerFlag: .res 1
 
 sramVariableLength := * - menuVars
 
