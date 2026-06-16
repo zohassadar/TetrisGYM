@@ -9,7 +9,7 @@
 ; save/restore to/from sram
 
 
-AUTO_MENU_VARS_HI = >autoMenuVars
+MENU_VARS_HI = >menuVars
 
 ; valid background chars are 0-253
 EOL = $FE
@@ -78,7 +78,7 @@ gameMode_gameTypeMenu:
     jsr updateAudioWaitForNmiAndEnablePpuRendering
     jsr updateAudioWaitForNmiAndResetOamStaging
 
-    lda #AUTO_MENU_VARS_HI
+    lda #MENU_VARS_HI
     sta byteSpriteAddr+1
     lda #$1
     sta renderMode
@@ -356,7 +356,7 @@ setupUDDigitChange:
 @storeDigitMax:
     sta udMax
 
-    lda #AUTO_MENU_VARS_HI
+    lda #MENU_VARS_HI
     sta digitPtr+1
     ldx activeItem
     lda memoryOffsets,x
@@ -407,7 +407,7 @@ setupLRPageSelect:
 
 setupLRValueChange:
 ; setupLRValueChange - activeRow >= 0 && itemType < 128
-    lda #AUTO_MENU_VARS_HI
+    lda #MENU_VARS_HI
     sta lrPointer+1
     ldx activeItem
     lda memoryOffsets,x
@@ -761,7 +761,7 @@ stageCurrentValues:
 
     lda #$00
     sta @counter
-    lda #AUTO_MENU_VARS_HI
+    lda #MENU_VARS_HI
 
     ldx actualPage
     lda startItemByPage,x
@@ -784,7 +784,7 @@ stageCurrentValues:
     ldy activeItem
     lda memoryOffsets,y
     sta byteSpriteAddr
-    lda #AUTO_MENU_VARS_HI
+    lda #MENU_VARS_HI
     sta byteSpriteAddr+1
     lda itemTypes,y
     tax

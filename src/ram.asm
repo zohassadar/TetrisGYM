@@ -440,7 +440,4 @@ sramVariableLength := * - menuVars
 keyboardFlag: .res 1
 .endif
 
-
-.include "gamemode/gametypemenu/menuram.asm"
-
 ; ... $7FF
