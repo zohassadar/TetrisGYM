@@ -12,7 +12,7 @@ score: .res 4 ;  $C ; 4 bytes BCD
 nmiReturnAddr: .res 1 ; $0010 ; used for crash
 crashState: .res 1 ; $0011 ; used for crash
 cycleCount: .res 2 ; $0012 ; 2 bytes ; used for crash
-oneThirdPRNG: .res 1 ; $0014 ; used for crash
+.res 1
 b_seed: .res 2 ; loaded with rng_seed unless seeded
 
 rng_seed: .res 2 ; $0017

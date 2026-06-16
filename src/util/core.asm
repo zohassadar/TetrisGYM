@@ -256,12 +256,26 @@ generateNextPseudorandomNumber:
         lsr
         ror tmp1,x
         ror tmp2,x
-        lda oneThirdPRNG
-        sbc #$00
-        bpl @noReset
-        lda #$2
-@noReset:
-        sta oneThirdPRNG
+        rts
+
+getOneThirdRNG:
+; returns 0,1,2 in A, preserves flags
+        php
+        lda rng_seed+1
+        cmp #170
+        bcc :+
+        lda #2
+        plp
+        rts
+:
+        cmp #85
+        bcc :+
+        lda #1
+        plp
+        rts
+:
+        lda #0
+        plp
         rts
 
 ; reg a: value; reg x: start page; reg y: end page (inclusive)
