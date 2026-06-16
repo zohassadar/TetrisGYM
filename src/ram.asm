@@ -433,6 +433,7 @@ noLineClearDelayFlag: .res 1
 set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
 b_seed_input: .res 2
 typeBSeedFlag: .res 1
+vitsScoreFlag: .res 1
 
 sramVariableLength := * - menuVars
 

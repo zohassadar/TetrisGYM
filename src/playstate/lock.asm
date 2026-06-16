@@ -1,4 +1,6 @@
 playState_lockTetrimino:
+I_VERTICAL = $11
+VITS_SCORE = 100000
 @currentTile = generalCounter5
         jsr isPositionValid
         beq @notGameOver
@@ -45,12 +47,42 @@ playState_lockTetrimino:
 @notGameOver:
         lda vramRow
         cmp #$20
-        bmi @ret
+        bpl @noWait
+        rts
+@noWait:
         ldy tetriminoY
         lda multBy10Table,y
         clc
         adc tetriminoX
         sta generalCounter
+
+; score if vits
+        ldx vitsScoreFlag
+        beq @noVits
+        ldx currentPiece
+        cpx #I_VERTICAL
+        bne @noVits
+        ; check if tile exists above
+        sec
+        sbc #30
+        tax
+        lda playfield,x
+        bmi @noVits
+        ; tile exists
+        clc
+        lda #<VITS_SCORE
+        adc binScore
+        sta binScore
+        lda #>VITS_SCORE
+        adc binScore+1
+        sta binScore+1
+        lda #^VITS_SCORE
+        adc binScore+2
+        sta binScore+2
+        lda #0
+        adc binScore+3
+        sta binScore+3
+@noVits:
         ldx currentPiece
         lda tetriminoTileFromOrientation,x
         sta @currentTile
