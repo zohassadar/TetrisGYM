@@ -207,7 +207,7 @@ testCrash:
 @randomFactors:
         lda strictFlag
         bne @noDMA ;for strict crash, do not add random cycles.
-        jsr getOneThirdRNG
+        lda oneThirdPRNG ; RNG for which cycle of the last instruction the game returns to
         adc allegroIndex
         sta allegroIndex
         lda frameCounter
