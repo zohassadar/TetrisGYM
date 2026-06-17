@@ -185,7 +185,7 @@ writeFileSync("src/magicnumbers.asm", magicNumbersAsm);
 
 
 exec(`${ca65bin} ${flags} -g src/header.asm -o header.o`);
-exec(`${ca65bin} ${flags} -l tetris.lst -g src/main.asm -o main.o`);
+exec(`${ca65bin} ${flags} -xx -l tetris.lst -g src/main.asm -o main.o`);
 
 console.timeEnd('assemble');
 

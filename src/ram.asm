@@ -30,8 +30,9 @@ mainLoopWait: .res 1 ; $0032
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
 .res 3
-.res 6
-
+.res 4
+renderQueueLength: .res 1
+renderQueuePointer: .res 1
 tetriminoX: .res 1 ; $0040
 tetriminoY: .res 1 ; $0041
 currentPiece: .res 1 ; $0042                    ; Current piece as an orientation ID

@@ -19,6 +19,7 @@
 .align $100
 ; these tables benefit from page alignment
 .include "data/mult_orient.asm"
+.include "nmi/render_mode_queue.asm"
 ; region code at start of page to keep cycle count consistent
 .include "util/check_region.asm"
 .include "audio.asm"
