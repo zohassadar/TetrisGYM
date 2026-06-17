@@ -128,45 +128,6 @@ waitForNmi:
         beq @checkForNmi
         rts
 
-updateAudioWaitForNmiAndDisablePpuRendering:
-        jsr updateAudioAndWaitForNmi
-        lda currentPpuMask
-        and #$E1
-_updatePpuMask:
-        sta PPUMASK
-        sta currentPpuMask
-        rts
-
-updateAudioWaitForNmiAndEnablePpuRendering:
-        jsr updateAudioAndWaitForNmi
-        jsr copyCurrentScrollAndCtrlToPPU
-        lda currentPpuMask
-        ora #$1E
-        bne _updatePpuMask
-waitForVBlankAndEnableNmi:
-        lda PPUSTATUS
-        and #$80
-        bne waitForVBlankAndEnableNmi
-        lda currentPpuCtrl
-        ora #$80
-        bne _updatePpuCtrl
-disableNmi:
-        lda currentPpuCtrl
-        and #$7F
-_updatePpuCtrl:
-        sta PPUCTRL
-        sta currentPpuCtrl
-        rts
-
-copyCurrentScrollAndCtrlToPPU:
-        lda ppuScrollX
-        sta PPUSCROLL
-        lda ppuScrollY
-        sta PPUSCROLL
-        lda currentPpuCtrl
-        sta PPUCTRL
-        rts
-
 copyAddrAtReturnAddressToTmp_incrReturnAddrBy2:
         tsx
         lda stack+3,x

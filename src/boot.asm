@@ -63,18 +63,13 @@
         sta PPUMASK
         jsr LE006
         jsr updateAudio2
-        jsr updateAudioWaitForNmiAndDisablePpuRendering
-        jsr disableNmi
+        jsr hideSpritesAndBackground
         jsr drawBlackBGPalette
         ; instead of clearing vram like the original, blank out the palette
         lda #$EF
         ldx #$04
         ldy #$04 ; used to be 5, but we dont need to clear 2p playfield
         jsr memset_page
-        jsr waitForVBlankAndEnableNmi
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr updateAudioWaitForNmiAndEnablePpuRendering
-        jsr updateAudioWaitForNmiAndResetOamStaging
         lda #$00
         sta gameModeState
         sta gameMode
