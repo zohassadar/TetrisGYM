@@ -11,7 +11,7 @@ gameModeState_checkForResetKeyCombo:
         rts
 
 @reset: jsr updateAudio2
-        lda #0
+        lda #RENDER_IDLE
         sta renderMode
         lda #$2 ; straight to menu screen
         sta gameMode

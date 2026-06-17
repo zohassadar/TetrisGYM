@@ -29,7 +29,8 @@ lagState: .res 1 ; $0022 for lagged lines & score
 mainLoopWait: .res 1 ; $0032
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
-.res 3
+patchPtr: .res 2
+.res 1
 .res 4
 renderQueueLength: .res 1
 renderQueuePointer: .res 1
@@ -274,6 +275,7 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
 hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
+skipNmiFlag: .res 1
 
 .if KEYBOARD
 kbReadState: .res 1 ; $063F - used for high score entry
@@ -283,12 +285,11 @@ kbRawInput: .res 9 ; $0641  - all 72 keys' input
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
 highScoreEntryActive: .res 1  ; $064A
-.else
-    .res $C
 .endif
 
-    .res $35
 
+
+.segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
 musicStagingSq1Hi: .res 1 ; $0681
 audioInitialized: .res 1 ; $0682
@@ -354,6 +355,9 @@ soundEffectSlot4Playing: .res 1 ; $06FC
 currentlyPlayingMusicTrack: .res 1 ; $06FD          ; Copied from musicTrack
     .res 1
 unreferenced_soundRngTmp: .res 1 ; $06FF
+
+
+.segment "SCORE_RAM": absolute
 highscores: ; $700
 ; scores are name - score - lines - startlevel - level
 highScoreQuantity := 3
@@ -366,6 +370,8 @@ highScoreLength := highScoreNameLength + highScoreScoreLength + highScoreLinesLe
     .res 43
 initMagic: .res 5 ; $075B                        ; Initialized to a hard-coded number. When resetting, if not correct number then it knows this is a cold boot
 
+
+.segment "VARS_RAM": absolute
 menuRAM:  ; $760
 menuMoveThrottle: .res 1
 menuThrottleTmp: .res 1

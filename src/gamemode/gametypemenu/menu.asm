@@ -61,10 +61,10 @@ gameMode_gameTypeMenu:
     inc gameMode
     rts
 .endif
-    jsr updateAudioWaitForNmiAndDisablePpuRendering
-    jsr disableNmi
-    jsr bulkCopyToPpu
-    .addr title_palette
+    lda #RENDER_IDLE
+    sta renderMode
+    jsr hideSpritesAndBackground
+    stagePatchInQueue titlePalette
     jsr copyRleNametableToPpu
     .addr game_type_menu_nametable
 .if INES_MAPPER <> 0
@@ -73,18 +73,19 @@ gameMode_gameTypeMenu:
 .endif
     lda #NMIEnable
     sta currentPpuCtrl
-    jsr waitForVBlankAndEnableNmi
-    jsr updateAudioWaitForNmiAndResetOamStaging
-    jsr updateAudioWaitForNmiAndEnablePpuRendering
-    jsr updateAudioWaitForNmiAndResetOamStaging
-
-    lda #MENU_VARS_HI
-    sta byteSpriteAddr+1
-    lda #$1
-    sta renderMode
     lda #0
     sta ppuScrollX
     sta ppuScrollY
+    jsr updateAudioAndWaitForNmi
+    lda #RENDER_MENU
+    sta renderMode
+    jsr showSpriteAndBackground
+
+    lda #MENU_VARS_HI
+    sta byteSpriteAddr+1
+    lda #RENDER_MENU
+    sta renderMode
+    lda #0
     sta hideNextPiece
     sta byteSpriteTile
     sta gameStarted
@@ -117,7 +118,7 @@ gameTypeLoop:
     lda practiseType  ; is already in A, but this is explicit
     cmp #MODE_KILLX2
     bne @notKillX2
-    lda #0
+    lda #RENDER_IDLE
     sta renderMode
     sta gameModeState
     lda #39

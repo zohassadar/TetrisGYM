@@ -30,10 +30,7 @@ gameMode_bootScreen: ; boot
 @qualBoot:
         lda #1
         sta gameMode
-        lda #1
         sta qualFlag
-        jsr resetMenuVars
-        jsr resetSavedVars
         jmp gameMode_waitScreen
 
 @nonQualBoot:

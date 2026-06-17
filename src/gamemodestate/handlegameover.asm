@@ -15,7 +15,7 @@ gameModeState_handleGameOver:
         beq @gameOver
         jmp @ret
 @gameOver:
-        lda #$03
+        lda #RENDER_PLAY
         sta renderMode
 .if KEYBOARD = 1
         ; flag for keyboard poll to ignore mapped keys except start/return

@@ -507,7 +507,7 @@ stageFullPlayfield:
 .endrepeat
     dey
     bpl @loop
-    lda #9
+    lda #RENDER_PLAYFIELD
     sta renderMode
     lda #$20
     sta vramRow
@@ -532,7 +532,7 @@ render_mode_dump_playfield:
     .endrepeat
     .endrepeat
     txs
-    lda #$03
+    lda #RENDER_PLAY
     sta renderMode
     rts
 

@@ -1,17 +1,10 @@
 gameMode_levelMenu:
-        lda #NMIEnable
-        sta currentPpuCtrl
-        jsr updateAudio2
-        lda #$7
-        sta renderMode
-        jsr updateAudioWaitForNmiAndDisablePpuRendering
-        jsr disableNmi
+        jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        jsr bulkCopyToPpu
-        .addr   menu_palette
+        stagePatchInQueue menuPalette
         jsr copyRleNametableToPpu
         .addr   level_menu_nametable
         lda #$20
@@ -31,13 +24,15 @@ gameMode_levelMenu:
         jsr patchSeed
 
         ; render lines when loading screen
+        lda #RENDER_LEVEL_MENU
+        sta renderMode
+
         lda #RENDER_LINES
         sta renderFlags
+
+        jsr showSpriteAndBackground
+
         jsr resetScroll
-        jsr waitForVBlankAndEnableNmi
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr updateAudioWaitForNmiAndEnablePpuRendering
-        jsr updateAudioWaitForNmiAndResetOamStaging
         lda #$00
         sta originalY
         sta dropSpeed

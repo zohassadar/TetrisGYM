@@ -14,6 +14,8 @@ nmi:    pha
         sta OAMADDR
         lda #$02
         sta OAMDMA
+        lda renderMode
+        beq restoreRegisters
 
 renderComplete:
         lda sleepCounter
@@ -33,24 +35,23 @@ renderComplete:
 
         jsr pollControllerButtons
 
+        ; advance game timer
+        lda gameTimerStop
+        bne restoreRegisters
+        inc gameTimer+1
+        bne restoreRegisters
+        inc gameTimer
+restoreRegisters:
         lda #$00
         sta oamStagingLength
         sta lagState ; clear flag after lag frame achieved
         lda #$01
         sta verticalBlankingInterval
-
-        ; advance game timer
-        lda gameTimerStop
-        bne :+
-        inc gameTimer+1
-        bne :+
-        inc gameTimer
-:
+        tsx
+        lda stack+5,x
+        sta nmiReturnAddr
         pla
         tay
-        tsx
-        lda stack+4,x
-        sta nmiReturnAddr
         pla
         tax
         pla

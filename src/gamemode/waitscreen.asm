@@ -1,13 +1,28 @@
+.macro stagePatchInQueue patchAddr
+; can be made subroutine if needed to save space
+        lda #<patchAddr
+        sta patchPtr
+        lda #>patchAddr
+        sta patchPtr+1
+        jsr copyPatchAtPointerToQueue
+        lda renderMode
+        pha
+        lda #RENDER_QUEUE
+        sta renderMode
+        jsr waitForNmi
+        pla
+        sta renderMode
+.endmacro
+
 gameMode_waitScreen:
         lda #0
         sta screenStage
-waitScreenLoad:
-        lda #$0
-        sta renderMode
-        jsr updateAudioWaitForNmiAndDisablePpuRendering
-        jsr disableNmi
         lda #NMIEnable
         sta currentPpuCtrl
+        lda #RENDER_IDLE
+        sta renderMode
+        jsr resetRenderQueue
+        jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
 ; NROM (and possibly FDS in the future) won't load the 2nd bankset
 ; and will instead use the title/menu chrset letters.  This won't be noticeable
@@ -15,28 +30,12 @@ waitScreenLoad:
         lda #CHRBankSet1
         jsr changeCHRBanks
 .endif
-        jsr bulkCopyToPpu
-        .addr wait_palette
+        stagePatchInQueue waitPalettePatch
         jsr copyRleNametableToPpu
         .addr legal_nametable
-
-        lda screenStage
-        cmp #2
-        bne @justLegal
-        jsr bulkCopyToPpu
-        .addr title_nametable_patch
-@justLegal:
-
-        jsr waitForVBlankAndEnableNmi
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr updateAudioWaitForNmiAndEnablePpuRendering
-        jsr updateAudioWaitForNmiAndResetOamStaging
-
-        ; if title, skip wait
-        lda screenStage
+        jsr showSpriteAndBackground
         cmp #2
         beq waitLoopCheckStart
-
         lda #$FF
         ldx palFlag
         ; cpx #0 ; ldx sets z flag
@@ -70,7 +69,6 @@ waitScreenLoad:
         bne @loop
 @exitLoop:
         inc screenStage
-        jmp @justLegal
 
 waitLoopCheckStart:
         lda screenStage
@@ -91,7 +89,8 @@ waitLoopNext:
         beq waitLoopContinue
         stx soundEffectSlot1Init
         inc screenStage
-        jmp waitScreenLoad
+        stagePatchInQueue titleNametablePatch
+        jmp waitLoopCheckStart
 waitLoopContinue:
         stx soundEffectSlot1Init
         inc gameMode

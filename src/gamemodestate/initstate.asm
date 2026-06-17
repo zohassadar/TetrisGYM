@@ -93,7 +93,7 @@ gameModeState_initGameState:
         sta allegro
         sta holdDownPoints
         sta spawnID
-        lda #$03
+        lda #RENDER_PLAY
         sta renderMode
         ldx #$A0
         lda palFlag

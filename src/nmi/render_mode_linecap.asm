@@ -12,7 +12,7 @@ render_mode_linecap_menu:
         jsr render_linecap_level_lines
 
 @static:
-        jmp render_mode_static
+        rts
 
 render_linecap_level_lines:
         lda linecapWhen
@@ -21,8 +21,7 @@ render_linecap_level_lines:
         cmp #LINECAP_LEVEL
         bne @ret
         lda linecapLevel
-        jsr renderByteBCD
-        jmp render_mode_static
+        jmp renderByteBCD
 
 @linecapLines:
         lda linecapLines

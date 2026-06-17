@@ -111,19 +111,14 @@ copyHighscore:
 highScoreEntryScreen:
         lda #$09
         jsr setMusicTrack
-        lda #$02
+        lda #RENDER_IDLE
         sta renderMode
-        jsr updateAudioWaitForNmiAndDisablePpuRendering
-        jsr disableNmi
+        jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        lda #NMIEnable
-        sta PPUCTRL
-        sta currentPpuCtrl
-        jsr bulkCopyToPpu
-        .addr   menu_palette
+        stagePatchInQueue menuPalette
         jsr copyRleNametableToPpu
         .addr   enter_high_score_nametable
         jsr showHighScores
@@ -132,12 +127,11 @@ highScoreEntryScreen:
         lda #$89
         sta tmp2
         jsr displayModeText
-        lda #$02
+        lda #NMIEnable
+        sta currentPpuCtrl
+        lda #RENDER_CONGRATS
         sta renderMode
-        jsr waitForVBlankAndEnableNmi
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr updateAudioWaitForNmiAndEnablePpuRendering
-        jsr updateAudioWaitForNmiAndResetOamStaging
+        jsr showSpriteAndBackground
 
         ldx highScoreEntryRawPos
         lda highScoreEntryRowOffsetLookup, x

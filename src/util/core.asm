@@ -88,11 +88,41 @@ resetOAMStaging:
         bne @hideY
         rts
 
+; 7  bit  0
+; ---- ----
+; BGRs bMmG
+; |||| ||||
+; |||| |||+- Greyscale (0: normal color, 1: greyscale)
+; |||| ||+-- 1: Show background in leftmost 8 pixels of screen, 0: Hide
+; |||| |+--- 1: Show sprites in leftmost 8 pixels of screen, 0: Hide
+; |||| +---- 1: Enable background rendering
+; |||+------ 1: Enable sprite rendering
+; ||+------- Emphasize red (green on PAL/Dendy)
+; |+-------- Emphasize green (red on PAL/Dendy)
+; +--------- Emphasize blue
+
+hideSpritesAndBackground:
+        lda #0
+        sta PPUMASK
+        rts
+
+showSpriteAndBackground:
+        lda renderMode
+        pha
+        lda #RENDER_IDLE
+        sta renderMode
+        jsr waitForNmi
+        lda #%00011110
+        sta PPUMASK
+        pla
+        sta renderMode
+        rts
+
 updateAudioAndWaitForNmi:
         jsr updateAudio_jmp
+waitForNmi:
         lda #$00
         sta verticalBlankingInterval
-        nop
 @checkForNmi:
         lda verticalBlankingInterval
         beq @checkForNmi
@@ -137,88 +167,6 @@ copyCurrentScrollAndCtrlToPPU:
         sta PPUCTRL
         rts
 
-bulkCopyToPpu:
-        jsr copyAddrAtReturnAddressToTmp_incrReturnAddrBy2
-        jmp copyToPpu
-
-LAA9E:  pha
-        sta PPUADDR
-        iny
-        lda (tmp1),y
-        sta PPUADDR
-        iny
-        lda (tmp1),y
-        asl a
-        pha
-        lda currentPpuCtrl
-        ora #$04
-        bcs LAAB5
-        and #$FB
-LAAB5:  sta PPUCTRL
-        sta currentPpuCtrl
-        pla
-        asl a
-        php
-        bcc LAAC2
-        ora #$02
-        iny
-LAAC2:  plp
-        clc
-        bne LAAC7
-        sec
-LAAC7:  ror a
-        lsr a
-        tax
-LAACA:  bcs LAACD
-        iny
-LAACD:  lda (tmp1),y
-        sta PPUDATA
-        dex
-        bne LAACA
-        pla
-        cmp #$3F
-        bne LAAE6
-        sta PPUADDR
-        stx PPUADDR
-        stx PPUADDR
-        stx PPUADDR
-LAAE6:  sec
-        tya
-        adc tmp1
-        sta tmp1
-        lda #$00
-        adc tmp2
-        sta tmp2
-; Address to read from stored in tmp1/2
-copyToPpu:
-        ldx PPUSTATUS
-        ldy #$00
-        lda (tmp1),y
-        bpl LAAFC
-        rts
-
-LAAFC:  cmp #$60
-        bne LAB0A
-        pla
-        sta tmp2
-        pla
-        sta tmp1
-        ldy #$02
-        bne LAAE6
-LAB0A:  cmp #$4C
-        bne LAA9E
-        lda tmp1
-        pha
-        lda tmp2
-        pha
-        iny
-        lda (tmp1),y
-        tax
-        iny
-        lda (tmp1),y
-        sta tmp2
-        stx tmp1
-        bcs copyToPpu
 copyAddrAtReturnAddressToTmp_incrReturnAddrBy2:
         tsx
         lda stack+3,x

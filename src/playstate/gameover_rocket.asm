@@ -78,19 +78,17 @@ sleep_gameplay:
         rts
 
 endingAnimation: ; rocket_screen
-        jsr updateAudioWaitForNmiAndDisablePpuRendering
-        jsr disableNmi
+        lda #RENDER_IDLE
+        sta renderMode
+        jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         ; NROM will use a smaller ufo in the game tileset
         lda #CHRBankSet1
         jsr changeCHRBanks
 .endif
-        lda #NMIEnable
-        sta currentPpuCtrl
         jsr copyRleNametableToPpu
         .addr rocket_nametable
-        jsr bulkCopyToPpu
-        .addr rocket_palette
+        stagePatchInQueue rocketPalette
 
         ; lines
         lda #$21
@@ -133,17 +131,14 @@ endingAnimation: ; rocket_screen
         lda levelNumber
         jsr renderByteBCDNoPad
 
-        jsr waitForVBlankAndEnableNmi
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr updateAudioWaitForNmiAndEnablePpuRendering
-.if INES_MAPPER <> 3
-        jsr updateAudioWaitForNmiAndResetOamStaging
-.endif
+        lda #NMIEnable
+        sta currentPpuCtrl
+        lda #RENDER_ROCKET
+        sta renderMode
+        jsr showSpriteAndBackground
 
         lda #0
         sta screenStage
-        lda #$5
-        sta renderMode
         lda #$1
         sta endingSleepCounter
         lda #$80 ; timed in bizhawk tasstudio to be 1 frame longer than usual (probably a lag frame)
