@@ -1,19 +1,17 @@
 gameModeState_initGameBackground:
-        lda #RENDER_IDLE
-        sta renderMode
         jsr hideSpritesAndBackground
         jsr updateAudioWaitForNmiAndResetOamStaging
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        stagePatchInQueue gamePalette
+        stagePatchThenWaitForNmi gamePalette
         jsr copyRleNametableToPpu
         .addr   game_nametable
         jsr scoringBackground
         lda trtFlag
         beq @noTrtPatch
-        stagePatchInQueue trtNametable
+        stagePatchThenWaitForNmi trtNametable
 @noTrtPatch:
         jsr debugNametableUI
 
@@ -28,7 +26,7 @@ gameModeState_initGameBackground:
 
         lda hzFlag
         beq @noHz
-        stagePatchInQueue hzStats
+        stagePatchThenWaitForNmi hzStats
 @noHz:
 
         lda #$20
@@ -53,13 +51,14 @@ gameModeState_initGameBackground:
         sta PPUDATA
 @heartEnd:
 
+; reenable display
+        jsr resetScroll
         lda #NMIEnable|BGPattern1|SpritePattern1
         sta currentPpuCtrl
-        jsr updateAudioAndWaitForNmi
-        jsr resetScroll
         lda #RENDER_PLAY
         sta renderMode
         jsr showSpriteAndBackground
+
         lda #$01
         sta playState
         inc gameModeState ; 1
@@ -99,7 +98,7 @@ scoringBackground:
         ; 7 digit
         cmp #SCORING_SEVENDIGIT
         bne @noSevenDigit
-        stagePatchInQueue sevenDigitNametable
+        stagePatchThenWaitForNmi sevenDigitNametable
 
 @noSevenDigit:
 
@@ -149,7 +148,7 @@ MODENAMES
 debugNametableUI:
         lda debugFlag
         beq @notDebug
-        stagePatchInQueue savestateNametable
+        stagePatchThenWaitForNmi savestateNametable
         jsr saveSlotNametablePatch
 @notDebug:
         rts
@@ -185,7 +184,7 @@ statisticsNametablePatch:
 showPaceDiffText:
         lda paceModifier
         bmi @done
-        stagePatchInQueue paceDiffText
+        stagePatchThenWaitForNmi paceDiffText
         lda #0
 @done:
         rts

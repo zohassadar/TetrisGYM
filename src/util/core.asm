@@ -102,6 +102,8 @@ resetOAMStaging:
 ; +--------- Emphasize blue
 
 hideSpritesAndBackground:
+        lda #RENDER_IDLE
+        sta renderMode
         lda #0
         sta PPUMASK
         rts

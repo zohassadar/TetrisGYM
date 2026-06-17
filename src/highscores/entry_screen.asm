@@ -111,14 +111,12 @@ copyHighscore:
 highScoreEntryScreen:
         lda #$09
         jsr setMusicTrack
-        lda #RENDER_IDLE
-        sta renderMode
         jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        stagePatchInQueue menuPalette
+        stagePatchThenWaitForNmi menuPalette
         jsr copyRleNametableToPpu
         .addr   enter_high_score_nametable
         jsr showHighScores
@@ -127,6 +125,9 @@ highScoreEntryScreen:
         lda #$89
         sta tmp2
         jsr displayModeText
+
+; reenable display
+        jsr resetScroll
         lda #NMIEnable
         sta currentPpuCtrl
         lda #RENDER_CONGRATS

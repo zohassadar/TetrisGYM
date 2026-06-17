@@ -4,7 +4,7 @@ gameMode_levelMenu:
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        stagePatchInQueue menuPalette
+        stagePatchThenWaitForNmi menuPalette
         jsr copyRleNametableToPpu
         .addr   level_menu_nametable
         lda #$20
@@ -24,15 +24,17 @@ gameMode_levelMenu:
         jsr patchSeed
 
         ; render lines when loading screen
-        lda #RENDER_LEVEL_MENU
-        sta renderMode
-
         lda #RENDER_LINES
         sta renderFlags
 
+; reenable display
+        jsr resetScroll
+        lda #NMIEnable
+        sta currentPpuCtrl
+        lda #RENDER_LEVEL_MENU
+        sta renderMode
         jsr showSpriteAndBackground
 
-        jsr resetScroll
         lda #$00
         sta originalY
         sta dropSpeed

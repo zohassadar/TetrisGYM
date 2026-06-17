@@ -78,8 +78,6 @@ sleep_gameplay:
         rts
 
 endingAnimation: ; rocket_screen
-        lda #RENDER_IDLE
-        sta renderMode
         jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         ; NROM will use a smaller ufo in the game tileset
@@ -88,7 +86,7 @@ endingAnimation: ; rocket_screen
 .endif
         jsr copyRleNametableToPpu
         .addr rocket_nametable
-        stagePatchInQueue rocketPalette
+        stagePatchThenWaitForNmi rocketPalette
 
         ; lines
         lda #$21
@@ -131,6 +129,8 @@ endingAnimation: ; rocket_screen
         lda levelNumber
         jsr renderByteBCDNoPad
 
+; reenable display
+        jsr resetScroll
         lda #NMIEnable
         sta currentPpuCtrl
         lda #RENDER_ROCKET

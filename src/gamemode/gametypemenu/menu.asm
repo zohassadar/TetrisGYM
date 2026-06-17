@@ -61,22 +61,19 @@ gameMode_gameTypeMenu:
     inc gameMode
     rts
 .endif
-    lda #RENDER_IDLE
-    sta renderMode
     jsr hideSpritesAndBackground
-    stagePatchInQueue titlePalette
+    stagePatchThenWaitForNmi titlePalette
     jsr copyRleNametableToPpu
     .addr game_type_menu_nametable
 .if INES_MAPPER <> 0
     lda #CHRBankSet0
     jsr changeCHRBanks
 .endif
+
+; reenable display
+    jsr resetScroll
     lda #NMIEnable
     sta currentPpuCtrl
-    lda #0
-    sta ppuScrollX
-    sta ppuScrollY
-    jsr updateAudioAndWaitForNmi
     lda #RENDER_MENU
     sta renderMode
     jsr showSpriteAndBackground

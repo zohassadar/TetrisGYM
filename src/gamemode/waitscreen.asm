@@ -1,27 +1,6 @@
-.macro stagePatchInQueue patchAddr
-; can be made subroutine if needed to save space
-        lda #<patchAddr
-        sta patchPtr
-        lda #>patchAddr
-        sta patchPtr+1
-        jsr copyPatchAtPointerToQueue
-        lda renderMode
-        pha
-        lda #RENDER_QUEUE
-        sta renderMode
-        jsr waitForNmi
-        pla
-        sta renderMode
-.endmacro
-
 gameMode_waitScreen:
         lda #0
         sta screenStage
-        lda #NMIEnable
-        sta currentPpuCtrl
-        lda #RENDER_IDLE
-        sta renderMode
-        jsr resetRenderQueue
         jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
 ; NROM (and possibly FDS in the future) won't load the 2nd bankset
@@ -30,10 +9,18 @@ gameMode_waitScreen:
         lda #CHRBankSet1
         jsr changeCHRBanks
 .endif
-        stagePatchInQueue waitPalettePatch
+        stagePatchThenWaitForNmi waitPalettePatch
         jsr copyRleNametableToPpu
         .addr legal_nametable
+
+; reenable display
+        jsr resetScroll
+        lda #NMIEnable
+        sta currentPpuCtrl
+        lda #RENDER_IDLE
+        sta renderMode
         jsr showSpriteAndBackground
+
         cmp #2
         beq waitLoopCheckStart
         lda #$FF
@@ -89,7 +76,7 @@ waitLoopNext:
         beq waitLoopContinue
         stx soundEffectSlot1Init
         inc screenStage
-        stagePatchInQueue titleNametablePatch
+        stagePatchThenWaitForNmi titleNametablePatch
         jmp waitLoopCheckStart
 waitLoopContinue:
         stx soundEffectSlot1Init

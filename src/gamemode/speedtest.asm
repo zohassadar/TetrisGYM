@@ -3,8 +3,6 @@ speedTestColorPatch:
         .byte $0
 
 gameMode_speedTest:
-        lda #RENDER_IDLE
-        sta renderMode
         jsr hideSpritesAndBackground
         ; reset some stuff for input log rendering
         lda #$EF
@@ -14,20 +12,26 @@ gameMode_speedTest:
 
         jsr hzStart
         jsr clearNametable
-        stagePatchInQueue speedtestNametablePatch
-        stagePatchInQueue gamePalette
-        stagePatchInQueue speedTestColorPatch
-        lda #NMIEnable|BGPattern1|SpritePattern1
-        sta currentPpuCtrl
+
+        stagePatchNoWait speedtestNametablePatch
+        stagePatchNoWait gamePalette
+        stagePatchThenWaitForNmi speedTestColorPatch
+
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
         jsr changeCHRBanks
 .endif
-        jsr render_mode_speed_test
+
+; reenable display
+        lda #$B0
+        sta ppuScrollX
+        lda #$0
+        sta ppuScrollY
+        lda #NMIEnable|BGPattern1|SpritePattern1
+        sta currentPpuCtrl
         lda #RENDER_SPEED_TEST
         sta renderMode
         jsr showSpriteAndBackground
-
 
 @loop:
         lda heldButtons_player1
