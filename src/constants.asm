@@ -86,7 +86,6 @@ MODE_CHECKERBOARD
 MODE_GARBAGE
 MODE_LOWSTACK
 MODE_KILLX2
-MODE_ANYDAS
 MODE_SPEED_TEST
 .endenum
 
@@ -174,5 +173,4 @@ PAL_ARR = 4
     .byte   "GARBGE"
     .byte   "LOWSTK"
     .byte   "KILLX2"
-    .byte   "ANYDAS"
 .endmacro
