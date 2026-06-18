@@ -110,12 +110,7 @@ nybbleTemp: .res $1
 blankCounter: .res $1
 rowCounter: .res $1
 
-; probably no value here
-APressed: .res $1
-startPressed: .res $1
-startOrAPressed: .res $1
-BPressed: .res $1
-selectPressed: .res $1
+.res 5
 
 actualPage: .res $1
 gameStarted: .res $1

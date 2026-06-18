@@ -159,32 +159,21 @@ gameTypeLoopWait:
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
 
-.macro switchToMenuStack
-    tsx
-    stx stackPtr
-    ldx menuStackPtr
-    txs
-.endmacro
-
-.macro switchToNormalStack
-    tsx
-    stx menuStackPtr
-    ldx stackPtr
-    txs
-.endmacro
-
 enterSubMenu:
     ldy #$02
     sty soundEffectSlot1Init
     pha
-    switchToMenuStack
+    ldx menuStackPtr
     lda activeRow
-    pha
+    sta stack,x
+    dex
     lda activePage
-    pha
+    sta stack,x
+    dex
     lda activeMenu
-    pha
-    switchToNormalStack
+    sta stack,x
+    dex
+    stx menuStackPtr
     pla
 enterMenu:
     sta activeMenu
@@ -214,6 +203,7 @@ enterPage:
     and #TYPE_MASK
     sta unpackedPageType
 
+    ldy activeMenu
     lda pageCountByMenu,y
     ldy #$00
     sty activeColumn
@@ -248,16 +238,13 @@ exitSubmenu:
     sty soundEffectSlot1Init
 
 exitSubmenuNoSfx:
-    switchToMenuStack
-    pla
-    switchToNormalStack
-
+    inc menuStackPtr
+    ldx menuStackPtr
+    lda stack,x
     jsr enterMenu
-
-    switchToMenuStack
-    pla
-    switchToNormalStack
-
+    inc menuStackPtr
+    ldx menuStackPtr
+    lda stack,x
     jsr enterPage
 
 .if KEYBOARD = 1
@@ -298,11 +285,9 @@ exitSubmenuNoSfx:
 ; .else
 ;         beq @skipSeedControl
 .endif
-
-    switchToMenuStack
-    pla
-    switchToNormalStack
-
+    inc menuStackPtr
+    ldx menuStackPtr
+    lda stack,x
     sta activeRow
     jmp setScratch
 
@@ -315,7 +300,7 @@ setupUDRowChange:
 ; ud change row 1/2 - activeColumn == 0
     ldy #$00
     lda unpackedPageType
-    ldx actualPage
+    ldx activeMenu
     lda pageCountByMenu,x
     tax
     dex
@@ -465,44 +450,8 @@ setupLRColumnChange:
 
 collectControllerInput:
     lda #$00
-    sta selectPressed
-    sta APressed
-    sta startPressed
-    sta startOrAPressed
-    sta BPressed
     sta udAdjust
     sta lrAdjust
-
-    lda newlyPressedButtons_player1
-    tax
-
-    and #BUTTON_START
-    beq @checkA
-    inc startPressed
-    inc startOrAPressed
-    jmp @checkCardinals
-@checkA:
-    txa
-    and #BUTTON_A ; do different things for these instead?
-    beq @checkB
-    inc APressed
-    inc startOrAPressed
-    jmp @checkCardinals
-@checkB:
-    txa
-    and #BUTTON_B
-    beq @checkSelect
-    inc BPressed
-    jmp @checkCardinals
-@checkSelect:
-    txa
-    and #BUTTON_SELECT
-    beq @checkCardinals
-    inc selectPressed
-
-@checkCardinals:
-
-
 ; maybe also folded saves bytes?
     lda #BUTTON_UP
     jsr menuThrottle
@@ -569,7 +518,8 @@ enterNewPage:
     jmp enterPage
 
 checkIfGameStartOrSubmenu:
-    lda startOrAPressed
+    lda newlyPressedButtons_player1
+    and #BUTTON_START|BUTTON_A
     beq checkIfExitSubmenu
 
     lda activeRow
@@ -627,7 +577,8 @@ startGameFromItem:
 
 checkPageMode:
     ; lda unpackedPageValue ; 0 right now
-    lda startPressed
+    lda newlyPressedButtons_player1
+    and #BUTTON_START
     beq @noGame
     jmp setGameStartedFlag
 
@@ -636,10 +587,19 @@ checkPageMode:
     rts
 
 checkIfExitSubmenu:
-    lda BPressed
+    lda newlyPressedButtons_player1
+    and #BUTTON_B
     beq doSomethingWithSelect
     lda activeMenu
-    beq doSomethingWithSelect
+    bne @exitSubmenu
+    lda activeRow
+    bmi doSomethingWithSelect
+    lda #$FF
+    sta activeRow
+    ldy #$02
+    sty soundEffectSlot1Init
+    rts
+@exitSubmenu:
     jmp exitSubmenu
 
 
