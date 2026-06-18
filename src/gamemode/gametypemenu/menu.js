@@ -153,7 +153,6 @@ function getPageLines(title, page, pages) {
     return {
         label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
         index: `    .word $${(page.length << 11).toString(16).toUpperCase()} | (n_${pagelabelsName} - n_pageLabels)`,
-        count: getByteLine(`${getHexByte(page.length)} ; ${label}`),
         hibytes: getByteLine(
             `>${existing ? existing : pagelabelsName} ; ${label}`,
         ),
@@ -352,11 +351,6 @@ ${pageCountByMenu.join("\n")}
 ; M = mode
 pageTypes:
 ${pagesOutput.map((p) => p.label).join("\n")}
-
-; going away
-itemCountByPage:
-${pagesOutput.map((p) => p.count).join("\n")}
-
 
 ; CCCCCOOO OOOOOOOO
 ; C = item count

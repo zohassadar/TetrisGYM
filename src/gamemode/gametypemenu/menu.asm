@@ -322,8 +322,13 @@ setupUDRowChange:
     dey
 @storeMin:
     sty udMin
-    ldx actualPage
-    lda itemCountByPage,x
+    lda actualPage
+    asl
+    tax
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
     sta udMax
 
     lda #>activeRow
@@ -775,10 +780,15 @@ stageCurrentValues:
 
     ldx actualPage
     lda startItemByPage,x
-
     sta activeItem
-    lda itemCountByPage,x
 
+    lda actualPage
+    asl
+    tax
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
     sta @itemCount
 
     lda#(MENU_STRIPE_WIDTH+2) - 8
