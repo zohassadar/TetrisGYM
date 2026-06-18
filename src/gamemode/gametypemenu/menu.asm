@@ -55,6 +55,17 @@ DIGIT_MASK = %10100000
 DIGIT_COMPARE = %10000000
 
 
+menuStackPush:
+    ldx menuStackPtr
+    sta stack,x
+    dec menuStackPtr
+    rts
+
+menuStackPop:
+    inc menuStackPtr
+    ldx menuStackPtr
+    lda stack,x
+    rts
 
 gameMode_gameTypeMenu:
 .if NO_MENU
@@ -163,17 +174,12 @@ enterSubMenu:
     ldy #$02
     sty soundEffectSlot1Init
     pha
-    ldx menuStackPtr
     lda activeRow
-    sta stack,x
-    dex
+    jsr menuStackPush
     lda activePage
-    sta stack,x
-    dex
+    jsr menuStackPush
     lda activeMenu
-    sta stack,x
-    dex
-    stx menuStackPtr
+    jsr menuStackPush
     pla
 enterMenu:
     sta activeMenu
@@ -238,13 +244,9 @@ exitSubmenu:
     sty soundEffectSlot1Init
 
 exitSubmenuNoSfx:
-    inc menuStackPtr
-    ldx menuStackPtr
-    lda stack,x
+    jsr menuStackPop
     jsr enterMenu
-    inc menuStackPtr
-    ldx menuStackPtr
-    lda stack,x
+    jsr menuStackPop
     jsr enterPage
 
 .if KEYBOARD = 1
@@ -285,9 +287,7 @@ exitSubmenuNoSfx:
 ; .else
 ;         beq @skipSeedControl
 .endif
-    inc menuStackPtr
-    ldx menuStackPtr
-    lda stack,x
+    jsr menuStackPop
     sta activeRow
     jmp setScratch
 
