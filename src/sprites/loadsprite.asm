@@ -2,7 +2,7 @@
 
 loadSpriteIntoOamStaging:
         clc
-        lda spriteIndexInOamContentLookup
+        lda spriteIndex
         rol a
         tax
         lda oamContentLookup,x

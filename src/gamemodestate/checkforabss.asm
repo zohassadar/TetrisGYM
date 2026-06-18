@@ -13,10 +13,6 @@ gameModeState_checkForResetKeyCombo:
 @reset: jsr updateAudio2
         lda #RENDER_IDLE
         sta renderMode
-        lda #$2 ; straight to menu screen
+        lda #$0
         sta gameMode
-        lda qualFlag
-        beq @skipLegal
-        dec gameMode ; gameMode_waitScreen
-@skipLegal:
         rts

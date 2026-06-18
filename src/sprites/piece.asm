@@ -187,7 +187,7 @@ stageSpriteForNextPiece:
         lda tetriminoTypeFromOrientation,x
         clc
         adc #$6 ; piece sprites start at index 6
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jmp loadSpriteIntoOamStaging
 
 @maybeDisplayNextPiece:

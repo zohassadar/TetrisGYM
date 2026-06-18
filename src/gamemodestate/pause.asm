@@ -54,14 +54,14 @@ pause:
         sta spriteYOffset
 
 @pauseLoopCommon:
-        clc
-        lda #STRING_PAUSE_O
-        ldx debugFlag
+        ldx #>STR_PAUSE
+        ldy #<STR_PAUSE
+        lda debugFlag
         beq @notDebug
-        lda #STRING_BLOCK_O
+        ldx #>STR_BLOCK
+        ldy #<STR_BLOCK
 @notDebug:
-        sta spriteIndexInOamContentLookup
-        jsr stringSprite
+        jsr stringSpriteXY
 
         ; block tool hud - X/Y/Piece
         lda debugFlag

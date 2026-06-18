@@ -157,12 +157,12 @@ highScoreEntryScreen:
         adc #$20
         sta spriteXOffset
         lda #$0E
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         lda frameCounter
         and #$03
         bne @flickerStateSelected_checkForStartPressed
         lda #$02
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
 @flickerStateSelected_checkForStartPressed:
         jsr loadSpriteIntoOamStaging
         lda newlyPressedButtons_player1

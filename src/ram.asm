@@ -132,8 +132,10 @@ gameStarted: .res $1
 
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
-stringIndexLookup:
-spriteIndexInOamContentLookup: .res 1 ; $00A2
+stringAttrib: .res 1 ; $00A2
+stringLength: .res 1 ; $00A2
+stringIndex:
+spriteIndex: .res 1 ; can probably be the same as stringIndex
 renderFlags: .res 1 ; $00A3
 ; gameplay
 ; Bit 0-lines 1-level 2-score 3-debug 4-hz 6-stats 7-high score entry letter
@@ -142,7 +144,7 @@ renderFlags: .res 1 ; $00A3
 ; level menu
 ; 0-customLevel
 
-    .res $3
+    .res $1
 
 gameModeState: .res 1 ; $00A7                    ; For values, see playState_checkForCompletedRows
 generalCounter: .res 1 ; $00A8                    ; canon is legalScreenCounter2

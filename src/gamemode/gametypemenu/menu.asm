@@ -953,7 +953,7 @@ stageCursor:
     lda #$10
     sta spriteXOffset
     lda #$23 ; page select
-    sta spriteIndexInOamContentLookup
+    sta spriteIndex
     jmp loadSpriteIntoOamStaging
 
 @notTitle:
@@ -1000,7 +1000,7 @@ stageCursor:
     sta spriteXOffset
     lda #$1D  ; option select
 @store:
-    sta spriteIndexInOamContentLookup
+    sta spriteIndex
 @stage:
     jmp loadSpriteIntoOamStaging
 gotoEdgeCase:

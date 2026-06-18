@@ -77,7 +77,7 @@ debugDrawPieces:
         sta spriteYOffset
 
         lda #$16
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jsr loadSpriteIntoOamStaging
         rts
 debugPauseDrawPieces:
@@ -315,7 +315,7 @@ renderDebugHUD:
         lda #$C8
         sta spriteYOffset
         lda saveStateSpriteType
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @noSprite:
         rts

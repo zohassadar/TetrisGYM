@@ -29,16 +29,6 @@ displayModeText:
         beq @notanydas
 @anydas:
         jsr @notanydas
-        lda tmp2
-        sec
-        sbc #32
-        sta tmp2
-        lda tmp1
-        sbc #0
-        sta tmp1
-        sta PPUADDR
-        lda tmp2
-        sta PPUADDR
         lda gameMode
         cmp #3
         bne @notMenu

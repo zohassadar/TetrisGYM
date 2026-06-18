@@ -2,13 +2,12 @@ gameMode_bootScreen: ; boot
         ; ABSS goes to gameTypeMenu instead of here
 
         ; reset cursors
-        lda #$0
+        lda #MODE_TETRIS
         sta practiseType
 
         ; levelMenu stuff
+        lda #0
         sta levelControlMode
-        lda #INITIAL_CUSTOM_LEVEL
-        sta customLevel
 
         ; detect region
         jsr updateAudioAndWaitForNmi
@@ -18,15 +17,12 @@ gameMode_bootScreen: ; boot
         jsr detectKeyboard
 .endif
 
-.if !QUAL_BOOT
-        ; check if qualMode is already set
         lda qualFlag
         bne @qualBoot
         ; hold select to start in qual mode
         lda heldButtons_player1
         and #BUTTON_SELECT
         beq @nonQualBoot
-.endif
 @qualBoot:
         lda #1
         sta gameMode
@@ -39,4 +35,4 @@ gameMode_bootScreen: ; boot
         sta classicLevel
         lda #2
         sta gameMode
-        rts
+        jmp gameMode_waitScreen

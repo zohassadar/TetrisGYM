@@ -49,26 +49,41 @@ gameMode_levelMenu:
         sta classicLevel
         jmp @forceStartLevelToRange
 
+linecapWhenStrings:
+        .word STR_LEVEL
+        .word STR_LINES
+
+linecapHowStrings:
+        .word STR_KS2
+        .word STR_FLOOR
+        .word STR_INVIZ
+        .word STR_HALT
+
 levelMenuLinecapInfo:
         lda #$20
         sta PPUADDR
         lda #$F5
         sta PPUADDR
-        clc
-        lda #LINECAP_WHEN_STRING_OFFSET
-        adc linecapWhen
-        sta stringIndexLookup
-        jsr stringBackground
+        lda linecapWhen
+        asl
+        tay
+        ; use offset, linecapWhen will be 1 or 2, never 0
+        ldx linecapWhenStrings-1,y
+        lda linecapWhenStrings-2,y
+        tay
+        jsr stringBackgroundXY
 
         lda #$21
         sta PPUADDR
         lda #$15
         sta PPUADDR
-        clc
-        lda #LINECAP_HOW_STRING_OFFSET
-        adc linecapHow
-        sta stringIndexLookup
-        jsr stringBackground
+        lda linecapHow
+        asl
+        tay
+        ldx linecapHowStrings+1,y
+        lda linecapHowStrings+0,y
+        tay
+        jsr stringBackgroundXY
 
         lda #$20
         sta PPUADDR
@@ -205,9 +220,9 @@ levelControlClearHighScores:
         sta spriteXOffset
         lda #$C8
         sta spriteYOffset
-        lda #STRING_CLEAR_O
-        sta spriteIndexInOamContentLookup
-        jsr stringSprite
+        ldx #>STR_CLEAR
+        ldy #<STR_CLEAR
+        jsr stringSpriteXY
 
         jsr highScoreClearUpOrLeave
 
@@ -226,9 +241,9 @@ levelControlClearHighScoresConfirm:
         sta spriteXOffset
         lda #$C8
         sta spriteYOffset
-        lda #STRING_SURE_O
-        sta spriteIndexInOamContentLookup
-        jsr stringSprite
+        ldx #>STR_SURE
+        ldy #<STR_SURE
+        jsr stringSpriteXY
 
 highScoreClearUpOrLeave:
         lda newlyPressedButtons_player1
@@ -258,7 +273,7 @@ levelControlCustomLevel:
         lda #$B0
         sta spriteXOffset
         lda #$21
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @indicatorEnd:
 
@@ -429,7 +444,7 @@ levelControlNormal:
         lda levelToSpriteYOffset,x
         sta spriteYOffset
         lda #$00
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         ldx classicLevel
         lda levelToSpriteXOffset,x
         sta spriteXOffset
@@ -439,7 +454,7 @@ levelControlNormal:
 
 levelMenuRenderHearts:
         lda #$1E
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         lda #$7A
         sta spriteYOffset
         lda #$38
@@ -465,7 +480,7 @@ levelMenuRenderHearts:
         and #$03
         beq @skipCursor
         lda #$1F
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @skipCursor:
         rts
@@ -479,7 +494,7 @@ levelMenuRenderReady:
         lda #$88
         sta spriteXOffset
         lda #$20
-        sta spriteIndexInOamContentLookup
+        sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @notReady:
         rts
