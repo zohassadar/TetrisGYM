@@ -87,7 +87,8 @@ endingAnimation: ; rocket_screen
         ldx #RLE_NT_ROCKET
         jsr copyRleNametableToPpu
 
-        stagePatchThenWaitForNmi rocketPalette
+        stagePatch rocketPalette
+        jsr render_mode_queue
 
         ; lines
         lda #$21

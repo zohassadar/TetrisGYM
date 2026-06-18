@@ -18,7 +18,7 @@ gameModeState_initGameBackground:
         jsr debugNametableUI
 
         ldy #$20
-        ldx #$A2
+        ldx #$A3
         jsr patchSeed
 
         ldy darkModifier

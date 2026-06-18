@@ -29,10 +29,9 @@ displayModeText:
         beq @notanydas
 @anydas:
         jsr @notanydas
-        ldx #MODE_ANYDAS*6
         lda tmp2
         sec
-        sbc #33
+        sbc #32
         sta tmp2
         lda tmp1
         sbc #0
@@ -40,62 +39,16 @@ displayModeText:
         sta PPUADDR
         lda tmp2
         sta PPUADDR
-
-; lots of opportunity for efficiency here
         lda gameMode
         cmp #3
-        beq @setupMenuAnydas
+        bne @notMenu
+        stagePatch menuAnydasPatch
+        jmp render_mode_queue
+@notMenu:
         lda gameModeState
-        beq @setupGameAnydas
-        rts ; skip when in high score entry screen
-
-@setupGameAnydas:
-        lda #$35
-        sta PPUDATA
-        jsr @startLoop
-        lda #$36
-        sta PPUDATA
-        jmp @setupTopOfBox
-
-@setupMenuAnydas:
-        lda #$3B
-        sta PPUDATA
-        jsr @startLoop
-        lda #$3C
-        sta PPUDATA
-
-@setupTopOfBox:
-        lda tmp2
-        sec
-        sbc #32
-        sta tmp2
-        lda tmp1
-        sbc #0
-        sta PPUADDR
-        lda tmp2
-        sta PPUADDR
-
-
-        ldx #7
-        lda gameMode
-        cmp #3
-        beq @menuAnydasBoxLoop
-
-@gameAnydasBoxLoop:
-        lda topOfBoxGame,x
-        sta PPUDATA
-        dex
-        bpl @gameAnydasBoxLoop
-        rts
-
-@menuAnydasBoxLoop:
-        lda topOfBoxMenu,x
-        sta PPUDATA
-        dex
-        bpl @menuAnydasBoxLoop
-        rts
-
-
+        bne @ret
+        stagePatch gameAnydasPatch
+        jmp render_mode_queue
 
 @notanydas:
         lda practiseType
@@ -119,8 +72,6 @@ displayModeText:
         dey
         bne @writeChar
 
-        cpx #MODE_ANYDAS*6+6
-        beq @ret
 ; cover TYPE with seed if seeded b type
         lda practiseType
         cmp #MODE_TYPEB
@@ -148,66 +99,44 @@ patchSeed:
         beq @ret
         sty PPUADDR
         stx PPUADDR
-        lda gameMode
-        cmp #3
-        beq @setupGameTiles
 
-; hack
-        lda #$35
-        sta PPUDATA
         lda set_seed_input
         jsr twoDigsToPPU
         lda set_seed_input+1
         jsr twoDigsToPPU
         lda set_seed_input+2
         jsr twoDigsToPPU
-        lda #$36
-        jmp @nextRow
-
-@setupGameTiles:
-        lda #$3B
-        sta PPUDATA
-        lda set_seed_input
-        jsr twoDigsToPPU
-        lda set_seed_input+1
-        jsr twoDigsToPPU
-        lda set_seed_input+2
-        jsr twoDigsToPPU
-        lda #$3C
-
-@nextRow:
-        sta PPUDATA
-        sty PPUADDR
-        txa
-        clc
-        adc #$20
-        sta PPUADDR
-
-        ldx #$07
         lda gameMode
         cmp #3
-        beq @menuBoxLoop
-@gameBoxLoop:
-        lda bottomOfBoxGame,x
-        sta PPUDATA
-        dex
-        bpl @gameBoxLoop
+        bne @notMenu
+        stagePatch menuSeedPatch
+        jmp render_mode_queue
+@notMenu:
+        lda gameModeState
+        bne @ret
+        stagePatch gameSeedPatch
+        jmp render_mode_queue
+@ret:
         rts
 
+menuSeedPatch:
+    .byte $20,$B5,$0,$3B
+    .byte $20,$BC,$0,$3C
+    .byte $20,$D5,$7,$3D,$3E,$3E,$3E,$3E,$3E,$3E,$3F
+    .byte $0
 
-@menuBoxLoop:
-        lda bottomOfBoxMenu,x
-        sta PPUDATA
-        dex
-        bpl @menuBoxLoop
-@ret:   rts
+gameSeedPatch:
+    .byte $20,$A2,$0,$35
+    .byte $20,$A9,$0,$36
+    .byte $20,$C2,$7,$76,$37,$37,$37,$37,$37,$37,$77
+    .byte $0
 
+menuAnydasPatch:
+    .byte $20,$55,$7,$38,$39,$39,$39,$39,$39,$39,$3A
+    .byte $20,$75,$7,$3B,"A","N","Y","D","A","S",$3C
+    .byte $0
 
-bottomOfBoxMenu:
-        .byte $3F,$3E,$3E,$3E,$3E,$3E,$3E,$3D
-bottomOfBoxGame:
-        .byte $77,$37,$37,$37,$37,$37,$37,$76
-topOfBoxMenu:
-        .byte $3A,$39,$39,$39,$39,$39,$39,$38
-topOfBoxGame:
-        .byte $75,$34,$34,$34,$34,$34,$34,$74
+gameAnydasPatch:
+    .byte $20,$42,$7,$74,$34,$34,$34,$34,$34,$34,$75
+    .byte $20,$62,$7,$35,"A","N","Y","D","A","S",$36
+    .byte $0

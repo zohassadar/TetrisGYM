@@ -16,11 +16,9 @@ render_mode_rocket:
         inc screenStage
 
 
-        lda #<rocketNametablePatch
-        sta patchPtr
-        lda #>rocketNametablePatch
-        sta patchPtr+1
-        jsr copyPatchAtPointerToQueue
+        ldx #<rocketNametablePatch
+        ldy #>rocketNametablePatch
+        jsr copyPatchAtXYToQueue
         jsr render_mode_queue
 
 @stage2:

@@ -13,9 +13,10 @@ gameMode_speedTest:
         jsr hzStart
         jsr clearNametable
 
-        stagePatchNoWait speedtestNametablePatch
-        stagePatchNoWait gamePalette
-        stagePatchThenWaitForNmi speedTestColorPatch
+        stagePatch speedtestNametablePatch
+        stagePatch gamePalette
+        stagePatch speedTestColorPatch
+        jsr render_mode_queue
 
 .if INES_MAPPER <> 0
         lda #CHRBankSet0

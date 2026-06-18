@@ -59,17 +59,22 @@
 
 
 
-.macro stagePatchNoWait patchAddr
-        lda #<patchAddr
-        sta patchPtr
-        lda #>patchAddr
-        sta patchPtr+1
-        jsr copyPatchAtPointerToQueue
+.macro stagePatch patchAddr
+        ldx #<patchAddr
+        ldy #>patchAddr
+        jsr copyPatchAtXYToQueue
+.endmacro
+
+.macro stagePatchThenDump patchAddr
+        ldx #<patchAddr
+        ldy #>patchAddr
+        jsr copyPatchAtXYToQueue
+        jsr render_mode_queue
 .endmacro
 
 .macro stagePatchThenWaitForNmi patchAddr
 ; can be made subroutine if needed to save space
-        stagePatchNoWait patchAddr
+        stagePatch patchAddr
         lda renderMode
         pha
         lda #RENDER_QUEUE

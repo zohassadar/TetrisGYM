@@ -22,7 +22,7 @@ gameMode_levelMenu:
         jsr checkIfSeeded
         ; patch if seeded
         ldy #$20
-        ldx #$B5
+        ldx #$B6
         jsr patchSeed
 
         ; render lines when loading screen

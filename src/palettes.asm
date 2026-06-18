@@ -58,39 +58,3 @@ waitPalettePatch:
         .byte   $0F,$30,$38,$26 ; bg
         .byte   $0F,$17,$27,$37
         .byte   $00
-
-
-copyPatchAtPointerToQueue:
-@counter = generalCounter
-    ldx renderQueuePointer
-    ldy #0
-@stripe:
-; high ppu byte or end marker
-    lda (patchPtr),y
-    beq @end
-    sta stack,x
-    iny
-    inx
-; low ppu byte
-    lda (patchPtr),y
-    sta stack,x
-    iny
-    inx
-; length
-    lda (patchPtr),y
-    sta stack,x
-    sta @counter
-    inx
-    iny
-@tile:
-    lda (patchPtr),y
-    sta stack,x
-    inx
-    iny
-    dec @counter
-    bpl @tile
-    inc renderQueueLength
-    bne @stripe
-@end:
-    stx renderQueuePointer
-    rts
