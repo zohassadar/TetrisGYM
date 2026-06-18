@@ -84,8 +84,8 @@ checkLevelUp:
         beq @lineLoop
         cmp #MODE_MARATHON
         bne @notMarathon
-        lda marathonModifier
-        beq @lineLoop ; marathon mode 0 does not transition
+        lda marathonLevelModifier
+        beq @lineLoop
         bne @notSXTOKL
 @notMarathon:
         cmp #MODE_TRANSITION
@@ -351,9 +351,8 @@ addLineClearPoints:
         ldy practiseType
         cpy #MODE_MARATHON
         bne @notMarathon
-        ldy marathonModifier
-        cpy #3 ; Marathon modes 3 + 4 score normally
-        bcs @notMarathon
+        ldy marathonScoreFlag
+        bne @notMarathon
         lda startLevel
 @notMarathon:
         sta factorA24+0

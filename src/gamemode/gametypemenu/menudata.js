@@ -88,7 +88,19 @@ const transitionModifier = [
     17,
     "transitionModifier",
 ];
-const marathonModifier = ["TYPE_NUMBER", "modifier", 5, "marathonModifier"];
+const marathonScoreFlag = [
+    "TYPE_CHOICES",
+    "fixed score",
+    ["on", "off"],
+    "marathonScoreFlag",
+];
+const marathonLevelModifier = [
+    "TYPE_CHOICES",
+    "level up",
+    ["fixed", "normal", "zero"],
+    "marathonLevelModifier",
+];
+
 const tapqtyModifier = ["TYPE_NUMBER", "height", 16, "tapqtyModifier"];
 const noLineClearDelayFlag = [
     "TYPE_BOOL",
@@ -166,7 +178,6 @@ const displaySubMenu = {
     ],
 };
 
-
 const moreSubMenu = {
     "more options[mode=default]": [
         crashModifier,
@@ -203,9 +214,7 @@ const goToMore = ["TYPE_SUBMENU", "more", moreSubMenu];
 const shared = [goToMods, goToInfo, goToDisplay, goToDas, goToMore];
 
 const optionsSubMenu = {
-    "options[mode=default]": [
-        ...shared,
-    ],
+    "options[mode=default]": [...shared],
 };
 const goToShared = ["TYPE_SUBMENU", "options", optionsSubMenu];
 const mainMenu = {
@@ -236,7 +245,7 @@ const mainMenu = {
         goToTournament,
         ...shared,
     ],
-    "marathon[mode=marathon]": [marathonModifier, goToTournament, ...shared],
+    "marathon[mode=marathon]": [marathonScoreFlag, marathonLevelModifier, goToTournament, ...shared],
     "drought[mode=drought]": [droughtModifier, goToTournament, ...shared],
     "checkerboard[mode=checkerboard]": [
         checkerModifier,

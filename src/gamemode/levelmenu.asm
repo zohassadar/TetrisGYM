@@ -139,12 +139,9 @@ levelMenuCheckStartGame:
         ldy practiseType
         cpy #MODE_MARATHON
         bne @noLevelModification
-        ldy marathonModifier
-        cpy #2 ; marathon modes 2 & 4 starts at level 0
-        beq @startAtZero
-        cpy #4
+        ldy marathonLevelModifier
+        cpy #2
         bne @noLevelModification
-@startAtZero:
         lda #0
 @noLevelModification:
         sta levelNumber

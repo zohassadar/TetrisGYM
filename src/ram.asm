@@ -396,7 +396,6 @@ floorModifier: .res 1
 crunchLeftModifier: .res 1
 crunchRightModifier: .res 1
 transitionModifier: .res 1
-marathonModifier: .res 1
 tapqtyModifier: .res 1
 checkerModifier: .res 1
 garbageModifier: .res 1
@@ -441,6 +440,8 @@ typeBSeedFlag: .res 1
 vitsScoreFlag: .res 1
 gameTimerFlag: .res 1
 bTypeLines: .res 1
+marathonScoreFlag: .res 1
+marathonLevelModifier: .res 1
 
 sramVariableLength := * - menuVars
 
