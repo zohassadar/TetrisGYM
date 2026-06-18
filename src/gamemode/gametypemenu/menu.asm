@@ -691,6 +691,82 @@ addInputs:
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
 
+stageBackgroundTilesNew:
+; page index points to split address tables
+; tables are pointers into strings
+; word1,0,word2,0,word3,-1
+
+    ldx actualPage
+
+    @blankCounter = blankCounter
+    @rowCounter = rowCounter
+    @stringPtr = stringSetPtr
+
+    lda pageLabelsLo,x
+    sta @stringPtr
+    lda pageLabelsHi,x
+    sta @stringPtr+1
+
+    lda #>MENU_TITLE_PPU
+    sta stack
+    lda #<MENU_TITLE_PPU
+    sta stack+1
+    lda #MENU_ROWS
+    sta @rowCounter
+    ldx #$2
+
+@nextRow:
+    lda #MENU_STRIPE_WIDTH
+    sta @blankCounter
+
+@loop:
+    ldy #0
+    lda (@stringPtr),y
+    tay
+    iny
+    beq @fillBlank ; stop advancing pointer when $FF is reached
+    inc @stringPtr
+    bne @noCarry
+    inc @stringPtr+1
+@noCarry:
+    iny
+    beq @fillBlank ; $FE also blanks line but after advancing pointer
+    sta stack,x
+    dec @blankCounter
+    inx
+    bne @loop ; always taken
+@fillBlank: ; should only be entered directly when end of string reached
+    dec @blankCounter
+    bmi @finishRow
+    lda #$FF
+    sta stack,x
+    inx
+    bne @fillBlank ; always taken
+
+@finishRow:
+; check if all rows drawn
+    dec @rowCounter
+    beq @shiftTitleRow
+
+; set next row based on last row
+    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
+    clc
+    adc #$40
+    sta stack+1,x
+    lda stack-(MENU_STRIPE_WIDTH+2),x
+    adc #$00
+    sta stack,x
+    inx
+    inx
+    bne @nextRow ; always taken
+@shiftTitleRow:
+; bump title row 4 tiles to the right
+    lda stack+1
+    eor #%1111
+    sta stack+1
+    rts
+
+
 stageBackgroundTiles:
 ; page index points to split address tables
 ; tables are pointers into strings
