@@ -145,8 +145,6 @@ gameTypeLoop:
     lda #0
     sta lrAdjust
 
-
-
 @notGoofyToggle:
     jsr addInputs
     jsr respondToInput
@@ -158,7 +156,6 @@ gameTypeLoop:
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
-
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
 
@@ -318,7 +315,11 @@ setupUDRowChange:
 ; ud change row 1/2 - activeColumn == 0
     ldy #$00
     lda unpackedPageType
-    bpl @storeMin ; no page select row for single page
+    ldx actualPage
+    lda pageCountByMenu,x
+    tax
+    dex
+    beq @storeMin ; no page select row for single page
     dey
 @storeMin:
     sty udMin
@@ -691,97 +692,35 @@ addInputs:
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
 
-stageBackgroundTilesNew:
-; page index points to split address tables
-; tables are pointers into strings
-; word1,0,word2,0,word3,-1
-
-    ldx actualPage
-
-    @blankCounter = blankCounter
-    @rowCounter = rowCounter
-    @stringPtr = stringSetPtr
-
-    lda pageLabelsLo,x
-    sta @stringPtr
-    lda pageLabelsHi,x
-    sta @stringPtr+1
-
-    lda #>MENU_TITLE_PPU
-    sta stack
-    lda #<MENU_TITLE_PPU
-    sta stack+1
-    lda #MENU_ROWS
-    sta @rowCounter
-    ldx #$2
-
-@nextRow:
-    lda #MENU_STRIPE_WIDTH
-    sta @blankCounter
-
-@loop:
-    ldy #0
-    lda (@stringPtr),y
-    tay
-    iny
-    beq @fillBlank ; stop advancing pointer when $FF is reached
-    inc @stringPtr
-    bne @noCarry
-    inc @stringPtr+1
-@noCarry:
-    iny
-    beq @fillBlank ; $FE also blanks line but after advancing pointer
-    sta stack,x
-    dec @blankCounter
-    inx
-    bne @loop ; always taken
-@fillBlank: ; should only be entered directly when end of string reached
-    dec @blankCounter
-    bmi @finishRow
-    lda #$FF
-    sta stack,x
-    inx
-    bne @fillBlank ; always taken
-
-@finishRow:
-; check if all rows drawn
-    dec @rowCounter
-    beq @shiftTitleRow
-
-; set next row based on last row
-    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
-    clc
-    adc #$40
-    sta stack+1,x
-    lda stack-(MENU_STRIPE_WIDTH+2),x
-    adc #$00
-    sta stack,x
-    inx
-    inx
-    bne @nextRow ; always taken
-@shiftTitleRow:
-; bump title row 4 tiles to the right
-    lda stack+1
-    eor #%1111
-    sta stack+1
-    rts
-
-
 stageBackgroundTiles:
-; page index points to split address tables
-; tables are pointers into strings
-; word1,0,word2,0,word3,-1
-
     ldx actualPage
 
     @blankCounter = blankCounter
     @rowCounter = rowCounter
     @stringPtr = stringSetPtr
+    @itemPtr = generalCounter
+    @itemCounter = generalCounter3
 
-    lda pageLabelsLo,x
-    sta @stringPtr
-    lda pageLabelsHi,x
-    sta @stringPtr+1
+; populate itemPtr, pointer to first string
+    lda actualPage
+    asl
+    tax
+    lda pageIndexes,x
+    clc
+    adc #<n_pageLabels
+    sta @itemPtr
+    php
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta @itemCounter
+    lda pageIndexes+1,x
+    and #$7
+    plp
+    adc #>n_pageLabels
+    sta @itemPtr+1
+
 
     lda #>MENU_TITLE_PPU
     sta stack
@@ -796,21 +735,35 @@ stageBackgroundTiles:
     sta @blankCounter
 
 @loop:
+    lda @itemCounter
+    bmi @fillBlank
     ldy #0
+    lda (@itemPtr),y
+    clc
+    adc #<strTable
+    php
+    sta @stringPtr
+    iny
+    lda (@itemPtr),y
+    lsr
+    lsr
+    lsr
+    lsr
+    sta stringLength
+    lda (@itemPtr),y
+    and #$F
+    plp
+    adc #>strTable
+    sta @stringPtr+1
+    dey
+@copy:
     lda (@stringPtr),y
-    tay
-    iny
-    beq @fillBlank ; stop advancing pointer when $FF is reached
-    inc @stringPtr
-    bne @noCarry
-    inc @stringPtr+1
-@noCarry:
-    iny
-    beq @fillBlank ; $FE also blanks line but after advancing pointer
     sta stack,x
-    dec @blankCounter
+    iny
     inx
-    bne @loop ; always taken
+    dec blankCounter
+    dec stringLength
+    bpl @copy
 @fillBlank: ; should only be entered directly when end of string reached
     dec @blankCounter
     bmi @finishRow
@@ -820,7 +773,14 @@ stageBackgroundTiles:
     bne @fillBlank ; always taken
 
 @finishRow:
-; check if all rows drawn
+    lda @itemPtr
+    clc
+    adc #2
+    sta @itemPtr
+    lda #0
+    adc @itemPtr+1
+    sta @itemPtr+1
+    dec @itemCounter
     dec @rowCounter
     beq @shiftTitleRow
 
@@ -843,7 +803,7 @@ stageBackgroundTiles:
     rts
 
 
-.out .sprintf("background staging: %d", *-stageBackgroundTiles)
+; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
 
 
 stageCurrentValues:

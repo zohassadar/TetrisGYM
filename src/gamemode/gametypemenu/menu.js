@@ -133,9 +133,10 @@ function getPageLines(title, page, pages) {
 
     const pageLabelTextLines = [];
     if (!newPageThings[`n_${pagelabelsName}`]) {
-        newPageThings[`n_${pagelabelsName}`] = page.map(
-            (p) => `    .word ${getStringConstant(p[1])}`,
-        );
+        newPageThings[`n_${pagelabelsName}`] = [
+            `    .word ${getStringConstant(label)}`,
+            ...page.map((p) => `    .word ${getStringConstant(p[1])}`),
+        ];
     }
     pageLabelTextLines.push(`${pagelabelsName}:`);
     pageLabelTextLines.push(getLineString(`${label}`));
@@ -364,12 +365,6 @@ ${Object.entries(newPageThings)
     .map(([k, v]) => [k + ":", ...v].join("\n"))
     .join("\n")}
 
-pageLabelsHi:
-${pagesOutput.map((p) => p.hibytes).join("\n")}
-
-pageLabelsLo:
-${pagesOutput.map((p) => p.lobytes).join("\n")}
-
 startItemByPage:
 ${startItemByPage.join("\n")}
 
@@ -392,8 +387,6 @@ ${choiceSetIndexes.join("\n")}
 
 choiceSets:
 ${choiceSets.join("\n")}
-
-${pagesOutput.map((p) => p.choicesets).join("\n")}
 
 strTable:
 ${wordChunks().join("\n")}
