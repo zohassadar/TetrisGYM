@@ -824,17 +824,36 @@ stageCurrentValues:
     tax
     jsr @setStringList
     lda (byteSpriteAddr),y
+    asl
     tay
 @startCopy:
     lda (stringSetPtr),y
-    tay
-    lda choiceSetTable,y
-    beq @endCopy
-    sta generalCounter
-    jsr setStackOffset
+    clc
+    adc #<strTable
+    pha
+    php
     iny
+    lda (stringSetPtr),y
+    lsr
+    lsr
+    lsr
+    lsr
+    clc
+    adc #1
+    sta generalCounter
+    lda (stringSetPtr),y
+    and #$F
+    plp
+    adc #>strTable
+    sta stringSetPtr+1
+    pla
+    sta stringSetPtr
+    lda generalCounter
+    jsr setStackOffset
+
+    ldy #0
 @nextChar:
-    lda choiceSetTable,y
+    lda (stringSetPtr),y
     sta stack,x
     inx
     iny
@@ -845,12 +864,16 @@ stageCurrentValues:
     jmp @nextByte
 
 @setStringList:
-    lda choiceSetIndexes,x
+    txa
+    asl
+    tax
+    lda newChoiceSetIndexes,x
     clc
-    adc #<choiceSets
+    adc #<newChoiceSets
     sta stringSetPtr
-    lda #$00
-    adc #>choiceSets
+    lda newChoiceSetIndexes+1,x
+    and #$F
+    adc #>newChoiceSets
     sta stringSetPtr+1
     rts
 

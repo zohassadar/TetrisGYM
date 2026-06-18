@@ -20,9 +20,7 @@ const labelMap = {
 const newWords = new Set();
 const addedStrings = [];
 const choiceSetEnums = [];
-const choiceSetIndexes = [];
 const newChoiceSetIndexes = [];
-const choiceSets = [];
 const newChoiceSets = [];
 let index = 0;
 const items = [];
@@ -269,10 +267,6 @@ items.forEach((i) => {
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
         newChoiceSetIndexes.push(`    .word $${(choiceSet.length-2 << 12).toString(16)} | (n_${getChoiceSetName(name)} - newChoiceSets)`);
-        choiceSetIndexes.push(
-            getByteLine(`${getChoiceSetName(name)}-choiceSets`),
-        );
-        choiceSets.push(`${getChoiceSetName(name)}:`);
         newChoiceSets.push(`n_${getChoiceSetName(name)}:`);
     }
     DEBUG && console.log(`choiceSet: `, choiceSet);
@@ -292,10 +286,6 @@ items.forEach((i) => {
         if (name == "extraSpriteStrings") {
             undefined;
         } else {
-            choiceSets.push(
-                // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
-                getByteLine(`${getStringName(choice)}-choiceSetTable`),
-            );
             newChoiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
                 `    .word ${getStringConstant(choice)}`
@@ -387,9 +377,6 @@ ${memoryMap.join("\n")}
 itemTypes:
 ${items.map((i) => i.label).join("\n")}
 
-choiceSetIndexes:
-${choiceSetIndexes.join("\n")}
-
 newChoiceSetIndexes:
 ${newChoiceSetIndexes.join("\n")}
 
@@ -400,14 +387,7 @@ ${newerStringLines.join("\n")}
 newChoiceSets:
 ${newChoiceSets.join("\n")}
 
-choiceSets:
-${choiceSets.join("\n")}
-
-${newStringLines.join("\n")}
-
 ${pagesOutput.map((p) => p.choicesets).join("\n")}
-.out .sprintf("%d/256 choice set bytes", * - choiceSetTable)
-
 
 strTable:
 ${wordChunks().join("\n")}
