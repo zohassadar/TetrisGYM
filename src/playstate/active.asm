@@ -110,31 +110,22 @@ harddropMarkCleared:
         sta tmpY ; row
 @lineLoop:
         ; A should always be tmpY
-
         tax
-        lda multBy10Table, x
-        sta harddropAddr
-
-        ; check for empty row
-        ldy #$9
-@minoLoop:
-        lda (harddropAddr), y
-        bmi @noLineClear ; EMPTY_TILE sets negative flag, normal tiles do not
-
-        dey
-        bpl @minoLoop
-
-@lineClear:
-        lda #1
-        jmp @write
-@noLineClear:
-        lda #0
-@write:
-        ; X should be tmpY
-        sta harddropBuffer, x
-
+        ldy multBy10Table, x
+        lda playfield,y
+        ora playfield+1,y
+        ora playfield+2,y
+        ora playfield+3,y
+        ora playfield+4,y
+        ora playfield+5,y
+        ora playfield+6,y
+        ora playfield+7,y
+        ora playfield+8,y
+        ora playfield+9,y
+        eor #$80
+        asl
+        rol harddropBuffer,x
         dec tmpY
-
         lda tmpY
         cmp tmpX
         bne @lineLoop
