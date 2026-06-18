@@ -427,7 +427,7 @@ setupLRValueChange:
     txa
     asl
     tax
-    lda newChoiceSetIndexes+1,x
+    lda choiceSetIndexes+1,x
     lsr
     lsr
     lsr
@@ -867,13 +867,13 @@ stageCurrentValues:
     txa
     asl
     tax
-    lda newChoiceSetIndexes,x
+    lda choiceSetIndexes,x
     clc
-    adc #<newChoiceSets
+    adc #<choiceSets
     sta stringSetPtr
-    lda newChoiceSetIndexes+1,x
+    lda choiceSetIndexes+1,x
     and #$F
-    adc #>newChoiceSets
+    adc #>choiceSets
     sta stringSetPtr+1
     rts
 

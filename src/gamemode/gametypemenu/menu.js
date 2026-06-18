@@ -18,17 +18,14 @@ const labelMap = {
 };
 
 const newWords = new Set();
-const addedStrings = [];
 const choiceSetEnums = [];
-const newChoiceSetIndexes = [];
-const newChoiceSets = [];
+const choiceSetIndexes = [];
+const choiceSets = [];
 let index = 0;
 const items = [];
 const lookupConstants = [];
 const memoryMap = [];
 const menuEnums = [];
-const newStringLines = [];
-const newerStringLines = [];
 const pageCountByMenu = [];
 let pageIndex = 0;
 const pageLabelText = {};
@@ -254,39 +251,20 @@ items.forEach((i) => {
 [
     ["extraSpriteStrings", extraSpriteStrings],
     ...Object.entries(unlabeledStringSets),
-].forEach(([name, choiceSet], i) => {
-    if (!i) newStringLines.push("stringTable:");
-    if (i == 1) {
-        newStringLines.push(
-            '\n.out .sprintf("%d/256 sprite string bytes", * - stringTable)\n',
-        );
-        newStringLines.push("choiceSetTable:");
-    }
-
+].forEach(([name, choiceSet]) => {
     DEBUG && console.log(`stringlist`, name, choiceSet);
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
-        newChoiceSetIndexes.push(`    .word $${(choiceSet.length-2 << 12).toString(16)} | (n_${getChoiceSetName(name)} - newChoiceSets)`);
-        newChoiceSets.push(`n_${getChoiceSetName(name)}:`);
+        choiceSetIndexes.push(`    .word $${(choiceSet.length-2 << 12).toString(16)} | (${getChoiceSetName(name)} - choiceSets)`);
+        choiceSets.push(`${getChoiceSetName(name)}:`);
     }
     DEBUG && console.log(`choiceSet: `, choiceSet);
     choiceSet.forEach((choice) => {
         choice = choice.toLowerCase();
         checkStringSanity(choice);
         newWords.add(choice);
-        if (!addedStrings.includes(choice)) {
-            addedStrings.push(choice);
-            newStringLines.push(`${getStringName(choice)}:`);
-            newStringLines.push(
-                getByteLine(
-                    `${getHexByte(choice.length)},${getStringBytes(choice)}`,
-                ),
-            );
-        }
-        if (name == "extraSpriteStrings") {
-            undefined;
-        } else {
-            newChoiceSets.push(
+        if (name !== "extraSpriteStrings") {
+            choiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
                 `    .word ${getStringConstant(choice)}`
             );
@@ -377,15 +355,11 @@ ${memoryMap.join("\n")}
 itemTypes:
 ${items.map((i) => i.label).join("\n")}
 
-newChoiceSetIndexes:
-${newChoiceSetIndexes.join("\n")}
+choiceSetIndexes:
+${choiceSetIndexes.join("\n")}
 
-
-newerStringLines:
-${newerStringLines.join("\n")}
-
-newChoiceSets:
-${newChoiceSets.join("\n")}
+choiceSets:
+${choiceSets.join("\n")}
 
 ${pagesOutput.map((p) => p.choicesets).join("\n")}
 
