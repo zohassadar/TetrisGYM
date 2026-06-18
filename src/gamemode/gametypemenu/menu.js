@@ -111,9 +111,10 @@ function getLineString(string, multiline = false) {
         : getByteLine(getStringBytes(string));
 }
 
+const newPageThings = {};
+
 function getPageLines(title, page, pages) {
     DEBUG && console.log(`getPageLines`, title, page, pages);
-    const pageType = "PAGE_DEFAULT";
     let label;
     let mode;
     [, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
@@ -125,15 +126,22 @@ function getPageLines(title, page, pages) {
         .toUpperCase();
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
     const pagelabelsName = `pageLabels${cleanWord(label)}`;
+    newWords.add(label.toUpperCase());
 
     const endLabel = getByteLine("EOL");
     const endLabelSet = getByteLine("EOF");
 
     const pageLabelTextLines = [];
+    if (!newPageThings[`n_${pagelabelsName}`]) {
+        newPageThings[`n_${pagelabelsName}`] = page.map(
+            (p) => `    .word ${getStringConstant(p[1])}`,
+        );
+    }
     pageLabelTextLines.push(`${pagelabelsName}:`);
     pageLabelTextLines.push(getLineString(`${label}`));
     pageLabelTextLines.push(endLabel);
     page.forEach((p, i) => {
+        newWords.add(p[1].toUpperCase());
         pageLabelTextLines.push(getLineString(p[1]));
         if (i + 1 != page.length) pageLabelTextLines.push(endLabel);
     });
@@ -144,6 +152,7 @@ function getPageLines(title, page, pages) {
 
     return {
         label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
+        index: `    .word $${(page.length << 11).toString(16).toUpperCase()} | (n_${pagelabelsName} - n_pageLabels)`,
         count: getByteLine(`${getHexByte(page.length)} ; ${label}`),
         hibytes: getByteLine(
             `>${existing ? existing : pagelabelsName} ; ${label}`,
@@ -151,6 +160,7 @@ function getPageLines(title, page, pages) {
         lobytes: getByteLine(
             `<${existing ? existing : pagelabelsName} ; ${label}`,
         ),
+        newsets: `n_${pagelabelsName}:`,
         choicesets: existing ? "" : joined,
     };
 }
@@ -267,7 +277,7 @@ items.forEach((i) => {
     choiceSet.forEach((choice) => {
         choice = choice.toLowerCase();
         checkStringSanity(choice);
-        newWords.add(choice);
+        newWords.add(choice.toUpperCase());
         if (name !== "extraSpriteStrings") {
             choiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
@@ -295,7 +305,6 @@ if (wordTable.length > 1023) {
 function wordConstants() {
     return sortedWords.map((w) => {
         let index = wordTable.search(RegExp.escape(w));
-        let clean = cleanWord(w);
         let hexbyte = (((w.length - 1) << 12) | index)
             .toString(16)
             .toUpperCase();
@@ -328,6 +337,7 @@ CHOICESET_COUNT
 .endenum
 .out .sprintf("%d/32 choicesets", CHOICESET_COUNT)
 
+
 ; index activeMenu
 
 startPageByMenu:
@@ -337,11 +347,28 @@ pageCountByMenu:
 ${pageCountByMenu.join("\n")}
 
 ; index activePage
+; PPPMMMMM
+; P = padding
+; M = mode
 pageTypes:
 ${pagesOutput.map((p) => p.label).join("\n")}
 
+; going away
 itemCountByPage:
 ${pagesOutput.map((p) => p.count).join("\n")}
+
+
+; CCCCCOOO OOOOOOOO
+; C = item count
+; offset from pageIndexes
+
+pageIndexes:
+${pagesOutput.map((p) => p.index).join("\n")}
+
+n_pageLabels:
+${Object.entries(newPageThings)
+    .map(([k, v]) => [k + ":", ...v].join("\n"))
+    .join("\n")}
 
 pageLabelsHi:
 ${pagesOutput.map((p) => p.hibytes).join("\n")}
@@ -357,9 +384,15 @@ ${startItemByPage.join("\n")}
 memoryOffsets:
 ${memoryMap.join("\n")}
 
+; TTTVVVVV
+; T = type
+; V = value
 itemTypes:
 ${items.map((i) => i.label).join("\n")}
 
+; CCCCOOOO OOOOOOOO
+; C = choicecount - 2
+; O = offset from choiceSets
 choiceSetIndexes:
 ${choiceSetIndexes.join("\n")}
 
