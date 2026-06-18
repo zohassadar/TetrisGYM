@@ -196,8 +196,14 @@ enterPage:
     clc
     adc startPageByMenu,y
     sta actualPage
+    asl
     tax
-
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta pageItemCount
+    ldx actualPage
     lda pageTypes,x
     and #VALUE_MASK
     sta unpackedPageValue
@@ -308,13 +314,7 @@ setupUDRowChange:
     dey
 @storeMin:
     sty udMin
-    lda actualPage
-    asl
-    tax
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
+    lda pageItemCount
     sta udMax
 
     lda #>activeRow
@@ -538,7 +538,6 @@ checkIfGameStartOrSubmenu:
 @checkPageMode:
     jmp checkPageMode
 
-
 @goToCustom:
     lda newlyPressedButtons_player1
     and #BUTTON_A+BUTTON_START
@@ -565,8 +564,6 @@ customResetDefaults:
 customClearScoreboard:
     rts
 
-
-
 goToSubMenu:
     lda unpackedItemValue
     jmp enterSubMenu
@@ -576,7 +573,6 @@ startGameFromItem:
     rts
 
 checkPageMode:
-    ; lda unpackedPageValue ; 0 right now
     lda newlyPressedButtons_player1
     and #BUTTON_START
     beq @noGame
@@ -662,6 +658,8 @@ stageBackgroundTiles:
     @itemCounter = generalCounter3
 
 ; populate itemPtr, pointer to first string
+    lda pageItemCount
+    sta @itemCounter
     lda actualPage
     asl
     tax
@@ -669,15 +667,8 @@ stageBackgroundTiles:
     clc
     adc #<n_pageLabels
     sta @itemPtr
-    php
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
-    sta @itemCounter
     lda pageIndexes+1,x
     and #$7
-    plp
     adc #>n_pageLabels
     sta @itemPtr+1
 
@@ -761,10 +752,7 @@ stageBackgroundTiles:
     eor #%1111
     sta stack+1
     rts
-
-
 ; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
-
 
 stageCurrentValues:
     @counter = blankCounter
@@ -1074,3 +1062,291 @@ render_mode_menu:
 
 
 .out .sprintf("total: %d", *-gameMode_gameTypeMenu)
+
+renderQueuePush:
+    ldx renderQueuePointer
+    sta stack,x
+    inc renderQueuePointer
+    rts
+
+stageCurrentRow:
+    ldx actualPage
+
+    @blankCounter = blankCounter
+    @rowCounter = rowCounter
+    @stringPtr = stringSetPtr
+    @itemPtr = generalCounter
+    @itemCounter = generalCounter3
+
+; populate itemPtr, pointer to first string
+    lda actualPage
+    asl
+    tax
+    lda pageIndexes,x
+    clc
+    adc #<n_pageLabels
+    sta @itemPtr
+    php
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta @itemCounter
+    lda pageIndexes+1,x
+    and #$7
+    plp
+    adc #>n_pageLabels
+    sta @itemPtr+1
+
+    lda vramRow
+    bmi @ret
+
+    asl
+    tay
+
+    lda #>MENU_TITLE_PPU
+    jsr menuStackPush
+    lda #<MENU_TITLE_PPU
+    jsr menuStackPush
+
+@nextRow:
+    lda #MENU_STRIPE_WIDTH
+    sta @blankCounter
+
+@loop:
+    lda @itemCounter
+    bmi @fillBlank
+    ldy #0
+    lda (@itemPtr),y
+    clc
+    adc #<strTable
+    php
+    sta @stringPtr
+    iny
+    lda (@itemPtr),y
+    lsr
+    lsr
+    lsr
+    lsr
+    sta stringLength
+    lda (@itemPtr),y
+    and #$F
+    plp
+    adc #>strTable
+    sta @stringPtr+1
+    dey
+@copy:
+    lda (@stringPtr),y
+    sta stack,x
+    iny
+    inx
+    dec blankCounter
+    dec stringLength
+    bpl @copy
+@fillBlank: ; should only be entered directly when end of string reached
+    dec @blankCounter
+    bmi @finishRow
+    lda #$FF
+    sta stack,x
+    inx
+    bne @fillBlank ; always taken
+
+@finishRow:
+    lda @itemPtr
+    clc
+    adc #2
+    sta @itemPtr
+    lda #0
+    adc @itemPtr+1
+    sta @itemPtr+1
+    dec @itemCounter
+    dec @rowCounter
+    beq @shiftTitleRow
+
+; set next row based on last row
+    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
+    clc
+    adc #$40
+    sta stack+1,x
+    lda stack-(MENU_STRIPE_WIDTH+2),x
+    adc #$00
+    sta stack,x
+    inx
+    inx
+    bne @nextRow ; always taken
+@shiftTitleRow:
+; bump title row 4 tiles to the right
+    lda stack+1
+    eor #%1111
+    sta stack+1
+@ret:
+    rts
+; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
+
+stageCurrentValuesOld:
+    @counter = blankCounter
+    @itemCount = rowCounter
+
+    lda #$00
+    sta @counter
+    lda #MENU_VARS_HI
+
+    ldx actualPage
+    lda startItemByPage,x
+    sta activeItem
+
+    lda actualPage
+    asl
+    tax
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta @itemCount
+
+    lda#(MENU_STRIPE_WIDTH+2) - 8
+    sta stackPtr
+
+@memoryStageLoop:
+    lda stackPtr
+    clc
+    adc #MENU_STRIPE_WIDTH+2
+    sta stackPtr
+    tax
+
+    ldy activeItem
+    lda memoryOffsets,y
+    sta byteSpriteAddr
+    lda #MENU_VARS_HI
+    sta byteSpriteAddr+1
+    lda itemTypes,y
+    tax
+    ldy #0
+    and #TYPE_MASK
+    bmi @digitInputOrEdge
+
+    cmp #TYPE_CHOICES
+    beq @drawString
+
+    cmp #TYPE_NUMBER
+    bne @drawFFOff
+@setupOneByte:
+    lda #$02
+    bne @drawOneByte
+
+@drawFFOff:
+    lda (byteSpriteAddr),y
+    bpl @setupOneByte
+    ldx #CHOICESET_OFFON
+    jsr @setStringList
+    jmp @startCopy
+
+@drawString:
+    txa
+    and #%11111
+    tax
+    jsr @setStringList
+    lda (byteSpriteAddr),y
+    asl
+    tay
+@startCopy:
+    lda (stringSetPtr),y
+    clc
+    adc #<strTable
+    pha
+    php
+    iny
+    lda (stringSetPtr),y
+    lsr
+    lsr
+    lsr
+    lsr
+    clc
+    adc #1
+    sta generalCounter
+    lda (stringSetPtr),y
+    and #$F
+    plp
+    adc #>strTable
+    sta stringSetPtr+1
+    pla
+    sta stringSetPtr
+    lda generalCounter
+    jsr setStackOffset
+
+    ldy #0
+@nextChar:
+    lda (stringSetPtr),y
+    sta stack,x
+    inx
+    iny
+    dec generalCounter
+    bne @nextChar
+
+@endCopy:
+    jmp @nextByte
+
+@setStringList:
+    txa
+    asl
+    tax
+    lda choiceSetIndexes,x
+    clc
+    adc #<choiceSets
+    sta stringSetPtr
+    lda choiceSetIndexes+1,x
+    and #$F
+    adc #>choiceSets
+    sta stringSetPtr+1
+    rts
+
+@digitInputOrEdge:
+    and #TYPE_MASK
+    cmp #TYPE_MODE_ONLY
+    beq @nextByte
+    cmp #TYPE_SUBMENU
+    beq @nextByte
+    txa
+    and #%11111
+@drawOneByte:
+    pha
+    sec
+    sbc #1
+    lsr
+    clc
+    adc #$1
+    sta generalCounter
+    pla
+
+    jsr setStackOffset
+    ldy #$00
+@digitLoop:
+    lda (byteSpriteAddr),y
+    pha
+    lsr
+    lsr
+    lsr
+    lsr
+    sta stack,x
+    inx
+    pla
+    and #$0F
+    sta stack,x
+    inx
+    iny
+    dec generalCounter
+    bne @digitLoop
+    jmp @nextByte
+
+@nextByte:
+    inc activeItem
+    inc @counter
+    lda @counter
+    cmp @itemCount
+    beq @ret
+    jmp @memoryStageLoop
+@ret:
+    rts
+
+
+.out .sprintf("value staging: %d", *-stageCurrentValues)

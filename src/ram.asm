@@ -104,13 +104,14 @@ unpackedPageType: .res $1
 unpackedPageValue: .res $1
 unpackedItemType: .res $1
 unpackedItemValue: .res $1
+pageItemCount: .res 1
 digitPtr: .res $2
 originalPage: .res $1
 nybbleTemp: .res $1
 blankCounter: .res $1
 rowCounter: .res $1
 
-.res 5
+.res 4
 
 actualPage: .res $1
 gameStarted: .res $1
