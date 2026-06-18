@@ -119,6 +119,7 @@ gameTypeLoop:
     bne @notKillX2
     lda #RENDER_IDLE
     sta renderMode
+    lda #0
     sta gameModeState
     lda #39
     sta levelNumber
