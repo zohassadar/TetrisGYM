@@ -19,10 +19,11 @@ const labelMap = {
 
 const newWords = new Set();
 const addedStrings = [];
-const choiceSetCounts = [];
 const choiceSetEnums = [];
 const choiceSetIndexes = [];
+const newChoiceSetIndexes = [];
 const choiceSets = [];
+const newChoiceSets = [];
 let index = 0;
 const items = [];
 const lookupConstants = [];
@@ -57,12 +58,12 @@ function getStringName(word) {
     return `string${cleanWord(word)}`;
 }
 
-function getChoiceSetName(word) {
-    return `choiceSet${cleanWord(word)}`;
+function getStringConstant(word) {
+    return `str_${cleanWord(word)}`.toUpperCase();
 }
 
-function getStringConstant(name) {
-    return `STRING_${cleanWord(name).toUpperCase()}`;
+function getChoiceSetName(word) {
+    return `choiceSet${cleanWord(word)}`;
 }
 
 function getChoiceSetConstant(name) {
@@ -267,11 +268,12 @@ items.forEach((i) => {
     DEBUG && console.log(`stringlist`, name, choiceSet);
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
-        choiceSetCounts.push(getByteLine(getHexByte(choiceSet.length)));
+        newChoiceSetIndexes.push(`    .word $${(choiceSet.length-2 << 12).toString(16)} | (n_${getChoiceSetName(name)} - newChoiceSets)`);
         choiceSetIndexes.push(
             getByteLine(`${getChoiceSetName(name)}-choiceSets`),
         );
         choiceSets.push(`${getChoiceSetName(name)}:`);
+        newChoiceSets.push(`n_${getChoiceSetName(name)}:`);
     }
     DEBUG && console.log(`choiceSet: `, choiceSet);
     choiceSet.forEach((choice) => {
@@ -288,13 +290,15 @@ items.forEach((i) => {
             );
         }
         if (name == "extraSpriteStrings") {
-            lookupConstants.push(
-                `${getStringConstant(choice)} = ${getStringName(choice)}-stringTable`,
-            );
+            undefined;
         } else {
             choiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
                 getByteLine(`${getStringName(choice)}-choiceSetTable`),
+            );
+            newChoiceSets.push(
+                // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
+                `    .word ${getStringConstant(choice)}`
             );
         }
     });
@@ -322,7 +326,7 @@ function wordConstants() {
         let hexbyte = (((w.length - 1) << 12) | index)
             .toString(16)
             .toUpperCase();
-        return `STR_${clean.toUpperCase()} = $${hexbyte}`;
+        return `${getStringConstant(w)} = $${hexbyte}`;
     });
 }
 
@@ -386,8 +390,15 @@ ${items.map((i) => i.label).join("\n")}
 choiceSetIndexes:
 ${choiceSetIndexes.join("\n")}
 
-choiceSetCounts:
-${choiceSetCounts.join("\n")}
+newChoiceSetIndexes:
+${newChoiceSetIndexes.join("\n")}
+
+
+newerStringLines:
+${newerStringLines.join("\n")}
+
+newChoiceSets:
+${newChoiceSets.join("\n")}
 
 choiceSets:
 ${choiceSets.join("\n")}

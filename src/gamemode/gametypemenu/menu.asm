@@ -424,8 +424,17 @@ setupLRValueChange:
     ldx unpackedItemValue
     cmp #TYPE_CHOICES
     bne @storeMax
-    lda choiceSetCounts,x
+    txa
+    asl
     tax
+    lda newChoiceSetIndexes+1,x
+    lsr
+    lsr
+    lsr
+    lsr
+    tax
+    inx
+    inx
 @storeMax:
     stx lrMax
     rts
