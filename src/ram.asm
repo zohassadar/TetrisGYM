@@ -6,7 +6,7 @@ tmpX: .res 1 ;  $0003
 tmpY: .res 1 ;  $0004
 tmpZ: .res 1 ;  $0005
 
-tmpBulkCopyToPpuReturnAddr: .res 2 ;  $0006 ; 2 bytes
+.res 2
 binScore: .res 4 ;  $8 ; 4 bytes binary
 score: .res 4 ;  $C ; 4 bytes BCD
 nmiReturnAddr: .res 1 ; $0010 ; used for crash
@@ -54,7 +54,7 @@ linesTileQueue: .res 1 ; $54
     .res 1
 completedLines: .res 1 ; $0056
 lineIndex: .res 1 ; $0057                        ; Iteration count of playState_checkForCompletedRows
-startHeight: .res 1 ; $0058
+.res 1
 garbageHole: .res 1 ; $0059                        ; Position of hole in received garbage
 garbageDelay: .res 1 ; $005A
 pieceTileModifier: .res 1 ; $005B ; above $80 - use a single one, below - use an offset
@@ -198,14 +198,11 @@ soundRngSeed: .res 2 ; $00EB                    ; Set, but not read
 currentSoundEffectSlot: .res 1 ; $00ED              ; Temporary
 musicChannelOffset: .res 1 ;  $00EE                  ; Temporary. Added to $4000-3 for MMIO
 currentAudioSlot: .res 1 ; $00EF                    ; Temporary
-    .res 1
-unreferenced_buttonMirror: .res 3 ; $00F1          ; Mirror of $F5-F8
-    .res 1
+    .res 5
 newlyPressedButtons_player1: .res 1 ; $00F5         ; $80-a $40-b $20-select $10-start $08-up $04-down $02-left $01-right
 newlyPressedButtons_player2: .res 1 ; $00F6
 heldButtons_player1: .res 1 ; $00F7
-heldButtons_player2: .res 1 ; $00F8
-    .res 2
+    .res 3
 joy1Location: .res 1 ; $00FB                    ; normal=0; 1 or 3 for expansion
 ppuScrollY: .res 1 ; $00FC
 ppuScrollX: .res 1 ; $00FD
@@ -275,7 +272,7 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
 hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
-skipNmiFlag: .res 1
+.res 1
 
 .if KEYBOARD
 kbReadState: .res 1 ; $063F - used for high score entry
@@ -353,8 +350,7 @@ soundEffectSlot2Playing: .res 1 ; $06FA
 soundEffectSlot3Playing: .res 1 ; $06FB
 soundEffectSlot4Playing: .res 1 ; $06FC
 currentlyPlayingMusicTrack: .res 1 ; $06FD          ; Copied from musicTrack
-    .res 1
-unreferenced_soundRngTmp: .res 1 ; $06FF
+    .res 2
 
 
 .segment "SCORE_RAM": absolute
