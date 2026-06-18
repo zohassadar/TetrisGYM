@@ -223,7 +223,7 @@ enterPage:
     cmp #$1
     beq @storeRow
     dey ; start at page select row for multipage
-    dec unpackedPageType ; hack for now
+    ; dec unpackedPageType ; hack for now
 @storeRow:
     sty activeRow
 

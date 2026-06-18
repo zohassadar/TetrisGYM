@@ -117,6 +117,12 @@ function getPageLines(title, page, pages) {
     let label;
     let mode;
     [, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
+    const padding = (
+        (Math.round((MAX_LENGTH_NAME - label.length) / 2) << 5) &
+        0xff
+    )
+        .toString(16)
+        .toUpperCase();
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
     const pagelabelsName = `pageLabels${cleanWord(label)}`;
 
@@ -125,10 +131,7 @@ function getPageLines(title, page, pages) {
 
     const pageLabelTextLines = [];
     pageLabelTextLines.push(`${pagelabelsName}:`);
-    const padding = [...Array(Math.round((MAX_LENGTH_NAME - label.length) / 2))]
-        .map(() => " ")
-        .join("");
-    pageLabelTextLines.push(getLineString(`${padding}${label}`));
+    pageLabelTextLines.push(getLineString(`${label}`));
     pageLabelTextLines.push(endLabel);
     page.forEach((p, i) => {
         pageLabelTextLines.push(getLineString(p[1]));
@@ -140,7 +143,7 @@ function getPageLines(title, page, pages) {
     if (!existing) pageLabelText[joined] = pagelabelsName;
 
     return {
-        label: getByteLine(`${pageType} | ${modifier} ; ${label}`),
+        label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
         count: getByteLine(`${getHexByte(page.length)} ; ${label}`),
         hibytes: getByteLine(
             `>${existing ? existing : pagelabelsName} ; ${label}`,
@@ -255,7 +258,9 @@ items.forEach((i) => {
     DEBUG && console.log(`stringlist`, name, choiceSet);
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
-        choiceSetIndexes.push(`    .word $${(choiceSet.length-2 << 12).toString(16)} | (${getChoiceSetName(name)} - choiceSets)`);
+        choiceSetIndexes.push(
+            `    .word $${((choiceSet.length - 2) << 12).toString(16)} | (${getChoiceSetName(name)} - choiceSets)`,
+        );
         choiceSets.push(`${getChoiceSetName(name)}:`);
     }
     DEBUG && console.log(`choiceSet: `, choiceSet);
@@ -266,7 +271,7 @@ items.forEach((i) => {
         if (name !== "extraSpriteStrings") {
             choiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
-                `    .word ${getStringConstant(choice)}`
+                `    .word ${getStringConstant(choice)}`,
             );
         }
     });
