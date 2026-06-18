@@ -1,10 +1,5 @@
 gameModeState_initGameState:
-        lda #EMPTY_TILE
-        ldx #$00
-@clearPlayfield:
-        sta playfield,x
-        inx
-        bne @clearPlayfield
+        jsr clearPlayfield
         ldx #$0F
         lda #$00
 ; statsByType

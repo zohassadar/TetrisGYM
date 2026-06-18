@@ -84,8 +84,9 @@ endingAnimation: ; rocket_screen
         lda #CHRBankSet1
         jsr changeCHRBanks
 .endif
+        ldx #RLE_NT_ROCKET
         jsr copyRleNametableToPpu
-        .addr rocket_nametable
+
         stagePatchThenWaitForNmi rocketPalette
 
         ; lines

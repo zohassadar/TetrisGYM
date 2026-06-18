@@ -27,10 +27,7 @@ gameModeState_handleGameOver:
 .endif
         lda #$01
         sta playState
-        lda #$EF
-        ldx #$04
-        ldy #$04 ; used to be 5, but we dont need to clear 2p playfield
-        jsr memset_page
+        jsr clearPlayfield
         lda #$00
         sta vramRow
         lda #$01

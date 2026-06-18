@@ -6,8 +6,10 @@ gameModeState_initGameBackground:
         jsr changeCHRBanks
 .endif
         stagePatchThenWaitForNmi gamePalette
+
+        ldx #RLE_NT_GAME
         jsr copyRleNametableToPpu
-        .addr   game_nametable
+
         jsr scoringBackground
         lda trtFlag
         beq @noTrtPatch

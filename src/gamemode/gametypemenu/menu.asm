@@ -63,8 +63,10 @@ gameMode_gameTypeMenu:
 .endif
     jsr hideSpritesAndBackground
     stagePatchThenWaitForNmi titlePalette
+
+    ldx #RLE_NT_GAME_MENU
     jsr copyRleNametableToPpu
-    .addr game_type_menu_nametable
+
 .if INES_MAPPER <> 0
     lda #CHRBankSet0
     jsr changeCHRBanks

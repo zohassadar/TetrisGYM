@@ -5,8 +5,10 @@ gameMode_levelMenu:
         jsr changeCHRBanks
 .endif
         stagePatchThenWaitForNmi menuPalette
+
+        ldx #RLE_NT_LEVEL_MENU
         jsr copyRleNametableToPpu
-        .addr   level_menu_nametable
+
         lda #$20
         sta tmp1
         lda #$96 ; $6D is OEM position

@@ -1,3 +1,30 @@
+.enum
+    RLE_NT_ROCKET
+    RLE_NT_GAME
+    RLE_NT_GAME_MENU
+    RLE_NT_LEGAL
+    RLE_NT_LEVEL_MENU
+    RLE_NT_HIGH_SCORE
+.endenum
+
+rleNametables:
+    .addr rocket_nametable
+    .addr game_nametable
+    .addr game_type_menu_nametable
+    .addr legal_nametable
+    .addr level_menu_nametable
+    .addr enter_high_score_nametable
+
+loadRleNametableXToTmp:
+        txa
+        asl
+        tax
+        lda rleNametables,x
+        sta tmp1
+        lda rleNametables+1,x
+        sta tmp2
+        rts
+
 game_type_menu_nametable: ; RLE
         .incbin "nametables/game_type_menu_nametable_practise.bin"
 level_menu_nametable: ; RLE

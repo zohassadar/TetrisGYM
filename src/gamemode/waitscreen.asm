@@ -10,8 +10,9 @@ gameMode_waitScreen:
         jsr changeCHRBanks
 .endif
         stagePatchThenWaitForNmi waitPalettePatch
+
+        ldx #RLE_NT_LEGAL
         jsr copyRleNametableToPpu
-        .addr legal_nametable
 
 ; reenable display
         jsr resetScroll

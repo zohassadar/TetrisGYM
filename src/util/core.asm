@@ -1,8 +1,8 @@
 clearPlayfield:
+        ldx #0
         lda #EMPTY_TILE
-        ldx #$C8
 @loop:
-        sta $0400, x
+        sta playfield,x
         dex
         bne @loop
         rts
@@ -41,9 +41,7 @@ drawBlackBGPalette:
 resetScroll:
         lda #0
         sta ppuScrollX
-        sta PPUSCROLL
         sta ppuScrollY
-        sta PPUSCROLL
         rts
 
 random10:
@@ -60,8 +58,6 @@ updateAudioWaitForNmiAndResetOamStaging:
         jsr updateAudio_jmp
         lda #$00
         sta verticalBlankingInterval
-        nop
-
 checkForNmi:
         lda verticalBlankingInterval
 ; label used for crash code to determine if nmi happened here or at the previous instruction
@@ -130,26 +126,6 @@ waitForNmi:
         beq @checkForNmi
         rts
 
-copyAddrAtReturnAddressToTmp_incrReturnAddrBy2:
-        tsx
-        lda stack+3,x
-        sta tmpBulkCopyToPpuReturnAddr
-        lda stack+4,x
-        sta tmpBulkCopyToPpuReturnAddr+1
-        ldy #$01
-        lda (tmpBulkCopyToPpuReturnAddr),y
-        sta tmp1
-        iny
-        lda (tmpBulkCopyToPpuReturnAddr),y
-        sta tmp2
-        clc
-        lda #$02
-        adc tmpBulkCopyToPpuReturnAddr
-        sta stack+3,x
-        lda #$00
-        adc tmpBulkCopyToPpuReturnAddr+1
-        sta stack+4,x
-        rts
 
 ;reg x: zeropage addr of seed
 generateNextPseudorandomNumber5x:
@@ -173,24 +149,4 @@ generateNextPseudorandomNumber:
         lda #$2
 @noReset:
         sta oneThirdPRNG
-        rts
-
-; reg a: value; reg x: start page; reg y: end page (inclusive)
-memset_page:
-        pha
-        txa
-        sty tmp2
-        clc
-        sbc tmp2
-        tax
-        pla
-        ldy #$00
-        sty tmp1
-@setByte:
-        sta (tmp1),y
-        dey
-        bne @setByte
-        dec tmp2
-        inx
-        bne @setByte
         rts

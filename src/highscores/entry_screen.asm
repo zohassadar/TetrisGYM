@@ -117,8 +117,10 @@ highScoreEntryScreen:
         jsr changeCHRBanks
 .endif
         stagePatchThenWaitForNmi menuPalette
+
+        ldx #RLE_NT_HIGH_SCORE
         jsr copyRleNametableToPpu
-        .addr   enter_high_score_nametable
+
         jsr showHighScores
         lda #$21
         sta tmp1

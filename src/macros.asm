@@ -57,21 +57,6 @@
 .endscope
 .endmacro
 
-.macro stagePatchThenWaitForNmi patchAddr
-; can be made subroutine if needed to save space
-        lda #<patchAddr
-        sta patchPtr
-        lda #>patchAddr
-        sta patchPtr+1
-        jsr copyPatchAtPointerToQueue
-        lda renderMode
-        pha
-        lda #RENDER_QUEUE
-        sta renderMode
-        jsr updateAudioWaitForNmiAndResetOamStaging
-        pla
-        sta renderMode
-.endmacro
 
 
 .macro stagePatchNoWait patchAddr
@@ -80,4 +65,16 @@
         lda #>patchAddr
         sta patchPtr+1
         jsr copyPatchAtPointerToQueue
+.endmacro
+
+.macro stagePatchThenWaitForNmi patchAddr
+; can be made subroutine if needed to save space
+        stagePatchNoWait patchAddr
+        lda renderMode
+        pha
+        lda #RENDER_QUEUE
+        sta renderMode
+        jsr updateAudioWaitForNmiAndResetOamStaging
+        pla
+        sta renderMode
 .endmacro
