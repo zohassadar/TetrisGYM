@@ -72,6 +72,11 @@ function getHexByte(number) {
     return `$${number.toString(16).padStart(2, "0").toUpperCase()}`;
 }
 
+function getHexWord(number) {
+    if (isNaN(number)) return number;
+    return `$${number.toString(16).padStart(4, "0").toUpperCase()}`;
+}
+
 function getOutputLines(itemType, string, memory) {
     return {
         string: string,
@@ -100,12 +105,9 @@ function getPageLines(title, page) {
     let label;
     let mode;
     [, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
-    const padding = (
-        (Math.round((MAX_LENGTH_NAME - label.length) / 2) << 5) &
-        0xff
-    )
-        .toString(16)
-        .toUpperCase();
+    const padding = getHexByte(
+        (Math.round((MAX_LENGTH_NAME - label.length) / 2) << 5) & 0xff,
+    );
     const modifier = mode ? `MODE_${mode.toUpperCase()}` : "MODE_DEFAULT";
     const pagelabelsName = `pageLabels${cleanWord(label)}`;
     newWords.add(label.toUpperCase());
@@ -119,11 +121,10 @@ function getPageLines(title, page) {
     page.forEach((p) => {
         newWords.add(p[1].toUpperCase());
     });
-
     return {
-        label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
+        label: getByteLine(`${padding} | ${modifier} ; ${label}`),
         index: getWordLine(
-            `$${(page.length << 11).toString(16).toUpperCase()} | (${pagelabelsName} - pageLabels)`,
+            `${getHexWord(page.length << 11)} | (${pagelabelsName} - pageLabels)`,
         ),
         newsets: `${pagelabelsName}:`,
     };
@@ -235,9 +236,10 @@ items.forEach((i) => {
 ].forEach(([name, choiceSet]) => {
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
-        const size = ((choiceSet.length - 2) << 12).toString(16);
         choiceSetIndexes.push(
-            getWordLine(`$${size} | (${getChoiceSetName(name)} - choiceSets)`),
+            getWordLine(
+                `${getHexByte((choiceSet.length - 2) << 12)} | (${getChoiceSetName(name)} - choiceSets)`,
+            ),
         );
         choiceSets.push(`${getChoiceSetName(name)}:`);
     }
@@ -272,10 +274,7 @@ if (wordTable.length > 1023) {
 function wordConstants() {
     return sortedWords.map((w) => {
         let index = wordTable.search(RegExp.escape(w));
-        let hexbyte = (((w.length - 1) << 12) | index)
-            .toString(16)
-            .toUpperCase();
-        return `${getStringConstant(w)} = $${hexbyte}`;
+        return `${getStringConstant(w)} = ${getHexWord(((w.length - 1) << 12) | index)}`;
     });
 }
 
