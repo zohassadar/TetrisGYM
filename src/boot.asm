@@ -54,15 +54,9 @@
         dex
         stx rng_seed+1
         stx b_seed+1
-        ldy #$00
-        sty PPUSCROLL
-        ldy #$00
-        sty PPUSCROLL
-        lda #$90
+        lda #NMIEnable
         sta currentPpuCtrl
         sta PPUCTRL
-        lda #$06
-        sta PPUMASK
         jsr LE006
         jsr updateAudio2
         jsr hideSpritesAndBackground
