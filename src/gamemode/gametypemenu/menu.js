@@ -17,22 +17,22 @@ const labelMap = {
     TYPE_CUSTOM: typeCustom,
 };
 
-const newWords = new Set();
 const choiceSetEnums = [];
 const choiceSetIndexes = [];
 const choiceSets = [];
-let index = 0;
 const items = [];
 const lookupConstants = [];
 const memoryMap = [];
 const menuEnums = [];
+const newWords = new Set();
 const pageCountByMenu = [];
-let pageIndex = 0;
-const pageLabelText = {};
+const pageLabels = {};
 const pagesOutput = [];
 const startItemByPage = [];
 const startPageByMenu = [];
 const unlabeledStringSets = {};
+let index = 0;
+let pageIndex = 0;
 
 function checkStringSanity(string) {
     if (string.length > MAX_LENGTH_VALUE) {
@@ -47,10 +47,6 @@ function checkStringSanity(string) {
 function cleanWord(word) {
     word = word.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
     return word.replace(/[- *?!(),/]/g, "");
-}
-
-function getStringName(word) {
-    return `string${cleanWord(word)}`;
 }
 
 function getStringConstant(word) {
@@ -98,21 +94,6 @@ function getStringBytes(string) {
     return [...string.split("").map((c) => getStringByte(c))].join(",");
 }
 
-function getLineString(string, multiline = false) {
-    if (string.length > MAX_LENGTH_NAME) {
-        throw new Error(`${string} is more than MAX_LENGTH_NAME chars`);
-    }
-
-    return multiline
-        ? string
-              .split("")
-              .map((c) => getByteLine(getStringByte(c)))
-              .join("\n")
-        : getByteLine(getStringBytes(string));
-}
-
-const newPageThings = {};
-
 function getPageLines(title, page, pages) {
     DEBUG && console.log(`getPageLines`, title, page, pages);
     let label;
@@ -128,28 +109,15 @@ function getPageLines(title, page, pages) {
     const pagelabelsName = `pageLabels${cleanWord(label)}`;
     newWords.add(label.toUpperCase());
 
-    const endLabel = getByteLine("EOL");
-    const endLabelSet = getByteLine("EOF");
-
-    const pageLabelTextLines = [];
-    if (!newPageThings[`${pagelabelsName}`]) {
-        newPageThings[`${pagelabelsName}`] = [
+    if (!pageLabels[`${pagelabelsName}`]) {
+        pageLabels[`${pagelabelsName}`] = [
             `    .word ${getStringConstant(label)}`,
             ...page.map((p) => `    .word ${getStringConstant(p[1])}`),
         ];
     }
-    pageLabelTextLines.push(`${pagelabelsName}:`);
-    pageLabelTextLines.push(getLineString(`${label}`));
-    pageLabelTextLines.push(endLabel);
-    page.forEach((p, i) => {
+    page.forEach((p) => {
         newWords.add(p[1].toUpperCase());
-        pageLabelTextLines.push(getLineString(p[1]));
-        if (i + 1 != page.length) pageLabelTextLines.push(endLabel);
     });
-    pageLabelTextLines.push(endLabelSet);
-    const joined = pageLabelTextLines.join("\n");
-    const existing = pageLabelText[joined];
-    if (!existing) pageLabelText[joined] = pagelabelsName;
 
     return {
         label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
@@ -209,6 +177,7 @@ function typeCustom(label, string, subroutine, memoryLabel) {
     );
 }
 
+const subMenus = [];
 const processPageSet = (pages, name) => {
     DEBUG && name && console.log(`submenu ${name}`);
     DEBUG && !name && console.log(`main menu`);
@@ -231,7 +200,14 @@ const processPageSet = (pages, name) => {
         page.forEach((item) => {
             items.push(labelMap[item[0]](...item));
             index++;
-            if (item[0] === "TYPE_SUBMENU") subPageSets[item[1]] = item[2];
+            if (item[0] === "TYPE_SUBMENU") {
+                // submenus are expected to be unique by name
+                // skip if the submenu has been processed, it already exists
+                if (subMenus.indexOf(item[1]) < 0) {
+                    subMenus.push(item[1]);
+                    subPageSets[item[1]] = item[2];
+                }
+            }
         });
     });
     pageCountByMenu.push(
@@ -240,7 +216,7 @@ const processPageSet = (pages, name) => {
         ),
     );
 
-    // process any submenus the same was as the main menu
+    // process any submenus the same way as the main menu
     Object.entries(subPageSets).forEach(([name, pages]) => {
         processPageSet(pages, name);
     });
@@ -354,7 +330,7 @@ pageIndexes:
 ${pagesOutput.map((p) => p.index).join("\n")}
 
 pageLabels:
-${Object.entries(newPageThings)
+${Object.entries(pageLabels)
     .map(([k, v]) => [k + ":", ...v].join("\n"))
     .join("\n")}
 
