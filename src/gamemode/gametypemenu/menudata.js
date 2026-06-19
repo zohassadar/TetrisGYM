@@ -137,7 +137,7 @@ const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
 const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
 
 const modsSubMenu = {
-    "mods[mode=default]": [
+    "modify game[mode=default]": [
         floorModifier,
         crunchLeftModifier,
         crunchRightModifier,
@@ -146,43 +146,19 @@ const modsSubMenu = {
         hardDrop,
         horizMirror,
         vertMirror,
-    ],
-};
-
-const dasSubMenu = {
-    "das[mode=default]": [
         anydasDas,
         anydasArr,
         anydasEntryDelay,
         disableDasFlag,
         noWallChargeFlag,
+        crashModifier,
+        strictCrashFlag,
     ],
 };
 
-const infoSubMenu = {
-    "info[mode=default]": [
-        hzFlag,
-        inputDisplayFlag,
-        paceModifier,
-        trtFlag,
-        dasMeterFlag,
-        gameTimerFlag,
-    ],
-};
-
-const displaySubMenu = {
-    "display[mode=default]": [
-        scoringModifier,
-        disableFlash,
-        darkMode,
-        paletteSelection,
-    ],
-};
 
 const moreSubMenu = {
     "more options[mode=default]": [
-        crashModifier,
-        strictCrashFlag,
         disablePause,
         debugFlag,
         palFlag,
@@ -190,6 +166,10 @@ const moreSubMenu = {
         // keyboardFlag,
         goofyFlag,
         customLevel,
+        disableFlash,
+        darkMode,
+        paletteSelection,
+        scoringModifier,
     ],
 };
 
@@ -203,22 +183,21 @@ const tournamentSubMenu = {
         linecapLines,
         dasOnly,
         vitsScoreFlag,
+        hzFlag,
+        inputDisplayFlag,
+        paceModifier,
+        trtFlag,
+        dasMeterFlag,
+        gameTimerFlag,
     ],
 };
 
 const goToTournament = ["TYPE_SUBMENU", "tournament", tournamentSubMenu];
-const goToMods = ["TYPE_SUBMENU", "mods", modsSubMenu];
-const goToDisplay = ["TYPE_SUBMENU", "display", displaySubMenu];
-const goToDas = ["TYPE_SUBMENU", "das", dasSubMenu];
-const goToInfo = ["TYPE_SUBMENU", "info", infoSubMenu];
-const goToMore = ["TYPE_SUBMENU", "more", moreSubMenu];
+const goToMods = ["TYPE_SUBMENU", "modify game", modsSubMenu];
+const goToMore = ["TYPE_SUBMENU", "more options", moreSubMenu];
 
-const shared = [goToMods, goToInfo, goToDisplay, goToDas, goToMore];
+const shared = [goToMods, goToMore];
 
-const optionsSubMenu = {
-    "options[mode=default]": [...shared],
-};
-const goToShared = ["TYPE_SUBMENU", "options", optionsSubMenu];
 const mainMenu = {
     "play tetris[mode=tetris]": [goToTournament, ...shared],
     "t-spins[mode=tspins]": [...shared],
@@ -230,7 +209,7 @@ const mainMenu = {
         typeBSeedFlag,
         bTypeLines,
         goToTournament,
-        goToShared,
+        ...shared,
     ],
     "(quick)tap[mode=tap]": [
         quickTapLeftModifier,

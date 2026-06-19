@@ -13,7 +13,7 @@ NORAM = $00
 
 MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
-MENU_ROWS = 9
+MENU_ROWS = 17
 MENU_STACK = $DF ; $01C8 - $01DF intended range
 
 .enum
@@ -656,23 +656,23 @@ addInputs:
 
 menuVramRowTable:
 ; 16 for now
-    .addr $2106
-    ; .addr $2126
+    .addr $2109
     .addr $2146
-    ; .addr $2166
+    .addr $2166
     .addr $2186
-    ; .addr $21A6
+    .addr $21A6
     .addr $21C6
-    ; .addr $21E6
+    .addr $21E6
     .addr $2206
-    ; .addr $2226
+    .addr $2226
     .addr $2246
-    ; .addr $2266
+    .addr $2266
     .addr $2286
-    ; .addr $22A6
+    .addr $22A6
     .addr $22C6
-    ; .addr $22E6
+    .addr $22E6
     .addr $2306
+    .addr $2326
 
 
 stageVRAMRow:
@@ -688,6 +688,7 @@ stageVRAMRow:
     @rowCounter = rowCounter
     @stringPtr = stringSetPtr
     @itemPtr = generalCounter
+    @padding = generalCounter5
 
     lda #MENU_STRIPE_WIDTH
     sta @blankCounter
@@ -706,6 +707,15 @@ stageVRAMRow:
     and #$7
     adc #>pageLabels
     sta @itemPtr+1
+
+    ldx actualPage
+    lda pageTypes,x
+    lsr
+    lsr
+    lsr
+    lsr
+    lsr
+    sta @padding
 
     lda vramRow
     asl
@@ -744,6 +754,20 @@ stageVRAMRow:
     plp
     adc #>strTable
     sta @stringPtr+1
+
+; padding goes here
+    lda vramRow
+    bne @startString
+    lda #$FF
+@pad:
+    dec @padding
+    bmi @startString
+    sta stack,x
+    dec @blankCounter
+    inx
+    bne @pad
+@startString:
+
     ldy #0
 @copy:
     lda (@stringPtr),y
@@ -988,7 +1012,6 @@ stageCursor:
     jmp loadSpriteIntoOamStaging
 
 @notTitle:
-    asl
     asl
     asl
     asl
