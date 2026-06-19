@@ -763,6 +763,21 @@ stageVRAMRow:
 @finish:
     inc renderQueueLength
     stx renderQueuePointer
+
+    lda vramRow
+    beq @noValue
+    lda pageItemCount
+    cmp vramRow
+    bcc @noValue
+
+    txa
+    sec
+    sbc #8
+    sta renderQueuePointer
+    jsr stageCurrentValue
+
+
+@noValue:
     inc vramRow
     lda vramRow
     cmp #MENU_ROWS
@@ -773,33 +788,15 @@ stageVRAMRow:
     rts
 ; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
 
-stageCurrentValues:
-    @counter = blankCounter
-    @itemCount = rowCounter
-
-    lda #$00
-    sta @counter
-    lda #MENU_VARS_HI
-
+stageCurrentValue:
     ldx actualPage
     lda startItemByPage,x
-    sta activeItem
-
-    lda actualPage
-    jsr setItemCount
-    sta @itemCount
-
-    lda#(MENU_STRIPE_WIDTH+2) - 8
-    sta stackPtr
-
-@memoryStageLoop:
-    lda stackPtr
     clc
-    adc #MENU_STRIPE_WIDTH+2
-    sta stackPtr
-    tax
-
-    ldy activeItem
+    adc vramRow
+    sec
+    sbc #1
+    tay
+    sty activeItem
     lda memoryOffsets,y
     sta byteSpriteAddr
     lda #MENU_VARS_HI
@@ -869,7 +866,7 @@ stageCurrentValues:
     bne @nextChar
 
 @endCopy:
-    jmp @nextByte
+    jmp @ret
 
 @setStringList:
     txa
@@ -888,9 +885,9 @@ stageCurrentValues:
 @digitInputOrEdge:
     and #TYPE_MASK
     cmp #TYPE_MODE_ONLY
-    beq @nextByte
+    beq @ret
     cmp #TYPE_SUBMENU
-    beq @nextByte
+    beq @ret
     txa
     and #%11111
 @drawOneByte:
@@ -921,16 +918,12 @@ stageCurrentValues:
     iny
     dec generalCounter
     bne @digitLoop
-    jmp @nextByte
-
-@nextByte:
-    inc activeItem
-    inc @counter
-    lda @counter
-    cmp @itemCount
-    beq @ret
-    jmp @memoryStageLoop
 @ret:
+
+    lda renderQueuePointer
+    clc
+    adc #8
+    sta renderQueuePointer
     rts
 
 setStackOffset:
@@ -938,12 +931,10 @@ setStackOffset:
     clc
     adc #$09
     clc
-    adc stackPtr
+    adc renderQueuePointer
     tax
     rts
 
-
-.out .sprintf("value staging: %d", *-stageCurrentValues)
 
 
 stageCursor:
@@ -1080,6 +1071,3 @@ renderQueuePush:
     sta stack,x
     inc renderQueuePointer
     rts
-
-
-.out .sprintf("value staging: %d", *-stageCurrentValues)
