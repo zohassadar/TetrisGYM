@@ -1,7 +1,6 @@
 .enum
 RENDER_DISABLE
 RENDER_IDLE
-RENDER_MENU
 RENDER_CONGRATS
 RENDER_PLAY
 RENDER_PAUSE
@@ -15,7 +14,6 @@ RENDER_QUEUE
 render: branchTo renderMode, \
             render_mode_disable, \
             render_mode_idle, \
-            render_mode_menu, \
             render_mode_congratulations_screen, \
             render_mode_play_and_demo, \
             render_mode_pause, \

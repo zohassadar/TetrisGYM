@@ -49,6 +49,7 @@ TYPE_SUBMENU = %11100000 ; n = menu index
 DIGIT_MASK = %10100000
 DIGIT_COMPARE = %10000000
 
+menuCode:
 
 menuStackPush:
     ldx menuStackPtr
@@ -168,15 +169,7 @@ gameTypeLoopWait:
     jmp gameTypeLoop
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
-setItemCount:
-    asl
-    tax
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
-    sta pageItemCount
-    rts
+
 
 enterSubMenu:
     ldy #$02
@@ -449,6 +442,15 @@ setupLRColumnChange:
     sty lrMax
     rts
 
+setItemCount:
+    asl
+    tax
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta pageItemCount
+    rts
 
 .out .sprintf("setup: %d", *-enterSubMenu)
 
@@ -654,27 +656,6 @@ addInputs:
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
-menuVramRowTable:
-; 16 for now
-    .addr $2109
-    .addr $2146
-    .addr $2166
-    .addr $2186
-    .addr $21A6
-    .addr $21C6
-    .addr $21E6
-    .addr $2206
-    .addr $2226
-    .addr $2246
-    .addr $2266
-    .addr $2286
-    .addr $22A6
-    .addr $22C6
-    .addr $22E6
-    .addr $2306
-    .addr $2326
-
-
 stageVRAMRow:
 
     lda vramRow   ; use OG game logic & values
@@ -810,7 +791,6 @@ stageVRAMRow:
     sta vramRow
 @ret2:
     rts
-; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
 
 stageCurrentValue:
     ldx actualPage
@@ -959,7 +939,28 @@ setStackOffset:
     tax
     rts
 
+menuVramRowTable:
+; 16 for now
+    .addr $2109
+    .addr $2146
+    .addr $2166
+    .addr $2186
+    .addr $21A6
+    .addr $21C6
+    .addr $21E6
+    .addr $2206
+    .addr $2226
+    .addr $2246
+    .addr $2266
+    .addr $2286
+    .addr $22A6
+    .addr $22C6
+    .addr $22E6
+    .addr $2306
+    .addr $2326
 
+
+.out .sprintf("stage row: %d", *-stageVRAMRow)
 
 stageCursor:
     ldx activeMenu
@@ -1062,32 +1063,8 @@ gotoEdgeCase:
 
 .out .sprintf("cursor staging: %d", *-stageCursor)
 
-render_mode_menu:
-    tsx
-    txa
-    ldx #$ff
-    txs
-    tax
-    ldy #MENU_ROWS
-@nextRow:
-    pla
-    sta PPUADDR
-    pla
-    sta PPUADDR
-    .repeat MENU_STRIPE_WIDTH
-    pla
-    sta PPUDATA
-    .endrepeat
-    dey
-    bne @nextRow
-    txs
-    rts
 
-
-.out .sprintf("render dump: %d", *-render_mode_menu)
-
-
-.out .sprintf("total: %d", *-gameMode_gameTypeMenu)
+.out .sprintf("total: %d", *-menuCode)
 
 renderQueuePush:
     ldx renderQueuePointer

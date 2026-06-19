@@ -124,8 +124,3 @@ setNoPlayfieldRender:
     lda #.sizeof(GameRender::WithoutPlayfield)
     sta renderQueuePointer
     rts
-
-
-.out .sprintf("All: %d", .sizeof(GameRender))
-.out .sprintf("Without: %d", .sizeof(GameRender::WithoutPlayfield))
-.out .sprintf("With: %d", .sizeof(GameRender::WithPlayfield))
