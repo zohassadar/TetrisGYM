@@ -203,6 +203,7 @@ enterPage:
     lsr
     lsr
     sta pageItemCount
+    sta vramRow
     ldx actualPage
     lda pageTypes,x
     and #VALUE_MASK
@@ -639,6 +640,8 @@ addInputs:
 @storeDigit:
     sta (udPointer,x)
 @sfx:
+    lda pageItemCount
+    sta vramRow
     inc soundEffectSlot1Init
     jsr copyVarsToSram
 @ret:
@@ -665,11 +668,11 @@ stageBackgroundTiles:
     tax
     lda pageIndexes,x
     clc
-    adc #<n_pageLabels
+    adc #<pageLabels
     sta @itemPtr
     lda pageIndexes+1,x
     and #$7
-    adc #>n_pageLabels
+    adc #>pageLabels
     sta @itemPtr+1
 
 
@@ -1084,7 +1087,7 @@ stageCurrentRow:
     tax
     lda pageIndexes,x
     clc
-    adc #<n_pageLabels
+    adc #<pageLabels
     sta @itemPtr
     php
     lda pageIndexes+1,x
@@ -1095,7 +1098,7 @@ stageCurrentRow:
     lda pageIndexes+1,x
     and #$7
     plp
-    adc #>n_pageLabels
+    adc #>pageLabels
     sta @itemPtr+1
 
     lda vramRow

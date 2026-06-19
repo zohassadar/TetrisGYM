@@ -132,8 +132,8 @@ function getPageLines(title, page, pages) {
     const endLabelSet = getByteLine("EOF");
 
     const pageLabelTextLines = [];
-    if (!newPageThings[`n_${pagelabelsName}`]) {
-        newPageThings[`n_${pagelabelsName}`] = [
+    if (!newPageThings[`${pagelabelsName}`]) {
+        newPageThings[`${pagelabelsName}`] = [
             `    .word ${getStringConstant(label)}`,
             ...page.map((p) => `    .word ${getStringConstant(p[1])}`),
         ];
@@ -153,15 +153,8 @@ function getPageLines(title, page, pages) {
 
     return {
         label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
-        index: `    .word $${(page.length << 11).toString(16).toUpperCase()} | (n_${pagelabelsName} - n_pageLabels)`,
-        hibytes: getByteLine(
-            `>${existing ? existing : pagelabelsName} ; ${label}`,
-        ),
-        lobytes: getByteLine(
-            `<${existing ? existing : pagelabelsName} ; ${label}`,
-        ),
-        newsets: `n_${pagelabelsName}:`,
-        choicesets: existing ? "" : joined,
+        index: `    .word $${(page.length << 11).toString(16).toUpperCase()} | (${pagelabelsName} - pageLabels)`,
+        newsets: `${pagelabelsName}:`,
     };
 }
 
@@ -360,7 +353,7 @@ ${pagesOutput.map((p) => p.label).join("\n")}
 pageIndexes:
 ${pagesOutput.map((p) => p.index).join("\n")}
 
-n_pageLabels:
+pageLabels:
 ${Object.entries(newPageThings)
     .map(([k, v]) => [k + ":", ...v].join("\n"))
     .join("\n")}
