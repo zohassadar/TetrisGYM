@@ -1,19 +1,12 @@
 ; to do
-; get into game
 ; do arbitrary action
-; get back into menu from game or level menu
 ; get back into menu from game w/block tool on
 ; each title associated with action
 ; more sanity checks
-; set defaults
-; save/restore to/from sram
-
 
 MENU_VARS_HI = >menuVars
 
 ; valid background chars are 0-253
-EOL = $FE
-EOF = $FF
 NORAM = $00
 
 MENU_TITLE_PPU = $2106

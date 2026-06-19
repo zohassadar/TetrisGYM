@@ -62,8 +62,8 @@ playState_checkStartGameOver:
 
 @checkForStartButton:
         lda newlyPressedButtons_player1
-        cmp #$10
-        bne @ret2
+        and #BUTTON_START
+        beq @ret2
 @exitGame:
         lda #$00
         sta playState
@@ -149,6 +149,8 @@ endingAnimation: ; rocket_screen
 endingLoop:
         jsr updateAudioWaitForNmiAndResetOamStaging
         jsr handleRocket
+
+        jsr showQualWait
 
         lda screenStage
         bne @waitEnd

@@ -50,9 +50,16 @@ gameMode_waitScreen:
         lda #1
         sta byteSpriteLen
         jsr byteSprite
+
+        lda qualFlag
+        beq @checkStart
+        jsr showQualWait
+        jmp @checkSleepCounter
+@checkStart:
         lda newlyPressedButtons_player1
         and #BUTTON_START
         bne @exitLoop
+@checkSleepCounter:
         lda sleepCounter
         bne @loop
 @exitLoop:
@@ -82,4 +89,22 @@ waitLoopNext:
 waitLoopContinue:
         stx soundEffectSlot1Init
         inc gameMode
+        rts
+
+showQualWait:
+        lda heldButtons_player1
+        and #BUTTON_START
+        beq @ret
+
+        lda #$70
+        sta spriteXOffset
+        lda #$80
+        sta spriteYOffset
+        lda #$01
+        sta stringAttrib
+        ldx #>STR_WAIT
+        ldy #<STR_WAIT
+        jsr stringSpriteXY
+        dec stringAttrib
+@ret:
         rts

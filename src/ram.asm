@@ -370,7 +370,6 @@ menuRAM:  ; $760
 menuMoveThrottle: .res 1
 menuThrottleTmp: .res 1
 levelControlMode: .res 1
-customLevel: .res 1
 classicLevel: .res 1
 heartsAndReady: .res 1   ; high nybble used for ready
 practiseType: .res 1
@@ -383,6 +382,7 @@ activeColumn: .res 1
 menuStackPtr: .res 1
 
 menuVars:
+customLevel: .res 1
 linecapWhen: .res 1
 linecapHow: .res 1
 linecapLevel: .res 1

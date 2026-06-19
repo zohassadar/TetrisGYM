@@ -13,26 +13,16 @@ gameMode_bootScreen: ; boot
         jsr updateAudioAndWaitForNmi
         jsr checkRegion
 
+        lda #1
+        sta gameMode
 .if KEYBOARD = 1
         jsr detectKeyboard
 .endif
-
+        ldy #0
         lda qualFlag
         bne @qualBoot
-        ; hold select to start in qual mode
-        lda heldButtons_player1
-        and #BUTTON_SELECT
-        beq @nonQualBoot
+;nonQual
+        ldy #$8
 @qualBoot:
-        lda #1
-        sta gameMode
-        sta qualFlag
-        jmp gameMode_waitScreen
-
-@nonQualBoot:
-        ; set start level to 8/18
-        lda #$8
-        sta classicLevel
-        lda #2
-        sta gameMode
+        sty classicLevel
         jmp gameMode_waitScreen

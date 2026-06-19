@@ -50,9 +50,10 @@ rocketPalette:
         .byte   $0
 
 waitPalettePatch:
-        .byte   $3F,$11
-        .byte   $00
-        .byte   $30             ; sprite
+        .byte   $3F,$10
+        .byte   $05
+        .byte   $0F,$30,$12,$13             ; sprite
+        .byte   $0F,$16
         .byte   $3F,$00
         .byte   $07
         .byte   $0F,$30,$38,$26 ; bg

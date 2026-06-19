@@ -238,7 +238,7 @@ items.forEach((i) => {
         choiceSetEnums.push(getChoiceSetConstant(name));
         choiceSetIndexes.push(
             getWordLine(
-                `${getHexByte((choiceSet.length - 2) << 12)} | (${getChoiceSetName(name)} - choiceSets)`,
+                `${getHexWord((choiceSet.length - 2) << 12)} | (${getChoiceSetName(name)} - choiceSets)`,
             ),
         );
         choiceSets.push(`${getChoiceSetName(name)}:`);

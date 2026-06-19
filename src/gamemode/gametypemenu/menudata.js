@@ -53,6 +53,7 @@ const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
 const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
+const customLevel = ["TYPE_HEX", "custom level", 2, "customLevel"];
 
 const floorModifier = ["TYPE_FF_OFF", "floor", 16, "floorModifier"];
 const crunchLeftModifier = [
@@ -188,6 +189,7 @@ const moreSubMenu = {
         qualFlag,
         // keyboardFlag,
         goofyFlag,
+        customLevel,
     ],
 };
 
@@ -258,6 +260,6 @@ const mainMenu = {
     "kill*2[mode=killX2]": [...shared],
 };
 
-const extraSpriteStrings = ["pause", "block", "clear?", "sure?!", "confetti"];
+const extraSpriteStrings = ["pause", "block", "clear?", "sure?!", "confetti", "wait"];
 
 module.exports = { mainMenu, extraSpriteStrings };

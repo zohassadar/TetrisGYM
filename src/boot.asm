@@ -50,8 +50,10 @@
 @continueWarmBootInit:
         ldx #$89
         stx rng_seed
+        stx b_seed
         dex
         stx rng_seed+1
+        stx b_seed+1
         ldy #$00
         sty PPUSCROLL
         ldy #$00
@@ -72,3 +74,13 @@
         sta gameMode
         lda #$00
         sta frameCounter+1
+
+        jsr pollControllerButtons
+        ; hold select to start in qual mode
+        lda heldButtons_player1
+        and #BUTTON_SELECT
+        beq @nonQualBoot
+@qualBoot:
+        lda #1
+        sta qualFlag
+@nonQualBoot:
