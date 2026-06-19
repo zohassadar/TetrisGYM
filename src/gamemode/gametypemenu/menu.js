@@ -3,7 +3,6 @@ const { writeFileSync } = require("fs");
 
 const MAX_LENGTH_NAME = 14;
 const MAX_LENGTH_VALUE = 8;
-const DEBUG = false;
 
 const labelMap = {
     TYPE_BCD: typeDigit,
@@ -64,6 +63,10 @@ function getByteLine(byte) {
     return `    .byte ${byte}`;
 }
 
+function getWordLine(word) {
+    return `    .word ${word}`;
+}
+
 function getHexByte(number) {
     if (isNaN(number)) return number;
     return `$${number.toString(16).padStart(2, "0").toUpperCase()}`;
@@ -93,8 +96,7 @@ function getStringBytes(string) {
     return [...string.split("").map((c) => getStringByte(c))].join(",");
 }
 
-function getPageLines(title, page, pages) {
-    DEBUG && console.log(`getPageLines`, title, page, pages);
+function getPageLines(title, page) {
     let label;
     let mode;
     [, label, mode] = title.match(/([^[]*)(?:\s*\[mode=(\w+)\])?/i);
@@ -110,8 +112,8 @@ function getPageLines(title, page, pages) {
 
     if (!pageLabels[`${pagelabelsName}`]) {
         pageLabels[`${pagelabelsName}`] = [
-            `    .word ${getStringConstant(label)}`,
-            ...page.map((p) => `    .word ${getStringConstant(p[1])}`),
+            getWordLine(getStringConstant(label)),
+            ...page.map((p) => getWordLine(getStringConstant(p[1]))),
         ];
     }
     page.forEach((p) => {
@@ -120,7 +122,9 @@ function getPageLines(title, page, pages) {
 
     return {
         label: getByteLine(`$${padding} | ${modifier} ; ${label}`),
-        index: `    .word $${(page.length << 11).toString(16).toUpperCase()} | (${pagelabelsName} - pageLabels)`,
+        index: getWordLine(
+            `$${(page.length << 11).toString(16).toUpperCase()} | (${pagelabelsName} - pageLabels)`,
+        ),
         newsets: `${pagelabelsName}:`,
     };
 }
@@ -134,7 +138,6 @@ function typeDigit(label, string, digits, memoryLabel) {
 }
 
 function typeChoices(label, string, choiceSet, memoryLabel) {
-    DEBUG && console.log(`Choice set ${string} with options ${choiceSet}`);
     const stringSet = [...choiceSet]
         .map((c) => cleanWord(c.slice(0, 6)))
         .join("");
@@ -178,8 +181,6 @@ function typeCustom(label, string, subroutine, memoryLabel) {
 
 const subMenus = [];
 const processPageSet = (pages, name) => {
-    DEBUG && name && console.log(`submenu ${name}`);
-    DEBUG && !name && console.log(`main menu`);
     if (name) {
         const enunName = `SUBMENU_${cleanWord(name).toUpperCase()}`;
         if (!menuEnums.includes(enunName)) menuEnums.push(enunName);
@@ -190,12 +191,11 @@ const processPageSet = (pages, name) => {
     // collect submenus to process after all pages
     let subPageSets = {};
     Object.entries(pages).forEach(([title, page]) => {
-        DEBUG && console.log(`${title} with ${page.length} entries`);
         pageIndex++;
         startItemByPage.push(
             getByteLine(`${getHexByte(index)} ; ${cleanWord(title)}`),
         );
-        pagesOutput.push(getPageLines(title, page, pages, index));
+        pagesOutput.push(getPageLines(title, page));
         page.forEach((item) => {
             items.push(labelMap[item[0]](...item));
             index++;
@@ -233,15 +233,14 @@ items.forEach((i) => {
     ["extraSpriteStrings", extraSpriteStrings],
     ...Object.entries(unlabeledStringSets),
 ].forEach(([name, choiceSet]) => {
-    DEBUG && console.log(`stringlist`, name, choiceSet);
     if (name != "extraSpriteStrings") {
         choiceSetEnums.push(getChoiceSetConstant(name));
+        const size = ((choiceSet.length - 2) << 12).toString(16);
         choiceSetIndexes.push(
-            `    .word $${((choiceSet.length - 2) << 12).toString(16)} | (${getChoiceSetName(name)} - choiceSets)`,
+            getWordLine(`$${size} | (${getChoiceSetName(name)} - choiceSets)`),
         );
         choiceSets.push(`${getChoiceSetName(name)}:`);
     }
-    DEBUG && console.log(`choiceSet: `, choiceSet);
     choiceSet.forEach((choice) => {
         choice = choice.toLowerCase();
         checkStringSanity(choice);
@@ -249,7 +248,7 @@ items.forEach((i) => {
         if (name !== "extraSpriteStrings") {
             choiceSets.push(
                 // getByteLine(`${getStringName(choice)}-${getChoiceSetName(name)}`),
-                `    .word ${getStringConstant(choice)}`,
+                getWordLine(getStringConstant(choice)),
             );
         }
     });
