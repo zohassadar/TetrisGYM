@@ -6,6 +6,8 @@
 
 MENU_VARS_HI = >menuVars
 
+GAME_ACTIVE = $FF
+
 ; valid background chars are 0-253
 NORAM = $00
 
@@ -80,17 +82,16 @@ gameMode_gameTypeMenu:
     jsr resetScroll
     lda #NMIEnable
     sta currentPpuCtrl
-    lda #RENDER_MENU
+    lda #RENDER_QUEUE
     sta renderMode
     jsr showSpriteAndBackground
 
     lda #MENU_VARS_HI
     sta byteSpriteAddr+1
-    lda #RENDER_MENU
-    sta renderMode
     lda #0
     sta hideNextPiece
     sta byteSpriteTile
+    sta vramRow
     sta gameStarted
     jsr makeNotReady
 
@@ -155,18 +156,34 @@ gameTypeLoop:
     jsr stageCursor
 
     ; scratch is not important anymore
-    jsr stageBackgroundTiles
-    jsr stageCurrentValues
+    jsr stageVRAMRow
+    jsr stageVRAMRow
+    jsr stageVRAMRow
+    jsr stageVRAMRow
+    jsr stageVRAMRow
+    ; jsr stageBackgroundTiles
+    ; jsr stageCurrentValues
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
+setItemCount:
+    asl
+    tax
+    lda pageIndexes+1,x
+    lsr
+    lsr
+    lsr
+    sta pageItemCount
+    rts
 
 enterSubMenu:
     ldy #$02
     sty soundEffectSlot1Init
     pha
+    lda #0
+    sta vramRow
     lda activeRow
     jsr menuStackPush
     lda activePage
@@ -176,8 +193,7 @@ enterSubMenu:
     pla
 enterMenu:
     sta activeMenu
-    tay
-    iny
+    cmp #GAME_ACTIVE
     bne @normalMenu
     rts
 @normalMenu:
@@ -189,13 +205,8 @@ enterPage:
     clc
     adc startPageByMenu,y
     sta actualPage
-    asl
-    tax
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
-    sta pageItemCount
+    jsr setItemCount
+    lda #0
     sta vramRow
     ldx actualPage
     lda pageTypes,x
@@ -600,7 +611,7 @@ doSomethingWithSelect:
 
 setGameStartedFlag:
     inc gameStarted
-    lda #$FF
+    lda #GAME_ACTIVE
     jmp enterSubMenu
 
 
@@ -633,7 +644,7 @@ addInputs:
 @storeDigit:
     sta (udPointer,x)
 @sfx:
-    lda pageItemCount
+    lda #0
     sta vramRow
     inc soundEffectSlot1Init
     jsr copyVarsToSram
@@ -643,19 +654,47 @@ addInputs:
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
+menuVramRowTable:
+; 16 for now
+    .addr $2106
+    ; .addr $2126
+    .addr $2146
+    ; .addr $2166
+    .addr $2186
+    ; .addr $21A6
+    .addr $21C6
+    ; .addr $21E6
+    .addr $2206
+    ; .addr $2226
+    .addr $2246
+    ; .addr $2266
+    .addr $2286
+    ; .addr $22A6
+    .addr $22C6
+    ; .addr $22E6
+    .addr $2306
 
-stageBackgroundTiles:
-    ldx actualPage
+
+stageVRAMRow:
+
+    lda vramRow   ; use OG game logic & values
+    cmp #$20
+    bne @stage
+@ret:
+    rts
+@stage:
 
     @blankCounter = blankCounter
     @rowCounter = rowCounter
     @stringPtr = stringSetPtr
     @itemPtr = generalCounter
-    @itemCounter = generalCounter3
 
-; populate itemPtr, pointer to first string
-    lda pageItemCount
-    sta @itemCounter
+    lda #MENU_STRIPE_WIDTH
+    sta @blankCounter
+    ldx activeMenu
+
+    lda actualPage
+    jsr setItemCount
     lda actualPage
     asl
     tax
@@ -668,23 +707,26 @@ stageBackgroundTiles:
     adc #>pageLabels
     sta @itemPtr+1
 
+    lda vramRow
+    asl
+    tay
 
-    lda #>MENU_TITLE_PPU
-    sta stack
-    lda #<MENU_TITLE_PPU
-    sta stack+1
-    lda #MENU_ROWS
-    sta @rowCounter
-    ldx #$2
-
-@nextRow:
-    lda #MENU_STRIPE_WIDTH
-    sta @blankCounter
+    ldx renderQueuePointer
+    lda menuVramRowTable+1,y
+    sta stack,x
+    inx
+    lda menuVramRowTable,y
+    sta stack,x
+    inx
+    lda #MENU_STRIPE_WIDTH-1
+    sta stack,x
+    inx
 
 @loop:
-    lda @itemCounter
-    bmi @fillBlank
-    ldy #0
+    lda pageItemCount
+    cmp vramRow
+    bcc @fillBlank
+
     lda (@itemPtr),y
     clc
     adc #<strTable
@@ -702,7 +744,7 @@ stageBackgroundTiles:
     plp
     adc #>strTable
     sta @stringPtr+1
-    dey
+    ldy #0
 @copy:
     lda (@stringPtr),y
     sta stack,x
@@ -713,40 +755,21 @@ stageBackgroundTiles:
     bpl @copy
 @fillBlank: ; should only be entered directly when end of string reached
     dec @blankCounter
-    bmi @finishRow
+    bmi @finish
     lda #$FF
     sta stack,x
     inx
     bne @fillBlank ; always taken
-
-@finishRow:
-    lda @itemPtr
-    clc
-    adc #2
-    sta @itemPtr
-    lda #0
-    adc @itemPtr+1
-    sta @itemPtr+1
-    dec @itemCounter
-    dec @rowCounter
-    beq @shiftTitleRow
-
-; set next row based on last row
-    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
-    clc
-    adc #$40
-    sta stack+1,x
-    lda stack-(MENU_STRIPE_WIDTH+2),x
-    adc #$00
-    sta stack,x
-    inx
-    inx
-    bne @nextRow ; always taken
-@shiftTitleRow:
-; bump title row 4 tiles to the right
-    lda stack+1
-    eor #%1111
-    sta stack+1
+@finish:
+    inc renderQueueLength
+    stx renderQueuePointer
+    inc vramRow
+    lda vramRow
+    cmp #MENU_ROWS
+    bne @ret2
+    lda #$20
+    sta vramRow
+@ret2:
     rts
 ; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
 
@@ -763,12 +786,7 @@ stageCurrentValues:
     sta activeItem
 
     lda actualPage
-    asl
-    tax
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
+    jsr setItemCount
     sta @itemCount
 
     lda#(MENU_STRIPE_WIDTH+2) - 8
@@ -1028,9 +1046,7 @@ stageCursor:
 gotoEdgeCase:
     rts
 
-
 .out .sprintf("cursor staging: %d", *-stageCursor)
-
 
 render_mode_menu:
     tsx
@@ -1063,285 +1079,6 @@ renderQueuePush:
     ldx renderQueuePointer
     sta stack,x
     inc renderQueuePointer
-    rts
-
-stageCurrentRow:
-    ldx actualPage
-
-    @blankCounter = blankCounter
-    @rowCounter = rowCounter
-    @stringPtr = stringSetPtr
-    @itemPtr = generalCounter
-    @itemCounter = generalCounter3
-
-; populate itemPtr, pointer to first string
-    lda actualPage
-    asl
-    tax
-    lda pageIndexes,x
-    clc
-    adc #<pageLabels
-    sta @itemPtr
-    php
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
-    sta @itemCounter
-    lda pageIndexes+1,x
-    and #$7
-    plp
-    adc #>pageLabels
-    sta @itemPtr+1
-
-    lda vramRow
-    bmi @ret
-
-    asl
-    tay
-
-    lda #>MENU_TITLE_PPU
-    jsr menuStackPush
-    lda #<MENU_TITLE_PPU
-    jsr menuStackPush
-
-@nextRow:
-    lda #MENU_STRIPE_WIDTH
-    sta @blankCounter
-
-@loop:
-    lda @itemCounter
-    bmi @fillBlank
-    ldy #0
-    lda (@itemPtr),y
-    clc
-    adc #<strTable
-    php
-    sta @stringPtr
-    iny
-    lda (@itemPtr),y
-    lsr
-    lsr
-    lsr
-    lsr
-    sta stringLength
-    lda (@itemPtr),y
-    and #$F
-    plp
-    adc #>strTable
-    sta @stringPtr+1
-    dey
-@copy:
-    lda (@stringPtr),y
-    sta stack,x
-    iny
-    inx
-    dec blankCounter
-    dec stringLength
-    bpl @copy
-@fillBlank: ; should only be entered directly when end of string reached
-    dec @blankCounter
-    bmi @finishRow
-    lda #$FF
-    sta stack,x
-    inx
-    bne @fillBlank ; always taken
-
-@finishRow:
-    lda @itemPtr
-    clc
-    adc #2
-    sta @itemPtr
-    lda #0
-    adc @itemPtr+1
-    sta @itemPtr+1
-    dec @itemCounter
-    dec @rowCounter
-    beq @shiftTitleRow
-
-; set next row based on last row
-    lda stack-((MENU_STRIPE_WIDTH+2)-1),x
-    clc
-    adc #$40
-    sta stack+1,x
-    lda stack-(MENU_STRIPE_WIDTH+2),x
-    adc #$00
-    sta stack,x
-    inx
-    inx
-    bne @nextRow ; always taken
-@shiftTitleRow:
-; bump title row 4 tiles to the right
-    lda stack+1
-    eor #%1111
-    sta stack+1
-@ret:
-    rts
-; .out .sprintf("background staging: %d", *-stageBackgroundTiles)
-
-stageCurrentValuesOld:
-    @counter = blankCounter
-    @itemCount = rowCounter
-
-    lda #$00
-    sta @counter
-    lda #MENU_VARS_HI
-
-    ldx actualPage
-    lda startItemByPage,x
-    sta activeItem
-
-    lda actualPage
-    asl
-    tax
-    lda pageIndexes+1,x
-    lsr
-    lsr
-    lsr
-    sta @itemCount
-
-    lda#(MENU_STRIPE_WIDTH+2) - 8
-    sta stackPtr
-
-@memoryStageLoop:
-    lda stackPtr
-    clc
-    adc #MENU_STRIPE_WIDTH+2
-    sta stackPtr
-    tax
-
-    ldy activeItem
-    lda memoryOffsets,y
-    sta byteSpriteAddr
-    lda #MENU_VARS_HI
-    sta byteSpriteAddr+1
-    lda itemTypes,y
-    tax
-    ldy #0
-    and #TYPE_MASK
-    bmi @digitInputOrEdge
-
-    cmp #TYPE_CHOICES
-    beq @drawString
-
-    cmp #TYPE_NUMBER
-    bne @drawFFOff
-@setupOneByte:
-    lda #$02
-    bne @drawOneByte
-
-@drawFFOff:
-    lda (byteSpriteAddr),y
-    bpl @setupOneByte
-    ldx #CHOICESET_OFFON
-    jsr @setStringList
-    jmp @startCopy
-
-@drawString:
-    txa
-    and #%11111
-    tax
-    jsr @setStringList
-    lda (byteSpriteAddr),y
-    asl
-    tay
-@startCopy:
-    lda (stringSetPtr),y
-    clc
-    adc #<strTable
-    pha
-    php
-    iny
-    lda (stringSetPtr),y
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #1
-    sta generalCounter
-    lda (stringSetPtr),y
-    and #$F
-    plp
-    adc #>strTable
-    sta stringSetPtr+1
-    pla
-    sta stringSetPtr
-    lda generalCounter
-    jsr setStackOffset
-
-    ldy #0
-@nextChar:
-    lda (stringSetPtr),y
-    sta stack,x
-    inx
-    iny
-    dec generalCounter
-    bne @nextChar
-
-@endCopy:
-    jmp @nextByte
-
-@setStringList:
-    txa
-    asl
-    tax
-    lda choiceSetIndexes,x
-    clc
-    adc #<choiceSets
-    sta stringSetPtr
-    lda choiceSetIndexes+1,x
-    and #$F
-    adc #>choiceSets
-    sta stringSetPtr+1
-    rts
-
-@digitInputOrEdge:
-    and #TYPE_MASK
-    cmp #TYPE_MODE_ONLY
-    beq @nextByte
-    cmp #TYPE_SUBMENU
-    beq @nextByte
-    txa
-    and #%11111
-@drawOneByte:
-    pha
-    sec
-    sbc #1
-    lsr
-    clc
-    adc #$1
-    sta generalCounter
-    pla
-
-    jsr setStackOffset
-    ldy #$00
-@digitLoop:
-    lda (byteSpriteAddr),y
-    pha
-    lsr
-    lsr
-    lsr
-    lsr
-    sta stack,x
-    inx
-    pla
-    and #$0F
-    sta stack,x
-    inx
-    iny
-    dec generalCounter
-    bne @digitLoop
-    jmp @nextByte
-
-@nextByte:
-    inc activeItem
-    inc @counter
-    lda @counter
-    cmp @itemCount
-    beq @ret
-    jmp @memoryStageLoop
-@ret:
     rts
 
 
