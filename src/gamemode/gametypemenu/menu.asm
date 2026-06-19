@@ -162,6 +162,8 @@ gameTypeLoop:
     jsr stageVRAMRow
     jsr stageVRAMRow
     jsr stageVRAMRow
+    jsr stageVRAMRow
+    jsr stageVRAMRow
     ; jsr stageBackgroundTiles
     ; jsr stageCurrentValues
 gameTypeLoopWait:
