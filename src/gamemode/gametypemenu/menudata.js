@@ -51,7 +51,7 @@ const disablePause = ["TYPE_BOOL", "disable pause", "disablePauseFlag"];
 const goofyFlag = ["TYPE_CUSTOM", "toggle goofy", "GOOFY_TOGGLE", "goofyFlag"];
 const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
 const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
-const keyboardFlag = ["TYPE_BOOL", "keyboard"];
+const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const customLevel = ["TYPE_HEX", "custom level", 2, "customLevel"];
 
@@ -136,44 +136,54 @@ const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
 const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
 const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
 
-const modsSubMenu = {
-    "modify game[mode=default]": [
-        floorModifier,
-        crunchLeftModifier,
-        crunchRightModifier,
-        invisibleFlag,
-        ghostPiece,
-        hardDrop,
-        horizMirror,
-        vertMirror,
-        anydasDas,
-        anydasArr,
-        anydasEntryDelay,
-        disableDasFlag,
-        noWallChargeFlag,
-        crashModifier,
-        strictCrashFlag,
-    ],
+const tapQtyMenu = {
+    "tap quantity[mode=tapqty]": [tapqtyModifier, noLineClearDelayFlag],
+};
+const transMenu = {
+    "transition[mode=transition]": [transitionModifier],
+};
+const marathonMenu = {
+    "marathon[mode=marathon]": [marathonScoreFlag, marathonLevelModifier],
+};
+const droughtMenu = {
+    "drought[mode=drought]": [droughtModifier],
+};
+const checkerMenu = {
+    "checkerboard[mode=checkerboard]": [checkerModifier],
+};
+const garbageMenu = {
+    "garbage[mode=garbage]": [garbageModifier],
+};
+const lowstackMenu = {
+    "lowstack[mode=lowstack]": [lowStackRowModifier],
 };
 
-
-const moreSubMenu = {
-    "more options[mode=default]": [
-        disablePause,
-        debugFlag,
-        palFlag,
-        qualFlag,
-        // keyboardFlag,
-        goofyFlag,
-        customLevel,
-        disableFlash,
-        darkMode,
-        paletteSelection,
-        scoringModifier,
-    ],
+const bMenu = {
+    "b-type[mode=typeb]": [typeBModifier, typeBSeed, typeBSeedFlag, bTypeLines],
 };
-
-const tournamentSubMenu = {
+const setupsMenu = {
+    "setups[mode=presets]": [presetModifier],
+};
+const quickTapMenu = {
+    "(quick)tap[mode=tap]": [quickTapLeftModifier, quickTapRightModifier],
+};
+const mainMenu = {
+    "play tetris[mode=tetris]": [
+        ["TYPE_GAMEMODE", "t-spins", "MODE_TSPINS"],
+        ["TYPE_GAMEMODE", "stacking", "MODE_STACKING"],
+        ["TYPE_SUBMENU", "setups", setupsMenu],
+        ["TYPE_SUBMENU", "b-type", bMenu],
+        ["TYPE_SUBMENU", "(quick)tap", quickTapMenu],
+        ["TYPE_SUBMENU", "transition", transMenu],
+        ["TYPE_SUBMENU", "marathon", marathonMenu],
+        ["TYPE_SUBMENU", "tap quantity", tapQtyMenu],
+        ["TYPE_SUBMENU", "checkerboard", checkerMenu],
+        ["TYPE_SUBMENU", "garbage", garbageMenu],
+        ["TYPE_SUBMENU", "drought", droughtMenu],
+        ["TYPE_SUBMENU", "lowstack", lowstackMenu],
+        ["TYPE_GAMEMODE", "kill*2", "MODE_KILLX2"],
+        ["TYPE_GAMEMODE", "tap/roll speed", "MODE_SPEED_TEST"],
+    ],
     "tournament[mode=default]": [
         seedInput,
         seedFlag,
@@ -183,62 +193,59 @@ const tournamentSubMenu = {
         linecapLines,
         dasOnly,
         vitsScoreFlag,
+    ],
+    "general[mode=default]": [
+        disablePause,
+        debugFlag,
+        palFlag,
+        qualFlag,
+        keyboardFlag,
+        goofyFlag,
+        customLevel,
+        crashModifier,
+        strictCrashFlag,
+    ],
+
+    "modify game[mode=default]": [
+        floorModifier,
+        crunchLeftModifier,
+        crunchRightModifier,
+        invisibleFlag,
+        ghostPiece,
+        hardDrop,
+        horizMirror,
+        vertMirror,
+    ],
+
+    "display[mode=default]": [
+        scoringModifier,
         hzFlag,
         inputDisplayFlag,
+        darkMode,
+        disableFlash,
         paceModifier,
         trtFlag,
         dasMeterFlag,
         gameTimerFlag,
+        paletteSelection,
+    ],
+
+    "das[mode=default]": [
+        anydasDas,
+        anydasArr,
+        anydasEntryDelay,
+        noWallChargeFlag,
+        disableDasFlag,
     ],
 };
 
-const goToTournament = ["TYPE_SUBMENU", "tournament", tournamentSubMenu];
-const goToMods = ["TYPE_SUBMENU", "modify game", modsSubMenu];
-const goToMore = ["TYPE_SUBMENU", "more options", moreSubMenu];
-
-const shared = [goToMods, goToMore];
-
-const mainMenu = {
-    "play tetris[mode=tetris]": [goToTournament, ...shared],
-    "t-spins[mode=tspins]": [...shared],
-    "setups[mode=presets]": [presetModifier, ...shared],
-    "stacking[mode=stacking]": [goToTournament, ...shared],
-    "b-type[mode=typeb]": [
-        typeBModifier,
-        typeBSeed,
-        typeBSeedFlag,
-        bTypeLines,
-        goToTournament,
-        ...shared,
-    ],
-    "(quick)tap[mode=tap]": [
-        quickTapLeftModifier,
-        quickTapRightModifier,
-        ...shared,
-    ],
-    "tap quantity[mode=tapqty]": [
-        tapqtyModifier,
-        noLineClearDelayFlag,
-        ...shared,
-    ],
-    "transition[mode=transition]": [
-        transitionModifier,
-        goToTournament,
-        ...shared,
-    ],
-    "marathon[mode=marathon]": [marathonScoreFlag, marathonLevelModifier, goToTournament, ...shared],
-    "drought[mode=drought]": [droughtModifier, goToTournament, ...shared],
-    "checkerboard[mode=checkerboard]": [
-        checkerModifier,
-        goToTournament,
-        ...shared,
-    ],
-    "garbage[mode=garbage]": [garbageModifier, goToTournament, ...shared],
-    "lowstack[mode=lowstack]": [lowStackRowModifier, goToTournament, ...shared],
-    "tap/roll speed[mode=speed_test]": [...shared],
-    "kill*2[mode=killX2]": [...shared],
-};
-
-const extraSpriteStrings = ["pause", "block", "clear?", "sure?!", "confetti", "wait"];
+const extraSpriteStrings = [
+    "pause",
+    "block",
+    "clear?",
+    "sure?!",
+    "confetti",
+    "wait",
+];
 
 module.exports = { mainMenu, extraSpriteStrings };

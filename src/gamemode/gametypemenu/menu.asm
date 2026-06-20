@@ -41,8 +41,8 @@ TYPE_NUMBER = %00100000  ; n = limit
 TYPE_CHOICES = %01000000 ; n = wordlist index
 TYPE_FF_OFF = %01100000  ; n = limit
 
-TYPE_GAMEMODE = %10000000 ; option to go directly to level menu
-TYPE_MODE_ONLY = %10100000 ; n = mode
+TYPE_UNUSED = %10000000
+TYPE_GAMEMODE = %10100000 ; n = mode
 TYPE_SUBMENU = %11100000 ; n = menu index
 TYPE_DIGIT = %11000000
 
@@ -537,7 +537,7 @@ checkIfGameStartOrSubmenu:
     bmi checkPageMode
 
     lda unpackedItemType
-    cmp #TYPE_MODE_ONLY
+    cmp #TYPE_GAMEMODE
     beq startGameFromItem
 
     cmp #TYPE_SUBMENU
@@ -580,8 +580,9 @@ goToSubMenu:
     jmp enterSubMenu
 
 startGameFromItem:
-    lda unpackedPageValue
-    rts
+    lda unpackedItemValue
+    sta practiseType
+    jmp setGameStartedFlag
 
 checkPageMode:
     lda newlyPressedButtons_player1
@@ -892,7 +893,7 @@ stageCurrentValue:
 
 @digitInputOrEdge:
     and #TYPE_MASK
-    cmp #TYPE_MODE_ONLY
+    cmp #TYPE_GAMEMODE
     beq @ret
     cmp #TYPE_SUBMENU
     beq @ret

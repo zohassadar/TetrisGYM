@@ -440,11 +440,9 @@ gameTimerFlag: .res 1
 bTypeLines: .res 1
 marathonScoreFlag: .res 1
 marathonLevelModifier: .res 1
+keyboardFlag: .res 1
 
 sramVariableLength := * - menuVars
 
-.if KEYBOARD = 1
-keyboardFlag: .res 1
-.endif
 
 ; ... $7FF

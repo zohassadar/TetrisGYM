@@ -10,7 +10,7 @@ const labelMap = {
     TYPE_NUMBER: typeNumber,
     TYPE_FF_OFF: typeNumber,
     TYPE_CHOICES: typeChoices,
-    TYPE_MODE_ONLY: getOutputLines,
+    TYPE_GAMEMODE: typeGameMode,
     TYPE_SUBMENU: typeSubMenu,
     TYPE_BOOL: typeBool,
     TYPE_CUSTOM: typeCustom,
@@ -171,6 +171,14 @@ function typeSubMenu(label, string) {
         `${label} | SUBMENU_${cleanWord(string).toUpperCase()}`,
         `${string}`,
     );
+}
+
+function typeGameMode(label, string, mode) {
+    return {
+        string: string,
+        label: getByteLine(`${label} | ${mode} ; ${string}`),
+        memory: 0,
+    };
 }
 function typeCustom(label, string, subroutine, memoryLabel) {
     return getOutputLines(
