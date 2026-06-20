@@ -26,16 +26,23 @@ clearNametable:
         rts
 
 drawBlackBGPalette:
+        ldx renderQueuePointer
         lda #$3F
-        sta PPUADDR
+        sta stack,x
+        inx
         lda #$0
-        sta PPUADDR
-        ldx #$10
-@loadPaletteLoop:
+        sta stack,x
+        inx
+        ldy #31
+        tya
+        sta stack,x
         lda #$F
-        sta PPUDATA
-        dex
-        bne @loadPaletteLoop
+@loadPaletteLoop:
+        sta stack,x
+        inx
+        dey
+        bpl @loadPaletteLoop
+        inc renderQueueLength
         rts
 
 resetScroll:

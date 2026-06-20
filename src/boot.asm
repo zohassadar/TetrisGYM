@@ -54,13 +54,8 @@
         dex
         stx rng_seed+1
         stx b_seed+1
-        lda #NMIEnable
-        sta currentPpuCtrl
-        sta PPUCTRL
         jsr LE006
         jsr updateAudio2
-        jsr hideSpritesAndBackground
-        jsr drawBlackBGPalette
         ; instead of clearing vram like the original, blank out the palette
         jsr clearPlayfield
         lda #$00

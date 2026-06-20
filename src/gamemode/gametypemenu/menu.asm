@@ -1,9 +1,3 @@
-; to do
-; do arbitrary action
-; get back into menu from game w/block tool on
-; each title associated with action
-; more sanity checks
-
 MENU_VARS_HI = >menuVars
 
 GAME_ACTIVE = $FF
@@ -43,8 +37,9 @@ TYPE_FF_OFF = %01100000  ; n = limit
 
 TYPE_UNUSED = %10000000
 TYPE_GAMEMODE = %10100000 ; n = mode
-TYPE_SUBMENU = %11100000 ; n = menu index
 TYPE_DIGIT = %11000000
+TYPE_SUBMENU = %11100000 ; n = menu index
+
 
 BCD_MASK = $10
 TYPE_BCD = TYPE_DIGIT | BCD_MASK

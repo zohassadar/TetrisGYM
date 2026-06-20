@@ -31,6 +31,16 @@ reset:  cld
 
         dex ; $FF for stack pointer
         txs
+
+        lda #NMIEnable
+        sta currentPpuCtrl
+        sta PPUCTRL
+        jsr drawBlackBGPalette
+        lda #RENDER_QUEUE
+        sta renderMode
+        jsr waitForNmi
+        jsr hideSpritesAndBackground
+
         jsr mapperInit
         jsr setHorizontalMirroring
 .if INES_MAPPER <> 0
