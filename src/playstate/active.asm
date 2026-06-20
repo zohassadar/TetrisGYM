@@ -219,6 +219,8 @@ harddropShift:
 
         lda #8 ; jump straight to spawnTetrimino
         sta playState
+        lda #$13
+        sta currentPiece
         lda dropSpeed
         sta fallTimer
         lda #$7
