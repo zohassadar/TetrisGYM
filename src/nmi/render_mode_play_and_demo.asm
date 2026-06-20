@@ -333,7 +333,7 @@ updatePaletteForLevel:
         tax
         plp
         bmi @checkPal ; skip custom palette when in glitched colors
-        ldy paletteFlag
+        ldy paletteModifier
         beq @checkPal
         dey
         beq @pride

@@ -33,13 +33,41 @@ const darkMode = [
     ["off", "on", "neon", "lite", "teal", "og"],
     "darkModifier",
 ];
+
+const customLevel0 = ["TYPE_HEX", "0", 6, "customLevel0"];
+const customLevel1 = ["TYPE_HEX", "1", 6, "customLevel1"];
+const customLevel2 = ["TYPE_HEX", "2", 6, "customLevel2"];
+const customLevel3 = ["TYPE_HEX", "3", 6, "customLevel3"];
+const customLevel4 = ["TYPE_HEX", "4", 6, "customLevel4"];
+const customLevel5 = ["TYPE_HEX", "5", 6, "customLevel5"];
+const customLevel6 = ["TYPE_HEX", "6", 6, "customLevel6"];
+const customLevel7 = ["TYPE_HEX", "7", 6, "customLevel7"];
+const customLevel8 = ["TYPE_HEX", "8", 6, "customLevel8"];
+const customLevel9 = ["TYPE_HEX", "9", 6, "customLevel9"];
+
 const paletteSelection = [
     "TYPE_CHOICES",
     "palette",
-    ["vanilla", "pride", "white"],
-    "paletteFlag",
+    ["vanilla", "pride", "white", "custom"],
+    "paletteModifier",
 ];
 
+const customPaletteMenu = {
+    "palette[mode=drought]": [
+        customLevel0,
+        customLevel1,
+        customLevel2,
+        customLevel3,
+        customLevel4,
+        customLevel5,
+        customLevel6,
+        customLevel7,
+        customLevel8,
+        customLevel9,
+    ],
+};
+
+const goToCustomPalette = ["TYPE_SUBMENU", "custom palette", customPaletteMenu];
 const crashModifier = [
     "TYPE_CHOICES",
     "crash",
@@ -228,6 +256,7 @@ const mainMenu = {
         dasMeterFlag,
         gameTimerFlag,
         paletteSelection,
+        goToCustomPalette,
     ],
 
     "das[mode=default]": [

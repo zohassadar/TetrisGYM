@@ -616,7 +616,6 @@ checkIfExitSubmenu:
 @exitSubmenu:
     jmp exitSubmenu
 
-
 doSomethingWithSelect:
     ; lda selectPressed
     ; placeholder

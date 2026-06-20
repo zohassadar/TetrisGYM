@@ -413,7 +413,7 @@ debugFlag: .res 1
 dasOnlyFlag: .res 1
 qualFlag: .res 1
 palFlag: .res 1
-paletteFlag: .res 1
+paletteModifier: .res 1
 seedEnabled: .res 1
 seededPieces: .res 1
 ghostPieceFlag: .res 1
@@ -441,7 +441,16 @@ bTypeLines: .res 1
 marathonScoreFlag: .res 1
 marathonLevelModifier: .res 1
 keyboardFlag: .res 1
-
+customLevel0: .res 3
+customLevel1: .res 3
+customLevel2: .res 3
+customLevel3: .res 3
+customLevel4: .res 3
+customLevel5: .res 3
+customLevel6: .res 3
+customLevel7: .res 3
+customLevel8: .res 3
+customLevel9: .res 3
 sramVariableLength := * - menuVars
 
 
