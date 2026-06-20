@@ -559,6 +559,10 @@ checkIfGameStartOrSubmenu:
         customClearScoreboard
 
 customToggleGoofy:
+    lda #0
+    sta vramRow
+    lda #1
+    sta soundEffectSlot1Init
     lda goofyFlag
     eor #1
     sta goofyFlag
