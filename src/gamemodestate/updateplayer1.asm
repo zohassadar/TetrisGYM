@@ -33,8 +33,8 @@ gameModeState_updatePlayer1:
         ldx autorepeatX
         cpx dasModifier
         beq @branchOnPlaystate
-        inc autorepeatX ; will clear zero flag
-        bne @branchOnPlaystate
+        inc autorepeatX
+        jmp @branchOnPlaystate
 @resetDas:
         lda 0
         sta autorepeatX
