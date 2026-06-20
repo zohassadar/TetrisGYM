@@ -18,11 +18,4 @@ gameMode_bootScreen: ; boot
 .if KEYBOARD = 1
         jsr detectKeyboard
 .endif
-        ldy #0
-        lda qualFlag
-        bne @qualBoot
-;nonQual
-        ldy #$8
-@qualBoot:
-        sty classicLevel
         jmp gameMode_waitScreen
