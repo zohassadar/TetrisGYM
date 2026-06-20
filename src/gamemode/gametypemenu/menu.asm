@@ -591,7 +591,6 @@ checkPageMode:
     jmp setGameStartedFlag
 
 @noGame:
-
     rts
 
 checkIfExitSubmenu:
@@ -601,9 +600,16 @@ checkIfExitSubmenu:
     lda activeMenu
     bne @exitSubmenu
     lda activeRow
-    bmi doSomethingWithSelect
+    bpl @setTopRow
+    lda activePage
+    beq doSomethingWithSelect
+    lda #0
+    sta activePage
+    beq @sfx
+@setTopRow:
     lda #$FF
     sta activeRow
+@sfx:
     ldy #$02
     sty soundEffectSlot1Init
     rts
