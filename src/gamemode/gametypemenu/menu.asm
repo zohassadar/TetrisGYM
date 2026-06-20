@@ -41,13 +41,15 @@ TYPE_NUMBER = %00100000  ; n = limit
 TYPE_CHOICES = %01000000 ; n = wordlist index
 TYPE_FF_OFF = %01100000  ; n = limit
 
-TYPE_HEX = %10000000 ; n = digits
+TYPE_GAMEMODE = %10000000 ; option to go directly to level menu
 TYPE_MODE_ONLY = %10100000 ; n = mode
-TYPE_BCD = %11000000 ; n = digits, v bit to differentiate from hex
 TYPE_SUBMENU = %11100000 ; n = menu index
+TYPE_DIGIT = %11000000
 
-DIGIT_MASK = %10100000
-DIGIT_COMPARE = %10000000
+BCD_MASK = $10
+TYPE_BCD = TYPE_DIGIT | BCD_MASK
+TYPE_HEX = TYPE_DIGIT
+DIGIT_VALUE_MASK = $F
 
 menuCode:
 
@@ -341,13 +343,13 @@ setupUDDigitChange:
     sta udPointer+1 ; won't work if nybbleTemp is not zeropage
     lda #<nybbleTemp
     sta udPointer
-    lda #$10
-    bit unpackedItemType ; check if bcd
-    bvc @storeDigitMax
-    lda #$A
+    ldx #$10
+    lda unpackedItemValue
+    and #BCD_MASK
+    beq @storeDigitMax
+    ldx #$A
 @storeDigitMax:
-    sta udMax
-
+    stx udMax
     lda #MENU_VARS_HI
     sta digitPtr+1
     ldx activeItem
@@ -374,8 +376,7 @@ setupLR:
     lda unpackedItemType
     bpl setupLRValueChange
 
-    and #DIGIT_MASK
-    cmp #DIGIT_COMPARE
+    cmp #TYPE_DIGIT
     beq setupLRColumnChange
 
     lda #$00
@@ -439,6 +440,7 @@ setupLRColumnChange:
     lda #<activeColumn
     sta lrPointer
     lda unpackedItemValue
+    and #DIGIT_VALUE_MASK
     tay
     iny
     sty lrMax
@@ -895,7 +897,7 @@ stageCurrentValue:
     cmp #TYPE_SUBMENU
     beq @ret
     txa
-    and #%11111
+    and #DIGIT_VALUE_MASK
 @drawOneByte:
     pha
     sec
@@ -1036,7 +1038,7 @@ stageCursor:
     sta spriteXOffset
     ldx activeItem
     lda itemTypes,x
-    and #VALUE_MASK
+    and #DIGIT_VALUE_MASK
     sec
     sbc #1
     lsr
