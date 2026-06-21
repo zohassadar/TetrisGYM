@@ -1,13 +1,14 @@
-advanceGameTap:
-        @leftSide = $BF
-        @rightSide = $C6
+initGameTap:
         @secondLoop = generalCounter
-        jsr clearPlayfield
         lda #$00
         sta @secondLoop
         ldx tapLeftModifier
         beq @checkRight
-        ldy #@leftSide
+        lda #190
+        clc
+        adc tapLeftColumn
+@startLoop:
+        tay
 @loop:
         lda #$7B
         sta $400, y
@@ -22,9 +23,11 @@ advanceGameTap:
         bne @ret
 @checkRight:
         inc @secondLoop
+        lda #190
+        clc
+        adc tapRightColumn
         ldx tapRightModifier
         beq @ret
-        ldy #@rightSide
-        bne @loop
+        bne @startLoop
 @ret:
         rts

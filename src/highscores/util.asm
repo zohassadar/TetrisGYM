@@ -41,7 +41,12 @@ resetMenuVars:
 
         lda #BTYPE_START_LINES
         sta bTypeLines
-
+        lda #1
+        sta tapLeftColumn
+        lda #8
+        sta tapRightColumn
+        lda #6
+        sta practisePiece
         rts
 
 

@@ -451,6 +451,9 @@ customLevel6: .res 3
 customLevel7: .res 3
 customLevel8: .res 3
 customLevel9: .res 3
+tapLeftColumn: .res 1
+tapRightColumn: .res 1
+practisePiece: .res 1
 
 sramVariableLength := * - menuVars
 menuRAMLength = * - menuRAM

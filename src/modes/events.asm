@@ -1,10 +1,14 @@
 practiseInitGameState:
         lda practiseType
+        cmp #MODE_TAP
+        bne @skipTap
+        jmp initGameTap
+@skipTap:
+        jsr practiseEachPiece
         cmp #MODE_CHECKERBOARD
         bne @skipChecker
         jsr initChecker
 @skipChecker:
-        jsr practiseEachPiece
         lda floorModifier
         bmi @skipFloor
         jsr advanceGameFloor
@@ -42,10 +46,6 @@ practiseEachPiece: ; only used in this file
         bne @skipTapQuantity
         jsr prepareNextTapQuantity
 @skipTapQuantity:
-        cmp #MODE_TAP
-        bne @skipTap
-        jmp advanceGameTap
-@skipTap:
         cmp #MODE_PRESETS
         bne @skipPresets
         jmp advanceGamePreset

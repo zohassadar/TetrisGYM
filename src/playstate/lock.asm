@@ -85,7 +85,13 @@ VITS_SCORE = 100000
         sta binScore+3
 @noVits:
         ldx currentPiece
+        lda practiseType
+        cmp #MODE_TAP
+        lda #EMPTY_TILE
+        bne @storeTile
+@normalTile:
         lda tetriminoTileFromOrientation,x
+@storeTile:
         sta @currentTile
         txa
         asl a
