@@ -1,15 +1,27 @@
 practiseInitGameState:
         lda practiseType
+        cmp #MODE_TAP
+        bne @skipTap
+        jmp initGameTap
+@skipTap:
         cmp #MODE_CHECKERBOARD
         bne @skipChecker
         jsr initChecker
 @skipChecker:
-        jsr practiseEachPiece
         lda floorModifier
         bmi @skipFloor
         jsr advanceGameFloor
 @skipFloor:
-        jmp advanceGameCrunch
+        jsr advanceGameCrunch
+        jmp practiseEachPiece
+
+practiseAdvanceGame:
+        lda practiseType
+        cmp #MODE_TSPINS
+        bne @skipTSpins
+        jmp advanceGameTSpins
+@skipTSpins:
+        rts
 
 practisePrepareNext:
         lda paceModifier
@@ -25,27 +37,13 @@ practisePrepareNext:
         bne @skipParity
         jsr prepareNextParity
 @skipParity:
-        jsr practiseEachPiece
-        rts
-
-practiseAdvanceGame:
-        lda practiseType
-        cmp #MODE_TSPINS
-        bne @skipTSpins
-        jmp advanceGameTSpins
-@skipTSpins:
-        rts
 
 practiseEachPiece: ; only used in this file
-        lda practiseType ; not necessary, but explicit
+        lda practiseType
         cmp #MODE_TAPQTY
         bne @skipTapQuantity
         jsr prepareNextTapQuantity
 @skipTapQuantity:
-        cmp #MODE_TAP
-        bne @skipTap
-        jmp advanceGameTap
-@skipTap:
         cmp #MODE_PRESETS
         bne @skipPresets
         jmp advanceGamePreset

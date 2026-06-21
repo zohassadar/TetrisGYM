@@ -124,7 +124,8 @@ pickTetriminoT:
         rts
 
 pickTetriminoLongbar:
-        lda #$12
+        ldx practisePiece
+        lda spawnTable,x
         sta spawnID
         rts
 
