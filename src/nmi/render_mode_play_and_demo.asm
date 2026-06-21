@@ -333,18 +333,16 @@ updatePaletteForLevel:
         tax
         plp
         bmi @checkPal ; skip custom palette when in glitched colors
+        cpx #$0A
+        bcs @checkPal
         ldy paletteModifier
         beq @checkPal
         dey
         beq @pride
-        cpx #$0A
-        bcs @checkPal
-        adc #$4B        ; clc unnecessary, carry already clear
-        tax
+        ; all white
+        ldx #$4B        ; pointer to all white
         jmp @renderPalettes
 @pride:
-        cpx #$0A        ; only modify 0-9
-        bcs @checkPal
         adc #$41        ; clc unnecessary, carry already clear
         tax
 @checkPal:
@@ -407,9 +405,7 @@ colorTable0:
         .byte   $30,$30,$30,$30
         .byte   $30,$30
 ; all white
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30
+        .byte   $30
 
 colorTable1:
         .byte   $21,$29,$24,$2A
@@ -434,9 +430,7 @@ colorTable1:
         .byte   $28,$21,$27,$00
         .byte   $25,$27
 ; all white
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30
+        .byte   $30
 
 colorTable2:
         .byte   $12,$1A,$14,$12
@@ -461,9 +455,7 @@ colorTable2:
         .byte   $14,$2b,$11,$14
         .byte   $21,$15
 ; all white
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30,$30,$30
-        .byte   $30,$30
+        .byte   $30
 
 incrementPieceStat:
         tax
