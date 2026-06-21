@@ -19,11 +19,10 @@
 @coldBoot:
         ; zero out config memory
         lda #$0
-        ldx #$A0
+        ldx #menuRAMLength
 @loop:
+        sta menuRAM-1, x
         dex
-        sta menuRAM, x
-        ; cpx #0 ; dex sets z flag
         bne @loop
 
         jsr resetScores
@@ -56,8 +55,6 @@
         stx b_seed+1
         jsr LE006
         jsr updateAudio2
-        ; instead of clearing vram like the original, blank out the palette
-        jsr clearPlayfield
         lda #$00
         sta gameModeState
         sta gameMode

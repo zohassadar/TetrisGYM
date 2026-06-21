@@ -451,7 +451,9 @@ customLevel6: .res 3
 customLevel7: .res 3
 customLevel8: .res 3
 customLevel9: .res 3
+
 sramVariableLength := * - menuVars
+menuRAMLength = * - menuRAM
 
 
 ; ... $7FF
