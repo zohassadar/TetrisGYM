@@ -53,7 +53,7 @@ const paletteSelection = [
 ];
 
 const customPaletteMenu = {
-    'palette[mode=drought]': [
+    'palette[mode=default]': [
         customLevel0,
         customLevel1,
         customLevel2,
