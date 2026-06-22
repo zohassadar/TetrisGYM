@@ -322,10 +322,10 @@ updatePaletteForLevel:
 @loadLevelNumber:
         lda levelNumber,x
         php ; keep track of glitched color range
-@mod10: cmp #$0A
+@mod10: cmp #GameColors::bugged
         bmi @copyPalettes ; bcc fixes the colour bug
         sec
-        sbc #$0A
+        sbc #GameColors::bugged
         jmp @mod10
 
 @copyPalettes:
@@ -333,24 +333,28 @@ updatePaletteForLevel:
         tax
         plp
         bmi @checkPal ; skip custom palette when in glitched colors
-        cpx #$0A
+        cpx #GameColors::bugged
         bcs @checkPal
         ldy paletteModifier
         beq @checkPal
         dey
         beq @pride
+        dey
+        beq @white
+        jmp @customPalette
+@white:
         ; all white
-        ldx #$4B        ; pointer to all white
-        jmp @renderPalettes
+        ldx #GameColors::white
+        bne @renderPalettes
 @pride:
-        adc #$41        ; clc unnecessary, carry already clear
+        adc #GameColors::pride
         tax
 @checkPal:
         lda palFlag
         beq @renderPalettes
         cpx #$35 ; Level 181 & 245 and'd with $3F (level 53 & 117 are properly mod10'd)
         bne @renderPalettes
-        ldx #$40
+        ldx #GameColors::pal181
 @renderPalettes:
         lda #$3F
         sta PPUADDR
@@ -380,6 +384,46 @@ updatePaletteForLevel:
         sta PPUDATA
 @done:
         rts
+
+@customPalette:
+        ldy multBy3,x
+        lda #$3F
+        sta PPUADDR
+        lda #$09
+        sta PPUADDR
+        lda customLevel0,y
+        sta PPUDATA
+        lda customLevel0+1,y
+        sta PPUDATA
+        lda customLevel0+2,y
+        sta PPUDATA
+        ldx darkModifier
+        cpx #2 ; neon
+        bne @stillNotNeon
+        sta PPUDATA
+@stillNotNeon:
+        lda #$3F
+        sta PPUADDR
+        lda #$19
+        sta PPUADDR
+        lda customLevel0,y
+        sta PPUDATA
+        lda customLevel0+1,y
+        sta PPUDATA
+        lda customLevel0+2,y
+        sta PPUDATA
+        rts
+
+multBy3:
+    .byte 0,3,6,9,12,15,18,21,24,27
+
+.struct GameColors
+    normal .byte 10
+    bugged .byte 54
+    pal181 .byte
+    pride  .byte 10
+    white  .byte 1
+.endstruct
 
 ; 3 bytes per level in separate tables
 colorTable0:

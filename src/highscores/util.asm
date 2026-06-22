@@ -47,7 +47,23 @@ resetMenuVars:
         sta tapRightColumn
         lda #6
         sta practisePiece
+
+        ldy #27
+        ldx #9
+@palette:
+        lda colorTable0,x
+        sta customLevel0+0,y
+        lda colorTable1,x
+        sta customLevel0+1,y
+        lda colorTable2,x
+        sta customLevel0+2,y
+        dey
+        dey
+        dey
+        dex
+        bpl @palette
         rts
+
 
 
 .if SAVE_HIGHSCORES
