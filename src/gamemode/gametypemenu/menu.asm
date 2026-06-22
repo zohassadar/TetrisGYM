@@ -688,16 +688,26 @@ stageCustomPalette:
     inx
     lda multBy3,y
     tay
+    lda activeMenu
+    cmp #SUBMENU_CUSTOMPALETTE
+    beq @noHide
+    lda #$0F
+    sta stack,x
+    sta stack+1,x
+    sta stack+2,x
+    bne @end
+@noHide:
     lda customLevel0,y
     sta stack,x
     iny
-    inx
     lda customLevel0,y
-    sta stack,x
+    sta stack+1,x
     iny
-    inx
     lda customLevel0,y
-    sta stack,x
+    sta stack+2,x
+@end:
+    inx
+    inx
     inx
     stx renderQueuePointer
     inc renderQueueLength
