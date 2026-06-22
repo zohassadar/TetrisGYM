@@ -18,7 +18,7 @@ gamePalette:
 titlePalette:
         .byte   $3F,$00
         .byte   $13
-        .byte   $0F,$3C,$38,$00 ; bg
+        .byte   $0F,$30,$16,$12 ; bg
         .byte   $0F,$17,$27,$37
         .byte   $0F,$30,MENU_HIGHLIGHT_COLOR,$00
         .byte   $0F,$22,$2A,$28

@@ -160,7 +160,7 @@ gameTypeLoop:
     jsr stageVRAMRow
     jsr stageVRAMRow
     jsr stageVRAMRow
-    jsr stageVRAMRow
+    jsr stageCustomPalette
     ; jsr stageBackgroundTiles
     ; jsr stageCurrentValues
 gameTypeLoopWait:
@@ -664,6 +664,44 @@ addInputs:
 
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
+
+stageCustomPalette:
+    lda activeRow
+    bpl @mod10
+    lda #8
+@mod10:
+    cmp #$A
+    bcc @stage
+    sbc #$A
+    bcs @mod10
+@stage:
+    tay
+    ldx renderQueuePointer
+    lda #$3F
+    sta stack,x
+    inx
+    lda #$01
+    sta stack,x
+    inx
+    lda #$2
+    sta stack,x
+    inx
+    lda multBy3,y
+    tay
+    lda customLevel0,y
+    sta stack,x
+    iny
+    inx
+    lda customLevel0,y
+    sta stack,x
+    iny
+    inx
+    lda customLevel0,y
+    sta stack,x
+    inx
+    stx renderQueuePointer
+    inc renderQueueLength
+    rts
 
 stageVRAMRow:
 
