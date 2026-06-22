@@ -1,217 +1,206 @@
-const seedFlag = ['TYPE_BOOL', 'Seed Enabled', 'seedEnabled'];
-const seedInput = ['TYPE_HEX', 'seed', 6, 'set_seed_input'];
+const seedFlag = ["TYPE_BOOL", "Seed Enabled", "seedEnabled"];
+const seedInput = ["TYPE_HEX", "seed", 6, "set_seed_input"];
 const linecapWhen = [
-    'TYPE_CHOICES',
-    'linecap',
-    ['off', 'level', 'lines'],
-    'linecapWhen',
+    "TYPE_CHOICES",
+    "linecap",
+    ["off", "level", "lines"],
+    "linecapWhen",
 ];
 const linecapHow = [
-    'TYPE_CHOICES',
-    'linecap how',
-    ['ks*2', 'floor', 'inviz', 'halt'],
-    'linecapHow',
+    "TYPE_CHOICES",
+    "linecap how",
+    ["ks*2", "floor", "inviz", "halt"],
+    "linecapHow",
 ];
-const linecapLevel = ['TYPE_NUMBER', 'linecap level', 0, 'linecapLevel'];
-const linecapLines = ['TYPE_BCD', 'linecap lines', 4, 'linecapLines'];
-const dasOnly = ['TYPE_BOOL', 'das only', 'dasOnlyFlag'];
-const vitsScoreFlag = ['TYPE_BOOL', 'vits scoring', 'vitsScoreFlag'];
+const linecapLevel = ["TYPE_NUMBER", "linecap level", 0, "linecapLevel"];
+const linecapLines = ["TYPE_BCD", "linecap lines", 4, "linecapLines"];
+const dasOnly = ["TYPE_BOOL", "das only", "dasOnlyFlag"];
+const vitsScoreFlag = ["TYPE_BOOL", "vits scoring", "vitsScoreFlag"];
 
 const scoringModifier = [
-    'TYPE_CHOICES',
-    'scoring',
-    ['classic', 'letters', '7digit', 'm', 'capped', 'hidden'],
-    'scoringModifier',
+    "TYPE_CHOICES",
+    "scoring",
+    ["classic", "letters", "7digit", "m", "capped", "hidden"],
+    "scoringModifier",
 ];
-const paceModifier = ['TYPE_FF_OFF', 'Pace', 16, 'paceModifier'];
-const hzFlag = ['TYPE_BOOL', 'HZ DISPLAY', 'hzFlag'];
-const inputDisplayFlag = ['TYPE_BOOL', 'Input Display', 'inputDisplayFlag'];
-const disableFlash = ['TYPE_BOOL', 'Disable Flash', 'disableFlashFlag'];
+const paceModifier = ["TYPE_FF_OFF", "Pace", 16, "paceModifier"];
+const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
+const inputDisplayFlag = ["TYPE_BOOL", "Input Display", "inputDisplayFlag"];
+const disableFlash = ["TYPE_BOOL", "Disable Flash", "disableFlashFlag"];
 const darkMode = [
-    'TYPE_CHOICES',
-    'dark mode',
-    ['off', 'on', 'neon', 'lite', 'teal', 'og'],
-    'darkModifier',
+    "TYPE_CHOICES",
+    "dark mode",
+    ["off", "on", "neon", "lite", "teal", "og"],
+    "darkModifier",
 ];
-
-const customLevel0 = ['TYPE_HEX', '0', 6, 'customLevel0'];
-const customLevel1 = ['TYPE_HEX', '1', 6, 'customLevel1'];
-const customLevel2 = ['TYPE_HEX', '2', 6, 'customLevel2'];
-const customLevel3 = ['TYPE_HEX', '3', 6, 'customLevel3'];
-const customLevel4 = ['TYPE_HEX', '4', 6, 'customLevel4'];
-const customLevel5 = ['TYPE_HEX', '5', 6, 'customLevel5'];
-const customLevel6 = ['TYPE_HEX', '6', 6, 'customLevel6'];
-const customLevel7 = ['TYPE_HEX', '7', 6, 'customLevel7'];
-const customLevel8 = ['TYPE_HEX', '8', 6, 'customLevel8'];
-const customLevel9 = ['TYPE_HEX', '9', 6, 'customLevel9'];
 
 const paletteSelection = [
-    'TYPE_CHOICES',
-    'palette',
-    ['vanilla', 'pride', 'white', 'custom'],
-    'paletteModifier',
+    "TYPE_CHOICES",
+    "palette",
+    ["vanilla", "pride", "white", "custom"],
+    "paletteModifier",
 ];
 
 const customPaletteMenu = {
-    'palette[mode=default]': [
-        customLevel0,
-        customLevel1,
-        customLevel2,
-        customLevel3,
-        customLevel4,
-        customLevel5,
-        customLevel6,
-        customLevel7,
-        customLevel8,
-        customLevel9,
+    "palette[mode=default]": [
+        ["TYPE_HEX", "0", 6, "customLevel0"],
+        ["TYPE_HEX", "1", 6, "customLevel1"],
+        ["TYPE_HEX", "2", 6, "customLevel2"],
+        ["TYPE_HEX", "3", 6, "customLevel3"],
+        ["TYPE_HEX", "4", 6, "customLevel4"],
+        ["TYPE_HEX", "5", 6, "customLevel5"],
+        ["TYPE_HEX", "6", 6, "customLevel6"],
+        ["TYPE_HEX", "7", 6, "customLevel7"],
+        ["TYPE_HEX", "8", 6, "customLevel8"],
+        ["TYPE_HEX", "9", 6, "customLevel9"],
     ],
 };
 
-const goToCustomPalette = ['TYPE_SUBMENU', 'custom palette', customPaletteMenu];
+const goToCustomPalette = ["TYPE_SUBMENU", "custom palette", customPaletteMenu];
 const crashModifier = [
-    'TYPE_CHOICES',
-    'crash',
-    ['off', 'show', 'top', 'crash'],
-    'crashModifier',
+    "TYPE_CHOICES",
+    "crash",
+    ["off", "show", "top", "crash"],
+    "crashModifier",
 ];
-const strictCrashFlag = ['TYPE_BOOL', 'strict crash', 'strictFlag'];
-const disablePause = ['TYPE_BOOL', 'disable pause', 'disablePauseFlag'];
-const goofyFlag = ['TYPE_CUSTOM', 'toggle goofy', 'GOOFY_TOGGLE', 'goofyFlag'];
-const debugFlag = ['TYPE_BOOL', 'block tool', 'debugFlag'];
-const palFlag = ['TYPE_BOOL', 'pal mode', 'palFlag'];
-const keyboardFlag = ['TYPE_BOOL', 'keyboard', 'keyboardFlag'];
-const qualFlag = ['TYPE_BOOL', 'qual', 'qualFlag'];
-const customLevel = ['TYPE_HEX', 'custom level', 2, 'customLevel'];
+const strictCrashFlag = ["TYPE_BOOL", "strict crash", "strictFlag"];
+const disablePause = ["TYPE_BOOL", "disable pause", "disablePauseFlag"];
+const goofyFlag = ["TYPE_CUSTOM", "toggle goofy", "GOOFY_TOGGLE", "goofyFlag"];
+const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
+const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
+const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
+const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
+const customLevel = ["TYPE_HEX", "custom level", 2, "customLevel"];
 
-const floorModifier = ['TYPE_FF_OFF', 'floor', 16, 'floorModifier'];
+const floorModifier = ["TYPE_FF_OFF", "floor", 16, "floorModifier"];
 const crunchLeftModifier = [
-    'TYPE_NUMBER',
-    'crunch left',
+    "TYPE_NUMBER",
+    "crunch left",
     4,
-    'crunchLeftModifier',
+    "crunchLeftModifier",
 ];
 const crunchRightModifier = [
-    'TYPE_NUMBER',
-    'crunch right',
+    "TYPE_NUMBER",
+    "crunch right",
     4,
-    'crunchRightModifier',
+    "crunchRightModifier",
 ];
-const invisibleFlag = ['TYPE_BOOL', 'invisible', 'invisibleOptionFlag'];
-const ghostPiece = ['TYPE_BOOL', 'ghost', 'ghostPieceFlag'];
-const hardDrop = ['TYPE_BOOL', 'hardDrop', 'hardDropFlag'];
+const invisibleFlag = ["TYPE_BOOL", "invisible", "invisibleOptionFlag"];
+const ghostPiece = ["TYPE_BOOL", "ghost", "ghostPieceFlag"];
+const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 
-const horizMirror = ['TYPE_BOOL', 'mirror horiz', 'mirrorHorizFlag'];
-const vertMirror = ['TYPE_BOOL', 'mirror vert', 'mirrorVertFlag'];
+const horizMirror = ["TYPE_BOOL", "mirror horiz", "mirrorHorizFlag"];
+const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 
-const presetModifier = ['TYPE_NUMBER', 'preset', 8, 'presetModifier'];
-const typeBModifier = ['TYPE_NUMBER', 'height', 9, 'typeBModifier'];
-const typeBSeed = ['TYPE_HEX', 'seed', 4, 'b_seed_input'];
-const typeBSeedFlag = ['TYPE_BOOL', 'seed enabled', 'typeBSeedFlag'];
-const bTypeLines = ['TYPE_BCD', 'lines', 2, 'bTypeLines'];
-const checkerModifier = ['TYPE_NUMBER', 'height', 9, 'checkerModifier'];
-const quickTapLeftModifier = ['TYPE_NUMBER', 'left', 20, 'tapLeftModifier'];
-const quickTapRightModifier = ['TYPE_NUMBER', 'right', 20, 'tapRightModifier'];
+const presetModifier = ["TYPE_NUMBER", "preset", 8, "presetModifier"];
+const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
+const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
+const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];
+const bTypeLines = ["TYPE_BCD", "lines", 2, "bTypeLines"];
+const checkerModifier = ["TYPE_NUMBER", "height", 9, "checkerModifier"];
+const quickTapLeftModifier = ["TYPE_NUMBER", "left", 20, "tapLeftModifier"];
+const quickTapRightModifier = ["TYPE_NUMBER", "right", 20, "tapRightModifier"];
 const quickTapLeftColumn = [
-    'TYPE_CHOICES',
-    'left column',
-    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    'tapLeftColumn',
+    "TYPE_CHOICES",
+    "left column",
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    "tapLeftColumn",
 ];
 const quickTapRightColumn = [
-    'TYPE_CHOICES',
-    'right column',
-    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    'tapRightColumn',
+    "TYPE_CHOICES",
+    "right column",
+    ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    "tapRightColumn",
 ];
 const practisePiece = [
-    'TYPE_CHOICES',
-    'piece',
-    ['T', 'J', 'Z', "O", "S", "L", "I"],
-    'practisePiece',
+    "TYPE_CHOICES",
+    "piece",
+    ["T", "J", "Z", "O", "S", "L", "I"],
+    "practisePiece",
 ];
 const transitionModifier = [
-    'TYPE_NUMBER',
-    'modifier',
+    "TYPE_NUMBER",
+    "modifier",
     17,
-    'transitionModifier',
+    "transitionModifier",
 ];
 const marathonScoreFlag = [
-    'TYPE_CHOICES',
-    'fixed score',
-    ['on', 'off'],
-    'marathonScoreFlag',
+    "TYPE_CHOICES",
+    "fixed score",
+    ["on", "off"],
+    "marathonScoreFlag",
 ];
 const marathonLevelModifier = [
-    'TYPE_CHOICES',
-    'level up',
-    ['fixed', 'normal', 'zero'],
-    'marathonLevelModifier',
+    "TYPE_CHOICES",
+    "level up",
+    ["fixed", "normal", "zero"],
+    "marathonLevelModifier",
 ];
 
-const tapqtyModifier = ['TYPE_NUMBER', 'height', 16, 'tapqtyModifier'];
+const tapqtyModifier = ["TYPE_NUMBER", "height", 16, "tapqtyModifier"];
 const noLineClearDelayFlag = [
-    'TYPE_BOOL',
-    'no line clear',
-    'noLineClearDelayFlag',
+    "TYPE_BOOL",
+    "no line clear",
+    "noLineClearDelayFlag",
 ];
-const garbageModifier = ['TYPE_NUMBER', 'modifier', 5, 'garbageModifier'];
-const droughtModifier = ['TYPE_NUMBER', 'modifier', 20, 'droughtModifier'];
+const garbageModifier = ["TYPE_NUMBER", "modifier", 5, "garbageModifier"];
+const droughtModifier = ["TYPE_NUMBER", "modifier", 20, "droughtModifier"];
 const lowStackRowModifier = [
-    'TYPE_NUMBER',
-    'height',
+    "TYPE_NUMBER",
+    "height",
     20,
-    'lowStackRowModifier',
+    "lowStackRowModifier",
 ];
 
 const noWallChargeFlag = [
-    'TYPE_CHOICES',
-    'wall charge',
-    ['on', 'off'],
-    'noWallChargeFlag',
+    "TYPE_CHOICES",
+    "wall charge",
+    ["on", "off"],
+    "noWallChargeFlag",
 ];
-const disableDasFlag = ['TYPE_CHOICES', 'das', ['on', 'off'], 'disableDasFlag'];
-const anydasDas = ['TYPE_NUMBER', 'delay', 31, 'dasModifier'];
-const anydasArr = ['TYPE_NUMBER', 'arrrr', 31, 'arrModifier'];
+const disableDasFlag = ["TYPE_CHOICES", "das", ["on", "off"], "disableDasFlag"];
+const anydasDas = ["TYPE_NUMBER", "delay", 31, "dasModifier"];
+const anydasArr = ["TYPE_NUMBER", "arrrr", 31, "arrModifier"];
 const anydasEntryDelay = [
-    'TYPE_CHOICES',
-    'entry charge',
-    ['off', 'hydrant', 'kitaru'],
-    'entryChargeModifier',
+    "TYPE_CHOICES",
+    "entry charge",
+    ["off", "hydrant", "kitaru"],
+    "entryChargeModifier",
 ];
-const trtFlag = ['TYPE_BOOL', 'tetris rate', 'trtFlag'];
-const dasMeterFlag = ['TYPE_BOOL', 'das meter', 'dasMeterFlag'];
-const gameTimerFlag = ['TYPE_BOOL', 'game timer', 'gameTimerFlag'];
+const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
+const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
+const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
 
 const tapQtyMenu = {
-    'tap quantity[mode=tapqty]': [tapqtyModifier, noLineClearDelayFlag],
+    "tap quantity[mode=tapqty]": [tapqtyModifier, noLineClearDelayFlag],
 };
 const transMenu = {
-    'transition[mode=transition]': [transitionModifier],
+    "transition[mode=transition]": [transitionModifier],
 };
 const marathonMenu = {
-    'marathon[mode=marathon]': [marathonScoreFlag, marathonLevelModifier],
+    "marathon[mode=marathon]": [marathonScoreFlag, marathonLevelModifier],
 };
 const droughtMenu = {
-    'drought[mode=drought]': [droughtModifier],
+    "drought[mode=drought]": [droughtModifier],
 };
 const checkerMenu = {
-    'checkerboard[mode=checkerboard]': [checkerModifier],
+    "checkerboard[mode=checkerboard]": [checkerModifier],
 };
 const garbageMenu = {
-    'garbage[mode=garbage]': [garbageModifier],
+    "garbage[mode=garbage]": [garbageModifier],
 };
 const lowstackMenu = {
-    'lowstack[mode=lowstack]': [lowStackRowModifier],
+    "lowstack[mode=lowstack]": [lowStackRowModifier],
 };
 
 const bMenu = {
-    'b-type[mode=typeb]': [typeBModifier, typeBSeed, typeBSeedFlag, bTypeLines],
+    "b-type[mode=typeb]": [typeBModifier, typeBSeed, typeBSeedFlag, bTypeLines],
 };
 const setupsMenu = {
-    'setups[mode=presets]': [presetModifier],
+    "setups[mode=presets]": [presetModifier],
 };
 const quickTapMenu = {
-    '(quick)tap[mode=tap]': [
+    "(quick)tap[mode=tap]": [
         quickTapLeftModifier,
         quickTapRightModifier,
         quickTapLeftColumn,
@@ -221,23 +210,23 @@ const quickTapMenu = {
     ],
 };
 const mainMenu = {
-    'play tetris[mode=tetris]': [
-        ['TYPE_GAMEMODE', 't-spins', 'MODE_TSPINS'],
-        ['TYPE_GAMEMODE', 'stacking', 'MODE_STACKING'],
-        ['TYPE_SUBMENU', 'setups', setupsMenu],
-        ['TYPE_SUBMENU', 'b-type', bMenu],
-        ['TYPE_SUBMENU', '(quick)tap', quickTapMenu],
-        ['TYPE_SUBMENU', 'transition', transMenu],
-        ['TYPE_SUBMENU', 'marathon', marathonMenu],
-        ['TYPE_SUBMENU', 'tap quantity', tapQtyMenu],
-        ['TYPE_SUBMENU', 'checkerboard', checkerMenu],
-        ['TYPE_SUBMENU', 'garbage', garbageMenu],
-        ['TYPE_SUBMENU', 'drought', droughtMenu],
-        ['TYPE_SUBMENU', 'lowstack', lowstackMenu],
-        ['TYPE_GAMEMODE', 'kill*2', 'MODE_KILLX2'],
-        ['TYPE_GAMEMODE', 'tap/roll speed', 'MODE_SPEED_TEST'],
+    "play tetris[mode=tetris]": [
+        ["TYPE_GAMEMODE", "t-spins", "MODE_TSPINS"],
+        ["TYPE_GAMEMODE", "stacking", "MODE_STACKING"],
+        ["TYPE_SUBMENU", "setups", setupsMenu],
+        ["TYPE_SUBMENU", "b-type", bMenu],
+        ["TYPE_SUBMENU", "(quick)tap", quickTapMenu],
+        ["TYPE_SUBMENU", "transition", transMenu],
+        ["TYPE_SUBMENU", "marathon", marathonMenu],
+        ["TYPE_SUBMENU", "tap quantity", tapQtyMenu],
+        ["TYPE_SUBMENU", "checkerboard", checkerMenu],
+        ["TYPE_SUBMENU", "garbage", garbageMenu],
+        ["TYPE_SUBMENU", "drought", droughtMenu],
+        ["TYPE_SUBMENU", "lowstack", lowstackMenu],
+        ["TYPE_GAMEMODE", "kill*2", "MODE_KILLX2"],
+        ["TYPE_GAMEMODE", "tap/roll speed", "MODE_SPEED_TEST"],
     ],
-    'tournament[mode=default]': [
+    "tournament[mode=default]": [
         seedInput,
         seedFlag,
         linecapWhen,
@@ -247,7 +236,7 @@ const mainMenu = {
         dasOnly,
         vitsScoreFlag,
     ],
-    'general[mode=default]': [
+    "general[mode=default]": [
         disablePause,
         debugFlag,
         palFlag,
@@ -259,7 +248,7 @@ const mainMenu = {
         strictCrashFlag,
     ],
 
-    'modify game[mode=default]': [
+    "modify game[mode=default]": [
         floorModifier,
         crunchLeftModifier,
         crunchRightModifier,
@@ -270,7 +259,7 @@ const mainMenu = {
         vertMirror,
     ],
 
-    'display[mode=default]': [
+    "display[mode=default]": [
         scoringModifier,
         hzFlag,
         inputDisplayFlag,
@@ -284,7 +273,7 @@ const mainMenu = {
         goToCustomPalette,
     ],
 
-    'das[mode=default]': [
+    "das[mode=default]": [
         anydasDas,
         anydasArr,
         anydasEntryDelay,
@@ -294,12 +283,12 @@ const mainMenu = {
 };
 
 const extraSpriteStrings = [
-    'pause',
-    'block',
-    'clear?',
-    'sure?!',
-    'confetti',
-    'wait',
+    "pause",
+    "block",
+    "clear?",
+    "sure?!",
+    "confetti",
+    "wait",
 ];
 
 module.exports = { mainMenu, extraSpriteStrings };
