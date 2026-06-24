@@ -94,7 +94,7 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 
 const presetModifier = [
     "TYPE_CHOICES",
-    "preset",
+    "setup",
     ["z", "t/s", "t", "i", "buco", "various", "ljspin", "ljdouble"],
     "presetModifier",
 ];
@@ -148,7 +148,12 @@ const noLineClearDelayFlag = [
     "no line clear",
     "noLineClearDelayFlag",
 ];
-const garbageModifier = ["TYPE_NUMBER", "modifier", 5, "garbageModifier"];
+const garbageModifier = [
+    "TYPE_CHOICES",
+    "mode",
+    ["tetris", "normal", "smart", "hard", "infinite"],
+    "garbageModifier",
+];
 const droughtModifier = ["TYPE_NUMBER", "modifier", 20, "droughtModifier"];
 const lowStackRowModifier = [
     "TYPE_NUMBER",
