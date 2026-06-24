@@ -102,7 +102,7 @@ console.log();
 // build menu
 if (!args.includes('-M')) {
     console.time('menu');
-    require('./src/gamemode/gametypemenu/menu');
+    require('./src/menu/menu');
     console.timeEnd('menu');
 }
 

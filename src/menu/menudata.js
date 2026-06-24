@@ -92,7 +92,12 @@ const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 const horizMirror = ["TYPE_BOOL", "mirror horiz", "mirrorHorizFlag"];
 const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 
-const presetModifier = ["TYPE_NUMBER", "preset", 8, "presetModifier"];
+const presetModifier = [
+    "TYPE_CHOICES",
+    "preset",
+    ["z", "t/s", "t", "i", "buco", "various", "ljspin", "ljdouble"],
+    "presetModifier",
+];
 const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
 const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
 const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];

@@ -12,7 +12,7 @@ branchOnGameMode:
 
 .include "bootscreen.asm"
 .include "waitscreen.asm"
-.include "gametypemenu/menu.asm"
+.include "../menu/menu.asm"
 .include "levelmenu.asm"
 
 gameMode_playAndEndingHighScore_jmp:
