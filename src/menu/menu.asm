@@ -1,4 +1,5 @@
 MENU_VARS_HI = >menuVars
+MENU_VARS_PAGE = menuVars & $FF00
 
 GAME_ACTIVE = $FF
 
@@ -139,6 +140,7 @@ gameTypeLoop:
     ; todo: write down which vars are used by which func
     jsr collectControllerInput
     jsr setScratch
+    jsr randomizeSeed
 
     ldx activeItem
     lda itemTypes,x
@@ -664,6 +666,60 @@ addInputs:
 
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
+randomizeSeed:
+    lda heldButtons_player1
+    and #BUTTON_SELECT
+    beq @ret
+
+; b_seed is not important until a b_type game is started
+; shuffling here keeps it out of sync with rng_seed
+    ldx #b_seed
+    jsr generateNextPseudorandomNumber
+    rol tmp1 ; save carry
+
+; only care about seed inputs
+    ldy activeItem
+    ldx memoryOffsets,y
+    cpx #<b_seed_input
+    beq @b_seed
+    cpx #<set_seed_input
+    bne @ret
+    ldy #2
+    bne @checkSleepCounter
+@b_seed:
+    ldy #1
+
+@checkSleepCounter:
+    lda sleepCounter
+    bne @ret
+    sta vramRow
+    lda #7
+    sta sleepCounter
+
+; shuffle
+    lda #1
+    sta soundEffectSlot1Init
+; do stupid math to rng & framecounter, store in tmp1/2/3
+    lsr tmp1 ; restore saved carry
+    lda b_seed+1
+    adc frameCounter
+    sta tmp2
+    lda rng_seed
+    sbc frameCounter+1
+    sta tmp1
+    lda rng_seed+1
+    adc b_seed
+    sta tmp3
+
+; copy 2 or 3 bytes depending on seed size
+@loop:
+    lda tmp1,y
+    sta MENU_VARS_PAGE,x
+    inx
+    dey
+    bpl @loop
+@ret:
+    rts
 
 stageCustomPalette:
     lda activeRow

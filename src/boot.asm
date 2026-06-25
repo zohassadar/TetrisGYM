@@ -49,9 +49,11 @@
 @continueWarmBootInit:
         ldx #$89
         stx rng_seed
-        stx b_seed
         dex
         stx rng_seed+1
+        ; only one byte needed to init b_seed
+        ; b_seed initialized to add entropy for oneThirdPRNG
+        ; b_seed is overwritten at the beginning of b games with either seed or rng_seed
         stx b_seed+1
         jsr LE006
         jsr updateAudio2
