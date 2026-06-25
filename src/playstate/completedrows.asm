@@ -32,21 +32,20 @@ playState_checkForCompletedRows:
 .if AUTO_WIN
         jmp @rowIsComplete
 .endif
+        lda teppozFlag
+        bne @rowNotComplete
+
         lda practiseType
         cmp #MODE_TSPINS
         beq @rowNotComplete
 
         ; lda practiseType ; accumulator is still practiseType
         lda floorModifier
-        bpl @floorCheck
+        bne @fullRowBurningCheck
         lda linecapState
         cmp #LINECAP_FLOOR
         beq @fullRowBurningCheck
         bne @normalRow
-
-@floorCheck:
-        lda currentFloor
-        beq @rowNotComplete
 
 @fullRowBurningCheck:
         inc activeFloorMode ; Floor is active

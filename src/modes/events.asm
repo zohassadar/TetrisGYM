@@ -9,7 +9,7 @@ practiseInitGameState:
         jsr initChecker
 @skipChecker:
         lda floorModifier
-        bmi @skipFloor
+        beq @skipFloor
         jsr advanceGameFloor
 @skipFloor:
         jsr advanceGameCrunch

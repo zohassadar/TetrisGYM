@@ -53,8 +53,7 @@ gameModeState_initGameState:
 
 ; initialize currentFloor if necessary
         lda floorModifier
-        bmi @notFloor
-        lda floorModifier
+        beq @notFloor
         sta currentFloor
 @notFloor:
 

@@ -19,7 +19,6 @@ resetMenuVars:
 
         lda #$FF
         sta paceModifier
-        sta floorModifier
 
         lda #NTSC_DAS
         sta dasModifier

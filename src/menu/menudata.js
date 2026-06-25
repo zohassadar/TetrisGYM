@@ -72,7 +72,7 @@ const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const customLevel = ["TYPE_HEX", "custom level", 2, "customLevel"];
 
-const floorModifier = ["TYPE_FF_OFF", "floor", 16, "floorModifier"];
+const floorModifier = ["TYPE_NUMBER", "floor", 16, "floorModifier"];
 const crunchLeftModifier = [
     "TYPE_NUMBER",
     "crunch left",
@@ -91,6 +91,9 @@ const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 
 const horizMirror = ["TYPE_BOOL", "mirror horiz", "mirrorHorizFlag"];
 const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
+const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
+const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
+const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
 
 const presetModifier = [
     "TYPE_CHOICES",
@@ -126,7 +129,7 @@ const practisePiece = [
 const transitionModifier = [
     "TYPE_NUMBER",
     "modifier",
-    17,
+    16,
     "transitionModifier",
 ];
 const marathonScoreFlag = [
@@ -267,6 +270,9 @@ const mainMenu = {
         hardDrop,
         horizMirror,
         vertMirror,
+        teppozFlag,
+        sxtoklFlag,
+        palpepFlag,
     ],
 
     "display[mode=default]": [

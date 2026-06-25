@@ -79,6 +79,8 @@ checkLevelUp:
         bne @lineLoop
 
         iny ; used by floorcap check below
+        lda sxtoklFlag
+        bne @nextLevel
         lda practiseType
         cmp #MODE_TAPQTY
         beq @lineLoop
@@ -86,16 +88,7 @@ checkLevelUp:
         bne @notMarathon
         lda marathonLevelModifier
         beq @lineLoop
-        bne @notSXTOKL
 @notMarathon:
-        cmp #MODE_TRANSITION
-        bne @notSXTOKL
-        lda transitionModifier
-        cmp #$10
-        bne @notSXTOKL
-        jmp @nextLevel
-@notSXTOKL:
-
         lda lines+1
         sta generalCounter2
         lda lines

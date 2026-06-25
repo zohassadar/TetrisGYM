@@ -79,7 +79,7 @@ pickRandomTetrimino:
         tax
         lda spawnTable,x
         cmp spawnID
-        bne useNewSpawnID
+        bne @useNewSpawnID
 @invalidIndex:
         ldx #rng_seed
         jsr generateNextPseudorandomNumber
@@ -87,17 +87,25 @@ pickRandomTetrimino:
         and #$07
         clc
         adc spawnID
-L992A:  cmp #$07
-        bcc L9934
+; check if valid before checking palpepFlag
+        cmp #$07
+        bcc @valid
+        ldx palpepFlag
+        bne @longbar
+; mod7 loop only if not palpep
+@mod7:  cmp #$07
+        bcc @valid
         sec
         sbc #$07
-        jmp L992A
-
-L9934:  tax
+        jmp @mod7
+@valid: tax
         lda spawnTable,x
-useNewSpawnID:
+@useNewSpawnID:
         sta spawnID
         jmp pickTetriminoPost
+@longbar:
+        lda #$12
+        bne @useNewSpawnID
 
 pickTetriminoPre:
         lda practiseType
@@ -108,7 +116,9 @@ pickTetriminoPre:
         cmp #MODE_TAP
         beq pickTetriminoLongbar
         cmp #MODE_PRESETS
-        beq pickTetriminoPreset
+        bne @notPreset
+        jmp pickTetriminoPreset
+@notPreset:
         lda seedEnabled
         beq pickRandomTetrimino
         lda seedEnabled
@@ -178,19 +188,28 @@ pickTetriminoSeed:
         and #$07
         clc
         adc spawnID
-@L992A:
+
+; check if valid before checking palep
         cmp #$07
-        bcc @L9934
+        bcc @valid
+        ldx palpepFlag
+        bne @longbar
+; mod7 only if not palpep
+@mod7:
+        cmp #$07
+        bcc @valid
         sec
         sbc #$07
-        jmp @L992A
-
-@L9934:
+        jmp @mod7
+@valid:
         tax
         lda spawnTable,x
 @useNewSpawnID:
         sta spawnID
         jmp pickTetriminoPost
+@longbar:
+        lda #$12
+        bne @useNewSpawnID
 
 setSeedNextRNG:
         ldx #set_seed

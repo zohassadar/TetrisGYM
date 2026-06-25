@@ -454,6 +454,9 @@ customLevel9: .res 3
 tapLeftColumn: .res 1
 tapRightColumn: .res 1
 practisePiece: .res 1
+teppozFlag: .res 1
+sxtoklFlag: .res 1
+palpepFlag: .res 1
 
 sramVariableLength := * - menuVars
 menuRAMLength = * - menuRAM
