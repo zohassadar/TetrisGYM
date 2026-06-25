@@ -7,6 +7,7 @@ playState_checkForCompletedRows:
         jmp playState_checkForCompletedRows_return
 
 @updatePlayfieldComplete:
+        @currentRow = generalCounter2
 
         lda tetriminoY
         sec
@@ -16,7 +17,7 @@ playState_checkForCompletedRows:
 @yInRange:
         clc
         adc lineIndex
-        sta generalCounter2
+        sta @currentRow
         asl a
         sta generalCounter
         asl a
@@ -44,17 +45,15 @@ playState_checkForCompletedRows:
         bne @fullRowBurningCheck
         lda linecapState
         cmp #LINECAP_FLOOR
-        beq @fullRowBurningCheck
-        bne @normalRow
+        bne @checkIfRowCompleteLoopStart
 
 @fullRowBurningCheck:
         inc activeFloorMode ; Floor is active
         lda #$13
         sec
-        sbc generalCounter2 ; contains current row being checked
+        sbc @currentRow ; contains current row being checked
         cmp currentFloor
         bcc @rowNotComplete ; ignore floor rows
-@normalRow:
 
 @checkIfRowCompleteLoopStart:
         lda (playfieldAddr),y
@@ -68,7 +67,7 @@ playState_checkForCompletedRows:
         ; sound effect $A to slot 1 used to live here
         inc completedLines
         ldx lineIndex
-        lda generalCounter2
+        lda @currentRow
         sta completedRow,x
         ldy generalCounter
         dey
