@@ -393,7 +393,6 @@ typeBModifier: .res 1
 floorModifier: .res 1
 crunchLeftModifier: .res 1
 crunchRightModifier: .res 1
-transitionModifier: .res 1
 tapqtyModifier: .res 1
 checkerModifier: .res 1
 garbageModifier: .res 1
@@ -457,6 +456,8 @@ practisePiece: .res 1
 teppozFlag: .res 1
 sxtoklFlag: .res 1
 palpepFlag: .res 1
+startScore: .res 1
+startLines: .res 1
 
 sramVariableLength := * - menuVars
 menuRAMLength = * - menuRAM

@@ -102,13 +102,7 @@ gameModeState_initGameState:
         jsr generateNextPseudorandomNumber
         jsr chooseNextTetrimino
         sta nextPiece
-
-        lda practiseType
-        cmp #MODE_TRANSITION
-        bne @notTransition
         jsr transitionModeSetup
-@notTransition:
-
         lda practiseType
         cmp #MODE_TYPEB
         bne @notTypeB
@@ -158,79 +152,39 @@ initGameState_return:
         rts
 
 transitionModeSetup:
-        lda transitionModifier
-        cmp #$10 ; (SXTOKL compat)
-        beq initGameState_return
-        ; set score
-        rol
-        rol
-        rol
-        rol
-        sta bcd32+2
         lda #0
-        sta bcd32
-        sta bcd32+1
-        sta bcd32+3
-        jsr presetScoreFromBCD
-
-        lda levelNumber
-        cmp #129 ; everything after 128 transitions immediately
-        bpl initGameState_return
-
-@addLinesLoop:
-        ldx #$A
-        lda lines
-        sta tmpX
-        lda lines+1
-        sta tmpY
-@incrementLines:
-        inc lines
-        lda lines
-        and #$0F
-        cmp #$0A
-        bmi @checkTransition
-        lda lines
-        clc
-        adc #$06
-        sta lines
-        and #$F0
-        cmp #$A0
-        bcc @checkTransition
-        lda lines
-        and #$0F
-        sta lines
-        inc lines+1
-
-@checkTransition:
-        lda lines
-        and #$0F
-        bne @lineLoop
-
-        lda lines+1
-        sta generalCounter2
-        lda lines
-        sta generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lsr generalCounter2
-        ror generalCounter
-        lda levelNumber
-        cmp generalCounter
-        bpl @lineLoop
-
-@nextLevel:
-        lda tmpX
-        sta lines
-        lda tmpY
+        sta factorB24+1
+        sta factorB24+2
         sta lines+1
-        rts
-@lineLoop:  dex
-        bne @incrementLines
-        jmp @addLinesLoop
+
+        ldx startLines
+        lda levelDisplayTable,x
+        sta lines
+        ldx #4
+@shift:
+        asl lines
+        rol lines+1
+        dex
+        bne @shift
+
+        sta bcd32+0
+        lda #<100000
+        sta factorA24+0
+        lda #>100000
+        sta factorA24+1
+        lda #^100000
+        sta factorA24+2
+
+        lda startScore
+        sta factorB24
+        jsr unsigned_mul24
+        lda product24+0
+        sta binScore+0
+        lda product24+1
+        sta binScore+1
+        lda product24+2
+        sta binScore+2
+        jmp setupScoreForRender
 
 presetScoreFromBCD:
         jsr BCD_BIN
@@ -240,8 +194,7 @@ presetScoreFromBCD:
         sta binScore+1
         lda binary32+2
         sta binScore+2
-        jsr setupScoreForRender
-        rts
+        jmp setupScoreForRender
 
 initPlayfieldForTypeB:
 ; decide which seed to use

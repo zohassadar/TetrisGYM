@@ -94,6 +94,8 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
+const startScore = ["TYPE_NUMBER", "score x100k", 16, "startScore"];
+const startLines = ["TYPE_NUMBER", "lines x10", 31, "startLines"];
 
 const presetModifier = [
     "TYPE_CHOICES",
@@ -125,12 +127,6 @@ const practisePiece = [
     "piece",
     ["T", "J", "Z", "O", "S", "L", "I"],
     "practisePiece",
-];
-const transitionModifier = [
-    "TYPE_NUMBER",
-    "modifier",
-    16,
-    "transitionModifier",
 ];
 const marathonScoreFlag = [
     "TYPE_CHOICES",
@@ -187,9 +183,6 @@ const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
 const tapQtyMenu = {
     "tap quantity[mode=tapqty]": [tapqtyModifier, noLineClearDelayFlag],
 };
-const transMenu = {
-    "transition[mode=transition]": [transitionModifier],
-};
 const marathonMenu = {
     "marathon[mode=marathon]": [marathonScoreFlag, marathonLevelModifier],
 };
@@ -229,7 +222,6 @@ const mainMenu = {
         ["TYPE_SUBMENU", "setups", setupsMenu],
         ["TYPE_SUBMENU", "b-type", bMenu],
         ["TYPE_SUBMENU", "(quick)tap", quickTapMenu],
-        ["TYPE_SUBMENU", "transition", transMenu],
         ["TYPE_SUBMENU", "marathon", marathonMenu],
         ["TYPE_SUBMENU", "tap quantity", tapQtyMenu],
         ["TYPE_SUBMENU", "checkerboard", checkerMenu],
@@ -273,6 +265,8 @@ const mainMenu = {
         teppozFlag,
         sxtoklFlag,
         palpepFlag,
+        startScore,
+        startLines,
     ],
 
     "display[mode=default]": [
