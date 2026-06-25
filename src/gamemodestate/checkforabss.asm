@@ -13,6 +13,9 @@ gameModeState_checkForResetKeyCombo:
 @reset: jsr updateAudio2
         lda #RENDER_IDLE
         sta renderMode
-        lda #$0
+        lda qualFlag
+        ; store 0 if qual, 2 if not
+        eor #$01
+        asl
         sta gameMode
         rts
