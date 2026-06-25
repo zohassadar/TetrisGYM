@@ -162,9 +162,6 @@ gameTypeLoop:
     jsr stageVRAMRow
     jsr stageVRAMRow
     jsr stageVRAMRow
-    jsr stageCustomPalette
-    ; jsr stageBackgroundTiles
-    ; jsr stageCurrentValues
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
@@ -176,7 +173,7 @@ enterSubMenu:
     ldy #$02
     sty soundEffectSlot1Init
     pha
-    lda #0
+    lda #$FF
     sta vramRow
     lda activeRow
     jsr menuStackPush
@@ -200,7 +197,7 @@ enterPage:
     adc startPageByMenu,y
     sta actualPage
     jsr setItemCount
-    lda #0
+    lda #$FF
     sta vramRow
     ldx actualPage
     lda pageTypes,x
@@ -657,7 +654,7 @@ addInputs:
 @storeDigit:
     sta (udPointer,x)
 @sfx:
-    lda #0
+    lda #$FF
     sta vramRow
     inc soundEffectSlot1Init
     jsr copyVarsToSram
@@ -722,6 +719,7 @@ randomizeSeed:
     rts
 
 stageCustomPalette:
+    inc vramRow
     lda activeRow
     bpl @mod10
     lda #8
@@ -770,8 +768,8 @@ stageCustomPalette:
     rts
 
 stageVRAMRow:
-
     lda vramRow   ; use OG game logic & values
+    bmi stageCustomPalette
     cmp #$20
     bne @stage
 @ret:
