@@ -920,6 +920,7 @@ stageCurrentValue:
     tax
     ldy #0
     and #TYPE_MASK
+    sta unpackedItemType
     bmi @digitInputOrEdge
 
     cmp #TYPE_CHOICES
@@ -1014,11 +1015,48 @@ stageCurrentValue:
     adc #$1
     sta generalCounter
     pla
-
     jsr setStackOffset
+
     ldy #$00
-@digitLoop:
+    sty generalCounter2
+
+; skip decimal if 2 digit hex/bcd
+    lda unpackedItemType
+    cmp #TYPE_DIGIT
+    beq @digitLoop
+
+; decimal conversion if 2 digit hex
+    lda generalCounter
+    cmp #1
+    bne @digitLoop
     lda (byteSpriteAddr),y
+    cmp #100
+    bcc @bcd
+    inc generalCounter2
+    tay
+    lda #1
+    sta stack-1,x
+    tya
+    sbc #100
+    cmp #100
+    bcc @bcd
+    sbc #100
+    inc stack-1,x
+@bcd:
+    tay
+    lda levelDisplayTable,y
+    ldy generalCounter2
+    bne @oneDigit ; if at least 100, draw 0 in 10s
+    cmp #10
+    bcs @oneDigit
+
+    ; skip 10s
+    inx
+    bne @lowNybble
+
+@digitLoop: ; y is zero
+    lda (byteSpriteAddr),y
+@oneDigit:
     pha
     lsr
     lsr
@@ -1027,6 +1065,7 @@ stageCurrentValue:
     sta stack,x
     inx
     pla
+@lowNybble:
     and #$0F
     sta stack,x
     inx

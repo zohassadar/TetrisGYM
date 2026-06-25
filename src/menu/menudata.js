@@ -70,7 +70,6 @@ const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
 const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
-const customLevel = ["TYPE_HEX", "custom level", 2, "customLevel"];
 
 const floorModifier = ["TYPE_NUMBER", "floor", 16, "floorModifier"];
 const crunchLeftModifier = [
@@ -248,7 +247,6 @@ const mainMenu = {
         qualFlag,
         keyboardFlag,
         goofyFlag,
-        customLevel,
         crashModifier,
         strictCrashFlag,
     ],
