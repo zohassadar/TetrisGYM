@@ -66,7 +66,6 @@ pollController:
 
 diffOldAndNewButtons:
         ldx #$01
-.if KEYBOARD = 1
 ; clear controller input when keyboard is active
 ; disable keyboard when reset sequence is pressed
         lda keyboardFlag
@@ -80,7 +79,6 @@ diffOldAndNewButtons:
         plp
         bne @ret
         sta keyboardFlag
-.endif
 @diffForPlayer:
         lda newlyPressedButtons_player1,x
         tay

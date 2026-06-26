@@ -174,7 +174,6 @@ highScoreEntryScreen:
 
 @checkForAOrRightPressed:
 
-.if KEYBOARD = 1
         jsr readKbHighScoreEntry
         bmi @noKeyboardInput
         beq @nextTile
@@ -183,7 +182,6 @@ highScoreEntryScreen:
         jmp @waitForVBlank
 @noKeyboardInput:
 
-.endif
         lda #BUTTON_RIGHT
         jsr menuThrottle
         bne @nextTile

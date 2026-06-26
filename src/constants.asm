@@ -13,10 +13,6 @@ SAVE_HIGHSCORES := 1
 AUTO_WIN := 0
 .endif
 
-.ifndef KEYBOARD
-KEYBOARD := 0
-.endif
-
 .ifndef CNROM_OVERRIDE
 CNROM_OVERRIDE := 0
 .endif

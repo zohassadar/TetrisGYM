@@ -75,11 +75,6 @@ if (args.includes('-a')) {
     console.log('using fast aeppoz');
 }
 
-if (args.includes('-k')) {
-    compileFlags.push('-D', 'KEYBOARD=1');
-    console.log('using Famicom Keyboard support');
-}
-
 if (args.includes('-s')) {
     compileFlags.push('-D', 'SAVE_HIGHSCORES=0');
     console.log('highscore saving disabled');

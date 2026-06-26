@@ -15,7 +15,5 @@ gameMode_bootScreen: ; boot
 
         lda #1
         sta gameMode
-.if KEYBOARD = 1
         jsr detectKeyboard
-.endif
         jmp gameMode_waitScreen

@@ -275,7 +275,6 @@ seededPieces: .res 1
 killX2Flag: .res 1
 .res 1
 
-.if KEYBOARD
 kbReadState: .res 1 ; $063F - used for high score entry
 kbHeldInput: .res 1 ; $0640 - high score input throttling
 kbRawInput: .res 9 ; $0641  - all 72 keys' input
@@ -283,7 +282,6 @@ kbRawInput: .res 9 ; $0641  - all 72 keys' input
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
 highScoreEntryActive: .res 1  ; $064A
-.endif
 
 
 

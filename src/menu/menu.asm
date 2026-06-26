@@ -256,8 +256,8 @@ exitSubmenuNoSfx:
     jsr menuStackPop
     jsr enterPage
 
-.if KEYBOARD = 1
-.warning "keyboard menu seed code is broken"
+; .if KEYBOARD = 1
+; .warning "keyboard menu seed code is broken"
 ; @kbSeedLow = generalCounter
 ; @kbSeedHigh = generalCounter2
 ;         bne @checkForKbSeedEntry
@@ -293,7 +293,7 @@ exitSubmenuNoSfx:
 ; @noKeysPressed:
 ; .else
 ;         beq @skipSeedControl
-.endif
+; .endif
     jsr menuStackPop
     sta activeRow
     jmp setScratch
