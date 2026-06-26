@@ -1,4 +1,23 @@
 trtCalculate:
+
+; fix for now so that trt rate & trans mode work okay together
+        lda     completedLines
+        clc
+        adc     trtLines
+        sta     trtLines
+        and     #$0F
+        cmp     #$A
+        bcc     @noLinesCarry
+        lda     trtLines
+        clc
+        adc     #$06
+        sta     trtLines
+        cmp     #$A0
+        bcc     @noLinesCarry
+        and     #$0F
+        sta     trtLines
+        inc     trtLines+1
+@noLinesCarry:
         ldx     completedLines
         cpx     #$04
         bne     @notTetris
@@ -104,7 +123,7 @@ LFADA:
         ; cmp     #$02
         rts
 
-LFADF:  lda     lines
+LFADF:  lda     trtLines
         and     #$0F
         sta     trtScratch+1
         lda     trtScratch+2
@@ -120,7 +139,7 @@ LFADF:  lda     lines
         adc     #$5F
         inc     trtScratch+3
 LFB01:  sta     trtScratch+2
-        lda     lines
+        lda     trtLines
         and     #$F0
         sta     trtScratch+1
         lda     trtScratch+2
@@ -136,7 +155,7 @@ LFB19:  cmp     #$A0
 LFB22:  sta     trtScratch+2
         lda     trtScratch+3
         clc
-        adc     lines+1
+        adc     trtLines+1
         sta     trtScratch+3
         and     #$0F
         cmp     #$0A

@@ -282,7 +282,7 @@ kbRawInput: .res 9 ; $0641  - all 72 keys' input
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
 highScoreEntryActive: .res 1  ; $064A
-
+trtLines: .res 2 ; fix for now for transition mode/trt compat
 
 
 .segment "MUSIC_RAM": absolute

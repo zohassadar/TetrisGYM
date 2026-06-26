@@ -50,6 +50,8 @@ gameModeState_initGameState:
         sta trtLineCounter
         sta trtLineCounter+1
         sta trtScratch+5
+        sta trtLines
+        sta trtLines+1
 
 ; initialize currentFloor if necessary
         lda floorModifier
