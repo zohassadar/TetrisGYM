@@ -37,6 +37,9 @@ pause:
         jsr updateAudioWaitForNmiAndResetOamStaging
 
 @pauseLoop:
+        lda practiseType
+        cmp #MODE_CALIBRATE
+        beq @pauseLoopCalibrate
         lda qualFlag
         beq @pauseLoopNotClassic
 
@@ -44,6 +47,13 @@ pause:
         lda #$70
         sta spriteXOffset
         lda #$77
+        sta spriteYOffset
+        jmp @pauseLoopCommon
+
+@pauseLoopCalibrate:
+        lda #$1C
+        sta spriteXOffset
+        lda #$51
         sta spriteYOffset
         jmp @pauseLoopCommon
 
