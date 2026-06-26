@@ -90,6 +90,7 @@ mainLoop:
 .include "modes/garbage.asm"
 .include "seeds.asm"
 .include "modes/dasmeter.asm"
+.include "modes/calibrate.asm"
 
 .segment    "PRG_chunk3": absolute
 

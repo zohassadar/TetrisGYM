@@ -135,6 +135,16 @@ gameTypeLoop:
     sta killX2Flag
     inc gameMode
 @notKillX2:
+    cmp #MODE_CALIBRATE
+    bne @notCalibrate
+    lda #RENDER_IDLE
+    sta renderMode
+    lda #0
+    sta gameModeState
+    lda #0
+    sta levelNumber
+    inc gameMode
+@notCalibrate:
     inc gameMode
 @sfx:
     lda #$2

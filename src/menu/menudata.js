@@ -236,6 +236,7 @@ const mainMenu = {
         ["TYPE_SUBMENU", "lowstack", lowstackMenu],
         ["TYPE_GAMEMODE", "kill*2", "MODE_KILLX2"],
         ["TYPE_GAMEMODE", "tap/roll speed", "MODE_SPEED_TEST"],
+        ["TYPE_GAMEMODE", "calibrate", "MODE_CALIBRATE"],
     ],
     "tournament[mode=default]": [
         seedInput,

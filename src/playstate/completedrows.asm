@@ -1,6 +1,14 @@
 activeFloorMode := generalCounter5
 
 playState_checkForCompletedRows:
+        lda practiseType
+        cmp #MODE_CALIBRATE
+        bne @notCalibrate
+        inc playState
+        inc playState
+        rts
+
+@notCalibrate:
         lda vramRow
         cmp #$20
         bpl @updatePlayfieldComplete

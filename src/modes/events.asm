@@ -1,5 +1,9 @@
 practiseInitGameState:
         lda practiseType
+        cmp #MODE_CALIBRATE
+        bne @notCalibrate
+        jmp initializeGameCalibrate
+@notCalibrate:
         cmp #MODE_TAP
         bne @skipTap
         jmp initGameTap
@@ -16,6 +20,11 @@ practiseInitGameState:
         jmp practiseEachPiece
 
 practiseAdvanceGame:
+        lda practiseType
+        cmp #MODE_CALIBRATE
+        bne @notCalibrate
+        jmp advanceGameCalibrate
+@notCalibrate:
         lda practiseType
         cmp #MODE_TSPINS
         bne @skipTSpins
