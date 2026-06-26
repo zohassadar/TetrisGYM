@@ -106,8 +106,7 @@ resetSavedScores:
         sta SRAM_highscores,x
         dex
         bpl @copyLoop
-
-; copy variables
+        rts
 
 
 resetSavedVars:
