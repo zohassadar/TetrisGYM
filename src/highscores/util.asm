@@ -88,10 +88,14 @@ detectSRAM:
 checkSavedInit:
         lda SRAM_hsMagic+2
         cmp #HIGH_SCORE_MAGIC2
-        bne resetSavedScores
+        bne @resetSaved
         lda SRAM_hsMagic+3
         cmp #HIGH_SCORE_MAGIC3
-        bne resetSavedScores
+        beq @ret
+@resetSaved:
+        jsr resetSavedScores
+        jmp resetMenuVars
+@ret:
         rts
 
 resetSavedScores:
