@@ -1,5 +1,4 @@
 displayModeText:
-
         lda #$00
         sta anydasFlag
 ; set anydasFlag
@@ -84,9 +83,9 @@ displayModeText:
 patchSeed:
         ; skip if not seeded
         lda seedEnabled
-        beq @ret
+        beq @menuOnlyItems
         lda seededPieces
-        beq @ret
+        beq @menuOnlyItems
         sty PPUADDR
         stx PPUADDR
 
@@ -100,14 +99,78 @@ patchSeed:
         cmp #3
         bne @notMenu
         stagePatch menuSeedPatch
-        jmp render_mode_queue
+        jsr render_mode_queue
+        jmp @menuOnlyItems
 @notMenu:
         lda gameModeState
-        bne @ret
+        bne @notVits
         stagePatch gameSeedPatch
         jmp render_mode_queue
+@menuOnlyItems:
+
+        lda gameMode
+        cmp #3
+        bne @notVits
+
+        jsr drawCrashMode
+
+        lda startScore
+        bne @trans
+        lda startLines
+        beq @notTrans
+@trans:
+        stagePatch menuTransPatch
+@notTrans:
+        lda sxtoklFlag
+        beq @notSxtokl
+        stagePatch menuSxtoklPatch
+@notSxtokl:
+        lda teppozFlag
+        beq @notTeppoz
+        stagePatch menuTeppozPatch
+@notTeppoz:
+        lda palpepFlag
+        beq @notPalpep
+        stagePatch menuPalpepPatch
+@notPalpep:
+        lda dasOnlyFlag
+        beq @notDasOnly
+        stagePatch menuDasOnlyPatch
+@notDasOnly:
+        lda vitsScoreFlag
+        beq @notVits
+        stagePatch menuVitsPatch
+@notVits:
+        jmp render_mode_queue
+
+
+; this and the linecap display can be combined, with the string lists from menudata.asm used
+crashStrings:
+    .word STR_SHOW
+    .word STR_TOP
+    .word STR_CRASH
+drawCrashMode:
+    lda crashModifier
+    beq @ret
+    ldy #$21
+    sty PPUADDR
+    ldy #$35
+    sty PPUADDR
+    asl
+    tay
+    ; use offset, crashModifier will be 1,2 or 3, never 0
+    ldx crashStrings-1,y
+    lda crashStrings-2,y
+    tay
+    jsr stringBackgroundXY
+    ldy strictFlag
+    beq @ret
+    ldy #$FF
+    sty PPUDATA
+    ldy #'S'
+    sty PPUDATA
 @ret:
-        rts
+    rts
 
 menuSeedPatch:
     .byte $20,$B5,$0,$3B
@@ -129,4 +192,23 @@ menuAnydasPatch:
 gameAnydasPatch:
     .byte $20,$42,$7,$74,$34,$34,$34,$34,$34,$34,$75
     .byte $20,$62,$7,$35,"A","N","Y","D","A","S",$36
+    .byte $0
+
+menuSxtoklPatch:
+    .byte $20,$63,$5,"SXTOKL"
+    .byte $0
+menuPalpepPatch:
+    .byte $20,$83,$5,"PALPEP"
+    .byte $0
+menuTeppozPatch:
+    .byte $20,$A3,$5,"TEPPOZ"
+    .byte $0
+menuDasOnlyPatch:
+    .byte $20,$C3,$7,"DAS",$FF,"ONLY"
+    .byte $0
+menuTransPatch:
+    .byte $20,$E3,$4,"TRANS"
+    .byte $0
+menuVitsPatch:
+    .byte $21,$03,$3,"VITS"
     .byte $0

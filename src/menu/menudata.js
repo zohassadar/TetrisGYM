@@ -100,8 +100,8 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
-const startScore = ["TYPE_NUMBER", "score x100k", 16, "startScore"];
-const startLines = ["TYPE_NUMBER", "lines x10", 31, "startLines"];
+const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
+const startLines = ["TYPE_NUMBER", "lines *10", 31, "startLines"];
 
 const presetModifier = [
     "TYPE_CHOICES",

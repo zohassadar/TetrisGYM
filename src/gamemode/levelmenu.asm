@@ -92,6 +92,7 @@ levelMenuLinecapInfo:
         jsr render_linecap_level_lines
         rts
 
+
 gameMode_levelMenu_processPlayer1Navigation:
         ; this copying is an artefact of the original
         lda newlyPressedButtons_player1
