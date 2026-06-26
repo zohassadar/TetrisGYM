@@ -270,6 +270,9 @@ invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfi
 currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
 mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
 hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
+anydasFlag: .res 1
+seededPieces: .res 1
+killX2Flag: .res 1
 .res 1
 
 .if KEYBOARD
@@ -373,6 +376,8 @@ levelControlMode: .res 1
 classicLevel: .res 1
 heartsAndReady: .res 1   ; high nybble used for ready
 practiseType: .res 1
+goofyFlag: .res 1
+customLevel: .res 1
 
 ; menu
 activeMenu: .res 1
@@ -382,83 +387,7 @@ activeColumn: .res 1
 menuStackPtr: .res 1
 
 menuVars:
-customLevel: .res 1
-linecapWhen: .res 1
-linecapHow: .res 1
-linecapLevel: .res 1
-linecapLines: .res 2
-paceModifier: .res 1
-presetModifier: .res 1
-typeBModifier: .res 1
-floorModifier: .res 1
-crunchLeftModifier: .res 1
-crunchRightModifier: .res 1
-tapqtyModifier: .res 1
-checkerModifier: .res 1
-garbageModifier: .res 1
-droughtModifier: .res 1
-dasModifier: .res 1
-lowStackRowModifier: .res 1
-scoringModifier: .res 1
-crashModifier: .res 1
-strictFlag: .res 1 ;used for crash detection. If 1, the game will register a crash anytime there is a possibility of one.
-hzFlag: .res 1
-inputDisplayFlag: .res 1
-disableFlashFlag: .res 1
-disablePauseFlag: .res 1
-darkModifier: .res 1
-goofyFlag: .res 1
-debugFlag: .res 1
-dasOnlyFlag: .res 1
-qualFlag: .res 1
-palFlag: .res 1
-paletteModifier: .res 1
-seedEnabled: .res 1
-seededPieces: .res 1
-ghostPieceFlag: .res 1
-hardDropFlag: .res 1
-invisibleOptionFlag: .res 1
-killX2Flag: .res 1
-tapLeftModifier: .res 1
-tapRightModifier: .res 1
-mirrorHorizFlag: .res 1
-mirrorVertFlag: .res 1
-arrModifier: .res 1
-entryChargeModifier: .res 1
-anydasFlag: .res 1
-trtFlag: .res 1
-dasMeterFlag: .res 1
-noWallChargeFlag: .res 1
-disableDasFlag: .res 1
-noLineClearDelayFlag: .res 1
-set_seed_input: .res 3 ; $0037 ; copied to set_seed during gameModeState_initGameState
-b_seed_input: .res 2
-typeBSeedFlag: .res 1
-vitsScoreFlag: .res 1
-gameTimerFlag: .res 1
-bTypeLines: .res 1
-marathonScoreFlag: .res 1
-marathonLevelModifier: .res 1
-keyboardFlag: .res 1
-customLevel0: .res 3
-customLevel1: .res 3
-customLevel2: .res 3
-customLevel3: .res 3
-customLevel4: .res 3
-customLevel5: .res 3
-customLevel6: .res 3
-customLevel7: .res 3
-customLevel8: .res 3
-customLevel9: .res 3
-tapLeftColumn: .res 1
-tapRightColumn: .res 1
-practisePiece: .res 1
-teppozFlag: .res 1
-sxtoklFlag: .res 1
-palpepFlag: .res 1
-startScore: .res 1
-startLines: .res 1
-
+.include "menu/menuram.asm"
 sramVariableLength := * - menuVars
 menuRAMLength = * - menuRAM
 

@@ -47,8 +47,10 @@ resetMenuVars:
         lda #6
         sta practisePiece
 
-        ldy #27
+resetVanillaPalette:
         ldx #9
+resetPaletteAtX:
+        ldy #27
 @palette:
         lda colorTable0,x
         sta customLevel0+0,y
@@ -56,10 +58,10 @@ resetMenuVars:
         sta customLevel0+1,y
         lda colorTable2,x
         sta customLevel0+2,y
-        dey
-        dey
-        dey
         dex
+        dey
+        dey
+        dey
         bpl @palette
         rts
 

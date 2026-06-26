@@ -53,6 +53,11 @@ const customPaletteMenu = {
         ["TYPE_HEX", "7", 6, "customLevel7"],
         ["TYPE_HEX", "8", 6, "customLevel8"],
         ["TYPE_HEX", "9", 6, "customLevel9"],
+        ["TYPE_CUSTOM", "load vanilla", "LOAD_VANILLA"],
+        ["TYPE_CUSTOM", "load pride", "LOAD_PRIDE"],
+        ["TYPE_CUSTOM", "load white", "LOAD_WHITE"],
+        ["TYPE_CUSTOM", "load bugged", "LOAD_BUGGED"],
+        ["TYPE_NUMBER", "bug offset", 0, "buggedModifier"],
     ],
 };
 
@@ -65,11 +70,13 @@ const crashModifier = [
 ];
 const strictCrashFlag = ["TYPE_BOOL", "strict crash", "strictFlag"];
 const disablePause = ["TYPE_BOOL", "disable pause", "disablePauseFlag"];
-const goofyFlag = ["TYPE_CUSTOM", "toggle goofy", "GOOFY_TOGGLE", "goofyFlag"];
 const debugFlag = ["TYPE_BOOL", "block tool", "debugFlag"];
 const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
+const goofyFlag = ["TYPE_CUSTOM", "toggle goofy", "GOOFY_TOGGLE"];
+const clearScores = ["TYPE_CUSTOM", "clear scores", "CLEAR_SCOREBOARD"];
+const resetDefaults = ["TYPE_CUSTOM", "reset defaults", "RESET_DEFAULTS"];
 
 const floorModifier = ["TYPE_NUMBER", "floor", 16, "floorModifier"];
 const crunchLeftModifier = [
@@ -246,9 +253,11 @@ const mainMenu = {
         palFlag,
         qualFlag,
         keyboardFlag,
-        goofyFlag,
         crashModifier,
         strictCrashFlag,
+        goofyFlag,
+        clearScores,
+        resetDefaults,
     ],
 
     "modify game[mode=default]": [

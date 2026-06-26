@@ -15,6 +15,10 @@ MENU_STACK = $DF ; $01C8 - $01DF intended range
 GOOFY_TOGGLE
 RESET_DEFAULTS
 CLEAR_SCOREBOARD
+LOAD_VANILLA
+LOAD_PRIDE
+LOAD_WHITE
+LOAD_BUGGED
 .endenum
 
 menuDataStart:
@@ -153,6 +157,7 @@ gameTypeLoop:
 @notGoofyToggle:
     jsr addInputs
     jsr respondToInput
+    jsr defaultMenuVars
     jsr stageCursor
 
     ; scratch is not important anymore
@@ -524,12 +529,16 @@ enterNewPage:
 
 checkIfGameStartOrSubmenu:
     lda newlyPressedButtons_player1
-    and #BUTTON_START|BUTTON_A
-    beq checkIfExitSubmenu
+    and #BUTTON_START
+    bne @checkActiveRow
+    jmp checkIfExitSubmenu
 
+@checkActiveRow:
     lda activeRow
-    bmi checkPageMode
+    bpl @checkItemType
+    jmp checkPageMode
 
+@checkItemType:
     lda unpackedItemType
     cmp #TYPE_GAMEMODE
     beq startGameFromItem
@@ -542,16 +551,24 @@ checkIfGameStartOrSubmenu:
 
 @checkPageMode:
     jmp checkPageMode
-
+@ret:
+    rts
 @goToCustom:
     lda newlyPressedButtons_player1
-    and #BUTTON_A+BUTTON_START
-    beq customClearScoreboard
+    and #BUTTON_START
+    beq @ret
+    lda #$FF
+    sta vramRow
+    lda #2
+    sta soundEffectSlot1Init
     branchTo unpackedItemValue, \
         customToggleGoofy, \
         customResetDefaults, \
-        customClearScoreboard
-
+        customClearScoreboard, \
+        customLoadVanilla, \
+        customLoadPride, \
+        customLoadWhite, \
+        customLoadBugged
 customToggleGoofy:
     lda #0
     sta vramRow
@@ -569,9 +586,36 @@ customToggleGoofy:
     lsr
     ora tmp3
     sta heldButtons_player1
-customResetDefaults:
-customClearScoreboard:
     rts
+
+customLoadVanilla:
+    jmp resetVanillaPalette
+
+customLoadBugged:
+    lda buggedModifier
+    clc
+    adc #GameColors::bugged+9
+    tax
+    jmp resetPaletteAtX
+
+customLoadPride:
+    ldx #GameColors::pride+9
+    jmp resetPaletteAtX
+
+customLoadWhite:
+    ldx #29
+    lda #$30
+@loop:
+    sta customLevel0,x
+    dex
+    bpl @loop
+    rts
+
+customResetDefaults:
+    jmp resetMenuVars
+
+customClearScoreboard:
+    jmp resetScores
 
 goToSubMenu:
     lda unpackedItemValue
@@ -663,6 +707,31 @@ addInputs:
 
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
+
+defaultMenuVars:
+    lda newlyPressedButtons_player1
+    tay
+    and #BUTTON_A|BUTTON_SELECT
+    bne @sleep
+
+    lda heldButtons_player1
+    cmp #BUTTON_A|BUTTON_SELECT
+    bne @ret
+    lda sleepCounter
+    bne @ret
+
+    lda #2
+    sta soundEffectSlot1Init
+    lda #$FF
+    sta vramRow
+    jsr resetMenuVars
+@sleep:
+    lda #120
+    sta sleepCounter
+@ret:
+    rts
+
+
 randomizeSeed:
     lda heldButtons_player1
     and #BUTTON_SELECT
@@ -920,6 +989,10 @@ stageCurrentValue:
     tax
     ldy #0
     and #TYPE_MASK
+    cmp #TYPE_CUSTOM
+    bne @notCustom
+    jmp @ret
+@notCustom:
     sta unpackedItemType
     bmi @digitInputOrEdge
 

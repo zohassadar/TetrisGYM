@@ -113,7 +113,6 @@ gameMode_levelMenu_processPlayer1Navigation:
         jsr detectSRAM
         beq @notResettingSavedScores
         jsr resetSavedScores
-        jsr resetSavedVars
 @notResettingSavedScores:
 .endif
         jsr updateAudioWaitForNmiAndResetOamStaging
