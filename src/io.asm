@@ -2,7 +2,10 @@ SRAM        := $6000 ; 8kb
 SRAM_states := SRAM
 SRAM_hsMagic := SRAM+$A00
 SRAM_highscores := SRAM_hsMagic+$4
-SRAM_variables := $6100
+
+SRAM_varMagic := SRAM+$B00
+SRAM_variables := SRAM_varMagic+$4
+
 PPUCTRL     := $2000
 PPUMASK     := $2001
 PPUSTATUS   := $2002

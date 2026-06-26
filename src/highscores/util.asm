@@ -91,10 +91,24 @@ checkSavedInit:
         bne @resetSaved
         lda SRAM_hsMagic+3
         cmp #HIGH_SCORE_MAGIC3
-        beq @ret
+        beq @checkMenuVars
 @resetSaved:
         jsr resetSavedScores
-        jmp resetMenuVars
+@checkMenuVars:
+        lda SRAM_varMagic+0
+        cmp #HIGH_SCORE_MAGIC0
+        bne @resetSavedVars
+        lda SRAM_varMagic+1
+        cmp #HIGH_SCORE_MAGIC1
+        bne @resetSavedVars
+        lda SRAM_varMagic+2
+        cmp #HIGH_SCORE_MAGIC2
+        bne @resetSavedVars
+        lda SRAM_varMagic+3
+        cmp #HIGH_SCORE_MAGIC3
+        beq @ret
+@resetSavedVars:
+        jsr resetSavedVars
 @ret:
         rts
 
@@ -114,6 +128,14 @@ resetSavedScores:
 
 
 resetSavedVars:
+        lda #HIGH_SCORE_MAGIC0
+        sta SRAM_varMagic+0
+        lda #HIGH_SCORE_MAGIC1
+        sta SRAM_varMagic+1
+        lda #HIGH_SCORE_MAGIC2
+        sta SRAM_varMagic+2
+        lda #HIGH_SCORE_MAGIC3
+        sta SRAM_varMagic+3
         jsr resetMenuVars
 copyVarsToSram:
         ldx #sramVariableLength - 1
