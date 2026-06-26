@@ -709,9 +709,10 @@ addInputs:
 .out .sprintf("input handling: %d", *-collectControllerInput)
 
 defaultMenuVars:
+    ; A + select for ~3 sec to default everything
     lda newlyPressedButtons_player1
     tay
-    and #BUTTON_A|BUTTON_SELECT
+    and #BUTTON_A
     bne @sleep
 
     lda heldButtons_player1
@@ -726,7 +727,7 @@ defaultMenuVars:
     sta vramRow
     jsr resetMenuVars
 @sleep:
-    lda #120
+    lda #180
     sta sleepCounter
 @ret:
     rts
@@ -751,16 +752,15 @@ randomizeSeed:
     cpx #<set_seed_input
     bne @ret
     ldy #2
-    bne @checkSleepCounter
+    bne @checkFrameCounter
 @b_seed:
     ldy #1
 
-@checkSleepCounter:
-    lda sleepCounter
+@checkFrameCounter:
+    lda frameCounter
+    and #7
     bne @ret
     sta vramRow
-    lda #7
-    sta sleepCounter
 
 ; shuffle
     lda #1
