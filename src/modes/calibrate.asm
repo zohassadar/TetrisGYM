@@ -119,7 +119,7 @@ initializeGameCalibrate:
     rts
 
 @tilefill:
-    lda #$7B
+    lda #$7A
     clc
     adc @fillModifier
     ldx #200
