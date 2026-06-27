@@ -1,9 +1,19 @@
 advanceGameCalibrate:
+    @fillModifier = anydasFlag  ; placeholder
     lda practiseType
     cmp #MODE_CALIBRATE
     beq @calibrate
     rts
 @calibrate:
+    lda newlyPressedButtons_player1
+    and #BUTTON_UP|BUTTON_DOWN
+    beq @upNotPressed
+    inc @fillModifier
+    lda @fillModifier
+    and #3
+    sta @fillModifier
+    jmp initializeGameCalibrate
+@upNotPressed:
     lda newlyPressedButtons_player1
     and #3
     beq @checkFrameCounter
@@ -59,7 +69,13 @@ advanceGameCalibrate:
     and #$7F
     beq initializeGameCalibrate
     rts
+
 initializeGameCalibrate:
+    @fillModifier = anydasFlag
+    lda #0
+    sta vramRow
+    lda @fillModifier
+    bne @tilefill
     ldy #15
 @fill:
     ldx #b_seed
@@ -93,8 +109,17 @@ initializeGameCalibrate:
 :
     dey
     bne @loop
-    lda #0
-    sta vramRow
+    rts
+
+@tilefill:
+    lda #$7B
+    clc
+    adc @fillModifier
+    ldx #200
+@tile:
+    sta playfield-1,x
+    dex
+    bne @tile
     rts
 
 

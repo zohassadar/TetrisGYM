@@ -26,6 +26,12 @@ gameModeState_initGameBackground:
         jsr drawDarkMode
 @notDarkMode:
 
+        lda practiseType
+        cmp #MODE_CALIBRATE
+        bne @notCalibrate
+        jsr drawCalibrateBox
+@notCalibrate:
+
         lda hzFlag
         beq @noHz
         stagePatchThenWaitForNmi hzStats
@@ -320,3 +326,38 @@ darkBuffer := playfield ; cleared right after in initGameState
         dec tmpZ
         bne @processChunk
         rts
+
+drawCalibrateBox:
+        lda currentPpuCtrl
+        ora #4
+        sta PPUCTRL
+        ldx #7
+@stripe:
+        lda @boxStripes,x
+        sta PPUADDR
+        dex
+        lda @boxStripes,x
+        sta PPUADDR
+        cpx #4
+        bcs @stillVert
+        lda currentPpuCtrl
+        sta PPUCTRL
+        ldy #10
+        bne @tile
+@stillVert:
+        ldy #22
+@tile:
+        lda #$FC
+@loop:
+        sta PPUDATA
+        dey
+        bne @loop
+        dex
+        bpl @stripe
+        rts
+
+@boxStripes:
+        .addr $234C ; horiz
+        .addr $20AC ; horiz
+        .addr $20AB ; vert
+        .addr $20B6 ; vert
