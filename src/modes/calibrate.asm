@@ -3,27 +3,40 @@ advanceGameCalibrate:
     cmp #MODE_CALIBRATE
     beq @calibrate
     rts
-@leftRightAdjust:
-    .byte $0,$1,$FF,$1
 @calibrate:
     lda newlyPressedButtons_player1
     and #3
     beq @checkFrameCounter
-    tax
-    lda levelNumber
-    clc
-    adc @leftRightAdjust,x
+    lsr
+    bcs @rightPressed
+
+; left pressed
+    dec levelNumber
+    bpl @renderLevel
+    lda #9
     sta levelNumber
-    bmi @resetTo9
-    cmp #10
+    bne @renderLevel
+
+@rightPressed:
+    inc levelNumber
+    lda levelNumber
+    cmp #$0A
     bcc @renderLevel
     lda #0
     sta levelNumber
-    beq @renderLevel
-@resetTo9:
-    lda #9
-    sta levelNumber
+
 @renderLevel:
+    lda levelNumber
+
+; optional 7 digit
+    ldy scoringModifier
+    cpy #2
+    beq @sevenDigit
+    lda #0
+@sevenDigit:
+    sta bcd32+3
+
+; fill score & lines, render & exit
     lda levelNumber
     sta lines+1
     asl
@@ -39,24 +52,25 @@ advanceGameCalibrate:
     lda #RENDER_LINES|RENDER_LEVEL|RENDER_SCORE
     sta renderFlags
     rts
+
+; shuffle every 128 frames
 @checkFrameCounter:
     lda frameCounter
     and #$7F
     beq initializeGameCalibrate
     rts
 initializeGameCalibrate:
-    lda #15
-    sta generalCounter
+    ldy #15
 @fill:
     ldx #b_seed
     jsr generateNextPseudorandomNumber2x
     ldx #rng_seed
     jsr generateNextPseudorandomNumber3x
-    ldy oneThirdPRNG
-    lda @tiles,y
-    ldx generalCounter
-    sta mathRAM,x
-    dec generalCounter
+    lda oneThirdPRNG
+    clc
+    adc #$7B
+    sta mathRAM,y
+    dey
     bpl @fill
 
     lda rng_seed+1
@@ -82,9 +96,6 @@ initializeGameCalibrate:
     lda #0
     sta vramRow
     rts
-
-@tiles:
-   .byte $7B,$7C,$7D
 
 
 .out .sprintf("Calibrate code: %d", *-advanceGameCalibrate)
