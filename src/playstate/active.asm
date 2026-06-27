@@ -360,7 +360,7 @@ lookupDropSpeed:
         lda practiseType
         cmp #MODE_CALIBRATE
         bne @notCalibrate
-        lda #120
+        lda #128
         rts
 @notCalibrate:
         lda #$01

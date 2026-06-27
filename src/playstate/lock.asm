@@ -5,9 +5,6 @@ VITS_SCORE = 100000
         lda practiseType
         cmp #MODE_CALIBRATE
         bne @notCalibrate
-        lda heldButtons_player1
-        and #BUTTON_SELECT
-        bne @notCalibrate
         inc playState
         rts
 @notCalibrate:

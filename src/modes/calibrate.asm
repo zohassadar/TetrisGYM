@@ -3,35 +3,27 @@ advanceGameCalibrate:
     cmp #MODE_CALIBRATE
     beq @calibrate
     rts
-
+@leftRightAdjust:
+    .byte $0,$1,$FF,$1
 @calibrate:
-    lda #$0
-    sta generalCounter
     lda newlyPressedButtons_player1
-    and #BUTTON_LEFT
-    beq @leftNotPressed
-    inc generalCounter
-    dec levelNumber
-    bpl @leftNotPressed
-    lda #9
-    sta levelNumber
-@leftNotPressed:
-
-    lda newlyPressedButtons_player1
-    and #BUTTON_RIGHT
-    beq @rightNotPressed
-    inc generalCounter
-    inc levelNumber
+    and #3
+    beq @checkFrameCounter
+    tax
     lda levelNumber
-    cmp #$0A
-    bcc @rightNotPressed
+    clc
+    adc @leftRightAdjust,x
+    sta levelNumber
+    bmi @resetTo9
+    cmp #10
+    bcc @renderLevel
     lda #0
     sta levelNumber
-@rightNotPressed:
-
-    lda generalCounter
-    beq @checkFrameCounter
-
+    beq @renderLevel
+@resetTo9:
+    lda #9
+    sta levelNumber
+@renderLevel:
     lda levelNumber
     sta lines+1
     asl
@@ -40,89 +32,59 @@ advanceGameCalibrate:
     asl
     ora levelNumber
     sta lines
-    sta score
-    sta score+1
-    sta score+2
     sta bcd32
     sta bcd32+1
     sta bcd32+2
-    lda #0
-    sta bcd32+3
-    jsr BCD_BIN
-    lda binary32
-    sta binScore
-    lda binary32+1
-    sta binScore+1
-    lda binary32+2
-    sta binScore+2
+    jsr presetScoreFromBCD
     lda #RENDER_LINES|RENDER_LEVEL|RENDER_SCORE
     sta renderFlags
     rts
 @checkFrameCounter:
     lda frameCounter
     and #$7F
-    bne calibrateReturn
+    beq initializeGameCalibrate
+    rts
 initializeGameCalibrate:
-    lda frameCounter
-    sta tmp1
-    lda frameCounter+1
-    sta tmp2
-    ldy #6
-@shift:
-    lsr tmp2
-    ror tmp1
-    dey
-    bpl @shift
-    lda tmp1
-    and #$E
-    tay
-    lda calibratePatterns,y
-    sta tmp1
-    lda calibratePatterns+1,y
-    sta tmp2
+    lda #15
+    sta generalCounter
+@fill:
+    ldx #b_seed
+    jsr generateNextPseudorandomNumber2x
+    ldx #rng_seed
+    jsr generateNextPseudorandomNumber3x
+    ldy oneThirdPRNG
+    lda @tiles,y
+    ldx generalCounter
+    sta mathRAM,x
+    dec generalCounter
+    bpl @fill
 
-    ldx #200
-    lda rng_seed
+    lda rng_seed+1
     and #7
-    tay
-@loop:
-    lda (tmp1),y
-    sta playfield-1,x
-    dey
-    bpl :+
-    ldy #7
-:
-    dex
-    bne @loop
+    tax
+    lda #$EF
+    sta mathRAM,x
+    sta mathRAM+8,x
 
+    ldy #200
+    lda rng_seed
+    and #15
+    tax
+@loop:
+    lda mathRAM,x
+    sta playfield-1,y
+    dex
+    bpl :+
+    ldx #15
+:
+    dey
+    bne @loop
     lda #0
     sta vramRow
-calibrateReturn:
     rts
 
-calibratePatterns:
-    .addr calibratePattern0
-    .addr calibratePattern1
-    .addr calibratePattern2
-    .addr calibratePattern3
-    .addr calibratePattern4
-    .addr calibratePattern5
-    .addr calibratePattern6
-    .addr calibratePattern7
+@tiles:
+   .byte $7B,$7C,$7D
 
-calibratePattern0:
-   .byte $7D,$7D,$EF,$7D,$7D,$7C,$7D,$7D
-calibratePattern1:
-   .byte $7B,$7D,$7D,$EF,$7D,$7C,$7D,$7B
-calibratePattern2:
-   .byte $7D,$7D,$7C,$7B,$EF,$7B,$7C,$7B
-calibratePattern3:
-   .byte $7B,$7B,$7B,$7D,$7B,$EF,$7B,$7D
-calibratePattern4:
-   .byte $EF,$7D,$7D,$7C,$7D,$7C,$7B,$7B
-calibratePattern5:
-   .byte $7C,$EF,$7C,$7D,$7B,$7B,$7C,$7D
-calibratePattern6:
-   .byte $7D,$7B,$7B,$7C,$7C,$7C,$7D,$EF
-calibratePattern7:
-   .byte $7C,$7D,$7C,$7B,$7C,$7C,$EF,$7C
+
+.out .sprintf("Calibrate code: %d", *-advanceGameCalibrate)
