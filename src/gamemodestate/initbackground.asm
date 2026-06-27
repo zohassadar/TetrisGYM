@@ -328,6 +328,15 @@ darkBuffer := playfield ; cleared right after in initGameState
         rts
 
 drawCalibrateBox:
+        lda #$28
+        sta PPUADDR
+        jsr clearNametableOffset
+        lda #$FF
+        ldy #64
+@attrib:
+        sta PPUDATA
+        dey
+        bne @attrib
         lda currentPpuCtrl
         ora #4
         sta PPUCTRL
@@ -357,7 +366,7 @@ drawCalibrateBox:
         rts
 
 @boxStripes:
-        .addr $234C ; horiz
-        .addr $20AC ; horiz
-        .addr $20AB ; vert
-        .addr $20B6 ; vert
+        .addr $2B4C ; horiz
+        .addr $28AC ; horiz
+        .addr $28AB ; vert
+        .addr $28B6 ; vert

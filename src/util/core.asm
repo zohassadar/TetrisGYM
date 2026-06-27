@@ -10,6 +10,7 @@ clearPlayfield:
 clearNametable:
         lda #$20
         sta PPUADDR
+clearNametableOffset:
         lda #$0
         sta PPUADDR
         lda #EMPTY_TILE

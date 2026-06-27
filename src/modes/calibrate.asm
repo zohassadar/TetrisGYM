@@ -1,4 +1,11 @@
 advanceGameCalibrate:
+    lda newlyPressedButtons_player1
+    and #BUTTON_A|BUTTON_B
+    beq @noToggle
+    lda currentPpuCtrl
+    eor #2
+    sta currentPpuCtrl
+@noToggle:
     @fillModifier = anydasFlag  ; placeholder
     lda practiseType
     cmp #MODE_CALIBRATE
