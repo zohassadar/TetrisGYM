@@ -167,7 +167,6 @@ gameTypeLoop:
 @notGoofyToggle:
     jsr addInputs
     jsr respondToInput
-    jsr defaultMenuVars
     jsr stageCursor
 
     ; scratch is not important anymore
@@ -717,30 +716,6 @@ addInputs:
 
 
 .out .sprintf("input handling: %d", *-collectControllerInput)
-
-defaultMenuVars:
-    ; A + select for ~3 sec to default everything
-    lda newlyPressedButtons_player1
-    tay
-    and #BUTTON_A
-    bne @sleep
-
-    lda heldButtons_player1
-    cmp #BUTTON_A|BUTTON_SELECT
-    bne @ret
-    lda sleepCounter
-    bne @ret
-
-    lda #2
-    sta soundEffectSlot1Init
-    lda #$FF
-    sta vramRow
-    jsr resetMenuVars
-@sleep:
-    lda #180
-    sta sleepCounter
-@ret:
-    rts
 
 
 randomizeSeed:
