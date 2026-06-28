@@ -8,6 +8,7 @@ RENDER_ROCKET
 RENDER_SPEED_TEST
 RENDER_LEVEL_MENU
 RENDER_PLAYFIELD
+RENDER_TOPROW
 RENDER_QUEUE
 .endenum
 
@@ -21,6 +22,7 @@ render: branchTo renderMode, \
             render_mode_speed_test, \
             render_mode_level_menu, \
             render_mode_dump_playfield, \
+            render_mode_top_row, \
             render_mode_queue
 
 .include "render_mode_level_menu.asm" ; no rts / jmp

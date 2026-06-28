@@ -550,6 +550,7 @@ stageFullPlayfield:
     rts
 
 render_mode_dump_playfield:
+; handles 95% of the playfield
     lda #$9C
     sta PPUCTRL
     tsx
@@ -568,8 +569,24 @@ render_mode_dump_playfield:
     .endrepeat
     .endrepeat
     txs
-    lda #RENDER_PLAY
+    lda #RENDER_TOPROW
     sta renderMode
     rts
+
+render_mode_top_row:
+; follows render_mode_dump_playfield to handle top row
+    lda #$20
+    sta PPUADDR
+    lda #$CC
+    sta PPUADDR
+    ldx #10
+    lda #$EF
+@loop:
+    sta PPUDATA
+    dex
+    bne @loop
+    lda #RENDER_PLAY
+    sta renderMode
+    jmp render_mode_play_and_demo
 
 .out .sprintf("instant harddrop rendering: %d", *-stageFullPlayfield)
