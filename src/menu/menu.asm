@@ -263,45 +263,6 @@ exitSubmenuNoSfx:
     jsr enterMenu
     jsr menuStackPop
     jsr enterPage
-
-; .if KEYBOARD = 1
-; .warning "keyboard menu seed code is broken"
-; @kbSeedLow = generalCounter
-; @kbSeedHigh = generalCounter2
-;         bne @checkForKbSeedEntry
-;         jmp @skipSeedControl
-; @checkForKbSeedEntry:
-;         jsr readKbSeedEntry
-;         bmi @noKeysPressed
-;         sta @kbSeedLow
-;         asl
-;         asl
-;         asl
-;         asl
-;         sta @kbSeedHigh
-;         ldy menuSeedCursorIndex
-;         dey
-;         tya
-;         lsr
-;         tay
-;         ; y = (index-1) // 2
-;         ; c = (index-1) % 2
-;         lda set_seed_input,y
-;         bcc @highByte
-; ; low byte:
-;         and #$F0
-;         ora @kbSeedLow
-;         bcs @storeSeed
-; @highByte:
-;         and #$0F
-;         ora @kbSeedHigh
-; @storeSeed:
-;         sta set_seed_input,y
-;         jmp @moveRight
-; @noKeysPressed:
-; .else
-;         beq @skipSeedControl
-; .endif
     jsr menuStackPop
     sta activeRow
     jmp setScratch
