@@ -13,3 +13,7 @@
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
+* rendering glitches with the following:
+    - m scoring, game timer, tetris rate, floor 9 and dark mode lite, input display
+    - top out normally, start
+* harddrop can eat top row of floor
