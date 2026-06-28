@@ -291,7 +291,7 @@ const mainMenu = {
         goToCustomPalette,
     ],
 
-    "das[mode=default]": [
+    "handling[mode=default]": [
         anydasDas,
         anydasArr,
         anydasEntryDelay,
