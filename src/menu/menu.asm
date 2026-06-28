@@ -9,8 +9,11 @@ NORAM = $00
 MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 17
+
+
 MENU_STACK = $DF ; $01C8 - $01DF intended range
 
+; custom routines
 .enum
 GOOFY_TOGGLE
 RESET_DEFAULTS
@@ -25,9 +28,6 @@ menuDataStart:
 .include "menudata.asm"
 .out .sprintf("Menu data: %d", *-menuDataStart)
 
-; tttnnnnnn n = mode
-PAGE_DEFAULT = %00000000
-
 ; table of first items instead
 ; + table of item counts
 
@@ -35,7 +35,7 @@ VALUE_MASK = %00011111
 TYPE_MASK = %11100000
 
 ; tttnnnnn
-TYPE_CUSTOM = %00000000
+TYPE_CUSTOM = %00000000  ; n = custom routine
 TYPE_NUMBER = %00100000  ; n = limit
 TYPE_CHOICES = %01000000 ; n = wordlist index
 TYPE_FF_OFF = %01100000  ; n = limit
@@ -55,14 +55,14 @@ menuCode:
 
 menuStackPush:
     ldx menuStackPtr
-    sta stack,x
-    dec menuStackPtr
+    sta menuStack,x
+    inc menuStackPtr
     rts
 
 menuStackPop:
-    inc menuStackPtr
+    dec menuStackPtr
     ldx menuStackPtr
-    lda stack,x
+    lda menuStack,x
     rts
 
 gameMode_gameTypeMenu:
@@ -105,9 +105,8 @@ gameMode_gameTypeMenu:
     jsr exitSubmenuNoSfx
     jmp gameTypeLoop
 @initMenu:
-    lda #MENU_STACK
-    sta menuStackPtr
     lda #0
+    sta menuStackPtr
     jsr enterMenu
 
 gameTypeLoop:
@@ -1148,7 +1147,7 @@ setStackOffset:
     rts
 
 menuVramRowTable:
-; 16 for now
+; 17 for now (title + 16 items)
     .addr $2109
     .addr $2146
     .addr $2166

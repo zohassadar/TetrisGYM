@@ -211,6 +211,9 @@ currentPpuCtrl: .res 1 ; $00FF
 stack: .res $FF ; $0100
     .res 1
 oamStaging: .res $100 ; $0200                        ; format: https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM
+
+
+; todo:  find out which need to be preserved
 trtLineCounter: .res $2
 trtScratch: .res $6
 trtRam: .res $8
@@ -284,6 +287,7 @@ kbRawInput: .res 9 ; $0641  - all 72 keys' input
 highScoreEntryActive: .res 1  ; $064A
 trtLines: .res 2 ; fix for now for transition mode/trt compat
 
+menuStack: .res 32
 
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
