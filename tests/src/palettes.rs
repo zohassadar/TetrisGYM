@@ -269,7 +269,7 @@ pub fn test() {
 
 
     // spend a few frames bootstrapping
-    for _ in 0..3 {
+    for _ in 0..4 {
         emu.run_until_vblank();
     }
 

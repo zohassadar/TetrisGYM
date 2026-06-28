@@ -3,7 +3,7 @@ use crate::{util, labels, playfield};
 pub fn test() {
     let mut emu = util::emulator(None);
 
-    for _ in 0..3 { emu.run_until_vblank(); }
+    for _ in 0..5 { emu.run_until_vblank(); }
 
     let game_mode = labels::get("gameMode") as usize;
     let main_loop = labels::get("mainLoop");
