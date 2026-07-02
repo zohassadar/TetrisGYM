@@ -21,3 +21,6 @@
 * harddrop can eat top row of floor
 * harddrop does not clear lines on top row
 * vert mirroring line clears are not inverted
+* abss while on a seed will shuffle seed
+* hex/bcd input cursor overlaps with value above
+* custom level can get reset to 0
