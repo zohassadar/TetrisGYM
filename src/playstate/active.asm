@@ -101,6 +101,26 @@ harddropAddr = pointerAddr
         sta harddropAddr+3
 
 harddropMarkCleared:
+; check top row separately
+        lda playfield
+        ora playfield+1
+        ora playfield+2
+        ora playfield+3
+        ora playfield+4
+        ora playfield+5
+        ora playfield+6
+        ora playfield+7
+        ora playfield+8
+        ora playfield+9
+        bmi @normalBoardHandling
+        inc harddropBuffer ; mark top row as cleared
+        ldx #246
+@shiftPlayfield:
+        lda playfield-1,x
+        sta playfield+9,x
+        dex
+        bne @shiftPlayfield
+@normalBoardHandling:
         sec
         lda tetriminoY
         sbc #3
@@ -108,9 +128,12 @@ harddropMarkCleared:
         clc
         adc #4
         sta tmpY ; row
+        lda tmpX
+        bpl @lineLoop
+        lda #0
+        sta tmpX ; sets lower limit to row 1
 @lineLoop:
-        ; A should always be tmpY
-        tax
+        ldx tmpY
         ldy multBy10Table, x
         lda playfield,y
         ora playfield+1,y
@@ -136,9 +159,8 @@ harddropShift:
         adc #1
         sta tmpY ; row
 @lineLoop:
-        ; A should always be tmpY
-
-        tax
+        ldx tmpY
+        beq @noLineClear ; ignore top row
         lda harddropBuffer, x
         beq @noLineClear
 
@@ -157,7 +179,6 @@ harddropShift:
         ldx tmpY
 @offsetLoop:
         dex
-
         lda harddropBuffer, x
         bne @lineIsFull
         dec completedLinesCopy
@@ -191,26 +212,32 @@ harddropShift:
 
 @nextLine:
         dec tmpY
-        lda tmpY
         beq @addScore
         jmp @lineLoop
 
-
-
 @addScore:
+        lda harddropBuffer
+        beq @noTopRowClear
+        inc completedLines
+@noTopRowClear:
         lda completedLines
         beq @noScore
-        jsr playState_updateLinesAndStatistics
-        lda #0
-        sta vramRow
-        sta completedLines
-        ; emty top row
+
+; clear top rows * completedLines
         lda #EMPTY_TILE
-        ldx #9
+        ldy completedLines
+        ldx multBy10Table,y
+        dex
 @topRowLoop:
         sta playfield, x
         dex
         bpl @topRowLoop
+
+        jsr playState_updateLinesAndStatistics
+
+        lda #0
+        sta vramRow
+
         ; lda #TETRIMINO_X_HIDE
         ; sta tetriminoX
         jsr stageFullPlayfield
