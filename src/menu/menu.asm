@@ -15,7 +15,6 @@ MENU_STACK = $DF ; $01C8 - $01DF intended range
 
 ; custom routines
 .enum
-GOOFY_TOGGLE
 RESET_DEFAULTS
 CLEAR_SCOREBOARD
 LOAD_VANILLA
@@ -96,6 +95,7 @@ gameMode_gameTypeMenu:
     sta byteSpriteTile
     sta vramRow
     sta gameStarted
+    sta shuffleStarted
     jsr makeNotReady
 
 ; check to see if returning from level menu or game
@@ -154,17 +154,8 @@ gameTypeLoop:
     jsr collectControllerInput
     jsr setScratch
     jsr randomizeSeed
-
-    ldx activeItem
-    lda itemTypes,x
-    cmp #TYPE_CUSTOM | GOOFY_TOGGLE
-    bne @notGoofyToggle
-
-    lda #0
-    sta lrAdjust
-
-@notGoofyToggle:
     jsr addInputs
+    jsr checkGoofy
     jsr respondToInput
     jsr stageCursor
 
@@ -175,6 +166,8 @@ gameTypeLoop:
     jsr stageVRAMRow
     jsr stageVRAMRow
     jsr stageVRAMRow
+    lda goofyFlag
+    sta prevGoofy
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
@@ -458,6 +451,21 @@ collectControllerInput:
 @rightNotPressed:
     rts
 
+checkGoofy:
+    lda prevGoofy
+    cmp goofyFlag
+    beq @noGoofyToggle
+    lda heldButtons_player1
+    asl
+    and #$AA
+    sta tmp3
+    lda heldButtons_player1
+    and #$AA
+    lsr
+    ora tmp3
+    sta heldButtons_player1
+@noGoofyToggle:
+    rts
 
 respondToInput:
     ldy activeColumn
@@ -531,31 +539,12 @@ checkIfGameStartOrSubmenu:
     lda #2
     sta soundEffectSlot1Init
     branchTo unpackedItemValue, \
-        customToggleGoofy, \
         customResetDefaults, \
         customClearScoreboard, \
         customLoadVanilla, \
         customLoadPride, \
         customLoadWhite, \
         customLoadBugged
-customToggleGoofy:
-    lda #0
-    sta vramRow
-    lda #1
-    sta soundEffectSlot1Init
-    lda goofyFlag
-    eor #1
-    sta goofyFlag
-    lda heldButtons_player1
-    asl
-    and #$AA
-    sta tmp3
-    lda heldButtons_player1
-    and #$AA
-    lsr
-    ora tmp3
-    sta heldButtons_player1
-    rts
 
 customLoadVanilla:
     jmp resetVanillaPalette
@@ -679,10 +668,22 @@ addInputs:
 
 
 randomizeSeed:
+; only start shuffling on newly pressed, continue on held
+    lda newlyPressedButtons_player1
+    and #BUTTON_SELECT
+    beq @checkHeld
+    sta shuffleStarted
+    bne @shuffle
+@checkHeld:
     lda heldButtons_player1
     and #BUTTON_SELECT
+    bne @checkShuffleStarted
+    sta shuffleStarted
+    rts
+@checkShuffleStarted:
+    lda shuffleStarted
     beq @ret
-
+@shuffle:
 ; b_seed is not important until a b_type game is started
 ; shuffling here keeps it out of sync with rng_seed
     ldx #b_seed

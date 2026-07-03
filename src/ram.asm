@@ -289,6 +289,11 @@ trtLines: .res 2 ; fix for now for transition mode/trt compat
 
 menuStack: .res 32
 
+
+; only important in menu mode
+prevGoofy: .res 1
+shuffleStarted: .res 1
+
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
 musicStagingSq1Hi: .res 1 ; $0681
@@ -378,7 +383,6 @@ levelControlMode: .res 1
 classicLevel: .res 1
 heartsAndReady: .res 1   ; high nybble used for ready
 practiseType: .res 1
-goofyFlag: .res 1
 customLevel: .res 1
 
 ; menu
