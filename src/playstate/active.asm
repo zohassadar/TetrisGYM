@@ -114,12 +114,17 @@ harddropMarkCleared:
         ora playfield+9
         bmi @normalBoardHandling
         inc harddropBuffer ; mark top row as cleared
-        ldx #246
+        ldx #245
 @shiftPlayfield:
-        lda playfield-1,x
-        sta playfield+9,x
+        ; no page boundries crossed to avoid +1 cycle penalty
+        lda playfield,x
+        sta playfield+10,x
         dex
+        ; loop stops at zero to avoid comparison
         bne @shiftPlayfield
+        ; last tile omitted in loop, handle separately
+        lda playfield
+        sta playfield+10
 @normalBoardHandling:
         sec
         lda tetriminoY
