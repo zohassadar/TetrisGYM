@@ -1,17 +1,20 @@
 advanceGameCalibrate:
+    lda heldButtons_player1
+    cmp #BUTTON_A+BUTTON_B+BUTTON_SELECT+BUTTON_START
+    bne @noReset
+    lda #GAMEMODE_GAMETYPEMENU
+    sta gameMode
+    rts
+@noReset:
     lda newlyPressedButtons_player1
     and #BUTTON_A|BUTTON_B
     beq @noToggle
-    lda currentPpuCtrl
-    eor #2
-    sta currentPpuCtrl
+    lda tetriminoY
+    eor #1
+    sta tetriminoY
+    jmp refreshPattern
 @noToggle:
     @fillModifier = anydasFlag  ; placeholder
-    lda practiseType
-    cmp #MODE_CALIBRATE
-    beq @calibrate
-    rts
-@calibrate:
     lda newlyPressedButtons_player1
     and #BUTTON_UP|BUTTON_DOWN
     beq @upNotPressed
@@ -19,11 +22,39 @@ advanceGameCalibrate:
     lda @fillModifier
     and #3
     sta @fillModifier
-    jmp initializeGameCalibrate
+    jmp refreshPattern
 @upNotPressed:
     lda newlyPressedButtons_player1
+    and #BUTTON_START
+    beq @startNotPressed
+    lda fallTimer
+    eor #1
+    sta fallTimer
+    bne calibrateWaitLoop
+    jmp refreshPattern
+@startNotPressed:
+    lda #BUTTON_SELECT
+    jsr menuThrottle
+    beq @selectNotPressed
+    lda nextPiece
+    sta currentPiece
+    jsr incrementPieceStat
+    inc tetriminoX
+    lda tetriminoX
+    cmp #7
+    bne @noRollover
+    lda #0
+    sta tetriminoX
+@noRollover:
+    tax
+    lda spawnTable,x
+    sta nextPiece
+    jmp calibrateWaitLoop
+
+@selectNotPressed:
+    lda newlyPressedButtons_player1
     and #3
-    beq @checkFrameCounter
+    beq calibrateCheckFrameCounter
     lsr
     bcs @rightPressed
 
@@ -68,27 +99,39 @@ advanceGameCalibrate:
     jsr presetScoreFromBCD
     lda #RENDER_LINES|RENDER_LEVEL|RENDER_SCORE
     sta renderFlags
-    rts
+
+calibrateWaitLoop:
+    jsr stageSpriteForNextPiece
+    jsr updateAudioWaitForNmiAndResetOamStaging
+    jmp advanceGameCalibrate
 
 ; shuffle every 128 frames
-@checkFrameCounter:
+calibrateCheckFrameCounter:
+    lda fallTimer
+    bne calibrateWaitLoop
     lda frameCounter
     and #$7F
-    beq initializeGameCalibrate
-    rts
+    beq refreshPattern
+    jmp calibrateWaitLoop
 
-initializeGameCalibrate:
+gameMode_calibrate:
+    jsr gameModeState_initGameBackground
+    jsr gameModeState_initGameState
+    ldx nextPiece
+    stx currentPiece
+    lda tetriminoTypeFromOrientation,x
+    sta tetriminoX
+
+refreshPattern:
     @fillModifier = anydasFlag
     lda #0
     sta vramRow
-    lda @fillModifier
+    lda tetriminoY
     bne @tilefill
     ldy #15
 @fill:
     ldx #b_seed
-    jsr generateNextPseudorandomNumber2x
-    ldx #rng_seed
-    jsr generateNextPseudorandomNumber3x
+    jsr generateNextPseudorandomNumber5x
     lda oneThirdPRNG
     clc
     adc #$7B
@@ -116,18 +159,22 @@ initializeGameCalibrate:
 :
     dey
     bne @loop
-    rts
+    jmp calibrateWaitLoop
 
 @tilefill:
+    ldx #200
+    lda @fillModifier
+    beq @empty
     lda #$7A
     clc
     adc @fillModifier
-    ldx #200
+    bne @tile
+@empty:
+    lda #EMPTY_TILE
 @tile:
     sta playfield-1,x
     dex
     bne @tile
-    rts
-
+    jmp calibrateWaitLoop
 
 .out .sprintf("Calibrate code: %d", *-advanceGameCalibrate)

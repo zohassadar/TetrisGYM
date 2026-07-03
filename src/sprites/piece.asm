@@ -1,7 +1,4 @@
 stageSpriteForCurrentPiece:
-        lda practiseType
-        cmp #MODE_CALIBRATE
-        beq @ret
         lda gameTimerFlag
         beq @noGameTimer
         lda #$C0

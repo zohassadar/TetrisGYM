@@ -117,7 +117,7 @@ gameTypeLoop:
     lda practiseType
     cmp #MODE_SPEED_TEST
     bne @notSpeedTest
-    lda #7
+    lda #GAMEMODE_SPEEDTEST
     sta gameMode
     bne @sfx
 @notSpeedTest:
@@ -144,7 +144,8 @@ gameTypeLoop:
     sta levelNumber
     inc gameMode
 @notCalibrate:
-    inc gameMode
+    lda #GAMEMODE_CALIBRATE
+    sta gameMode
 @sfx:
     lda #$2
     sta soundEffectSlot1Init

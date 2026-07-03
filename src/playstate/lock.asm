@@ -2,12 +2,6 @@ playState_lockTetrimino:
 I_VERTICAL = $11
 VITS_SCORE = 100000
 @currentTile = generalCounter5
-        lda practiseType
-        cmp #MODE_CALIBRATE
-        bne @notCalibrate
-        inc playState
-        rts
-@notCalibrate:
         jsr isPositionValid
         beq @notGameOver
 @gameOver:

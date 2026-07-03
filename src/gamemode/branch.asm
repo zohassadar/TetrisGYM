@@ -8,7 +8,22 @@ branchOnGameMode:
             gameMode_playAndEndingHighScore_jmp, \
             gameMode_playAndEndingHighScore_jmp, \
             gameMode_playAndEndingHighScore_jmp, \
-            gameMode_speedTest
+            gameMode_speedTest, \
+            gameMode_calibrate
+
+.enum
+GAMEMODE_BOOTSCREEN
+GAMEMODE_WAITSCREEN
+GAMEMODE_GAMETYPEMENU
+GAMEMODE_LEVELMENU
+GAMEMODE_PLAY
+GAMEMODE_UNUSED1
+GAMEMODE_UNUSED2
+GAMEMODE_SPEEDTEST
+GAMEMODE_CALIBRATE
+.endenum
+
+
 
 .include "bootscreen.asm"
 .include "waitscreen.asm"

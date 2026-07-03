@@ -389,12 +389,6 @@ drop_tetrimino_actual:
         jmp @ret
 
 lookupDropSpeed:
-        lda practiseType
-        cmp #MODE_CALIBRATE
-        bne @notCalibrate
-        lda #128
-        rts
-@notCalibrate:
         lda #$01
         ldx levelNumber
         ldy practiseType
