@@ -154,6 +154,8 @@ initGameState_return:
         rts
 
 transitionModeSetup:
+        lda transFlag
+        beq initGameState_return
         lda #0
         sta factorB24+1
         sta factorB24+2

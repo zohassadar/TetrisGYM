@@ -43,6 +43,10 @@ resetMenuVars:
         sta tapRightColumn
         lda #6
         sta practisePiece
+        lda #5
+        sta startScore
+        lda #12
+        sta startLines
 
 resetVanillaPalette:
         ldx #9

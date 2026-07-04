@@ -103,6 +103,7 @@ const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
 const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
 const startLines = ["TYPE_NUMBER", "lines *10", 31, "startLines"];
+const transFlag = ["TYPE_BOOL", "trans", "transFlag"];
 
 const presetModifier = [
     "TYPE_CHOICES",
@@ -276,6 +277,7 @@ const mainMenu = {
         palpepFlag,
         startScore,
         startLines,
+        transFlag,
     ],
 
     "display[mode=default]": [
