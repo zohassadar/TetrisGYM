@@ -66,6 +66,10 @@ vramPlayfieldRows:
         .word   $22CC,$22EC,$230C,$232C
 
 copyLowStackRowToVram:
+        ldy #0
+        jsr crunchAdjustYSetX
+        txa
+        pha
         sec
         lda #19
         sbc lowStackRowModifier
@@ -73,9 +77,12 @@ copyLowStackRowToVram:
         tax
         lda vramPlayfieldRows+1,x
         sta PPUADDR
-        lda vramPlayfieldRows,x
+        tya
+        clc
+        adc vramPlayfieldRows,x
         sta PPUADDR
-        ldx #$0A
+        pla
+        tax
         lda #LOW_STACK_LINE
 @drawLine:
         sta PPUDATA

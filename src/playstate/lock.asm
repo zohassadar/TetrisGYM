@@ -121,7 +121,7 @@ VITS_SCORE = 100000
         cmp #MODE_LOWSTACK
         bne @notAboveLowStack
         jsr checkIfAboveLowStackLine
-        bcc @notAboveLowStack
+        bmi @notAboveLowStack
         ldx #<lowStackNopeGraphic
         ldy #>lowStackNopeGraphic
         sec
