@@ -95,6 +95,7 @@ gameMode_gameTypeMenu:
     sta byteSpriteTile
     sta vramRow
     sta gameStarted
+    sta sleepCounter
     jsr makeNotReady
 
 ; check to see if returning from level menu or game
@@ -155,7 +156,6 @@ gameTypeLoop:
     jsr addInputs
     jsr checkGoofy
     jsr respondToInput
-    jsr stageCursor
 
     ; scratch is not important anymore
     jsr stageVRAMRow
@@ -168,6 +168,7 @@ gameTypeLoop:
     sta prevGoofy
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
+    jsr stageCursor
     jmp gameTypeLoop
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
@@ -1161,9 +1162,9 @@ stageCursor:
     sta spriteYOffset
     lda #$10
     sta spriteXOffset
-    lda #SPRITE_MENUPAGESELECT
+    lda #SPRITE_MENUPAGESELECTA
     sta spriteIndex
-    jmp loadSpriteIntoOamStaging
+    jmp @stage
 
 @notTitle:
     asl
@@ -1201,16 +1202,43 @@ stageCursor:
     clc
     adc spriteXOffset
     sta spriteXOffset
-    lda #SPRITE_SEEDCURSOR  ; digit select
+    lda #SPRITE_SEEDCURSORA  ; digit select
     bne @store
 @notColumn:
-    lda #$14
+    lda #$1A
     sta spriteXOffset
-    lda #SPRITE_PRACTISETYPECURSOR  ; option select
+    ldx activeItem
+    lda itemTypes,x
+    and #TYPE_MASK
+    cmp #TYPE_CUSTOM
+    beq @noValue
+    cmp #TYPE_SUBMENU
+    beq @noValue
+    cmp #TYPE_GAMEMODE
+    beq @noValue
+    lda #SPRITE_PRACTISETYPECURSORA  ; option select
 @store:
     sta spriteIndex
 @stage:
+    lda sleepCounter
+    bne @noToggle
+    lda tetriminoY
+    eor #1
+    sta tetriminoY
+    lda #22
+    sta sleepCounter
+@noToggle:
+    lda tetriminoY
+    and #1
+    clc
+    adc spriteIndex
+    sta spriteIndex
+@noFrameAdjust:
     jmp loadSpriteIntoOamStaging
+@noValue:
+    lda #SPRITE_MENUSTART
+    sta spriteIndex
+    jmp @stage
 gotoEdgeCase:
     rts
 

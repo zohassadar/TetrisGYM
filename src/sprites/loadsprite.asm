@@ -43,9 +43,39 @@ loadSpriteIntoOamStaging:
 
 @ret:   rts
 
+.enum
+SPRITE_LEVELSELECTCURSOR
+SPRITE_GAMETYPECURSOR
+SPRITE_MENUSTART
+SPRITE_BLANK
+SPRITE_TPIECE
+SPRITE_JPIECE
+SPRITE_ZPIECE
+SPRITE_OPIECE
+SPRITE_SPIECE
+SPRITE_LPIECE
+SPRITE_IPIECE
+SPRITE_HIGHSCORENAMECURSOR
+SPRITE_DEBUGLEVELEDIT
+SPRITE_STATESAVE
+SPRITE_STATELOAD
+SPRITE_HEARTCURSOR
+SPRITE_HEART
+SPRITE_READY
+SPRITE_CUSTOMLEVELCURSOR
+SPRITE_INGAMEHEART
+SPRITE_SEEDCURSORA
+SPRITE_SEEDCURSORB
+SPRITE_PRACTISETYPECURSORA
+SPRITE_PRACTISETYPECURSORB
+SPRITE_MENUPAGESELECTA
+SPRITE_MENUPAGESELECTB
+.endenum
+
 oamContentLookup:
         .addr   spriteLevelSelectCursor
         .addr   spriteGameTypeCursor
+        .addr   spriteMenuStartOption
         .addr   spriteBlank
         .addr   spriteTPiece
         .addr   spriteJPiece
@@ -55,17 +85,20 @@ oamContentLookup:
         .addr   spriteLPiece
         .addr   spriteIPiece
         .addr   spriteHighScoreNameCursor
-        .addr   spriteDebugLevelEdit ; $16
-        .addr   spriteStateSave; $17
-        .addr   spriteStateLoad; $18
-        .addr   spriteSeedCursor ; $1B
-        .addr   spritePractiseTypeCursor ; $1D
-        .addr   spriteHeartCursor ; $1E
-        .addr   spriteHeart ; $1F
-        .addr   spriteReady ; $20
-        .addr   spriteCustomLevelCursor ; $21
-        .addr   spriteIngameHeart ; $22
-        .addr   spriteMenuPageSelect ; $23
+        .addr   spriteDebugLevelEdit
+        .addr   spriteStateSave
+        .addr   spriteStateLoad
+        .addr   spriteHeartCursor
+        .addr   spriteHeart
+        .addr   spriteReady
+        .addr   spriteCustomLevelCursor
+        .addr   spriteIngameHeart
+        .addr   spriteSeedCursorA
+        .addr   spriteSeedCursorB
+        .addr   spritePractiseTypeCursorA
+        .addr   spritePractiseTypeCursorB
+        .addr   spriteMenuPageSelectA
+        .addr   spriteMenuPageSelectB
 ;         .addr   spriteMenuPageSelect2 ; $24
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
@@ -76,15 +109,17 @@ spriteLevelSelectCursor:
 spriteGameTypeCursor:
         .byte   $00,$27,$00,$00,$00,$27,$40,$3A
         .byte   $FF
-spriteMenuPageSelect:
+spriteMenuPageSelectA:
         .byte   $00,$27,$40,$00
         .byte   $00,$27,$00,$D9
         .byte   $FF
-; spriteMenuPageSelect2:
-;         .byte   $00,$27,$40,$08
-;         .byte   $00,$27,$40,$D1
-;         .byte   $FF
-; Used as a sort of NOOP for cursors
+spriteMenuPageSelectB:
+        .byte   $00,$27,$40,$04
+        .byte   $00,$27,$00,$D5
+        .byte   $FF
+spriteMenuStartOption:
+        .byte   $FE,$69,$00,$00
+        .byte   $FF
 spriteBlank:
         .byte   $00,$FF,$00,$00,$FF
 spriteTPiece:
@@ -130,11 +165,19 @@ spriteStateSave:
         .byte   $00,'V',$03,$10,$00,'E',$03,$18
         .byte   $00,'D',$03,$20
         .byte   $FF
-spriteSeedCursor:
+spriteSeedCursorA:
         .byte   $00,$6B,$00,$00
         .byte   $FF
-spritePractiseTypeCursor:
-        .byte   $00,$27,$00,$00
+spriteSeedCursorB:
+        .byte   $00,$6B,$00,$00
+        .byte   $FF
+spritePractiseTypeCursorA:
+        .byte   $00,$27,$40,$FA
+        .byte   $00,$27,$00,$06
+        .byte   $FF
+spritePractiseTypeCursorB:
+        .byte   $00,$27,$40,$F8
+        .byte   $00,$27,$00,$08
         .byte   $FF
 spriteHeartCursor:
         .byte   $00,$6c,$00,$00,$FF
@@ -150,29 +193,3 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
-
-
-.enum
-SPRITE_LEVELSELECTCURSOR
-SPRITE_GAMETYPECURSOR
-SPRITE_BLANK
-SPRITE_TPIECE
-SPRITE_JPIECE
-SPRITE_ZPIECE
-SPRITE_OPIECE
-SPRITE_SPIECE
-SPRITE_LPIECE
-SPRITE_IPIECE
-SPRITE_HIGHSCORENAMECURSOR
-SPRITE_DEBUGLEVELEDIT
-SPRITE_STATESAVE
-SPRITE_STATELOAD
-SPRITE_SEEDCURSOR
-SPRITE_PRACTISETYPECURSOR
-SPRITE_HEARTCURSOR
-SPRITE_HEART
-SPRITE_READY
-SPRITE_CUSTOMLEVELCURSOR
-SPRITE_INGAMEHEART
-SPRITE_MENUPAGESELECT
-.endenum
