@@ -35,7 +35,6 @@
         jsr copyVarsFromSRAM
 @noSRAM:
 .endif
-
         lda #$54
         sta initMagic
         lda #$2D
@@ -46,6 +45,10 @@
         sta initMagic+3
         lda #$4D
         sta initMagic+4
+
+        lda #INITIAL_CUSTOM_LEVEL
+        sta customLevel
+
 @continueWarmBootInit:
         ldx #$89
         stx rng_seed

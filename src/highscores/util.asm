@@ -28,9 +28,6 @@ resetMenuVars:
         lda #MODE_TETRIS
         sta practiseType
 
-        lda #INITIAL_CUSTOM_LEVEL
-        sta customLevel
-
         lda #INITIAL_LINECAP_LEVEL
         sta linecapLevel
         lda #INITIAL_LINECAP_LINES_LO
