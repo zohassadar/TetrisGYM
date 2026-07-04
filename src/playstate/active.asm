@@ -138,6 +138,13 @@ harddropMarkCleared:
         lda #0
         sta tmpX ; sets lower limit to row 1
 @lineLoop:
+        lda teppozFlag
+        bne @skipRow
+        lda #$13
+        sec
+        sbc tmpY ; contains current row being checked
+        cmp currentFloor
+        bcc @skipRow ; ignore floor rows
         ldx tmpY
         ldy multBy10Table, x
         lda playfield,y
@@ -153,6 +160,7 @@ harddropMarkCleared:
         eor #$80
         asl
         rol harddropBuffer,x
+@skipRow:
         dec tmpY
         lda tmpY
         cmp tmpX
@@ -238,6 +246,7 @@ harddropShift:
         dex
         bpl @topRowLoop
 
+        jsr drawFloorTopRow
         jsr playState_updateLinesAndStatistics
 
         lda #0

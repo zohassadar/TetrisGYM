@@ -1,5 +1,3 @@
-activeFloorMode := generalCounter5
-
 playState_checkForCompletedRows:
         lda vramRow
         cmp #$20
@@ -26,8 +24,6 @@ playState_checkForCompletedRows:
         adc generalCounter
         sta generalCounter
         tay
-        lda #$00
-        sta activeFloorMode ; Don't draw floor unless active
         ldx #$0A
 @checkIfRowComplete:
 .if AUTO_WIN
@@ -48,7 +44,6 @@ playState_checkForCompletedRows:
         bne @checkIfRowCompleteLoopStart
 
 @fullRowBurningCheck:
-        inc activeFloorMode ; Floor is active
         lda #$13
         sec
         sbc @currentRow ; contains current row being checked
@@ -90,23 +85,8 @@ playState_checkForCompletedRows:
         bne @clearRowTopRow
         lda #$13
         sta currentPiece
-
 ; draw surface of floor in case of top line clear
-        lda activeFloorMode
-        beq @incrementLineIndex
-        lda #$14
-        sec
-        sbc currentFloor
-        tax
-        ldy multBy10Table,x
-        ldx #$0A
-        lda #BLOCK_TILES+3
-@drawFloorSurface:
-        sta playfield,y
-        iny
-        dex
-        bne @drawFloorSurface
-
+        jsr drawFloorTopRow
         jmp @incrementLineIndex
 
 @rowNotComplete:

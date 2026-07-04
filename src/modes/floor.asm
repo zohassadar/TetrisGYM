@@ -1,4 +1,4 @@
-advanceGameFloor:
+initGameFloor:
         lda #0
         sta vramRow
         lda currentFloor
@@ -18,4 +18,22 @@ drawFloor:
         inx
         bne @loop
 @skip:
+        rts
+
+drawFloorTopRow:
+        lda #$14
+        sec
+        sbc currentFloor
+        cmp #$14  ; skip floor 0
+        beq @ret
+        tax
+        ldy multBy10Table,x
+        ldx #$0A
+        lda #BLOCK_TILES+3
+@drawFloorSurface:
+        sta playfield,y
+        iny
+        dex
+        bne @drawFloorSurface
+@ret:
         rts
