@@ -23,6 +23,10 @@ gameModeState_initGameBackground:
 
         ldy darkModifier
         beq @notDarkMode
+
+        ; skip NMI tasks during darkmode setup
+        lda #RENDER_DISABLE
+        sta renderMode
         jsr drawDarkMode
 @notDarkMode:
 
