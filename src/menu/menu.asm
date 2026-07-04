@@ -133,10 +133,16 @@ gameTypeLoop:
     sta killX2Flag
     inc gameMode
 @notKillX2:
-    inc gameMode
-@notCalibrate:
+    lda practiseType
+    cmp #MODE_CALIBRATE
+    bne @notCalibrate
+    lda #0
+    sta levelNumber
     lda #GAMEMODE_CALIBRATE
     sta gameMode
+    bne @sfx
+@notCalibrate:
+    inc gameMode
 @sfx:
     lda #$2
     sta soundEffectSlot1Init
