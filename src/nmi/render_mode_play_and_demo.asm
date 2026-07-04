@@ -271,6 +271,15 @@ updateLineClearingAnimation:
         ldx generalCounter3
         lda completedRow,x
         beq @nextRow
+        lda mirrorVertFlag
+        beq @notVertMirror
+        lda #$13
+        sec
+        sbc completedRow,x
+        bcs @adjustRow ; completedRow should never be more than $13
+@notVertMirror:
+        lda completedRow,x
+@adjustRow:
         asl a
         tay
         lda vramPlayfieldRows,y

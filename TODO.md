@@ -11,9 +11,7 @@
 
 # Bugs
 * harddrop mode skips events
-* lowstack & crunch do not work together
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
-* vert mirroring line clears are not inverted
 * hex/bcd input cursor overlaps with value above
