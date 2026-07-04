@@ -76,7 +76,7 @@ debugDrawPieces:
         adc #$2F
         sta spriteYOffset
 
-        lda #$16
+        lda #SPRITE_DEBUGLEVELEDIT
         sta spriteIndex
         jsr loadSpriteIntoOamStaging
         rts

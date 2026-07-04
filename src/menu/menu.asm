@@ -1161,7 +1161,7 @@ stageCursor:
     sta spriteYOffset
     lda #$10
     sta spriteXOffset
-    lda #$23 ; page select
+    lda #SPRITE_MENUPAGESELECT
     sta spriteIndex
     jmp loadSpriteIntoOamStaging
 
@@ -1201,12 +1201,12 @@ stageCursor:
     clc
     adc spriteXOffset
     sta spriteXOffset
-    lda #$1B  ; digit select
+    lda #SPRITE_SEEDCURSOR  ; digit select
     bne @store
 @notColumn:
     lda #$14
     sta spriteXOffset
-    lda #$1D  ; option select
+    lda #SPRITE_PRACTISETYPECURSOR  ; option select
 @store:
     sta spriteIndex
 @stage:

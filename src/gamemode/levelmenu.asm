@@ -271,7 +271,7 @@ levelControlCustomLevel:
         sta spriteYOffset
         lda #$B0
         sta spriteXOffset
-        lda #$21
+        lda #SPRITE_CUSTOMLEVELCURSOR
         sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @indicatorEnd:
@@ -442,7 +442,7 @@ levelControlNormal:
         ldx classicLevel
         lda levelToSpriteYOffset,x
         sta spriteYOffset
-        lda #$00
+        lda #SPRITE_00LEVELSELECTCURSOR
         sta spriteIndex
         ldx classicLevel
         lda levelToSpriteXOffset,x
@@ -452,7 +452,7 @@ levelControlNormal:
         rts
 
 levelMenuRenderHearts:
-        lda #$1E
+        lda #SPRITE_HEARTCURSOR
         sta spriteIndex
         lda #$7A
         sta spriteYOffset
@@ -478,7 +478,7 @@ levelMenuRenderHearts:
         lda frameCounter
         and #$03
         beq @skipCursor
-        lda #$1F
+        lda #SPRITE_HEART
         sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @skipCursor:
@@ -492,7 +492,7 @@ levelMenuRenderReady:
         sta spriteYOffset
         lda #$88
         sta spriteXOffset
-        lda #$20
+        lda #SPRITE_READY
         sta spriteIndex
         jsr loadSpriteIntoOamStaging
 @notReady:

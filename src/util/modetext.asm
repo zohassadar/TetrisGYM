@@ -114,11 +114,7 @@ patchSeed:
 
         jsr drawCrashMode
 
-        lda startScore
-        bne @trans
-        lda startLines
-        beq @notTrans
-@trans:
+        lda transFlag
         stagePatch menuTransPatch
 @notTrans:
         lda sxtoklFlag
