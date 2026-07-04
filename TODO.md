@@ -7,7 +7,6 @@
 * height 6-8 logic can be rearranged to be closer to vanilla
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * trans flag to enable score/lines runway, default 12 for lines, 5 for score
-* 4 digit score toggle, remove from scoring
 
 # Bugs
 * harddrop mode skips events

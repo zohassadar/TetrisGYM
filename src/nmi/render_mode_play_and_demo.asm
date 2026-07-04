@@ -22,7 +22,7 @@ render_mode_play_and_demo:
         jsr     twoDigsToPPU
 LFC0C:
 
-        lda scoringModifier
+        lda modernLinesFlag
         bne @modernLines
 
         lda renderFlags

@@ -23,6 +23,7 @@ const scoringModifier = [
     ["classic", "letters", "7digit", "m", "capped", "hidden"],
     "scoringModifier",
 ];
+const modernLinesFlag = ["TYPE_BOOL", "modern lines", "modernLinesFlag"];
 const paceModifier = ["TYPE_FF_OFF", "Pace", 16, "paceModifier"];
 const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
 const inputDisplayFlag = ["TYPE_BOOL", "Input Display", "inputDisplayFlag"];
@@ -279,6 +280,7 @@ const mainMenu = {
 
     "display[mode=default]": [
         scoringModifier,
+        modernLinesFlag,
         hzFlag,
         inputDisplayFlag,
         darkMode,
