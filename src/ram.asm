@@ -289,10 +289,8 @@ trtLines: .res 2 ; fix for now for transition mode/trt compat
 
 menuStack: .res 32
 
-
 ; only important in menu mode
 prevGoofy: .res 1
-shuffleStarted: .res 1
 
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680

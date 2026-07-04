@@ -95,7 +95,6 @@ gameMode_gameTypeMenu:
     sta byteSpriteTile
     sta vramRow
     sta gameStarted
-    sta shuffleStarted
     jsr makeNotReady
 
 ; check to see if returning from level menu or game
@@ -134,14 +133,6 @@ gameTypeLoop:
     sta killX2Flag
     inc gameMode
 @notKillX2:
-    cmp #MODE_CALIBRATE
-    bne @notCalibrate
-    lda #RENDER_IDLE
-    sta renderMode
-    lda #0
-    sta gameModeState
-    lda #0
-    sta levelNumber
     inc gameMode
 @notCalibrate:
     lda #GAMEMODE_CALIBRATE
@@ -670,21 +661,9 @@ addInputs:
 
 randomizeSeed:
 ; only start shuffling on newly pressed, continue on held
-    lda newlyPressedButtons_player1
-    and #BUTTON_SELECT
-    beq @checkHeld
-    sta shuffleStarted
-    bne @shuffle
-@checkHeld:
-    lda heldButtons_player1
-    and #BUTTON_SELECT
-    bne @checkShuffleStarted
-    sta shuffleStarted
-    rts
-@checkShuffleStarted:
-    lda shuffleStarted
+    lda #BUTTON_SELECT
+    jsr menuThrottle
     beq @ret
-@shuffle:
 ; b_seed is not important until a b_type game is started
 ; shuffling here keeps it out of sync with rng_seed
     ldx #b_seed
@@ -699,14 +678,12 @@ randomizeSeed:
     cpx #<set_seed_input
     bne @ret
     ldy #2
-    bne @checkFrameCounter
+    bne @resetVramRow
 @b_seed:
     ldy #1
 
-@checkFrameCounter:
-    lda frameCounter
-    and #7
-    bne @ret
+@resetVramRow:
+    lda #0
     sta vramRow
 
 ; shuffle
