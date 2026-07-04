@@ -1,21 +1,21 @@
 advanceGameFloor:
+        lda #0
+        sta vramRow
         lda currentFloor
 drawFloor:
         ; get correct offset
-        sta tmp1
-        lda #$D
-        sec
-        sbc tmp1
         tax
         ; x10
-        lda multBy10Table, x
+        lda #0
+        sec
+        sbc multBy10Table,x
         tax
+        beq @skip
         ; draw block tiles+3 ($7E)
         lda #BLOCK_TILES+3
 @loop:
-        sta playfield+$46,X
+        sta playfield-56,x
         inx
-        cpx #$82
-        bmi @loop
+        bne @loop
 @skip:
         rts

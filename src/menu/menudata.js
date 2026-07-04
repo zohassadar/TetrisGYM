@@ -78,7 +78,7 @@ const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
 const clearScores = ["TYPE_CUSTOM", "clear scores", "CLEAR_SCOREBOARD"];
 const resetDefaults = ["TYPE_CUSTOM", "reset defaults", "RESET_DEFAULTS"];
 
-const floorModifier = ["TYPE_NUMBER", "floor", 16, "floorModifier"];
+const floorModifier = ["TYPE_NUMBER", "floor", 19, "floorModifier"];
 const crunchLeftModifier = [
     "TYPE_NUMBER",
     "crunch left",
