@@ -102,6 +102,10 @@ harddropAddr = pointerAddr
 
 harddropMarkCleared:
 ; check top row separately
+        lda teppozFlag
+        beq @checkTopRow
+        jmp harddropShift
+@checkTopRow:
         lda playfield
         ora playfield+1
         ora playfield+2
@@ -138,8 +142,6 @@ harddropMarkCleared:
         lda #0
         sta tmpX ; sets lower limit to row 1
 @lineLoop:
-        lda teppozFlag
-        bne @skipRow
         lda #$13
         sec
         sbc tmpY ; contains current row being checked
