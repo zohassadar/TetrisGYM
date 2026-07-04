@@ -156,12 +156,12 @@ highScoreEntryScreen:
         asl
         adc #$20
         sta spriteXOffset
-        lda #SPRITE_0EHIGHSCORENAMECURSOR1
+        lda #SPRITE_HIGHSCORENAMECURSOR
         sta spriteIndex
         lda frameCounter
         and #$03
         bne @flickerStateSelected_checkForStartPressed
-        lda #SPRITE_02BLANK
+        lda #SPRITE_BLANK
         sta spriteIndex
 @flickerStateSelected_checkForStartPressed:
         jsr loadSpriteIntoOamStaging

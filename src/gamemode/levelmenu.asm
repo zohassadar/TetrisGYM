@@ -442,7 +442,7 @@ levelControlNormal:
         ldx classicLevel
         lda levelToSpriteYOffset,x
         sta spriteYOffset
-        lda #SPRITE_00LEVELSELECTCURSOR
+        lda #SPRITE_LEVELSELECTCURSOR
         sta spriteIndex
         ldx classicLevel
         lda levelToSpriteXOffset,x

@@ -44,35 +44,21 @@ loadSpriteIntoOamStaging:
 @ret:   rts
 
 oamContentLookup:
-        .addr   sprite00LevelSelectCursor
-        .addr   sprite01GameTypeCursor
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite06TPiece
-        .addr   sprite07JPiece
-        .addr   sprite08ZPiece
-        .addr   sprite09OPiece
-        .addr   sprite0ASPiece
-        .addr   sprite0BLPiece
-        .addr   sprite0CIPiece
-        .addr   sprite0EHighScoreNameCursor
-        .addr   sprite0EHighScoreNameCursor
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
-        .addr   sprite02Blank
+        .addr   spriteLevelSelectCursor
+        .addr   spriteGameTypeCursor
+        .addr   spriteBlank
+        .addr   spriteTPiece
+        .addr   spriteJPiece
+        .addr   spriteZPiece
+        .addr   spriteOPiece
+        .addr   spriteSPiece
+        .addr   spriteLPiece
+        .addr   spriteIPiece
+        .addr   spriteHighScoreNameCursor
         .addr   spriteDebugLevelEdit ; $16
         .addr   spriteStateSave; $17
         .addr   spriteStateLoad; $18
-        .addr   sprite02Blank ; $19
-        .addr   sprite02Blank ; $1A
         .addr   spriteSeedCursor ; $1B
-        .addr   sprite02Blank
         .addr   spritePractiseTypeCursor ; $1D
         .addr   spriteHeartCursor ; $1E
         .addr   spriteHeart ; $1F
@@ -83,11 +69,11 @@ oamContentLookup:
 ;         .addr   spriteMenuPageSelect2 ; $24
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
-sprite00LevelSelectCursor:
+spriteLevelSelectCursor:
         .byte   $00,$FC,$20,$00,$00,$FC,$20,$08
         .byte   $08,$FC,$20,$00,$08,$FC,$20,$08
         .byte   $FF
-sprite01GameTypeCursor:
+spriteGameTypeCursor:
         .byte   $00,$27,$00,$00,$00,$27,$40,$3A
         .byte   $FF
 spriteMenuPageSelect:
@@ -99,37 +85,37 @@ spriteMenuPageSelect:
 ;         .byte   $00,$27,$40,$D1
 ;         .byte   $FF
 ; Used as a sort of NOOP for cursors
-sprite02Blank:
+spriteBlank:
         .byte   $00,$FF,$00,$00,$FF
-sprite06TPiece:
+spriteTPiece:
         .byte   $00,$7B,$02,$FC,$00,$7B,$02,$04
         .byte   $00,$7B,$02,$0C,$08,$7B,$02,$04
         .byte   $FF
-sprite07JPiece:
+spriteJPiece:
         .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
         .byte   $00,$7D,$02,$0C,$08,$7D,$02,$0C
         .byte   $FF
-sprite08ZPiece:
+spriteZPiece:
         .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
         .byte   $08,$7C,$02,$04,$08,$7C,$02,$0C
         .byte   $FF
-sprite09OPiece:
+spriteOPiece:
         .byte   $00,$7B,$02,$00,$00,$7B,$02,$08
         .byte   $08,$7B,$02,$00,$08,$7B,$02,$08
         .byte   $FF
-sprite0ASPiece:
+spriteSPiece:
         .byte   $00,$7D,$02,$04,$00,$7D,$02,$0C
         .byte   $08,$7D,$02,$FC,$08,$7D,$02,$04
         .byte   $FF
-sprite0BLPiece:
+spriteLPiece:
         .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
         .byte   $00,$7C,$02,$0C,$08,$7C,$02,$FC
         .byte   $FF
-sprite0CIPiece:
+spriteIPiece:
         .byte   $04,$7B,$02,$F8,$04,$7B,$02,$00
         .byte   $04,$7B,$02,$08,$04,$7B,$02,$10
         .byte   $FF
-sprite0EHighScoreNameCursor:
+spriteHighScoreNameCursor:
         .byte   $00,$FD,$20,$00,$FF
 spriteDebugLevelEdit:
         .byte   $00,'X',$00,$00
@@ -167,35 +153,21 @@ spriteIngameHeart:
 
 
 .enum
-SPRITE_00LEVELSELECTCURSOR
-SPRITE_01GAMETYPECURSOR
-SPRITE_02BLANK
-SPRITE_02BLANK2
-SPRITE_02BLANK3
-SPRITE_02BLANK4
-SPRITE_06TPIECE
-SPRITE_07JPIECE
-SPRITE_08ZPIECE
-SPRITE_09OPIECE
-SPRITE_0ASPIECE
-SPRITE_0BLPIECE
-SPRITE_0CIPIECE
-SPRITE_0EHIGHSCORENAMECURSOR1
-SPRITE_0EHIGHSCORENAMECURSOR2
-SPRITE_02BLANK5
-SPRITE_02BLANK6
-SPRITE_02BLANK7
-SPRITE_02BLANK8
-SPRITE_02BLANK9
-SPRITE_02BLANK10
-SPRITE_02BLANK11
+SPRITE_LEVELSELECTCURSOR
+SPRITE_GAMETYPECURSOR
+SPRITE_BLANK
+SPRITE_TPIECE
+SPRITE_JPIECE
+SPRITE_ZPIECE
+SPRITE_OPIECE
+SPRITE_SPIECE
+SPRITE_LPIECE
+SPRITE_IPIECE
+SPRITE_HIGHSCORENAMECURSOR
 SPRITE_DEBUGLEVELEDIT
 SPRITE_STATESAVE
 SPRITE_STATELOAD
-SPRITE_02BLANK13
-SPRITE_02BLANK14
 SPRITE_SEEDCURSOR
-SPRITE_02BLANK15
 SPRITE_PRACTISETYPECURSOR
 SPRITE_HEARTCURSOR
 SPRITE_HEART
