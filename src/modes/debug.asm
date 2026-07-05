@@ -154,7 +154,7 @@ debugContinue:
         beq @notPressedB
         dec currentPiece
         bpl @notPressedB
-        lda #$12
+        lda #$13
         sta currentPiece
 @notPressedB:
 
@@ -163,7 +163,7 @@ debugContinue:
         beq @notPressedA
         inc currentPiece
         lda currentPiece
-        cmp #$13
+        cmp #$14
         bne @notPressedA
         lda #$00
         sta currentPiece

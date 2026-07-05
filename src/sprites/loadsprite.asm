@@ -56,6 +56,7 @@ SPRITE_OPIECE
 SPRITE_SPIECE
 SPRITE_LPIECE
 SPRITE_IPIECE
+SPRITE_SPLIT_SQUARE
 SPRITE_HIGHSCORENAMECURSOR
 SPRITE_DEBUGLEVELEDIT
 SPRITE_STATESAVE
@@ -86,6 +87,7 @@ oamContentLookup:
         .addr   spriteSPiece
         .addr   spriteLPiece
         .addr   spriteIPiece
+        .addr   spriteSplitSquare
         .addr   spriteHighScoreNameCursor
         .addr   spriteDebugLevelEdit
         .addr   spriteStateSave
@@ -156,6 +158,10 @@ spriteLPiece:
 spriteIPiece:
         .byte   $04,$7B,$02,$F8,$04,$7B,$02,$00
         .byte   $04,$7B,$02,$08,$04,$7B,$02,$10
+        .byte   $FF
+spriteSplitSquare:
+        .byte   $00,$7B,$02,$FC,$00,$7B,$02,$0C
+        .byte   $08,$7B,$02,$FC,$08,$7B,$02,$0C
         .byte   $FF
 spriteHighScoreNameCursor:
         .byte   $00,$FD,$20,$00,$FF

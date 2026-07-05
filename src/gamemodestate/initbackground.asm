@@ -42,6 +42,12 @@ gameModeState_initGameBackground:
         jsr displayModeText
         jsr statisticsNametablePatch ; for input display
 
+        lda splitSquareFlag
+        beq @noSplitSquares
+
+        stagePatchThenWaitForNmi splitSquareNametable
+@noSplitSquares:
+
         ; ingame hearts
         lda heartsAndReady
         and #$F
@@ -232,6 +238,11 @@ trtNametable:
         .byte   $23,$17,$3,$74,$34,$34,$75
         .byte   $23,$37,$3,$35,$00,$00,$36
         .byte   $23,$57,$3,$76,$37,$37,$77
+        .byte   $0
+
+splitSquareNametable:
+        .byte   $22,$23,$1,$B0,$B1
+        .byte   $22,$43,$1,$B2,$B3
         .byte   $0
 
 savestateNametable:

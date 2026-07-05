@@ -83,7 +83,7 @@ playState_checkForCompletedRows:
         iny
         cpy #$0A
         bne @clearRowTopRow
-        lda #$13
+        lda #PIECE_HIDDEN
         sta currentPiece
 ; draw surface of floor in case of top line clear
         jsr drawFloorTopRow

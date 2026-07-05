@@ -21,7 +21,7 @@ playState_checkStartGameOver:
         tay
         lda #$00
         sta generalCounter3
-        lda #$13
+        lda #PIECE_HIDDEN
         sta currentPiece
 @drawCurtainRow:
         lda #$4F

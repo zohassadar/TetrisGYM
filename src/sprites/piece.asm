@@ -185,9 +185,15 @@ stageSpriteForNextPiece:
         lda #$77
         sta spriteYOffset
         ldx nextPiece
+        cpx #PIECE_SPLIT_SQUARE
+        bne @normal
+        lda #SPRITE_SPLIT_SQUARE
+        bne @store
+@normal:
         lda tetriminoTypeFromOrientation,x
         clc
         adc #SPRITE_TPIECE
+@store:
         sta spriteIndex
         jmp loadSpriteIntoOamStaging
 

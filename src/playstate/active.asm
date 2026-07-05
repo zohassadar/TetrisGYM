@@ -262,7 +262,7 @@ harddropShift:
 
         lda #8 ; jump straight to spawnTetrimino
         sta playState
-        lda #$13
+        lda #PIECE_HIDDEN
         sta currentPiece
         lda dropSpeed
         sta fallTimer
@@ -314,7 +314,7 @@ rotationTable:
         .dbyt   $0705,$0406,$0507,$0604
         .dbyt   $0909,$0808,$0A0A,$0C0C
         .dbyt   $0B0B,$100E,$0D0F,$0E10
-        .dbyt   $0F0D,$1212,$1111
+        .dbyt   $0F0D,$1212,$1111,$1313
 drop_tetrimino:
         lda linecapState
         cmp #LINECAP_KILLX2

@@ -15,7 +15,7 @@ branchOnPlayStatePlayer1:
             playState_incrementPlayState
 
 playState_unassignOrientationId:
-        lda #$13
+        lda #PIECE_HIDDEN
         sta currentPiece
         rts
 

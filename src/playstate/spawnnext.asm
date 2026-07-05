@@ -104,7 +104,7 @@ pickRandomTetrimino:
         sta spawnID
         jmp pickTetriminoPost
 @longbar:
-        lda #$12
+        lda #PIECE_I_HORIZ
         bne @useNewSpawnID
 
 pickTetriminoPre:
@@ -129,7 +129,7 @@ pickTetriminoPre:
         jmp pickRandomTetrimino
 
 pickTetriminoT:
-        lda #$2
+        lda #PIECE_T_DOWN
         sta spawnID
         rts
 
@@ -208,7 +208,7 @@ pickTetriminoSeed:
         sta spawnID
         jmp pickTetriminoPost
 @longbar:
-        lda #$12
+        lda #PIECE_I_HORIZ
         bne @useNewSpawnID
 
 setSeedNextRNG:
@@ -253,6 +253,13 @@ pickTetriminoPost:
         cmp #MODE_DROUGHT
         beq pickTetriminoDrought
         lda spawnID ; restore A
+        ldx splitSquareFlag
+        beq @ret
+        cmp #PIECE_O
+        bne @ret
+        lda #PIECE_SPLIT_SQUARE
+        sta spawnID
+@ret:
         rts
 
 pickTetriminoDrought:
@@ -262,7 +269,7 @@ pickTetriminoDrought:
         ldx #set_seed+1
 @notSeeded:
         lda spawnID ; restore A
-        cmp #$12
+        cmp #PIECE_I_HORIZ
         bne @droughtDone
         lda $00,x
         and #$F

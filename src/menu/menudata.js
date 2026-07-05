@@ -101,6 +101,7 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
+const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
 const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
 const startLines = ["TYPE_NUMBER", "lines *10", 31, "startLines"];
 const transFlag = ["TYPE_BOOL", "trans", "transFlag"];
@@ -275,6 +276,7 @@ const mainMenu = {
         teppozFlag,
         sxtoklFlag,
         palpepFlag,
+        splitSquareFlag,
         startScore,
         startLines,
         transFlag,
