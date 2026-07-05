@@ -1210,12 +1210,19 @@ stageCursor:
 @notColumn:
     lda #$1A
     sta spriteXOffset
-    ldx activePage
+
+; this code is redundant
+    ldx activeMenu
+    lda startPageByMenu,x
+    clc
+    adc activePage
+    tax
     lda activeRow
     clc
     adc startItemByPage,x
     tax
     lda itemTypes,x
+
     and #TYPE_MASK
     cmp #TYPE_CUSTOM
     beq @noValue
