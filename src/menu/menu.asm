@@ -97,7 +97,6 @@ gameMode_gameTypeMenu:
     lda #MENU_VARS_HI
     sta byteSpriteAddr+1
     lda #0
-    sta hideNextPiece
     sta byteSpriteTile
     sta vramRow
     sta gameStarted
@@ -647,7 +646,7 @@ addInputs:
     ldy udMax,x
     beq @sfx ; 0 means unlimited.  expected values 2-31
     cmp udMax,x
-    beq @rollToMin
+    bcs @rollToMin
     clc
     adc #$1
     cmp udMin,x

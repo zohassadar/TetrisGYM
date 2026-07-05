@@ -53,6 +53,9 @@ gameModeState_initGameState:
         sta trtLines
         sta trtLines+1
 
+        lda nextBoxStart
+        sta hideNextPiece
+
 ; initialize currentFloor if necessary
         lda floorModifier
         beq @notFloor

@@ -76,6 +76,7 @@ const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
+const nextBoxStart = ["TYPE_CHOICES", "next piece", ['shown', 'hidden'], "nextBoxStart"];
 const clearScores = ["TYPE_CUSTOM", "clear scores", "CLEAR_SCOREBOARD"];
 const resetDefaults = ["TYPE_CUSTOM", "reset defaults", "RESET_DEFAULTS"];
 
@@ -253,6 +254,7 @@ const mainMenu = {
     "general[mode=default]": [
         crashModifier,
         strictCrashFlag,
+        nextBoxStart,
         disablePause,
         debugFlag,
         goofyFlag,
