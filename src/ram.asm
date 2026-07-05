@@ -292,6 +292,8 @@ menuStack: .res 32
 ; only important in menu mode
 prevGoofy: .res 1
 
+topRowBuffer: .res 10
+
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
 musicStagingSq1Hi: .res 1 ; $0681

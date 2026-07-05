@@ -588,12 +588,14 @@ render_mode_top_row:
     sta PPUADDR
     lda #$CC
     sta PPUADDR
-    ldx #10
-    lda #$EF
+    ldx #0
+    ldy #9
 @loop:
+    lda playfield,x
     sta PPUDATA
-    dex
-    bne @loop
+    inx
+    dey
+    bpl @loop
     lda #RENDER_PLAY
     sta renderMode
     jmp render_mode_play_and_demo

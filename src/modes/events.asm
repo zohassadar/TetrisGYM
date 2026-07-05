@@ -11,7 +11,7 @@ practiseInitGameState:
         beq @skipFloor
         jsr initGameFloor
 @skipFloor:
-        jsr advanceGameCrunch
+        jsr initGameCrunch
         jmp practiseEachPiece
 
 practiseAdvanceGame:

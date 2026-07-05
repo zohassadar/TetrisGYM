@@ -238,16 +238,20 @@ harddropShift:
         lda completedLines
         beq @noScore
 
-; clear top rows * completedLines
-        lda #EMPTY_TILE
+; refresh rows * completed lines
         ldy completedLines
         ldx multBy10Table,y
         dex
+        ldy #9
 @topRowLoop:
+        lda topRowBuffer,y
         sta playfield, x
+        dey
+        bpl @noReset
+        ldy #9
+@noReset:
         dex
         bpl @topRowLoop
-
         jsr drawFloorTopRow
         jsr playState_updateLinesAndStatistics
 

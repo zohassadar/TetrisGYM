@@ -145,6 +145,7 @@ gameModeState_initGameState:
         jsr hzStart
         lda #0
         sta hzSpawnDelay
+        jsr initializeTopRowBuffer
         jsr practiseInitGameState
         jsr resetScroll
 

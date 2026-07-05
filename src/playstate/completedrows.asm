@@ -76,13 +76,9 @@ playState_checkForCompletedRows:
         dey
         cpy #$FF
         bne @movePlayfieldDownOneRow
-        lda #EMPTY_TILE
-        ldy #$00
-@clearRowTopRow:
-        sta (playfieldAddr),y
-        iny
-        cpy #$0A
-        bne @clearRowTopRow
+
+        jsr refreshTopRow
+
         lda #PIECE_HIDDEN
         sta currentPiece
 ; draw surface of floor in case of top line clear
@@ -114,10 +110,6 @@ playState_checkForCompletedRows:
         sta soundEffectSlot1Init
         rts
 @tapQtyEnd:
-
-        ; update top row for crunch
-        jsr advanceSides ; clobbers generalCounter3 and generalCounter4
-@crunchEnd:
 
         lda completedLines
         beq :+
