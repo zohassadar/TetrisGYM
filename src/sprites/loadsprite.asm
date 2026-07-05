@@ -120,10 +120,12 @@ spriteMenuPageSelectB:
         .byte   $00,$27,$00,$D7
         .byte   $FF
 spriteMenuStartOptionA:
-        .byte   $FE,$66,$00,$00
+        .byte   $00,$96,$00,$FC
+        .byte   $00,$97,$00,$04
         .byte   $FF
 spriteMenuStartOptionB:
-        .byte   $FE,$67,$00,$00
+        .byte   $00,$A6,$00,$FC
+        .byte   $00,$A7,$00,$04
         .byte   $FF
 spriteBlank:
         .byte   $00,$FF,$00,$00,$FF
