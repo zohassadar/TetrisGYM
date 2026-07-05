@@ -177,8 +177,7 @@ stageSpriteForCurrentPiece_return:
 
 stageSpriteForNextPiece:
         lda hideNextPiece
-        bne @maybeDisplayNextPiece
-
+        bne @ret
 @displayNextPiece:
         lda #$C8
         sta spriteXOffset
@@ -196,9 +195,5 @@ stageSpriteForNextPiece:
 @store:
         sta spriteIndex
         jmp loadSpriteIntoOamStaging
-
-@maybeDisplayNextPiece:
-        lda hardDropFlag
-        ora debugFlag
-        bne @displayNextPiece
+@ret:
         rts

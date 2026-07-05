@@ -3,6 +3,10 @@ gameModeState_updateCountersAndNonPlayerState:
         lda #$00
         sta oamStagingLength
         inc fallTimer
+        lda hardDropFlag
+        beq @ret
+        lda debugFlag
+        beq @ret
         lda newlyPressedButtons_player1
         and #BUTTON_SELECT
         beq @ret
