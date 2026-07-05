@@ -22,7 +22,7 @@ titlePalette:
         .byte   $0F,$17,$27,$37
         .byte   $0F,$30,MENU_HIGHLIGHT_COLOR,$00
         .byte   $0F,$22,$2A,$28
-        .byte   $0F,$30,$29,$27 ; sprite
+        .byte   $0F,$27,$29,$27 ; sprite
         .byte   $00
 menuPalette:
         .byte   $3F,$00

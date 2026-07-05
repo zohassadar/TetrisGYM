@@ -11,6 +11,10 @@ MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 17
 
 
+CURSOR_SLEEP_1 = 33
+CURSOR_SLEEP_2 = 44
+
+
 MENU_STACK = $DF ; $01C8 - $01DF intended range
 
 ; custom routines
@@ -49,6 +53,8 @@ BCD_MASK = $10
 TYPE_BCD = TYPE_DIGIT | BCD_MASK
 TYPE_HEX = TYPE_DIGIT
 DIGIT_VALUE_MASK = $F
+
+sleepToggle = tetriminoY
 
 menuCode:
 
@@ -96,6 +102,7 @@ gameMode_gameTypeMenu:
     sta vramRow
     sta gameStarted
     sta sleepCounter
+    sta sleepToggle
     jsr makeNotReady
 
 ; check to see if returning from level menu or game
@@ -156,7 +163,7 @@ gameTypeLoop:
     jsr addInputs
     jsr checkGoofy
     jsr respondToInput
-
+    jsr stageCursor
     ; scratch is not important anymore
     jsr stageVRAMRow
     jsr stageVRAMRow
@@ -168,7 +175,6 @@ gameTypeLoop:
     sta prevGoofy
 gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
-    jsr stageCursor
     jmp gameTypeLoop
 
 .out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
@@ -1176,9 +1182,6 @@ stageCursor:
 ; digit input
     ldx activeColumn
     beq @notColumn
-    sec
-    sbc #$09
-    sta spriteYOffset
     txa
     asl
     asl
@@ -1207,7 +1210,11 @@ stageCursor:
 @notColumn:
     lda #$1A
     sta spriteXOffset
-    ldx activeItem
+    ldx activePage
+    lda activeRow
+    clc
+    adc startItemByPage,x
+    tax
     lda itemTypes,x
     and #TYPE_MASK
     cmp #TYPE_CUSTOM
@@ -1222,21 +1229,25 @@ stageCursor:
 @stage:
     lda sleepCounter
     bne @noToggle
-    lda tetriminoY
+    lda sleepToggle
     eor #1
-    sta tetriminoY
-    lda #22
+    sta sleepToggle
+    beq @sleep1
+    lda #CURSOR_SLEEP_2
+    bne @storeSleep
+@sleep1:
+    lda #CURSOR_SLEEP_1
+@storeSleep:
     sta sleepCounter
 @noToggle:
-    lda tetriminoY
-    and #1
+    lda sleepToggle
     clc
     adc spriteIndex
     sta spriteIndex
 @noFrameAdjust:
     jmp loadSpriteIntoOamStaging
 @noValue:
-    lda #SPRITE_MENUSTART
+    lda #SPRITE_MENUSTARTA
     sta spriteIndex
     jmp @stage
 gotoEdgeCase:

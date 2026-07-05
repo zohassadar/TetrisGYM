@@ -217,7 +217,7 @@ hzStats: ; stripe
         .byte $0
 
 sevenDigitNametable:
-        .byte $20, $5E, $1, $37, $75 ; -
+        .byte $20, $5E, $1, $34, $75 ; -
         .byte $20, $7E, $1, $FF, $36 ; |
         .byte $20, $9E, $1, $FF, $36 ; |
         .byte $20, $BE, $1, $FF, $36 ; |

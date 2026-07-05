@@ -46,7 +46,8 @@ loadSpriteIntoOamStaging:
 .enum
 SPRITE_LEVELSELECTCURSOR
 SPRITE_GAMETYPECURSOR
-SPRITE_MENUSTART
+SPRITE_MENUSTARTA
+SPRITE_MENUSTARTB
 SPRITE_BLANK
 SPRITE_TPIECE
 SPRITE_JPIECE
@@ -75,7 +76,8 @@ SPRITE_MENUPAGESELECTB
 oamContentLookup:
         .addr   spriteLevelSelectCursor
         .addr   spriteGameTypeCursor
-        .addr   spriteMenuStartOption
+        .addr   spriteMenuStartOptionA
+        .addr   spriteMenuStartOptionB
         .addr   spriteBlank
         .addr   spriteTPiece
         .addr   spriteJPiece
@@ -114,11 +116,14 @@ spriteMenuPageSelectA:
         .byte   $00,$27,$00,$D9
         .byte   $FF
 spriteMenuPageSelectB:
-        .byte   $00,$27,$40,$04
-        .byte   $00,$27,$00,$D5
+        .byte   $00,$27,$40,$02
+        .byte   $00,$27,$00,$D7
         .byte   $FF
-spriteMenuStartOption:
-        .byte   $FE,$69,$00,$00
+spriteMenuStartOptionA:
+        .byte   $FE,$66,$00,$00
+        .byte   $FF
+spriteMenuStartOptionB:
+        .byte   $FE,$67,$00,$00
         .byte   $FF
 spriteBlank:
         .byte   $00,$FF,$00,$00,$FF
@@ -166,18 +171,20 @@ spriteStateSave:
         .byte   $00,'D',$03,$20
         .byte   $FF
 spriteSeedCursorA:
-        .byte   $00,$6B,$00,$00
+        .byte   $FD,$6B,$80,$00
+        .byte   $02,$6B,$00,$00
         .byte   $FF
 spriteSeedCursorB:
-        .byte   $00,$6B,$00,$00
+        .byte   $FC,$6B,$80,$00
+        .byte   $03,$6B,$00,$00
         .byte   $FF
 spritePractiseTypeCursorA:
-        .byte   $00,$27,$40,$FA
-        .byte   $00,$27,$00,$06
+        .byte   $00,$27,$40,$FB
+        .byte   $00,$27,$00,$05
         .byte   $FF
 spritePractiseTypeCursorB:
-        .byte   $00,$27,$40,$F8
-        .byte   $00,$27,$00,$08
+        .byte   $00,$27,$40,$FA
+        .byte   $00,$27,$00,$06
         .byte   $FF
 spriteHeartCursor:
         .byte   $00,$6c,$00,$00,$FF

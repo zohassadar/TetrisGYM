@@ -115,6 +115,7 @@ patchSeed:
         jsr drawCrashMode
 
         lda transFlag
+        beq @notTrans
         stagePatch menuTransPatch
 @notTrans:
         lda sxtoklFlag
