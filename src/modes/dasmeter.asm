@@ -1,5 +1,5 @@
-Y_COORDINATE = 211
-X_START = 103
+Y_COORDINATE = 219
+X_START = 101
 stageDasMeterSprites:
 @dasValue = generalCounter
 @tile = generalCounter2
@@ -42,7 +42,7 @@ stageDasMeterSprites:
     sta @redCompare
     inc @redCompare ; 3 when ntsc vanilla
 
-    lda #$FE
+    lda #$CE
     sta @tile
     lda @dasValue
     lsr
@@ -90,7 +90,7 @@ stageDasMeterSprites:
 @drawHalfTile:
     lda @tile
     sec
-    sbc #32
+    sbc #16
     sta oamStaging+1,x
     tya
     sta oamStaging+3,x

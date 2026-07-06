@@ -15,6 +15,12 @@ gameModeState_initGameBackground:
         beq @noTrtPatch
         stagePatch trtNametable
 @noTrtPatch:
+
+        lda dasMeterFlag
+        beq @noDasMeter
+        stagePatch dasMeterNametable
+@noDasMeter:
+
         jsr debugNametableUI
 
         ldy #$20
@@ -257,6 +263,11 @@ savestateNametable:
         .byte   $23,$17,$7,$35,$1C,$15,$18,$1D,$FF,$FF,$36
         .byte   $23,$37,$7,$35,$FF,$FF,$FF,$FF,$FF,$FF,$36
         .byte   $23,$57,$7,$76,$37,$37,$37,$37,$37,$37,$77
+        .byte   $0
+
+dasMeterNametable:
+        .byte   $23,$6C,$9,$74,$34,$34,$34,$34,$34,$34,$34,$34,$75
+        .byte   $23,$8C,$9,$76,$37,$37,$37,$37,$37,$37,$37,$37,$77
         .byte   $0
 
 NORMAL_CORNER_TILES := $70
