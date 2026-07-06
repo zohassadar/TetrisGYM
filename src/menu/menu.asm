@@ -1199,9 +1199,7 @@ stageCursor:
     asl
     asl
     eor #$FF
-    clc
-    adc #$01
-    clc
+    sec
     adc spriteXOffset
     sta spriteXOffset
     lda #SPRITE_SEEDCURSORA  ; digit select
