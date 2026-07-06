@@ -13,7 +13,7 @@ gameModeState_initGameBackground:
         jsr scoringBackground
         lda trtFlag
         beq @noTrtPatch
-        stagePatchThenWaitForNmi trtNametable
+        stagePatch trtNametable
 @noTrtPatch:
         jsr debugNametableUI
 
@@ -30,10 +30,23 @@ gameModeState_initGameBackground:
         jsr drawDarkMode
 @notDarkMode:
 
+        lda splitSquareFlag
+        beq @noSplitSquares
+
+        stagePatch splitSquareNametable
+@noSplitSquares:
+
         lda hzFlag
         beq @noHz
-        stagePatchThenWaitForNmi hzStats
+        stagePatch hzStats
 @noHz:
+
+; flush queue here
+        lda #RENDER_QUEUE
+        sta renderMode
+        jsr updateAudioWaitForNmiAndResetOamStaging
+        lda #RENDER_DISABLE
+        sta renderMode
 
         lda #$20
         sta tmp1
@@ -41,12 +54,6 @@ gameModeState_initGameBackground:
         sta tmp2
         jsr displayModeText
         jsr statisticsNametablePatch ; for input display
-
-        lda splitSquareFlag
-        beq @noSplitSquares
-
-        stagePatchThenWaitForNmi splitSquareNametable
-@noSplitSquares:
 
         ; ingame hearts
         lda heartsAndReady
@@ -110,7 +117,7 @@ scoringBackground:
         ; 7 digit
         cmp #SCORING_SEVENDIGIT
         bne @noSevenDigit
-        stagePatchThenWaitForNmi sevenDigitNametable
+        stagePatch sevenDigitNametable
 
 @noSevenDigit:
 
@@ -196,7 +203,7 @@ statisticsNametablePatch:
 showPaceDiffText:
         lda paceModifier
         bmi @done
-        stagePatchThenWaitForNmi paceDiffText
+        stagePatch paceDiffText
         lda #0
 @done:
         rts
