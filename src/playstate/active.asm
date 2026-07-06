@@ -19,7 +19,17 @@ playState_playerControlsActiveTetrimino_return:
 harddrop_tetrimino:
         lda newlyPressedButtons
         and #BUTTON_UP+BUTTON_SELECT
+
+; secret grade checking deferred until frame following a harddrop
+        bne @hardDrop
+        lda secretGradePending
         beq playState_playerControlsActiveTetrimino_return
+        lda #0
+        sta secretGradePending
+        jmp secretGradeGrading
+@hardDrop:
+        lda #1
+        sta secretGradePending
         lda tetriminoY
         sta tmpY
         lda hardDropGhostY ; value set by previous frame's sprite staging

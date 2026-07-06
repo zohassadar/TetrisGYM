@@ -1,4 +1,5 @@
 stageSpriteForCurrentPiece:
+        jsr secretGradeSprite
         lda gameTimerFlag
         beq @noGameTimer
         lda #$C0

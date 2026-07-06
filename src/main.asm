@@ -91,6 +91,7 @@ mainLoop:
 .include "seeds.asm"
 .include "modes/dasmeter.asm"
 .include "modes/calibrate.asm"
+.include "modes/secretgrade.asm"
 
 .segment    "PRG_chunk3": absolute
 

@@ -1,4 +1,5 @@
 playState_receiveGarbage:
+        jsr secretGradeGrading
         ldy pendingGarbage
         beq @ret
         lda multBy10Table,y

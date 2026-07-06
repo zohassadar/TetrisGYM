@@ -294,6 +294,9 @@ prevGoofy: .res 1
 
 topRowBuffer: .res 10
 
+secretGrade: .res 1
+secretGradePending: .res 1
+
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
 musicStagingSq1Hi: .res 1 ; $0681

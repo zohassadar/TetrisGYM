@@ -52,7 +52,7 @@ gameModeState_initGameState:
         sta trtScratch+5
         sta trtLines
         sta trtLines+1
-
+        sta secretGrade
         lda nextBoxStart
         sta hideNextPiece
 

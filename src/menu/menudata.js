@@ -28,6 +28,7 @@ const paceModifier = ["TYPE_FF_OFF", "Pace", 16, "paceModifier"];
 const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
 const inputDisplayFlag = ["TYPE_BOOL", "Input Display", "inputDisplayFlag"];
 const disableFlash = ["TYPE_BOOL", "Disable Flash", "disableFlashFlag"];
+const secretGrading = ["TYPE_BOOL", "Secret Grading", "secretGradingFlag"];
 const darkMode = [
     "TYPE_CHOICES",
     "dark mode",
@@ -295,6 +296,7 @@ const mainMenu = {
         trtFlag,
         dasMeterFlag,
         gameTimerFlag,
+        secretGrading,
         paletteSelection,
         goToCustomPalette,
     ],

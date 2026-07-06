@@ -142,4 +142,4 @@ VITS_SCORE = 100000
         jsr updatePlayfield
         jsr updateMusicSpeed
         inc playState
-@ret:   rts
+        jmp secretGradeGrading
