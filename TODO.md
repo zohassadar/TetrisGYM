@@ -11,3 +11,4 @@
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
+* menu bug! go to edit the digits in, say, linecap lines. press B to back up to "tournament". up/down stay disabled until you move left/right
