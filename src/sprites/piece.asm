@@ -53,6 +53,9 @@ ghostPiece:
         cmp #8
         bne @noGhost
 @ghost:
+        lda currentPiece
+        cmp #PIECE_HIDDEN
+        beq @noGhost
         lda frameCounter
         and #1
         asl
