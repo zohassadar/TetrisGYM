@@ -1,4 +1,5 @@
 practiseInitGameState:
+        lda practiseType
         cmp #MODE_TAP
         bne @skipTap
         jmp initGameTap
