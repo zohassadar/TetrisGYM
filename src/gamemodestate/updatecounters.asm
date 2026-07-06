@@ -3,10 +3,13 @@ gameModeState_updateCountersAndNonPlayerState:
         lda #$00
         sta oamStagingLength
         inc fallTimer
+
+; select does not toggle next box for hard drop or debug mode
         lda hardDropFlag
-        beq @ret
+        bne @ret
         lda debugFlag
-        beq @ret
+        bne @ret
+
         lda newlyPressedButtons_player1
         and #BUTTON_SELECT
         beq @ret

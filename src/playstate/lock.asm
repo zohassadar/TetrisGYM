@@ -1,5 +1,4 @@
 playState_lockTetrimino:
-I_VERTICAL = $11
 VITS_SCORE = 100000
 @currentTile = generalCounter5
         jsr isPositionValid
@@ -61,7 +60,7 @@ VITS_SCORE = 100000
         ldx vitsScoreFlag
         beq @noVits
         ldx currentPiece
-        cpx #I_VERTICAL
+        cpx #PIECE_I_VERT
         bne @noVits
         ; check if tile exists above
         sec
