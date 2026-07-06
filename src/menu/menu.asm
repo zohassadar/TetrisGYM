@@ -603,12 +603,18 @@ checkIfExitSubmenu:
     beq doSomethingWithSelect
     lda activeMenu
     bne @exitSubmenu
+    lda activeColumn
+    bne @setLeftColumn
     lda activeRow
     bpl @setTopRow
     lda activePage
     beq doSomethingWithSelect
     lda #0
     sta activePage
+    beq @sfx
+@setLeftColumn:
+    lda #0
+    sta activeColumn
     beq @sfx
 @setTopRow:
     lda #$FF
