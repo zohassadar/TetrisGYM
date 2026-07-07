@@ -11,6 +11,7 @@
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
 * add "x100k" to pace modifier label
+* cleanup keyboard seed entry code
 
 # Bugs
 * harddrop mode skips events
@@ -21,3 +22,4 @@
 * linecap lines highbyte is bcd, needs to be converted to binary
 * tap quantity mode should ignore floor/crunch
 * next piece isn't affected by mirror flags
+* initial trt doesn't display when block tool enabled
