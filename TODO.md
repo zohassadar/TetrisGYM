@@ -11,3 +11,4 @@
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
+* game timer continues after b-game end
