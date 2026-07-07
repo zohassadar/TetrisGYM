@@ -5,6 +5,12 @@
 * clear scoreboard individually
 * height 6-8 logic can be rearranged to be closer to vanilla
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
+* try das meter 1 tile narrower and left/right aligned with playfield vs centered
+* move secret grade over when 7 digit scoring is enabled
+* move nextpiece option to display
+* trans/marathon/sxotkl on one page?
+* save/load custom palette to/from sram
+* add "x100k" to pace modifier label
 
 # Bugs
 * harddrop mode skips events
@@ -12,3 +18,6 @@
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
 * game timer continues after b-game end
+* linecap lines highbyte is bcd, needs to be converted to binary
+* tap quantity mode should ignore floor/crunch
+* next piece isn't affected by mirror flags
