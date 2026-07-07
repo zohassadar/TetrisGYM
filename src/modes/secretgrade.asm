@@ -1,5 +1,5 @@
 secretGradeGrading:
-    @sgRow = generalCounter ; 19 to 0
+    @sgRow = generalCounter ; 19 to 1
     @sgCol = generalCounter2 ; 0 to 9 to 0
     @sgAdjust = generalCounter3 ; 1 until row 10, then -1
     lda #19
