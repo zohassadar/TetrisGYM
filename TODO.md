@@ -25,3 +25,4 @@
 * initial trt doesn't display when block tool enabled
 * checkerboard completion shows wrong message
 * linecap bugs (kirby's note)
+* vits scoring does not update when harddropping
