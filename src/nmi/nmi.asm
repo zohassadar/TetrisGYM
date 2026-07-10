@@ -1,4 +1,6 @@
 nmi:    pha
+        lda renderMode
+        beq restoreA
         txa
         pha
         tya
@@ -14,8 +16,6 @@ nmi:    pha
         sta OAMADDR
         lda #$02
         sta OAMDMA
-        lda renderMode
-        beq restoreRegisters
 
 renderComplete:
         lda sleepCounter
@@ -41,7 +41,6 @@ renderComplete:
         inc gameTimer+1
         bne restoreRegisters
         inc gameTimer
-restoreRegisters:
         lda #$00
         sta oamStagingLength
         sta lagState ; clear flag after lag frame achieved
@@ -54,5 +53,6 @@ restoreRegisters:
         tay
         pla
         tax
+restoreA:
         pla
 irq:    rti
