@@ -26,3 +26,4 @@
 * checkerboard completion shows wrong message
 * linecap bugs (kirby's note)
 * vits scoring does not update when harddropping
+* reset defaults doesn't consider detected region
