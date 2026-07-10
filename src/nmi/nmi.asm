@@ -37,10 +37,11 @@ renderComplete:
 
         ; advance game timer
         lda gameTimerStop
-        bne restoreRegisters
+        bne nmiFinish
         inc gameTimer+1
-        bne restoreRegisters
+        bne nmiFinish
         inc gameTimer
+nmiFinish:
         lda #$00
         sta oamStagingLength
         sta lagState ; clear flag after lag frame achieved
