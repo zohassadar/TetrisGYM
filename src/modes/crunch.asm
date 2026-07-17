@@ -33,7 +33,9 @@ initGameCrunch:
     ldx #0
 @loop:
     lda topRowBuffer,x
+    bmi @noTile
     sta playfield,y
+@noTile:
     iny
     inx
     cpx #$0A
@@ -63,7 +65,7 @@ initializeTopRowBuffer:
     bpl @initLoop
 
     jsr copyCrunchModifier
-    lda #BLOCK_TILES
+    lda #BLOCK_TILES+3
     ldy #$0
 @leftLoop:
     dec crunchLeftColumns

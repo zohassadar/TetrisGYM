@@ -2,8 +2,11 @@ playState_prepareNext:
         lda practiseType
         cmp #MODE_CHECKERBOARD
         bne @checkBType
-        lda completedRow+3
-        cmp #$13
+        ; check to see if bottom row for checkerboard has been cleared
+        lda #$13
+        sec
+        sbc currentFloor
+        cmp completedRow+3
         bne endOfEndingCode
         jsr typeBEndingStuff
         rts

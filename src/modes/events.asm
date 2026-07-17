@@ -8,11 +8,11 @@ practiseInitGameState:
         bne @skipChecker
         jsr initChecker
 @skipChecker:
+        jsr initGameCrunch
         lda floorModifier
         beq @skipFloor
         jsr initGameFloor
 @skipFloor:
-        jsr initGameCrunch
         jmp practiseEachPiece
 
 practiseAdvanceGame:
