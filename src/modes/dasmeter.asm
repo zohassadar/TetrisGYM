@@ -1,5 +1,5 @@
 Y_COORDINATE = 219
-X_START = 101
+X_START = 100
 stageDasMeterSprites:
 @dasValue = generalCounter
 @tile = generalCounter2
@@ -70,7 +70,7 @@ stageDasMeterSprites:
     sta oamStaging+3,x
     lda #Y_COORDINATE
     sta oamStaging+0,x
-    lda #3
+    lda #$23
     sta oamStaging+2,x
     inx
     inx
@@ -94,7 +94,7 @@ stageDasMeterSprites:
     sta oamStaging+1,x
     tya
     sta oamStaging+3,x
-    lda #3
+    lda #$23
     sta oamStaging+2,x
     lda #Y_COORDINATE
     sta oamStaging+0,x

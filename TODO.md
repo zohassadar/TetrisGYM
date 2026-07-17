@@ -5,7 +5,6 @@
 * clear scoreboard individually
 * height 6-8 logic can be rearranged to be closer to vanilla
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
-* try das meter 1 tile narrower and left/right aligned with playfield vs centered
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
 * cleanup keyboard seed entry code
