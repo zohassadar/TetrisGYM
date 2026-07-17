@@ -65,6 +65,7 @@ endOfEndingCode:
         rts
 
 typeBEndingStuff:
+        inc gameTimerStop
         ldx #<typebSuccessGraphic
         ldy #>typebSuccessGraphic
 copyGraphic:
@@ -86,9 +87,9 @@ typeBEndingStuffEnd:
 
 sleep_gameplay_nextSprite:
         sta sleepCounter
-        jsr stageSpriteForNextPiece
+        jsr stageCurrentAndNextPieces
 @loop:  jsr updateAudioWaitForNmiAndResetOamStaging
-        jsr stageSpriteForNextPiece
+        jsr stageCurrentAndNextPieces
         lda sleepCounter
         bne @loop
         rts

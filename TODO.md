@@ -18,7 +18,6 @@
 * garbage + crunch or floor does not work well
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
-* game timer continues after b-game end
 * linecap lines highbyte is bcd, needs to be converted to binary
 * tap quantity mode should ignore floor/crunch
 * next piece isn't affected by mirror flags

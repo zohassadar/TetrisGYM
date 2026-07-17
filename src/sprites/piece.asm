@@ -1,3 +1,5 @@
+stageCurrentAndNextPieces:
+        jsr stageSpriteForNextPiece
 stageSpriteForCurrentPiece:
         jsr secretGradeSprite
         lda gameTimerFlag

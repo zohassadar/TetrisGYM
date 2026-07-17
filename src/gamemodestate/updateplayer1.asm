@@ -40,8 +40,7 @@ gameModeState_updatePlayer1:
         sta autorepeatX
 @branchOnPlaystate:
         jsr branchOnPlayStatePlayer1
-        jsr stageSpriteForCurrentPiece
-        jsr stageSpriteForNextPiece
+        jsr stageCurrentAndNextPieces
         jsr stageDasMeterSprites
 
         inc gameModeState ; 5

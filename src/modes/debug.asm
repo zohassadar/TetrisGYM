@@ -81,9 +81,7 @@ debugDrawPieces:
         jsr loadSpriteIntoOamStaging
         rts
 debugPauseDrawPieces:
-        jsr stageSpriteForNextPiece
-        jsr stageSpriteForCurrentPiece
-        rts
+        jmp stageCurrentAndNextPieces
 
 debugMode:
 
