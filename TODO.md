@@ -17,5 +17,4 @@
 * tap quantity mode should ignore floor/crunch
 * next piece isn't affected by mirror flags
 * linecap bugs (kirby's note)
-* vits scoring does not update when harddropping
 * block tool saved/loaded message overlaps with tetris rate

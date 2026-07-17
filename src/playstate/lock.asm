@@ -82,6 +82,10 @@ VITS_SCORE = 100000
         lda #0
         adc binScore+3
         sta binScore+3
+        jsr setupScoreForRender
+        lda renderFlags
+        ora #RENDER_SCORE
+        sta renderFlags
 @noVits:
         ldx currentPiece
         lda #EMPTY_TILE
