@@ -30,5 +30,3 @@
 * checkerboard tiles need to be distinct from floor/crunch
 * floor setup needs to happen after crunch setup
 * reset speedtest attributes
-* t-spins trainer does not work
-
