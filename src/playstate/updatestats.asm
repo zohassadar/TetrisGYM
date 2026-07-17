@@ -135,7 +135,7 @@ checkLinecap: ; set linecapState
 @linecapLines:
 
         lda lines+1
-        cmp linecapLines
+        cmp linecapLinesBinHi
         bcc @linecapEnd
         lda lines
         cmp linecapLines+1

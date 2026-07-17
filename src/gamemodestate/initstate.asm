@@ -23,6 +23,22 @@ gameModeState_initGameState:
         lda set_seed_input+2
         sta set_seed+2
 
+        ; convert bcd linecap high byte to decimal
+        lda linecapLines
+        lsr
+        lsr
+        lsr
+        lsr
+        tay
+        lda multBy10Table,y
+        sta generalCounter
+        lda linecapLines
+        and #$F
+        clc
+        adc generalCounter
+        sta linecapLinesBinHi
+
+
         ; paceResult init
         lda #$B0
         sta paceResult

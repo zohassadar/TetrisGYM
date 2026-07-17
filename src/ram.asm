@@ -298,6 +298,9 @@ secretGrade: .res 1
 secretGradePending: .res 1
 detectedRegion: .res 1 ; set at same time as palFlag but not user configurable
 
+linecapLinesBinHi: .res 1 ; menu input is BCD, converted to binary and stored here
+                          ; low byte is also BCD but is treated by game as BCD
+
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
 musicStagingSq1Hi: .res 1 ; $0681
