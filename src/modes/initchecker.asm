@@ -3,12 +3,11 @@ CHECKERBOARD_TILE := BLOCK_TILES
 CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         lda #0
         sta vramRow
-        ldx checkerModifier
-        lda typeBBlankInitCountByHeightTable, x
-        tax
-        cpx #$C8 ; edge case for height 0
+        ldy checkerModifier
+        ldx typeBBlankInitCountByHeightTable,y
+        cpx #200 ; edge case for height 0
         bne @notZero
-        ldx #$BE
+        ldx #190
 @notZero:
         lda seededPieces
         beq @random
@@ -34,6 +33,6 @@ CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
 @notA:  sta playfield, x
         eor #CHECKERBOARD_FLIP
         inx
-        cpx #$C8
+        cpx #200
         bcc @loop
         rts
