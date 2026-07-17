@@ -47,15 +47,17 @@ rocketNametablePatch: ; stripe
 
 speedtestNametablePatch:
         ; tiles
-        .byte $21, $A3, $5, 0, 0, $ED, 0, 0, $EC
-        .byte $22, $23, $2, 'T', 'A', 'P'
-        .byte $22, $A3, $2, 'D', 'I', 'R'
-        .byte $22, $28, $0, 0
-        ; attrs
-        .byte $23, $e2, $0, 0
-        .byte $23, $ea, $0, 0
-        .byte $23, $d8, $2, $55, $55, $55
-        .byte $00
+        .byte $21,$A3,$5,0,0,$ED,0,0,$EC
+        .byte $22,$23,$2,'T','A','P'
+        .byte $22,$A3,$2,'D','I','R'
+        .byte $22,$28,$0,0
+        ;attrs
+        .byte $23,$E2,$0,0
+        .byte $23,$EA,$0,0
+        .byte $23,$D8,$2,$55,$55,$55
+        .byte $23,$C6,$0,$AA
+        .byte $23,$CE,$0,$AA
+        .byte $0
 
 
 .include "nametables/rle.asm"
