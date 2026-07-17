@@ -54,6 +54,12 @@ secretGradeSprite:
     lda secretGradingFlag
     beq secretGradeSprite-1
     lda #$E0
+    ldy scoringModifier
+    cpy #SCORING_SEVENDIGIT
+    bne @noShift
+    clc
+    adc #$8
+@noShift:
     sta spriteXOffset
     lda #$47
     sta spriteYOffset

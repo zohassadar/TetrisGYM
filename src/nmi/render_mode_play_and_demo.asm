@@ -12,15 +12,15 @@ render_mode_play_and_demo:
 @playStateNotDisplayLineClearingAnimation:
         jsr render_playfield
 @renderLines:
-
+        lda     trtFlag
+        beq     @noTetrisRate
         lda     trtScratch+5
-        beq     LFC0C
         ldx     #$23
         stx     PPUADDR
         ldx     #$38
         stx     PPUADDR
         jsr     twoDigsToPPU
-LFC0C:
+@noTetrisRate:
 
         lda modernLinesFlag
         bne @modernLines

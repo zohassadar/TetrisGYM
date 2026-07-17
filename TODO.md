@@ -6,7 +6,6 @@
 * height 6-8 logic can be rearranged to be closer to vanilla
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * try das meter 1 tile narrower and left/right aligned with playfield vs centered
-* move secret grade over when 7 digit scoring is enabled
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
 * cleanup keyboard seed entry code
@@ -19,6 +18,6 @@
 * linecap lines highbyte is bcd, needs to be converted to binary
 * tap quantity mode should ignore floor/crunch
 * next piece isn't affected by mirror flags
-* initial trt doesn't display when block tool enabled
 * linecap bugs (kirby's note)
 * vits scoring does not update when harddropping
+* block tool saved/loaded message overlaps with tetris rate
