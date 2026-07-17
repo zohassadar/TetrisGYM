@@ -40,6 +40,7 @@ checkRegion:
         beq @ntsc
         lda #1
         sta palFlag
+        sta detectedRegion
 
         ; check to see if custom settings are applied
         ; leave alone if not vanilla

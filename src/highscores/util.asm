@@ -10,6 +10,9 @@ resetScores:
 
 
 resetMenuVars:
+; preserve keyboard flag
+        lda keyboardFlag
+        pha
         ldx #sramVariableLength -1
         lda #$0
 @loop:
@@ -17,14 +20,26 @@ resetMenuVars:
         dex
         bpl @loop
 
+        pla
+        sta keyboardFlag
+
         lda #$FF
         sta paceModifier
 
-        lda #NTSC_DAS
-        sta dasModifier
-        lda #NTSC_ARR
-        sta arrModifier
+; set das/arr based on detected region at bootup
+        ldx #NTSC_DAS
+        ldy #NTSC_ARR
+        lda detectedRegion
+        sta palFlag
+        beq @storeDas
+        ; pal
+        ldx #PAL_DAS
+        ldy #PAL_ARR
+@storeDas:
+        stx dasModifier
+        sty arrModifier
 
+@continue:
         lda #MODE_TETRIS
         sta practiseType
 

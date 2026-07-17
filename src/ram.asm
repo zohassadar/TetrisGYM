@@ -296,6 +296,7 @@ topRowBuffer: .res 10
 
 secretGrade: .res 1
 secretGradePending: .res 1
+detectedRegion: .res 1 ; set at same time as palFlag but not user configurable
 
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
