@@ -23,7 +23,7 @@ gameModeState_initGameState:
         lda set_seed_input+2
         sta set_seed+2
 
-        ; convert bcd linecap high byte to decimal
+        ; convert bcd linecap high byte to binary
         lda linecapLines
         lsr
         lsr
