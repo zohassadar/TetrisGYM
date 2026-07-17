@@ -7,7 +7,6 @@
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
-* cleanup keyboard seed entry code
 
 # Bugs
 * harddrop mode skips events

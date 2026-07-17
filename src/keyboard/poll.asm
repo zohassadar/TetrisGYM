@@ -144,28 +144,6 @@ detectKeyboard:
 @noKeyboard:
         rts
 
-; Seed Entry
-
-
-readKbSeedEntry:
-        ldx #seedEntryCharCount
-@readLoop:
-        lda seedEntryTable,x
-        jsr readKey
-        bne @seedEntered
-        dex
-        bpl @readLoop
-@seedEntered:
-        cpx kbHeldInput
-        beq @noInput
-        stx kbHeldInput
-        txa
-        rts
-@noInput:
-        lda #$FF
-        rts
-
-
 ; high score entry
 
 
