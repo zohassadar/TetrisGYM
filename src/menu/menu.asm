@@ -458,17 +458,29 @@ collectControllerInput:
 checkGoofy:
     lda prevGoofy
     cmp goofyFlag
-    beq @noGoofyToggle
-    lda heldButtons_player1
+    beq checkGoofy-1
+
+; apply goofy to held & throttle tmp
+    ldx #<menuThrottleTmp
+    ldy #>menuThrottleTmp
+    jsr applyGoofy
+    ldx #<heldButtons_player1
+    ldy #>heldButtons_player1
+applyGoofy:
+    ; x/y = lo/hi byte of buttons
+    stx tmp1
+    sty tmp2
+    ldy #$0
+    lda (tmp1),y
     asl
     and #$AA
     sta tmp3
-    lda heldButtons_player1
+    lda (tmp1),y
     and #$AA
     lsr
     ora tmp3
-    sta heldButtons_player1
-@noGoofyToggle:
+    sta (tmp1),y
+@ret:
     rts
 
 respondToInput:
