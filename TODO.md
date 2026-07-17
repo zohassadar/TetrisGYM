@@ -7,10 +7,8 @@
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * try das meter 1 tile narrower and left/right aligned with playfield vs centered
 * move secret grade over when 7 digit scoring is enabled
-* move nextpiece option to display
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
-* add "x100k" to pace modifier label
 * cleanup keyboard seed entry code
 
 # Bugs

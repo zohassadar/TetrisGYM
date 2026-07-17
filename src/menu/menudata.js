@@ -24,7 +24,7 @@ const scoringModifier = [
     "scoringModifier",
 ];
 const modernLinesFlag = ["TYPE_BOOL", "modern lines", "modernLinesFlag"];
-const paceModifier = ["TYPE_FF_OFF", "Pace", 16, "paceModifier"];
+const paceModifier = ["TYPE_FF_OFF", "Pace *100k", 16, "paceModifier"];
 const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
 const inputDisplayFlag = ["TYPE_BOOL", "Input Display", "inputDisplayFlag"];
 const disableFlash = ["TYPE_BOOL", "Disable Flash", "disableFlashFlag"];
@@ -255,7 +255,6 @@ const mainMenu = {
     "general[mode=default]": [
         crashModifier,
         strictCrashFlag,
-        nextBoxStart,
         disablePause,
         debugFlag,
         goofyFlag,
@@ -297,6 +296,7 @@ const mainMenu = {
         dasMeterFlag,
         gameTimerFlag,
         secretGrading,
+        nextBoxStart,
         paletteSelection,
         goToCustomPalette,
     ],
