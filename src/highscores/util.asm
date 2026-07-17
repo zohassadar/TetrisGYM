@@ -10,18 +10,13 @@ resetScores:
 
 
 resetMenuVars:
-; preserve keyboard flag
-        lda keyboardFlag
-        pha
         ldx #sramVariableLength -1
         lda #$0
 @loop:
         sta menuVars,x
         dex
         bpl @loop
-
-        pla
-        sta keyboardFlag
+        jsr detectKeyboard
 
         lda #$FF
         sta paceModifier
