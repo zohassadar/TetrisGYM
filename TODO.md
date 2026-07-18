@@ -17,3 +17,5 @@
 * next piece isn't affected by mirror flags
 * linecap bugs (kirby's note)
 * block tool saved/loaded message overlaps with tetris rate
+* secret grading doesn't consider topout minos
+
