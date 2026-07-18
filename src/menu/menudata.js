@@ -109,9 +109,9 @@ const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
 const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
-const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
-const startLines = ["TYPE_NUMBER", "lines *10", 31, "startLines"];
-const transFlag = ["TYPE_BOOL", "trans", "transFlag"];
+const runwayFlag = ["TYPE_BOOL", "runway", "runwayFlag"];
+const runwayScore = ["TYPE_NUMBER", "rway score *100k", 16, "runwayScore"];
+const runwayLines = ["TYPE_NUMBER", "rway lines *10", 31, "runwayLines"];
 
 const presetModifier = [
     "TYPE_CHOICES",
@@ -284,9 +284,9 @@ const mainMenu = {
         sxtoklFlag,
         palpepFlag,
         splitSquareFlag,
-        startScore,
-        startLines,
-        transFlag,
+        runwayFlag,
+        runwayScore,
+        runwayLines,
     ],
 
     "display[mode=default]": [

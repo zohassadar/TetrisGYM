@@ -54,9 +54,9 @@ resetMenuVars:
         lda #6
         sta practisePiece
         lda #5
-        sta startScore
+        sta runwayScore
         lda #12
-        sta startLines
+        sta runwayLines
 
 resetVanillaPalette:
         ldx #9

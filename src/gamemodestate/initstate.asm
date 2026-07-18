@@ -174,14 +174,14 @@ initGameState_return:
         rts
 
 transitionModeSetup:
-        lda transFlag
+        lda runwayFlag
         beq initGameState_return
         lda #0
         sta factorB24+1
         sta factorB24+2
         sta lines+1
 
-        ldx startLines
+        ldx runwayLines
         lda levelDisplayTable,x
         sta lines
         ldx #4
@@ -199,7 +199,7 @@ transitionModeSetup:
         lda #^100000
         sta factorA24+2
 
-        lda startScore
+        lda runwayScore
         sta factorB24
         jsr unsigned_mul24
         lda product24+0
