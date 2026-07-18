@@ -4,6 +4,10 @@ VITS_SCORE = 100000
         jsr isPositionValid
         beq @notGameOver
 @gameOver:
+        lda secretGradingFlag
+        beq @notSecretGrade
+        jsr @noWait ; lock last piece in playfield for secret grade
+@notSecretGrade:
         inc gameTimerStop
         lda practiseType
         cmp #MODE_TYPEB
