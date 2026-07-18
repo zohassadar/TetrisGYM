@@ -44,7 +44,7 @@ const paletteSelection = [
 ];
 
 const customPaletteMenu = {
-    "palette[mode=default]": [
+    "custom palette[mode=default]": [
         ["TYPE_HEX", "0", 6, "customLevel0"],
         ["TYPE_HEX", "1", 6, "customLevel1"],
         ["TYPE_HEX", "2", 6, "customLevel2"],
