@@ -66,13 +66,30 @@ vramPlayfieldRows:
         .word   $22CC,$22EC,$230C,$232C
 
 copyLowStackRowToVram:
+@lowstackLine = generalCounter
+        lda #LOW_STACK_LINE
+        sta @lowstackLine
         ldy #0
+        lda mirrorHorizFlag
+        beq @notHorizMirror
+        jsr crunchAdjustYSetXHorizMirror
+        jmp @checkVert
+@notHorizMirror:
         jsr crunchAdjustYSetX
+@checkVert:
         txa
         pha
+        lda mirrorVertFlag
+        beq @notVertMirror
+        lda #LOW_STACK_LINE-16
+        sta @lowstackLine
+        lda lowStackRowModifier
+        jmp @continue
+@notVertMirror:
         sec
         lda #19
         sbc lowStackRowModifier
+@continue:
         asl
         tax
         lda vramPlayfieldRows+1,x
@@ -83,7 +100,7 @@ copyLowStackRowToVram:
         sta PPUADDR
         pla
         tax
-        lda #LOW_STACK_LINE
+        lda @lowstackLine
 @drawLine:
         sta PPUDATA
         dex

@@ -65,9 +65,15 @@ updatePlayfield:
 crunchLeftColumns = generalCounter3
 crunchRightColumns = generalCounter4
 
+
+crunchAdjustYSetXHorizMirror:
+        jsr copyCrunchModifierMirrored
+        jmp _crunchAdjust
 crunchAdjustYSetX:
+        jsr copyCrunchModifier
         ; add left columns to Y
         ; set X to playable columns
+_crunchAdjust:
         ldx crunchLeftModifier
         bne @crunch
         ldx crunchRightModifier
@@ -75,7 +81,6 @@ crunchAdjustYSetX:
 
 @crunch:
         ; add crunch left columns to y
-        jsr copyCrunchModifier
         tya
         clc
         adc crunchLeftColumns ; offset y with left column count (generalCounter3)

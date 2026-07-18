@@ -11,8 +11,7 @@
 # Bugs
 * harddrop mode skips events
 * garbage + crunch or floor does not work well
-* lowstack line doesn't respond to vert mirror flag
-* lowstack nope gets mirrored with horiz mirror flag
+* lowstack nope gets mirrored with horiz mirror flag (feature?)
 * tap quantity mode should ignore floor/crunch
 * linecap bugs (kirby's note)
 * block tool saved/loaded message overlaps with tetris rate

@@ -90,3 +90,10 @@ copyCrunchModifier:
     lda crunchRightModifier
     sta crunchRightColumns ; generalCounter4
     rts
+
+copyCrunchModifierMirrored:
+    lda crunchRightModifier
+    sta crunchLeftColumns ; generalCounter3
+    lda crunchLeftModifier
+    sta crunchRightColumns ; generalCounter4
+    rts
