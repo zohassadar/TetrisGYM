@@ -129,6 +129,7 @@ gameStarted: .res $1
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
 stringAttrib: .res 1 ; $00A2
+spriteTile:
 stringLength: .res 1 ; $00A2
 stringIndex:
 spriteIndex: .res 1 ; can probably be the same as stringIndex

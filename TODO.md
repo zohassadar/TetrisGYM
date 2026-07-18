@@ -14,8 +14,6 @@
 * lowstack line doesn't respond to vert mirror flag
 * lowstack nope gets mirrored with horiz mirror flag
 * tap quantity mode should ignore floor/crunch
-* next piece isn't affected by mirror flags
 * linecap bugs (kirby's note)
 * block tool saved/loaded message overlaps with tetris rate
 * secret grading doesn't consider topout minos
-

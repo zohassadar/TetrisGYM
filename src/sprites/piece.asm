@@ -192,14 +192,14 @@ stageSpriteForNextPiece:
         ldx nextPiece
         cpx #PIECE_SPLIT_SQUARE
         bne @normal
-        lda #SPRITE_SPLIT_SQUARE
+        lda #7
         bne @store
 @normal:
         lda tetriminoTypeFromOrientation,x
-        clc
-        adc #SPRITE_TPIECE
 @store:
         sta spriteIndex
-        jmp loadSpriteIntoOamStaging
+        lda tetriminoTileFromOrientation,x
+        sta spriteTile
+        jmp loadNextPieceIntoOamStaging
 @ret:
         rts

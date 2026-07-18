@@ -49,14 +49,6 @@ SPRITE_GAMETYPECURSOR
 SPRITE_MENUSTARTA
 SPRITE_MENUSTARTB
 SPRITE_BLANK
-SPRITE_TPIECE
-SPRITE_JPIECE
-SPRITE_ZPIECE
-SPRITE_OPIECE
-SPRITE_SPIECE
-SPRITE_LPIECE
-SPRITE_IPIECE
-SPRITE_SPLIT_SQUARE
 SPRITE_HIGHSCORENAMECURSOR
 SPRITE_DEBUGLEVELEDIT
 SPRITE_STATESAVE
@@ -80,14 +72,6 @@ oamContentLookup:
         .addr   spriteMenuStartOptionA
         .addr   spriteMenuStartOptionB
         .addr   spriteBlank
-        .addr   spriteTPiece
-        .addr   spriteJPiece
-        .addr   spriteZPiece
-        .addr   spriteOPiece
-        .addr   spriteSPiece
-        .addr   spriteLPiece
-        .addr   spriteIPiece
-        .addr   spriteSplitSquare
         .addr   spriteHighScoreNameCursor
         .addr   spriteDebugLevelEdit
         .addr   spriteStateSave
@@ -131,38 +115,6 @@ spriteMenuStartOptionB:
         .byte   $FF
 spriteBlank:
         .byte   $00,$FF,$00,$00,$FF
-spriteTPiece:
-        .byte   $00,$7B,$02,$FC,$00,$7B,$02,$04
-        .byte   $00,$7B,$02,$0C,$08,$7B,$02,$04
-        .byte   $FF
-spriteJPiece:
-        .byte   $00,$7D,$02,$FC,$00,$7D,$02,$04
-        .byte   $00,$7D,$02,$0C,$08,$7D,$02,$0C
-        .byte   $FF
-spriteZPiece:
-        .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
-        .byte   $08,$7C,$02,$04,$08,$7C,$02,$0C
-        .byte   $FF
-spriteOPiece:
-        .byte   $00,$7B,$02,$00,$00,$7B,$02,$08
-        .byte   $08,$7B,$02,$00,$08,$7B,$02,$08
-        .byte   $FF
-spriteSPiece:
-        .byte   $00,$7D,$02,$04,$00,$7D,$02,$0C
-        .byte   $08,$7D,$02,$FC,$08,$7D,$02,$04
-        .byte   $FF
-spriteLPiece:
-        .byte   $00,$7C,$02,$FC,$00,$7C,$02,$04
-        .byte   $00,$7C,$02,$0C,$08,$7C,$02,$FC
-        .byte   $FF
-spriteIPiece:
-        .byte   $04,$7B,$02,$F8,$04,$7B,$02,$00
-        .byte   $04,$7B,$02,$08,$04,$7B,$02,$10
-        .byte   $FF
-spriteSplitSquare:
-        .byte   $00,$7B,$02,$FC,$00,$7B,$02,$0C
-        .byte   $08,$7B,$02,$FC,$08,$7B,$02,$0C
-        .byte   $FF
 spriteHighScoreNameCursor:
         .byte   $00,$FD,$20,$00,$FF
 spriteDebugLevelEdit:
@@ -208,3 +160,189 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
+
+loadNextPieceIntoOamStaging:
+; spriteIndex = 0-7 t, j, z, o, s, l, i, or splitsquare
+; spriteTile = 0x7b, 0x7c or 0x7d
+        lda mirrorVertFlag
+        asl
+        ora mirrorHorizFlag
+        asl
+        asl
+        asl
+        clc
+        adc spriteIndex
+        tay
+        ldx nextSpriteIndexes,y
+        lda oamStagingLength
+        tay
+        clc
+        adc #16
+        sta oamStagingLength
+
+        lda #2
+        sta oamStaging+2,y
+        sta oamStaging+6,y
+        sta oamStaging+10,y
+        sta oamStaging+14,y
+
+        lda spriteTile
+        sta oamStaging+1,y
+        sta oamStaging+5,y
+        sta oamStaging+9,y
+        sta oamStaging+13,y
+
+        ; x = start of 4 * 2 byte coordinates
+
+        ; can be rolled up to save space if needed
+        ;tile 1
+        lda spriteYOffset
+        clc
+        adc nextSpriteTable+0,x
+        sta oamStaging+0,y
+
+        lda spriteXOffset
+        clc
+        adc nextSpriteTable+1,x
+        sta oamStaging+3,y
+
+        ; tile 2
+        lda spriteYOffset
+        clc
+        adc nextSpriteTable+2,x
+        sta oamStaging+4,y
+
+        lda spriteXOffset
+        clc
+        adc nextSpriteTable+3,x
+        sta oamStaging+7,y
+
+        ; tile 3
+        lda spriteYOffset
+        clc
+        adc nextSpriteTable+4,x
+        sta oamStaging+8,y
+
+        lda spriteXOffset
+        clc
+        adc nextSpriteTable+5,x
+        sta oamStaging+11,y
+
+        ; tile 4
+        lda spriteYOffset
+        clc
+        adc nextSpriteTable+6,x
+        sta oamStaging+12,y
+
+        lda spriteXOffset
+        clc
+        adc nextSpriteTable+7,x
+        sta oamStaging+15,y
+        rts
+
+nextSpriteIndexes:
+; normal
+    .byte <(spriteTPiece-nextSpriteTable)
+    .byte <(spriteJPiece-nextSpriteTable)
+    .byte <(spriteZPiece-nextSpriteTable)
+    .byte <(spriteOPiece-nextSpriteTable)
+    .byte <(spriteSPiece-nextSpriteTable)
+    .byte <(spriteLPiece-nextSpriteTable)
+    .byte <(spriteIPiece-nextSpriteTable)
+    .byte <(spriteSplitSquare-nextSpriteTable)
+; horizontal
+    .byte <(spriteTPiece-nextSpriteTable)
+    .byte <(spriteJPieceHoriz-nextSpriteTable)
+    .byte <(spriteZPieceHoriz-nextSpriteTable)
+    .byte <(spriteOPiece-nextSpriteTable)
+    .byte <(spriteSPieceHoriz-nextSpriteTable)
+    .byte <(spriteLPieceHoriz-nextSpriteTable)
+    .byte <(spriteIPiece-nextSpriteTable)
+    .byte <(spriteSplitSquare-nextSpriteTable)
+; vertical
+    .byte <(spriteTPieceVert-nextSpriteTable)
+    .byte <(spriteJPieceVert-nextSpriteTable)
+    .byte <(spriteZPieceVert-nextSpriteTable)
+    .byte <(spriteOPiece-nextSpriteTable)
+    .byte <(spriteSPieceVert-nextSpriteTable)
+    .byte <(spriteLPieceVert-nextSpriteTable)
+    .byte <(spriteIPiece-nextSpriteTable)
+    .byte <(spriteSplitSquare-nextSpriteTable)
+; 180
+    .byte <(spriteTPiece180-nextSpriteTable)
+    .byte <(spriteJPiece180-nextSpriteTable)
+    .byte <(spriteZPiece-nextSpriteTable)
+    .byte <(spriteOPiece-nextSpriteTable)
+    .byte <(spriteSPiece-nextSpriteTable)
+    .byte <(spriteLPiece180-nextSpriteTable)
+    .byte <(spriteIPiece-nextSpriteTable)
+    .byte <(spriteSplitSquare-nextSpriteTable)
+
+
+nextSpriteTable:
+spriteTPiece:
+        .byte   $00,$FC,$00,$04
+        .byte   $00,$0C,$08,$04
+spriteJPiece:
+        .byte   $00,$FC,$00,$04
+        .byte   $00,$0C,$08,$0C
+spriteZPiece:
+        .byte   $00,$FC,$00,$04
+        .byte   $08,$04,$08,$0C
+spriteOPiece:
+        .byte   $00,$00,$00,$08
+        .byte   $08,$00,$08,$08
+spriteSPiece:
+        .byte   $00,$04,$00,$0C
+        .byte   $08,$FC,$08,$04
+spriteLPiece:
+        .byte   $00,$FC,$00,$04
+        .byte   $00,$0C,$08,$FC
+spriteIPiece:
+        .byte   $04,$F8,$04,$00
+        .byte   $04,$08,$04,$10
+spriteSplitSquare:
+        .byte   $00,$FC,$00,$0C
+        .byte   $08,$FC,$08,$0C
+
+; horiz J/Z/S/L
+spriteJPieceHoriz:
+        .byte   $00,$FC,$00,$04
+        .byte   $00,$0C,$08,$FC
+spriteZPieceHoriz:
+        .byte   $00,$04,$00,$0C
+        .byte   $08,$FC,$08,$04
+spriteSPieceHoriz:
+        .byte   $00,$FC,$00,$04
+        .byte   $08,$04,$08,$0C
+spriteLPieceHoriz:
+        .byte   $00,$FC,$00,$04
+        .byte   $00,$0C,$08,$0C
+
+; vert T/J/Z/S/L
+spriteTPieceVert:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$04
+spriteJPieceVert:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$0C
+spriteZPieceVert:
+        .byte   $08,$FC,$08,$04
+        .byte   $00,$04,$00,$0C
+spriteSPieceVert:
+        .byte   $08,$04,$08,$0C
+        .byte   $00,$FC,$00,$04
+spriteLPieceVert:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$FC
+
+; 180 T/J/L
+spriteTPiece180:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$04
+spriteJPiece180:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$FC
+spriteLPiece180:
+        .byte   $08,$FC,$08,$04
+        .byte   $08,$0C,$00,$0C
