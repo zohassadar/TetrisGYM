@@ -7,6 +7,7 @@
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * trans/marathon/sxotkl on one page?
 * save/load custom palette to/from sram
+* anydas flag to control delay/arr/entrycharge/wallcharge/das
 
 # Bugs
 * harddrop mode skips events
