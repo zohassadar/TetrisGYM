@@ -1,4 +1,5 @@
 stageCurrentAndNextPieces:
+        jsr stageDasMeterSprites
         jsr stageSpriteForNextPiece
 stageSpriteForCurrentPiece:
         jsr secretGradeSprite

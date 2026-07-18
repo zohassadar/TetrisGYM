@@ -41,7 +41,6 @@ gameModeState_updatePlayer1:
 @branchOnPlaystate:
         jsr branchOnPlayStatePlayer1
         jsr stageCurrentAndNextPieces
-        jsr stageDasMeterSprites
 
         inc gameModeState ; 5
         rts
