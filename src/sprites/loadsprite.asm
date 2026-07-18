@@ -262,14 +262,14 @@ nextSpriteIndexes:
 ; vertical
     .byte <(spriteTPieceVert-nextSpriteTable)
     .byte <(spriteJPieceVert-nextSpriteTable)
-    .byte <(spriteZPieceVert-nextSpriteTable)
+    .byte <(spriteZPieceHoriz-nextSpriteTable)
     .byte <(spriteOPiece-nextSpriteTable)
-    .byte <(spriteSPieceVert-nextSpriteTable)
+    .byte <(spriteSPieceHoriz-nextSpriteTable)
     .byte <(spriteLPieceVert-nextSpriteTable)
     .byte <(spriteIPiece-nextSpriteTable)
     .byte <(spriteSplitSquare-nextSpriteTable)
 ; 180
-    .byte <(spriteTPiece180-nextSpriteTable)
+    .byte <(spriteTPieceVert-nextSpriteTable)
     .byte <(spriteJPiece180-nextSpriteTable)
     .byte <(spriteZPiece-nextSpriteTable)
     .byte <(spriteOPiece-nextSpriteTable)
@@ -326,20 +326,11 @@ spriteTPieceVert:
 spriteJPieceVert:
         .byte   $08,$FC,$08,$04
         .byte   $08,$0C,$00,$0C
-spriteZPieceVert:
-        .byte   $08,$FC,$08,$04
-        .byte   $00,$04,$00,$0C
-spriteSPieceVert:
-        .byte   $08,$04,$08,$0C
-        .byte   $00,$FC,$00,$04
 spriteLPieceVert:
         .byte   $08,$FC,$08,$04
         .byte   $08,$0C,$00,$FC
 
 ; 180 T/J/L
-spriteTPiece180:
-        .byte   $08,$FC,$08,$04
-        .byte   $08,$0C,$00,$04
 spriteJPiece180:
         .byte   $08,$FC,$08,$04
         .byte   $08,$0C,$00,$FC
