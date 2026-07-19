@@ -14,6 +14,7 @@
 * garbage + crunch or floor does not work well
 * tap quantity mode should ignore floor/crunch
 * linecap bugs (kirby's note)
+* anydas/seed modetext corners not affected by darkmode
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
