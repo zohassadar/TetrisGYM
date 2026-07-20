@@ -521,6 +521,10 @@ shift_tetrimino:
         and #BUTTON_LEFT
         beq @ret
         dec tetriminoX
+        bne @normal
+        lda no5TapFlag
+        bne @restoreX
+@normal:
         jsr isPositionValid
         bne @restoreX
         lda #$03

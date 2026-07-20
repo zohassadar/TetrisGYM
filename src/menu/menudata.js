@@ -109,10 +109,11 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
+const no5TapFlag = ["TYPE_BOOL", "no 5 taps", "no5TapFlag"];
 const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
-const runwayFlag = ["TYPE_BOOL", "runway", "runwayFlag"];
-const runwayScore = ["TYPE_NUMBER", "rway score *100k", 16, "runwayScore"];
-const runwayLines = ["TYPE_NUMBER", "rway lines *10", 31, "runwayLines"];
+const runwayFlag = ["TYPE_BOOL", "enabled", "runwayFlag"];
+const runwayScore = ["TYPE_NUMBER", "score *100k", 16, "runwayScore"];
+const runwayLines = ["TYPE_NUMBER", "lines *10", 31, "runwayLines"];
 
 const presetModifier = [
     "TYPE_CHOICES",
@@ -257,6 +258,15 @@ const quickTapMenu = {
         debugFlag,
     ],
 };
+
+const scoreLinesMenu = {
+    "head start[mode=default]": [
+        runwayFlag,
+        runwayScore,
+        runwayLines,
+    ],
+};
+
 const mainMenu = {
     "play tetris[mode=tetris]": [
         ["TYPE_GAMEMODE", "t-spins", "MODE_TSPINS"],
@@ -308,12 +318,11 @@ const mainMenu = {
         horizMirror,
         vertMirror,
         splitSquareFlag,
+        no5TapFlag,
         teppozFlag,
         palpepFlag,
         sxtoklFlag,
-        runwayFlag,
-        runwayScore,
-        runwayLines,
+        ["TYPE_SUBMENU", "head start", scoreLinesMenu],
     ],
 
     "display[mode=default]": [
