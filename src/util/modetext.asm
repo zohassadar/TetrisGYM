@@ -114,10 +114,10 @@ patchSeed:
 
         jsr drawCrashMode
 
-        lda runwayFlag
-        beq @notRunway
-        stagePatch menuRunwayPatch
-@notRunway:
+        lda headStartFlag
+        beq @notHeadStart
+        stagePatch menuHeadStartPatch
+@notHeadStart:
         lda sxtoklFlag
         beq @notSxtokl
         stagePatch menuSxtoklPatch
@@ -203,9 +203,10 @@ menuTeppozPatch:
 menuDasOnlyPatch:
     .byte $20,$C3,$7,"DAS",$FF,"ONLY"
     .byte $0
-menuRunwayPatch:
-    .byte $20,$E2,$5,"RUNWAY"
+menuHeadStartPatch:
+    .byte $20,$E3,$3,"HEAD"
+    .byte $21,$03,$4,"START"
     .byte $0
 menuVitsPatch:
-    .byte $21,$03,$3,"VITS"
+    .byte $21,$23,$3,"VITS"
     .byte $0
