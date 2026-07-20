@@ -10,6 +10,7 @@
 * garbage + crunch or floor does not work well (ignore crunch/floor?)
 * tap quanity rendering
 * linecap bugs (kirby's note)
+* next box flashes during levelup due to overrunning vblank (exists in vanilla, more pronounced by staging next before current)
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
