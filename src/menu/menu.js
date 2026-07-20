@@ -257,7 +257,7 @@ items.forEach((i) => {
         choiceSetEnums.push(getChoiceSetConstant(name));
         choiceSetIndexes.push(
             getWordLine(
-                `${getHexWord((choiceSet.length - 2) << 12)} | (${getChoiceSetName(name)} - choiceSets)`,
+                `${getHexWord((choiceSet.length - 2) << 11)} | (${getChoiceSetName(name)} - choiceSets)`,
             ),
         );
         choiceSets.push(`${getChoiceSetName(name)}:`);
@@ -368,7 +368,7 @@ ${memoryMap.join("\n")}
 itemTypes:
 ${items.map((i) => i.label).join("\n")}
 
-; CCCCOOOO OOOOOOOO
+; CCCCCOOO OOOOOOOO
 ; C = choicecount - 2
 ; O = offset from choiceSets
 choiceSetIndexes:

@@ -388,7 +388,6 @@ setupLRValueChange:
     lsr
     lsr
     lsr
-    lsr
     tax
     inx
     inx
@@ -1020,7 +1019,7 @@ stageCurrentValue:
     adc #<choiceSets
     sta stringSetPtr
     lda choiceSetIndexes+1,x
-    and #$F
+    and #$7
     adc #>choiceSets
     sta stringSetPtr+1
     rts
