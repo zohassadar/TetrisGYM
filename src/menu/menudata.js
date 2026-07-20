@@ -119,7 +119,32 @@ const presetModifier = [
     ["z", "t/s", "t", "i", "buco", "various", "ljspin", "ljdouble"],
     "presetModifier",
 ];
-const typeBModifier = ["TYPE_NUMBER", "height", 9, "typeBModifier"];
+const typeBModifier = [
+    "TYPE_CHOICES",
+    "height",
+    [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "1 row",
+        "2 rows",
+        "4 rows",
+        "6 rows",
+        "7 rows",
+        "9 rows",
+        "11 rows",
+        "13 rows",
+        "15 rows",
+        "17 rows",
+    ],
+    "typeBModifier",
+];
 const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
 const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];
 const bTypeLines = ["TYPE_BCD", "lines", 2, "bTypeLines"];

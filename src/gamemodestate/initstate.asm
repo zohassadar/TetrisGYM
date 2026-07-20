@@ -220,11 +220,14 @@ presetScoreFromBCD:
         sta binScore+2
         jmp setupScoreForRender
 
+abormalStarts:
+    .byte 0,0,0,0,0,1,1,1,1 ; heights 0 - 8
+    .byte 0,0,0,0,0,0,0,1,1,1 ; 1,2,4,6,7,9,11,13,15,17 rows
+
 initPlayfieldForTypeB:
 ; decide which seed to use
         lda typeBSeedFlag
         beq @notSeeded
-
 ; seeded
         lda b_seed_input
         sta b_seed
@@ -242,13 +245,11 @@ initPlayfieldForTypeB:
 
 
 @checkModifier:
-        lda typeBModifier
-        cmp #$6
-        bmi @normalStart
-        sbc #$5
-        asl
-        adc #$0c
-        jmp @abnormalStart
+        ldx typeBModifier
+        lda abormalStarts,x
+        beq @normalStart
+        lda #$12
+        bne @abnormalStart
 @normalStart:
         lda #$0C
 @abnormalStart:
@@ -259,7 +260,7 @@ L87E7:  lda generalCounter
         sec
         sbc generalCounter
         sta generalCounter2
-        lda #$00
+        lda #$20
         sta vramRow
         lda #$09
         sta generalCounter3
@@ -315,6 +316,7 @@ L885D:  sta playfield,y
         ; 0 3 5 8 10 12 -> 14 16 18
 typeBBlankInitCountByHeightTable:
         .byte $C8,$AA,$96,$78,$64,$50,$3C,$28,$14
+        .byte 190,180,160,140,130,110,90,70,50,30
 rngTable:
         .byte EMPTY_TILE,BLOCK_TILES,EMPTY_TILE,BLOCK_TILES+1
         .byte BLOCK_TILES+2,BLOCK_TILES+2,EMPTY_TILE,EMPTY_TILE

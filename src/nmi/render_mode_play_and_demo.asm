@@ -88,6 +88,11 @@ render_mode_play_and_demo:
 @renderLevelTypeB:
         jsr renderLevelDash
         lda typeBModifier
+        ; show A-J for custom rows between heights
+        cmp #9
+        bcc @normalHeight
+        adc #0
+@normalHeight:
         sta PPUDATA
         ; jmp @renderLevelEnd
 
