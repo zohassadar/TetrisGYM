@@ -12,7 +12,6 @@
 * tap quantity mode should ignore floor/crunch
 * tap quanity rendering
 * linecap bugs (kirby's note)
-* anydas/seed modetext corners not affected by darkmode
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate

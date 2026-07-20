@@ -27,15 +27,6 @@ gameModeState_initGameBackground:
         ldx #$A3
         jsr patchSeed
 
-        ldy darkModifier
-        beq @notDarkMode
-
-        ; skip NMI tasks during darkmode setup
-        lda #RENDER_DISABLE
-        sta renderMode
-        jsr drawDarkMode
-@notDarkMode:
-
         lda splitSquareFlag
         beq @noSplitSquares
 
@@ -75,6 +66,16 @@ gameModeState_initGameBackground:
         lda tmpZ
         sta PPUDATA
 @heartEnd:
+
+; dark mode last to get all possible corner mods
+        ldy darkModifier
+        beq @notDarkMode
+
+        ; skip NMI tasks during darkmode setup
+        lda #RENDER_DISABLE
+        sta renderMode
+        jsr drawDarkMode
+@notDarkMode:
 
 ; reenable display
         jsr resetScroll
