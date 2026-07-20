@@ -3,7 +3,6 @@
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
 * save/load custom palette to/from sram
 * b/checkerboard/cheese fill
-* seed version
 * tas validation
 
 # Bugs

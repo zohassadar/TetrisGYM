@@ -1139,6 +1139,32 @@ menuVramRowTable:
 .out .sprintf("stage row: %d", *-stageVRAMRow)
 
 stageCursor:
+    lda seedEnabled
+    beq @noSeed
+    lda set_seed_input
+    bne @notZeroSeed
+    lda set_seed_input+1
+    and #$FE
+    bne @notZeroSeed
+    lda #SPRITE_SEED_INVALID
+    jmp @storeSeedSprite
+@notZeroSeed:
+    lda set_seed_input+2
+    and #$F0
+    beq @v5Seed
+    lda #SPRITE_SEED_V4
+    jmp @storeSeedSprite
+@v5Seed:
+    lda #SPRITE_SEED_V5
+@storeSeedSprite:
+    sta spriteIndex
+@stageSeedVer:
+    lda #$D4
+    sta spriteYOffset
+    lda #$C8
+    sta spriteXOffset
+    jsr loadSpriteIntoOamStaging
+@noSeed:
     ldx activeMenu
     lda pageCountByMenu,x
     cmp #$1

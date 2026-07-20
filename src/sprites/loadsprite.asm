@@ -64,6 +64,9 @@ SPRITE_PRACTISETYPECURSORA
 SPRITE_PRACTISETYPECURSORB
 SPRITE_MENUPAGESELECTA
 SPRITE_MENUPAGESELECTB
+SPRITE_SEED_INVALID
+SPRITE_SEED_V4
+SPRITE_SEED_V5
 .endenum
 
 oamContentLookup:
@@ -87,6 +90,9 @@ oamContentLookup:
         .addr   spritePractiseTypeCursorB
         .addr   spriteMenuPageSelectA
         .addr   spriteMenuPageSelectB
+        .addr   spriteSeedInvalid
+        .addr   spriteSeedV4
+        .addr   spriteSeedV5
 ;         .addr   spriteMenuPageSelect2 ; $24
 ; Sprites are sets of 4 bytes in the OAM format, terminated by FF. byte0=y, byte1=tile, byte2=attrs, byte3=x
 ; YY AA II XX
@@ -160,7 +166,19 @@ spriteCustomLevelCursor:
         .byte   $FF
 spriteIngameHeart:
         .byte   $00,$2c,$00,$00,$FF
-
+; room to save space here
+spriteSeedV4:
+        .byte   $00,"V",$00,$00
+        .byte   $00,"4",$00,$08
+        .byte   $FF
+spriteSeedV5:
+        .byte   $00,"V",$00,$00
+        .byte   $00,"5",$00,$08
+        .byte   $FF
+spriteSeedInvalid:
+        .byte   $00,"V",$00,$00
+        .byte   $00,"?",$00,$08
+        .byte   $FF
 loadNextPieceIntoOamStaging:
 ; spriteIndex = 0-7 t, j, z, o, s, l, i, or splitsquare
 ; spriteTile = 0x7b, 0x7c or 0x7d
