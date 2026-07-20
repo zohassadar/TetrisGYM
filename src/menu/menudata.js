@@ -77,6 +77,7 @@ const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
+const swapDutyFlag = ["TYPE_BOOL", "swap duty cycles", "swapDutyCyclesFlag"];
 const nextBoxStart = [
     "TYPE_CHOICES",
     "next piece",
@@ -288,6 +289,7 @@ const mainMenu = {
         disablePause,
         debugFlag,
         goofyFlag,
+        swapDutyFlag,
         qualFlag,
         palFlag,
         keyboardFlag,
