@@ -73,6 +73,10 @@ gameModeState_initGameState:
         sta hideNextPiece
 
 ; initialize currentFloor if necessary
+        lda practiseType ; ignore for tap quantity
+        cmp #MODE_TAPQTY
+        beq @notFloor
+
         lda floorModifier
         beq @notFloor
         sta currentFloor

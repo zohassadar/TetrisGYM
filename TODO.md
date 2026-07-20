@@ -9,7 +9,6 @@
 # Bugs
 * harddrop mode skips events
 * garbage + crunch or floor does not work well (ignore crunch/floor?)
-* tap quantity mode should ignore floor/crunch
 * tap quanity rendering
 * linecap bugs (kirby's note)
 

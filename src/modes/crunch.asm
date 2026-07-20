@@ -48,12 +48,16 @@ crunchReturn:
     rts
 
 refreshTopRow:
+    lda practiseType ; ignore crunch for tap quantity
+    cmp #MODE_TAPQTY
+    beq @ret
     ldx #9
 @loop:
     lda topRowBuffer,x
     sta playfield,x
     dex
     bpl @loop
+@ret:
     rts
 
 initializeTopRowBuffer:
