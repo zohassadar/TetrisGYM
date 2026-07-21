@@ -55,6 +55,19 @@ render_mode_play_and_demo:
 @renderLevel:
         lda renderFlags
         and #RENDER_LEVEL
+        beq @checkRenderLevelActual
+
+        ; level rendering deferred for 1 frame
+        ; level + score + lines rendering overruns vblank
+        lda renderFlags
+        and #<~RENDER_LEVEL
+        ora #RENDER_LEVEL_ACTUAL
+        sta renderFlags
+        jmp @renderScore
+
+@checkRenderLevelActual:
+        lda renderFlags
+        and #RENDER_LEVEL_ACTUAL
         beq @renderScore
 
         lda practiseType
@@ -99,7 +112,7 @@ render_mode_play_and_demo:
 @renderLevelEnd:
         jsr updatePaletteForLevel
         lda renderFlags
-        and #<~RENDER_LEVEL
+        and #<~RENDER_LEVEL_ACTUAL
         sta renderFlags
 
 @renderScore:

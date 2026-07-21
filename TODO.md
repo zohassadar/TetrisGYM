@@ -6,10 +6,8 @@
 * tas validation
 
 # Bugs
-* harddrop mode skips events
 * garbage + crunch or floor does not work well (ignore crunch/floor?)
 * tap quanity rendering
-* next box flashes during levelup due to overrunning vblank (exists in vanilla, more pronounced by staging next before current)
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
