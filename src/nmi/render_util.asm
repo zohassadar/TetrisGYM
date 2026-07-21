@@ -66,7 +66,7 @@ vramPlayfieldRows:
         .word   $22CC,$22EC,$230C,$232C
 
 copyLowStackRowToVram:
-@lowstackLine = generalCounter
+@lowstackLine = tmpZ
         lda #LOW_STACK_LINE
         sta @lowstackLine
         ldy #0
