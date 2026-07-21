@@ -563,8 +563,8 @@ stageFullPlayfield:
 @loop:
     ldx multBy10Table,y
 .repeat 10,i
-    lda playfield+10+i,x
-    sta $100+(i*19),y
+    lda playfield+20+i,x
+    sta $100+(i*18),y
 .endrepeat
     dey
     bpl @loop
@@ -582,19 +582,18 @@ render_mode_dump_playfield:
     txs
     tax
     .repeat 10,i
-    lda #$20
+    lda #$21
     sta PPUADDR
-    lda #$EC+i
+    lda #$0C+i
     sta PPUADDR
-    .repeat 19
+    .repeat 18
     pla
     sta PPUDATA
     .endrepeat
     .endrepeat
     txs
-    lda #RENDER_TOPROW
+    lda #RENDER_TOPROWS
     sta renderMode
-; maintain normal vramRow timing
 bumpVramRow:
     lda vramRow
     clc
@@ -606,24 +605,40 @@ bumpVramRow:
     sta vramRow
     rts
 
-render_mode_top_row:
-; follows render_mode_dump_playfield to handle top row
+render_mode_top_rows:
+; follows render_mode_dump_playfield to handle top 2 rows
     lda #$20
     sta PPUADDR
     lda #$CC
     sta PPUADDR
     ldx #0
     ldy #9
-@loop:
+@loop1:
     lda playfield,x
     sta PPUDATA
     inx
     dey
-    bpl @loop
+    bpl @loop1
+    lda #$20
+    sta PPUADDR
+    lda #$EC
+    sta PPUADDR
+    ldx #0
+    ldy #9
+@loop2:
+    lda playfield+10,x
+    sta PPUDATA
+    inx
+    dey
+    bpl @loop2
     lda #RENDER_PLAY
     sta renderMode
+; maintain normal vramRow timing
     jsr bumpVramRow
+    lda #1
+    sta skipNormalPlayfieldRender
     jmp render_mode_play_and_demo
+
 
 
 

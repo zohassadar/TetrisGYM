@@ -263,7 +263,27 @@ harddropShift:
         dex
         bpl @topRowLoop
         jsr drawFloorTopRow
+
+; next tap quantity
+        lda practiseType
+        cmp #MODE_TAPQTY
+        bne @tapQtyEnd
+        lda completedLines
+        beq @tapQtyEnd
+        ; mark as complete
+        lda tqtyNext
+        sta tqtyCurrent
+@tapQtyEnd:
+
         jsr playState_updateLinesAndStatistics
+        lda #0
+        sta vramRow
+
+        ; lda #TETRIMINO_X_HIDE
+        ; sta tetriminoX
+        jsr stageFullPlayfield
+
+@noScore:
         jsr playState_prepareNext
         lda playState
         cmp #$A
@@ -273,14 +293,6 @@ harddropShift:
 @notGameOver:
         jsr playState_receiveGarbage
 
-        lda #0
-        sta vramRow
-
-        ; lda #TETRIMINO_X_HIDE
-        ; sta tetriminoX
-        jsr stageFullPlayfield
-
-@noScore:
 
         lda #8 ; jump straight to spawnTetrimino
         sta playState

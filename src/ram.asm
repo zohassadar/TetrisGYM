@@ -277,7 +277,7 @@ hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
 anydasFlag: .res 1
 seededPieces: .res 1
 killX2Flag: .res 1
-.res 1
+skipNormalPlayfieldRender: .res 1
 
 kbReadState: .res 1 ; $063F - used for high score entry
 kbHeldInput: .res 1 ; $0640 - high score input throttling

@@ -114,6 +114,9 @@ copyGraphicToPlayfieldAtCustomRow:
         bne @copySuccessGraphic
 @graphicCopied: ; 0 in accumulator
         sta vramRow
+        ; override if full playfield rendermode
+        lda #RENDER_PLAY
+        sta renderMode
         rts
 
 ; $28 is ! in game tileset

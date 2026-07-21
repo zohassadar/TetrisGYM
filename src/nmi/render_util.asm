@@ -48,6 +48,12 @@ twoDigsToPPU:
 render_playfield:
         lda #$04
         sta playfieldAddr+1
+        lda skipNormalPlayfieldRender
+        beq @normalRender
+        lda #0
+        sta skipNormalPlayfieldRender
+        rts
+@normalRender:
         jsr copyPlayfieldRowToVRAM
         jsr copyPlayfieldRowToVRAM
         jsr copyPlayfieldRowToVRAM
