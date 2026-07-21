@@ -37,7 +37,8 @@ playState_receiveGarbage:
         bne @fillGarbage
         lda #$00
         sta pendingGarbage
-        sta vramRow
+        jsr stageFullPlayfield
+
 @ret:   inc playState
         lda #$00 ; earliest possible measured point
         sta hzSpawnDelay

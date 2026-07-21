@@ -557,8 +557,6 @@ L9996:  lda generalCounter
 stageFullPlayfield:
     lda invisibleFlag
     beq @notInviz
-    lda #0
-    sta vramRow
     rts
 @notInviz:
     ldy #18
@@ -572,9 +570,6 @@ stageFullPlayfield:
     bpl @loop
     lda #RENDER_PLAYFIELD
     sta renderMode
-@resetVramRow:
-    lda #$20
-    sta vramRow
     rts
 
 render_mode_dump_playfield:
@@ -599,6 +594,16 @@ render_mode_dump_playfield:
     txs
     lda #RENDER_TOPROW
     sta renderMode
+; maintain normal vramRow timing
+bumpVramRow:
+    lda vramRow
+    clc
+    adc #4
+    cmp #$14
+    bcc @noReset
+    lda #$20
+@noReset:
+    sta vramRow
     rts
 
 render_mode_top_row:
@@ -617,6 +622,10 @@ render_mode_top_row:
     bpl @loop
     lda #RENDER_PLAY
     sta renderMode
+    jsr bumpVramRow
     jmp render_mode_play_and_demo
+
+
+
 
 .out .sprintf("instant harddrop rendering: %d", *-stageFullPlayfield)
