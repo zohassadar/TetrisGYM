@@ -3,12 +3,8 @@ CHECKERBOARD_TILE := BLOCK_TILES+3
 CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         lda #0
         sta vramRow
-        ldy checkerModifier
-        ldx typeBBlankInitCountByHeightTable,y
-        cpx #200 ; edge case for height 0
-        bne @notZero
-        ldx #190
-@notZero:
+        ldy rowsModifier
+        ldx typeBBlankInitCountByRowsTable,y
         lda seededPieces
         beq @random
         lda set_seed_input+1

@@ -145,3 +145,9 @@ PAL_ARR = 4
     .byte   "KILLX2"
     .byte   " TEST "
 .endmacro
+
+.enum
+FILL_NONE
+FILL_B
+FILL_CHECKER
+.endenum

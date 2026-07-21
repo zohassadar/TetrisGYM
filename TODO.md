@@ -1,8 +1,6 @@
 # Pending
 * rework tests to fit multi mode
 * hz_display, constants, crunch, harddrop & floor tests need adjustment
-* save/load custom palette to/from sram
-* b/checkerboard/cheese fill
 * tas validation
 
 # Bugs

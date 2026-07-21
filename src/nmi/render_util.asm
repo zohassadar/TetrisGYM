@@ -33,14 +33,14 @@ renderByteBCDStart:
         lda byteToBcdTable, x
 
 twoDigsToPPU:
-        sta generalCounter
+        pha
         and #$F0
         lsr a
         lsr a
         lsr a
         lsr a
         sta PPUDATA
-        lda generalCounter
+        pla
         and #$0F
         sta PPUDATA
         rts

@@ -5,7 +5,11 @@ practiseInitGameState:
         jmp initGameTap
 @skipTap:
         cmp #MODE_CHECKERBOARD
+        beq @initChecker
+        lda fillType
+        cmp #FILL_CHECKER
         bne @skipChecker
+@initChecker:
         jsr initChecker
 @skipChecker:
         jsr initGameCrunch

@@ -27,7 +27,7 @@ addBTypeBonus:
         lda levelDisplayTable, x
         and #$F
         clc
-        adc typeBModifier
+        adc rowsModifier
         sta levelNumber
         beq @typeBScoreDone
         dec levelNumber

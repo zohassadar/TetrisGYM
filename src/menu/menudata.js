@@ -111,6 +111,12 @@ const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
 const no5TapFlag = ["TYPE_BOOL", "no 5 taps", "no5TapFlag"];
 const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
+
+const fillType = ["TYPE_CHOICES", "fill type", ["none", "b", "checker"], "fillType"];
+
+// shared for fill, btype & checker
+const rowsModifier = ["TYPE_NUMBER", "rows", 19, "rowsModifier"];
+
 const headStartFlag = ["TYPE_BOOL", "enabled", "headStartFlag"];
 const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
 const startLines = ["TYPE_NUMBER", "lines *10", 31, "startLines"];
@@ -121,36 +127,10 @@ const presetModifier = [
     ["z", "t/s", "t", "i", "buco", "various", "ljspin", "ljdouble"],
     "presetModifier",
 ];
-const typeBModifier = [
-    "TYPE_CHOICES",
-    "height",
-    [
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "1 row",
-        "2 rows",
-        "4 rows",
-        "6 rows",
-        "7 rows",
-        "9 rows",
-        "11 rows",
-        "13 rows",
-        "15 rows",
-        "17 rows",
-    ],
-    "typeBModifier",
-];
-const typeBSeed = ["TYPE_HEX", "seed", 4, "b_seed_input"];
-const typeBSeedFlag = ["TYPE_BOOL", "seed enabled", "typeBSeedFlag"];
+
+const typeBSeed = ["TYPE_HEX", "bseed", 4, "b_seed_input"];
+const typeBSeedFlag = ["TYPE_BOOL", "bseed enabled", "typeBSeedFlag"];
 const bTypeLines = ["TYPE_BCD", "lines", 2, "bTypeLines"];
-const checkerModifier = ["TYPE_NUMBER", "height", 9, "checkerModifier"];
 const quickTapLeftModifier = ["TYPE_NUMBER", "left", 20, "tapLeftModifier"];
 const quickTapRightModifier = ["TYPE_NUMBER", "right", 20, "tapRightModifier"];
 const quickTapLeftColumn = [
@@ -233,7 +213,7 @@ const droughtMenu = {
     "drought[mode=drought]": [droughtModifier],
 };
 const checkerMenu = {
-    "checkerboard[mode=checkerboard]": [checkerModifier],
+    "checkerboard[mode=checkerboard]": [rowsModifier],
 };
 const garbageMenu = {
     "garbage[mode=garbage]": [garbageModifier],
@@ -243,7 +223,7 @@ const lowstackMenu = {
 };
 
 const bMenu = {
-    "b-type[mode=typeb]": [typeBModifier, typeBSeed, typeBSeedFlag, bTypeLines],
+    "b-type[mode=typeb]": [rowsModifier, typeBSeed, typeBSeedFlag, bTypeLines],
 };
 const setupsMenu = {
     "setups[mode=presets]": [presetModifier, debugFlag],
@@ -264,6 +244,15 @@ const scoreLinesMenu = {
         headStartFlag,
         startScore,
         startLines,
+    ],
+};
+
+const boardFillMenu = {
+    "board fill[mode=default]": [
+        fillType,
+        rowsModifier,
+        typeBSeed,
+        typeBSeedFlag,
     ],
 };
 
@@ -323,6 +312,7 @@ const mainMenu = {
         palpepFlag,
         sxtoklFlag,
         ["TYPE_SUBMENU", "head start", scoreLinesMenu],
+        ["TYPE_SUBMENU", "board fill", boardFillMenu],
     ],
 
     "display[mode=default]": [

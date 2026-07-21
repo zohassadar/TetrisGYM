@@ -138,7 +138,7 @@ gameModeState_initGameState:
         lda practiseType
         cmp #MODE_CHECKERBOARD
         bne @noChecker
-        lda checkerModifier
+        lda rowsModifier
         rol
         rol
         rol
@@ -158,7 +158,11 @@ gameModeState_initGameState:
 
         lda practiseType
         cmp #MODE_TYPEB
+        beq @initBType
+        lda fillType
+        cmp #FILL_B
         bne @noTypeBPlayfield
+@initBType:
         jsr initPlayfieldForTypeB
 @noTypeBPlayfield:
 
@@ -224,9 +228,6 @@ presetScoreFromBCD:
         sta binScore+2
         jmp setupScoreForRender
 
-abormalStarts:
-    .byte 0,0,0,0,0,1,1,1,1 ; heights 0 - 8
-    .byte 0,0,0,0,0,0,0,1,1,1 ; 1,2,4,6,7,9,11,13,15,17 rows
 
 initPlayfieldForTypeB:
 ; decide which seed to use
@@ -249,13 +250,10 @@ initPlayfieldForTypeB:
 
 
 @checkModifier:
-        ldx typeBModifier
-        lda abormalStarts,x
-        beq @normalStart
-        lda #$12
-        bne @abnormalStart
-@normalStart:
-        lda #$0C
+        lda rowsModifier
+        cmp #13
+        bcs @abnormalStart
+        lda #12
 @abnormalStart:
         sta generalCounter
 L87E7:  lda generalCounter
@@ -305,8 +303,8 @@ L8824:  ldx #b_seed
         dec generalCounter
         bne L87E7
 L884A:
-        ldx typeBModifier
-        lda typeBBlankInitCountByHeightTable,x
+        ldx rowsModifier
+        lda typeBBlankInitCountByRowsTable,x
         tay
         lda #EMPTY_TILE
 L885D:  sta playfield,y
@@ -317,10 +315,26 @@ L885D:  sta playfield,y
         sta vramRow
         rts
 
-        ; 0 3 5 8 10 12 -> 14 16 18
-typeBBlankInitCountByHeightTable:
-        .byte $C8,$AA,$96,$78,$64,$50,$3C,$28,$14
-        .byte 190,180,160,140,130,110,90,70,50,30
+typeBBlankInitCountByRowsTable:
+        .byte 200
+        .byte 190
+        .byte 180
+        .byte 170
+        .byte 160
+        .byte 150
+        .byte 140
+        .byte 130
+        .byte 120
+        .byte 110
+        .byte 100
+        .byte 90
+        .byte 80
+        .byte 70
+        .byte 60
+        .byte 50
+        .byte 40
+        .byte 30
+        .byte 20
 rngTable:
         .byte EMPTY_TILE,BLOCK_TILES,EMPTY_TILE,BLOCK_TILES+1
         .byte BLOCK_TILES+2,BLOCK_TILES+2,EMPTY_TILE,EMPTY_TILE

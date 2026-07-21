@@ -94,20 +94,14 @@ render_mode_play_and_demo:
 
 @renderLevelCheckerboard:
         jsr renderLevelDash
-        lda checkerModifier
+        lda rowsModifier
         sta PPUDATA
         jmp @renderLevelEnd
 
 @renderLevelTypeB:
         jsr renderLevelDash
-        lda typeBModifier
-        ; show A-J for custom rows between heights
-        cmp #9
-        bcc @normalHeight
-        adc #0
-@normalHeight:
+        lda rowsModifier
         sta PPUDATA
-        ; jmp @renderLevelEnd
 
 @renderLevelEnd:
         jsr updatePaletteForLevel
