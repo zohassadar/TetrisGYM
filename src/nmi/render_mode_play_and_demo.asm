@@ -546,10 +546,13 @@ L9996:  lda generalCounter
         ora #RENDER_STATS
         sta renderFlags
         rts
+
 stageFullPlayfield:
     lda invisibleFlag
     beq @notInviz
-    jmp @resetVramRow
+    lda #0
+    sta vramRow
+    rts
 @notInviz:
     ldy #18
 @loop:

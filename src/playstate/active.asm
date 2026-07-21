@@ -264,6 +264,14 @@ harddropShift:
         bpl @topRowLoop
         jsr drawFloorTopRow
         jsr playState_updateLinesAndStatistics
+        jsr playState_prepareNext
+        lda playState
+        cmp #$A
+        bne @notGameOver
+        rts
+
+@notGameOver:
+        jsr playState_receiveGarbage
 
         lda #0
         sta vramRow

@@ -154,8 +154,14 @@ checkLinecap: ; set linecapState
         sta linecapState
 
         cmp #LINECAP_INVISIBLE
-        bne @linecapEnd
+        bne @checkInitialFloor
         sta invisibleFlag
+        bne @linecapEnd
+
+@checkInitialFloor:
+        cmp #LINECAP_FLOOR
+        bne @floorLinecapEnd
+        beq @increaseFloor
 
 @linecapEnd:
 
@@ -166,11 +172,9 @@ checkLinecap: ; set linecapState
         ; check level up was possible
         tya
         beq @floorLinecapEnd
-        lda #$A
-        sta garbageHole
-        lda #1
-        sta pendingGarbage
+@increaseFloor:
         inc currentFloor
+        jsr drawFloorTopRow
 @floorLinecapEnd:
 
 addPoints:
