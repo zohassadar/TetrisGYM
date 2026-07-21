@@ -22,9 +22,14 @@ stageSpriteForCurrentPiece:
 @noGameTimer:
         lda #$0
         sta pieceTileModifier
+        ; skip for harddrop, not tap qty
+        lda practiseType
+        cmp #MODE_TAPQTY
+        beq @noSkip
         lda renderMode
-        cmp #9
+        cmp #RENDER_TOPROWS
         beq @skipCurrent
+@noSkip:
         jsr stageSpriteForCurrentPiece_actual
 @skipCurrent:
         lda hardDropFlag
