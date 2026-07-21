@@ -109,7 +109,6 @@ const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
 const teppozFlag = ["TYPE_BOOL", "teppoz", "teppozFlag"];
 const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
-const no5TapFlag = ["TYPE_BOOL", "no 5 taps", "no5TapFlag"];
 const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
 
 const fillType = ["TYPE_CHOICES", "fill type", ["none", "b", "checker"], "fillType"];
@@ -185,12 +184,11 @@ const lowStackRowModifier = [
 ];
 
 const noWallChargeFlag = [
-    "TYPE_CHOICES",
-    "wall charge",
-    ["on", "off"],
+    "TYPE_BOOL",
+    "no wall charge",
     "noWallChargeFlag",
 ];
-const disableDasFlag = ["TYPE_CHOICES", "das", ["on", "off"], "disableDasFlag"];
+const disableDasFlag = ["TYPE_BOOL", "disable das", "disableDasFlag"];
 const anydasDas = ["TYPE_NUMBER", "delay", 31, "dasModifier"];
 const anydasArr = ["TYPE_NUMBER", "arrrr", 31, "arrModifier"];
 const anydasEntryDelay = [
@@ -199,6 +197,8 @@ const anydasEntryDelay = [
     ["off", "hydrant", "kitaru"],
     "entryChargeModifier",
 ];
+const no5TapFlag = ["TYPE_BOOL", "no 5 taps", "no5TapFlag"];
+
 const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
 const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
 const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
@@ -307,7 +307,6 @@ const mainMenu = {
         horizMirror,
         vertMirror,
         splitSquareFlag,
-        no5TapFlag,
         teppozFlag,
         palpepFlag,
         sxtoklFlag,
@@ -338,6 +337,7 @@ const mainMenu = {
         anydasEntryDelay,
         noWallChargeFlag,
         disableDasFlag,
+        no5TapFlag,
     ],
 };
 
