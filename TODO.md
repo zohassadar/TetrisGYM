@@ -4,7 +4,6 @@
 * tas validation
 
 # Bugs
-* tap quanity rendering
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
