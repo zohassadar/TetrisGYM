@@ -1,4 +1,7 @@
 initGameFloor:
+        lda practiseType
+        cmp #MODE_GARBAGE
+        beq initFloorRet
         lda #0
         sta vramRow
         lda currentFloor
@@ -10,17 +13,20 @@ drawFloor:
         sec
         sbc multBy10Table,x
         tax
-        beq @skip
+        beq initFloorRet
         ; draw block tiles+3 ($7E)
         lda #BLOCK_TILES+3
 @loop:
         sta playfield-56,x
         inx
         bne @loop
-@skip:
+initFloorRet:
         rts
 
 drawFloorTopRow:
+        lda practiseType
+        cmp #MODE_GARBAGE
+        beq initFloorRet
         lda #$14
         sec
         sbc currentFloor

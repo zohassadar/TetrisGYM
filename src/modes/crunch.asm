@@ -19,6 +19,10 @@
 ; clobbers generalCounter3 & generalCounter4 (defined in playstate/util.asm)
 
 initGameCrunch:
+; ignore for garbage mode
+    lda practiseType
+    cmp #MODE_GARBAGE
+    beq crunchReturn
     ldx crunchLeftModifier
     bne @crunch
     ldx crunchRightModifier
@@ -50,6 +54,8 @@ crunchReturn:
 refreshTopRow:
     lda practiseType ; ignore crunch for tap quantity
     cmp #MODE_TAPQTY
+    beq @ret
+    cmp #MODE_GARBAGE ; also for garbage
     beq @ret
     ldx #9
 @loop:

@@ -6,7 +6,6 @@
 * tas validation
 
 # Bugs
-* garbage + crunch or floor does not work well (ignore crunch/floor?)
 * tap quanity rendering
 
 # Meh
