@@ -559,7 +559,18 @@ stageFullPlayfield:
     beq @notInviz
     rts
 @notInviz:
-    ldy #18
+    lda mirrorVertFlag
+    asl
+    ora mirrorHorizFlag
+    sta generalCounter
+    branchTo generalCounter, \
+        fullPlayfieldNormal, \
+        fullPlayfieldHoriz, \
+        fullPlayfieldVert, \
+        fullPlayfield180
+
+fullPlayfieldNormal:
+    ldy #17
 @loop:
     ldx multBy10Table,y
 .repeat 10,i
@@ -568,6 +579,44 @@ stageFullPlayfield:
 .endrepeat
     dey
     bpl @loop
+    jmp fullPlayfieldEnd
+
+fullPlayfieldHoriz:
+    ldy #17
+@loop:
+    ldx multBy10Table,y
+.repeat 10,i
+    lda playfield+20+(9-i),x
+    sta $100+(i*18),y
+.endrepeat
+    dey
+    bpl @loop
+    jmp fullPlayfieldEnd
+
+fullPlayfieldVert:
+    ldy #17
+@loop:
+    ldx multBy10Table,y
+.repeat 10,i
+    lda playfield+20+i,x
+    sta $100+((9-i)*18),y
+.endrepeat
+    dey
+    bpl @loop
+    beq fullPlayfieldEnd
+
+fullPlayfield180:
+    ldy #17
+@loop:
+    ldx multBy10Table,y
+.repeat 10,i
+    lda playfield+20+(9-i),x
+    sta $100+((9-i)*18),y
+.endrepeat
+    dey
+    bpl @loop
+
+fullPlayfieldEnd:
     lda #RENDER_PLAYFIELD
     sta renderMode
     rts
@@ -606,31 +655,14 @@ bumpVramRow:
     rts
 
 render_mode_top_rows:
-; follows render_mode_dump_playfield to handle top 2 rows
-    lda #$20
-    sta PPUADDR
-    lda #$CC
-    sta PPUADDR
-    ldx #0
-    ldy #9
-@loop1:
-    lda playfield,x
-    sta PPUDATA
-    inx
-    dey
-    bpl @loop1
-    lda #$20
-    sta PPUADDR
-    lda #$EC
-    sta PPUADDR
-    ldx #0
-    ldy #9
-@loop2:
-    lda playfield+10,x
-    sta PPUDATA
-    inx
-    dey
-    bpl @loop2
+    lda vramRow
+    pha
+    lda #0
+    sta vramRow
+    jsr copyPlayfieldRowToVRAM
+    jsr copyPlayfieldRowToVRAM
+    pla
+    sta vramRow
     lda #RENDER_PLAY
     sta renderMode
 ; maintain normal vramRow timing
@@ -638,8 +670,6 @@ render_mode_top_rows:
     lda #1
     sta skipNormalPlayfieldRender
     jmp render_mode_play_and_demo
-
-
 
 
 
