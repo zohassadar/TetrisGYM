@@ -6,6 +6,11 @@ VITS_SCORE = 100000
 @gameOver:
         lda secretGradingFlag
         beq @notSecretGrade
+
+        lda practiseType
+        cmp #MODE_LOWSTACK
+        beq @notSecretGrade  ; locking lst piece breaks lowstack.  fix by skipping for now
+
         jsr @noWait ; lock last piece in playfield for secret grade
 @notSecretGrade:
         inc gameTimerStop

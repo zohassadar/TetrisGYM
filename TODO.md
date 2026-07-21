@@ -8,7 +8,6 @@
 # Bugs
 * garbage + crunch or floor does not work well (ignore crunch/floor?)
 * tap quanity rendering
-* lowstack broken
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
