@@ -23,6 +23,8 @@ const scoringModifier = [
     ["classic", "letters", "7digit", "m", "capped", "hidden"],
     "scoringModifier",
 ];
+
+const ghostPiece = ["TYPE_BOOL", "ghost", "ghostPieceFlag"];
 const modernLinesFlag = ["TYPE_BOOL", "modern lines", "modernLinesFlag"];
 const paceModifier = ["TYPE_FF_OFF", "Pace *100k", 16, "paceModifier"];
 const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
@@ -101,8 +103,6 @@ const crunchRightModifier = [
     "crunchRightModifier",
 ];
 const invisibleFlag = ["TYPE_BOOL", "invisible", "invisibleOptionFlag"];
-const ghostPiece = ["TYPE_BOOL", "ghost", "ghostPieceFlag"];
-const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 
 const horizMirror = ["TYPE_BOOL", "mirror horiz", "mirrorHorizFlag"];
 const vertMirror = ["TYPE_BOOL", "mirror vert", "mirrorVertFlag"];
@@ -198,6 +198,7 @@ const anydasEntryDelay = [
     "entryChargeModifier",
 ];
 const no5TapFlag = ["TYPE_BOOL", "no 5 taps", "no5TapFlag"];
+const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 
 const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
 const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
@@ -302,8 +303,6 @@ const mainMenu = {
         crunchLeftModifier,
         crunchRightModifier,
         invisibleFlag,
-        ghostPiece,
-        hardDrop,
         horizMirror,
         vertMirror,
         splitSquareFlag,
@@ -326,6 +325,7 @@ const mainMenu = {
         dasMeterFlag,
         gameTimerFlag,
         secretGrading,
+        ghostPiece,
         nextBoxStart,
         paletteSelection,
         goToCustomPalette,
@@ -338,6 +338,7 @@ const mainMenu = {
         noWallChargeFlag,
         disableDasFlag,
         no5TapFlag,
+        hardDrop,
     ],
 };
 

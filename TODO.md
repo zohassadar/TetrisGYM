@@ -4,6 +4,7 @@
 * tas validation
 
 # Bugs
+* playfield mirroring + tapqty/garbage/harddrop not compatible
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
