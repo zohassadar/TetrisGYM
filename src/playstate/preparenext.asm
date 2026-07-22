@@ -137,24 +137,3 @@ typebSuccessGraphic:
         .byte   'N','I','C','E',$FF,$28,$00
 crashGraphic:
         .byte   'C','R','A','S','H',$28,$00
-
-rowsToHeight:
-        .byte 0
-        .byte 0
-        .byte 0
-        .byte 1
-        .byte 1
-        .byte 2
-        .byte 2
-        .byte 2
-        .byte 3
-        .byte 3
-        .byte 4
-        .byte 4
-        .byte 5
-        .byte 5
-        .byte 6
-        .byte 6
-        .byte 7
-        .byte 7
-        .byte 8
