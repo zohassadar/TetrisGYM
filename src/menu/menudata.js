@@ -111,10 +111,22 @@ const sxtoklFlag = ["TYPE_BOOL", "sxtokl", "sxtoklFlag"];
 const palpepFlag = ["TYPE_BOOL", "palpep", "palpepFlag"];
 const splitSquareFlag = ["TYPE_BOOL", "split squares", "splitSquareFlag"];
 
-const fillType = ["TYPE_CHOICES", "fill type", ["none", "b", "checker"], "fillType"];
+const fillType = [
+    "TYPE_CHOICES",
+    "fill type",
+    ["none", "b", "checker"],
+    "fillType",
+];
 
 // shared for fill, btype & checker
 const rowsModifier = ["TYPE_NUMBER", "rows", 19, "rowsModifier"];
+const heightModifier = ["TYPE_NUMBER", "height", 9, "heightModifier"];
+const heightOrRows = [
+    "TYPE_CHOICES",
+    "height/rows",
+    ["height", "rows"],
+    "heightOrRows",
+];
 
 const headStartFlag = ["TYPE_BOOL", "enabled", "headStartFlag"];
 const startScore = ["TYPE_NUMBER", "score *100k", 16, "startScore"];
@@ -183,11 +195,7 @@ const lowStackRowModifier = [
     "lowStackRowModifier",
 ];
 
-const noWallChargeFlag = [
-    "TYPE_BOOL",
-    "no wall charge",
-    "noWallChargeFlag",
-];
+const noWallChargeFlag = ["TYPE_BOOL", "no wall charge", "noWallChargeFlag"];
 const disableDasFlag = ["TYPE_BOOL", "disable das", "disableDasFlag"];
 const anydasDas = ["TYPE_NUMBER", "delay", 31, "dasModifier"];
 const anydasArr = ["TYPE_NUMBER", "arrrr", 31, "arrModifier"];
@@ -214,7 +222,11 @@ const droughtMenu = {
     "drought[mode=drought]": [droughtModifier],
 };
 const checkerMenu = {
-    "checkerboard[mode=checkerboard]": [rowsModifier],
+    "checkerboard[mode=checkerboard]": [
+        heightModifier,
+        rowsModifier,
+        heightOrRows,
+    ],
 };
 const garbageMenu = {
     "garbage[mode=garbage]": [garbageModifier],
@@ -224,7 +236,14 @@ const lowstackMenu = {
 };
 
 const bMenu = {
-    "b-type[mode=typeb]": [rowsModifier, typeBSeed, typeBSeedFlag, bTypeLines],
+    "b-type[mode=typeb]": [
+        heightModifier,
+        rowsModifier,
+        heightOrRows,
+        typeBSeed,
+        typeBSeedFlag,
+        bTypeLines,
+    ],
 };
 const setupsMenu = {
     "setups[mode=presets]": [presetModifier, debugFlag],
@@ -241,17 +260,15 @@ const quickTapMenu = {
 };
 
 const scoreLinesMenu = {
-    "head start[mode=default]": [
-        headStartFlag,
-        startScore,
-        startLines,
-    ],
+    "head start[mode=default]": [headStartFlag, startScore, startLines],
 };
 
 const boardFillMenu = {
     "board fill[mode=default]": [
         fillType,
+        heightModifier,
         rowsModifier,
+        heightOrRows,
         typeBSeed,
         typeBSeedFlag,
     ],

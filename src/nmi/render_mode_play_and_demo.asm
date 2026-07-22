@@ -72,11 +72,11 @@ render_mode_play_and_demo:
 
         lda practiseType
         cmp #MODE_TYPEB
-        beq @renderLevelTypeB
+        beq @renderLevelHeightOrRows
 
         ; lda practiseType ; accumulator is still practiseType
         cmp #MODE_CHECKERBOARD
-        beq @renderLevelCheckerboard
+        beq @renderLevelHeightOrRows
 
         lda #$22
         sta PPUADDR
@@ -92,16 +92,20 @@ render_mode_play_and_demo:
         jsr renderByteBCD
         jmp @renderLevelEnd
 
-@renderLevelCheckerboard:
+@renderLevelHeightOrRows:
         jsr renderLevelDash
+        lda heightOrRows
+        beq @byHeight
         lda rowsModifier
+        clc
+        adc #10
+        bne @storeTile
+@byHeight:
+        lda heightModifier
+@storeTile:
         sta PPUDATA
         jmp @renderLevelEnd
 
-@renderLevelTypeB:
-        jsr renderLevelDash
-        lda rowsModifier
-        sta PPUDATA
 
 @renderLevelEnd:
         jsr updatePaletteForLevel

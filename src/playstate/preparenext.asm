@@ -22,12 +22,22 @@ playState_prepareNext:
 
 addBTypeBonus:
         ; patch levelNumber with score multiplier
+        lda heightOrRows
+        beq @byHeight
+        ldx rowsModifier
+        lda rowsToHeight,x
+        sta generalCounter
+        jmp @addBonus
+@byHeight:
+        lda heightModifier
+        sta generalCounter
+@addBonus:
         ldx levelNumber
         stx tmp3 ; and save a copy
         lda levelDisplayTable, x
         and #$F
         clc
-        adc rowsModifier
+        adc generalCounter
         sta levelNumber
         beq @typeBScoreDone
         dec levelNumber

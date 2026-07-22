@@ -138,7 +138,15 @@ gameModeState_initGameState:
         lda practiseType
         cmp #MODE_CHECKERBOARD
         bne @noChecker
-        lda rowsModifier
+
+        lda heightOrRows
+        beq @byHeight
+        ldx rowsModifier
+        lda rowsToHeight,x
+        jmp @setCheckerScore
+@byHeight:
+        lda heightModifier
+@setCheckerScore:
         rol
         rol
         rol
@@ -250,7 +258,14 @@ initPlayfieldForTypeB:
 
 
 @checkModifier:
+        lda heightOrRows
+        bne @byRows
+        ldy heightModifier
+        lda heightToRows,y
+        jmp @determineStart
+@byRows:
         lda rowsModifier
+@determineStart:
         cmp #13
         bcs @abnormalStart
         lda #12
@@ -303,7 +318,14 @@ L8824:  ldx #b_seed
         dec generalCounter
         bne L87E7
 L884A:
+        lda heightOrRows
+        bne @byRows
+        ldy heightModifier
+        ldx heightToRows,y
+        jmp @blank
+@byRows:
         ldx rowsModifier
+@blank:
         lda typeBBlankInitCountByRowsTable,x
         tay
         lda #EMPTY_TILE
@@ -314,6 +336,38 @@ L885D:  sta playfield,y
         lda #$00
         sta vramRow
         rts
+
+heightToRows:
+        .byte 0
+        .byte 3
+        .byte 5
+        .byte 8
+        .byte 10
+        .byte 12
+        .byte 14
+        .byte 16
+        .byte 18
+
+rowsToHeight:
+        .byte 0
+        .byte 0
+        .byte 0
+        .byte 3
+        .byte 3
+        .byte 5
+        .byte 5
+        .byte 5
+        .byte 8
+        .byte 8
+        .byte 10
+        .byte 10
+        .byte 12
+        .byte 12
+        .byte 14
+        .byte 14
+        .byte 16
+        .byte 16
+        .byte 18
 
 typeBBlankInitCountByRowsTable:
         .byte 200

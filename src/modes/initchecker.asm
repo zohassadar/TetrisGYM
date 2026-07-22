@@ -3,7 +3,14 @@ CHECKERBOARD_TILE := BLOCK_TILES+3
 CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         lda #0
         sta vramRow
+        lda heightOrRows
+        bne @byRows
+        ldx heightModifier
+        ldy heightToRows,x
+        jmp @load
+@byRows:
         ldy rowsModifier
+@load:
         ldx typeBBlankInitCountByRowsTable,y
         lda seededPieces
         beq @random
