@@ -596,22 +596,28 @@ fullPlayfieldHoriz:
 fullPlayfieldVert:
     ldy #17
 @loop:
-    ldx multBy10Table,y
+    lda #170
+    sec
+    sbc multBy10Table,y
+    tax
 .repeat 10,i
-    lda playfield+20+i,x
-    sta $100+((9-i)*18),y
+    lda playfield+i,x
+    sta $100+(i*18),y
 .endrepeat
     dey
     bpl @loop
-    beq fullPlayfieldEnd
+    bmi fullPlayfieldEnd
 
 fullPlayfield180:
     ldy #17
 @loop:
-    ldx multBy10Table,y
+    lda #170
+    sec
+    sbc multBy10Table,y
+    tax
 .repeat 10,i
-    lda playfield+20+(9-i),x
-    sta $100+((9-i)*18),y
+    lda playfield+(9-i),x
+    sta $100+(i*18),y
 .endrepeat
     dey
     bpl @loop
@@ -657,7 +663,10 @@ bumpVramRow:
 render_mode_top_rows:
     lda vramRow
     pha
-    lda #0
+    lda mirrorVertFlag
+    beq @storeVramRow
+    lda #18
+@storeVramRow:
     sta vramRow
     jsr copyPlayfieldRowToVRAM
     jsr copyPlayfieldRowToVRAM
