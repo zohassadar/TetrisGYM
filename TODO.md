@@ -1,6 +1,6 @@
 # Pending
 * rework tests to fit multi mode
-* hz_display, constants, crunch, & harddrop tests need adjustment
+* hz_display, constants, & crunch tests need adjustment
 * tas validation
 
 # Bugs
