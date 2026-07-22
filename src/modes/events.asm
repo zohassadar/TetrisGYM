@@ -69,6 +69,12 @@ practiseGameHUD:
         cmp #MODE_TAPQTY
         bne @skipTapQuantity
 
+        lda #$34
+        ldy mirrorVertFlag
+        beq @drawTapQty
+        lda #$B8
+@drawTapQty:
+        sta generalCounter
         ldy #0
         ldx oamStagingLength
 @drawQTY:
@@ -77,7 +83,7 @@ practiseGameHUD:
         asl
         asl
         asl
-        adc #$34
+        adc generalCounter
         sta tmpY
         sta oamStaging, x
         inx
