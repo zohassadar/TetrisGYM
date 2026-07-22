@@ -348,26 +348,6 @@ heightToRows:
         .byte 16
         .byte 18
 
-rowsToHeight:
-        .byte 0
-        .byte 0
-        .byte 0
-        .byte 3
-        .byte 3
-        .byte 5
-        .byte 5
-        .byte 5
-        .byte 8
-        .byte 8
-        .byte 10
-        .byte 10
-        .byte 12
-        .byte 12
-        .byte 14
-        .byte 14
-        .byte 16
-        .byte 16
-        .byte 18
 
 typeBBlankInitCountByRowsTable:
         .byte 200
