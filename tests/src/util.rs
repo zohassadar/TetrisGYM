@@ -20,7 +20,7 @@ pub fn emulator(rom: Option<&[u8]>) -> NesState {
 
 pub fn run_n_vblanks(emu: &mut NesState, n: usize) {
     for _ in 0..n {
-        emu.run_until_vblank();
+        run_until_241(&mut *emu);
     }
 }
 
@@ -193,4 +193,22 @@ pub const fn _xy_to_ppu_addr(x: u16, y: u16) -> u16 {
     };
 
     base_address + offset
+}
+
+pub fn run_until_241(emu: &mut NesState) {
+    /*
+     copy of run_until_vblank, modified to stop one scanline sooner
+     don't know the original intention, but according to this chart:
+     https://www.nesdev.org/w/images/default/4/4f/Ppu.svg
+     the vblank flag is set at the beginning of scanline 241
+
+    the normal run_until_vblank will stop well into the ppu rendering
+    routine, sometimes stopping before controller reads.
+    */
+    while emu.ppu.current_scanline == 241 {
+        emu.step();
+    }
+    while emu.ppu.current_scanline != 241 {
+        emu.step();
+    }
 }
