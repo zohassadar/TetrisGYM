@@ -1,5 +1,5 @@
 # Pending
-* hz_display, constants, & crunch tests need adjustment
+* hz_display & constants tests need adjustment
     (hz_display broken at 18d940f4f871772da0fbcaa2d0f39bf4280dbba6)
 * tas validation
 
