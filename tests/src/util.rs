@@ -203,7 +203,7 @@ pub fn run_until_241(emu: &mut NesState) {
      the vblank flag is set at the beginning of scanline 241
 
     the normal run_until_vblank will stop well into the ppu rendering
-    routine, sometimes stopping before controller reads.
+    routine, sometimes stopping after controller reads.
     */
     while emu.ppu.current_scanline == 241 {
         emu.step();
