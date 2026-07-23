@@ -1,5 +1,4 @@
 # Pending
-* constants test needs adjustment
 * tas validation
 
 # Bugs
