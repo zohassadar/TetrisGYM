@@ -1,4 +1,4 @@
-use crate::{labels, playfield, util, video};
+use crate::{labels, playfield, util};
 
 pub fn test() {
     let mut emu = util::emulator(None);

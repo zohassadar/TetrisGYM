@@ -1,4 +1,4 @@
-use crate::{labels, util};
+use crate::{labels};
 
 pub fn test() {
     // check some hardcoded ram addresses are aligned

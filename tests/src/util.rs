@@ -5,9 +5,9 @@ use crate::{input, labels};
 pub static ROM: &'static [u8] = include_bytes!("../../tetris.nes");
 pub static OG_ROM: &'static [u8] = include_bytes!("../../clean.nes");
 
-pub fn rom_data() -> &'static [u8] {
-    &ROM[0x10..]
-}
+// pub fn rom_data() -> &'static [u8] {
+//     &ROM[0x10..]
+// }
 
 pub fn emulator(rom: Option<&[u8]>) -> NesState {
     let rom = rom.unwrap_or(ROM);
