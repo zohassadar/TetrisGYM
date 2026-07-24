@@ -148,7 +148,7 @@ detectKeyboard:
 
 
 readKbHighScoreEntry:
-@kbInputThrottle := generalCounter4
+@kbInputThrottle := tmpZ
 ; 2 frames to complete action
 ; first reads key, determines action and stores key (unless key is action only)
 ; second returns cursor action
