@@ -6,6 +6,10 @@ CHECKERBOARD_FLIP := CHECKERBOARD_TILE ^ EMPTY_TILE
         lda heightOrRows
         bne @byRows
         ldx heightModifier
+        bne @notZero
+        ldy #1
+        bne @load
+@notZero:
         ldy heightToRows,x
         jmp @load
 @byRows:
