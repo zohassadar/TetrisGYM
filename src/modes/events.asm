@@ -10,6 +10,9 @@ practiseInitGameState:
         cmp #FILL_CHECKER
         bne @skipChecker
 @initChecker:
+        lda fillType
+        cmp #FILL_B
+        beq @skipChecker
         jsr initChecker
 @skipChecker:
         jsr initGameCrunch
