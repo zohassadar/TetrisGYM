@@ -28,10 +28,8 @@ ALWAYS_CURTAIN := 0
 INITIAL_CUSTOM_LEVEL := 29
 INITIAL_LINECAP_LEVEL := 39
 
-; these bytes are currently 2 byte bcd in the menu
-; they are swapped and will not work
 INITIAL_LINECAP_LINES_LO := $30 ; bcd
-INITIAL_LINECAP_LINES_HI := $03 ; bcd (tbd)
+INITIAL_LINECAP_LINES_HI := $03 ; bcd input, converted to binary in linecapLinesBinHi
 
 BTYPE_START_LINES := $25 ; bcd
 MENU_HIGHLIGHT_COLOR := $12 ; $12 in gym, $16 in original
