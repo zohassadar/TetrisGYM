@@ -239,6 +239,11 @@ console.log();
 console.timeEnd('build');
 
 // tests
+// build first for either option
+if (args.join(" ").match(/-t\b/i)) {
+    console.log('\nbuilding test');
+    exec('cargo build --release --manifest-path tests/Cargo.toml');
+}
 
 if (args.includes('-t')) {
     console.log('\nrunning tests');
