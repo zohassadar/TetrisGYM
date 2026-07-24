@@ -80,8 +80,8 @@ MODE_GARBAGE
 MODE_DROUGHT
 MODE_LOWSTACK
 MODE_KILLX2
-MODE_SPEED_TEST
 MODE_CALIBRATE
+MODE_SPEED_TEST
 .endenum
 
 .enum
@@ -130,16 +130,15 @@ PAL_ARR = 4
 .macro MODENAMES
     .byte   "TETRIS"
     .byte   "TSPINS"
-    .byte   "SETUPS"
     .byte   "STACKN"
+    .byte   "SETUPS"
     .byte   "B-TYPE"
     .byte   "QCKTAP"
-    .byte   "TAPQTY"
-    .byte   "TRNSTN"
     .byte   "MARTHN"
-    .byte   "LOBARS"
+    .byte   "TAPQTY"
     .byte   "CKRBRD"
     .byte   "GARBGE"
+    .byte   "LOBARS"
     .byte   "LOWSTK"
     .byte   "KILLX2"
     .byte   " TEST "
