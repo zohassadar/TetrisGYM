@@ -56,6 +56,7 @@ harddrop_tetrimino:
         lda #0
         sta autorepeatY
         sta completedLines
+        sta completedRow+3 ; for checkerboard clearing
 
         ldy #$13
 @clearBuffer:
@@ -282,7 +283,8 @@ harddropShift:
         ; lda #TETRIMINO_X_HIDE
         ; sta tetriminoX
         jsr stageFullPlayfield
-
+        lda #PIECE_HIDDEN
+        sta currentPiece
 @noScore:
         jsr playState_prepareNext
         lda playState
@@ -291,6 +293,18 @@ harddropShift:
         rts
 
 @notGameOver:
+        lda practiseType
+        cmp #MODE_CHECKERBOARD
+        bne @notChecker
+        ; check to see if bottom row for checkerboard has been cleared
+        lda #$13
+        sec
+        sbc currentFloor
+        tax
+        lda harddropBuffer,x
+        beq @notChecker
+        jmp typeBEndingStuff
+@notChecker:
         jsr playState_receiveGarbage
 
 
