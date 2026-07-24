@@ -16,6 +16,7 @@ const linecapLevel = ["TYPE_NUMBER", "linecap level", 0, "linecapLevel"];
 const linecapLines = ["TYPE_BCD", "linecap lines", 4, "linecapLines"];
 const dasOnly = ["TYPE_BOOL", "das only", "dasOnlyFlag"];
 const vitsScoreFlag = ["TYPE_BOOL", "vits scoring", "vitsScoreFlag"];
+const tetrisOnlyFlag = ["TYPE_BOOL", "tetris only", "tetrisOnlyFlag"];
 
 const scoringModifier = [
     "TYPE_CHOICES",
@@ -298,6 +299,7 @@ const mainMenu = {
         linecapLevel,
         linecapLines,
         dasOnly,
+        tetrisOnlyFlag,
         vitsScoreFlag,
     ],
     "general[mode=default]": [
