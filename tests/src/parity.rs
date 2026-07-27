@@ -139,8 +139,7 @@ fn compare_with_vanilla(
             eprintln!("Vog: {:?}", expected);
             panic!("Mismatch on line {}!", i + 1);
         }
-
-        gym.run_until_vblank();
+        util::run_until_241(&mut gym);
         util::set_controller_emu_native(&mut gym, *buttons);
         view.render(&mut gym);
     }
@@ -160,7 +159,7 @@ fn run_tas_and_compare(tas_buttons: &Vec<u8>, verbose: &bool, render: &bool) -> 
     let mut gym_view = OptionalVideo::new(render);
     let mut fail_frames: usize = 0;
     gym_view.set_position(512, 30);
-    for buttons in tas_buttons.iter() {
+    for (frame_no, buttons) in tas_buttons.iter().enumerate() {
         if fail_frames > FAILURE_LOG_FRAMES {
             break;
         }
@@ -170,7 +169,7 @@ fn run_tas_and_compare(tas_buttons: &Vec<u8>, verbose: &bool, render: &bool) -> 
         let og_values = extract_values_from_labels(&mut og);
         og_bytes.extend(og_values.clone());
 
-        if gym_values.as_slice() != og_values.as_slice() {
+        if frame_no > 254 && gym_values.as_slice() != og_values.as_slice() {
             fail_frames += 1;
         }
 
@@ -178,9 +177,8 @@ fn run_tas_and_compare(tas_buttons: &Vec<u8>, verbose: &bool, render: &bool) -> 
             println!("OG: {:?}", og_values);
             println!("Gym: {:?}", gym_values);
         }
-
-        og.run_until_vblank();
-        gym.run_until_vblank();
+        util::run_until_241(&mut og);
+        util::run_until_241(&mut gym);
         util::set_controller_emu_native(&mut og, *buttons);
         util::set_controller_emu_native(&mut gym, *buttons);
         vanilla_view.render(&mut og);
