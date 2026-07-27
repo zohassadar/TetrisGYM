@@ -30,6 +30,11 @@ gameModeState_handleGameOver:
         sta playState
         jsr updateAudioWaitForNmiAndResetOamStaging
         ldx #3 ; levelMenu
+        lda practiseType
+        cmp #MODE_KILLX2
+        bne @storeX
+        dex
+@storeX:
         stx gameMode
         rts
 

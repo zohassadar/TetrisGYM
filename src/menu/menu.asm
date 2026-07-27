@@ -118,6 +118,7 @@ gameMode_gameTypeMenu:
 gameTypeLoop:
     lda gameStarted
     beq @noGame
+    jsr checkIfSeeded
     lda #0
     sta killX2Flag
     lda practiseType
