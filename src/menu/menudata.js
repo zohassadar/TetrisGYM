@@ -81,12 +81,7 @@ const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
 const swapDutyFlag = ["TYPE_BOOL", "swap duty cycles", "swapDutyCyclesFlag"];
-const nextBoxStart = [
-    "TYPE_CHOICES",
-    "next piece",
-    ["shown", "hidden"],
-    "nextBoxStart",
-];
+const disableScoreSaving = ["TYPE_BOOL", "no high scores", "disableScoreSaving"];
 const clearScores = ["TYPE_CUSTOM", "clear scores", "CLEAR_SCOREBOARD"];
 const resetDefaults = ["TYPE_CUSTOM", "reset defaults", "RESET_DEFAULTS"];
 
@@ -212,7 +207,12 @@ const hardDrop = ["TYPE_BOOL", "hardDrop", "hardDropFlag"];
 const trtFlag = ["TYPE_BOOL", "tetris rate", "trtFlag"];
 const dasMeterFlag = ["TYPE_BOOL", "das meter", "dasMeterFlag"];
 const gameTimerFlag = ["TYPE_BOOL", "game timer", "gameTimerFlag"];
-
+const nextBoxStart = [
+    "TYPE_CHOICES",
+    "next piece",
+    ["shown", "hidden"],
+    "nextBoxStart",
+];
 const tapQtyMenu = {
     "tap quantity[mode=tapqty]": [tapqtyModifier, noLineClearDelayFlag],
 };
@@ -312,6 +312,7 @@ const mainMenu = {
         qualFlag,
         palFlag,
         keyboardFlag,
+        disableScoreSaving,
         ["TYPE_GAMEMODE", "calibrate", "MODE_CALIBRATE"],
         clearScores,
         resetDefaults,

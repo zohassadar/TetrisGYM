@@ -1,5 +1,7 @@
 ; Adjusts high score table and handles data entry, if necessary
 handleHighScoreIfNecessary:
+        lda disableScoreSaving
+        bne @ret
         ldy #0
         sty highScoreEntryRawPos
 @compareWithPos:
