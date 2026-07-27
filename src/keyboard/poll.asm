@@ -140,7 +140,8 @@ detectKeyboard:
         lda JOY2_APUFC
         and #KB_MASK
         bne @noKeyboard
-        inc keyboardFlag
+        lda #1
+        sta keyboardFlag
 @noKeyboard:
         rts
 
