@@ -3,6 +3,7 @@ handleHighScoreIfNecessary:
         lda disableScoreSaving
         bne @ret
         ldy #0
+        sty kbInputThrottle
         sty highScoreEntryRawPos
 @compareWithPos:
 

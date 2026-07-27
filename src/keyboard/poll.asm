@@ -149,7 +149,6 @@ detectKeyboard:
 
 
 readKbHighScoreEntry:
-@kbInputThrottle := tmpZ
 ; 2 frames to complete action
 ; first reads key, determines action and stores key (unless key is action only)
 ; second returns cursor action
@@ -195,7 +194,7 @@ readKbHighScoreEntry:
         cpx kbHeldInput
         bne @newInput
 
-        inc @kbInputThrottle
+        inc kbInputThrottle
         bne @noKeyPressed
 
         lda #<-4
@@ -206,7 +205,7 @@ readKbHighScoreEntry:
         lda #<-16
 
 @storeThrottle:
-        sta @kbInputThrottle
+        sta kbInputThrottle
 
 @placeInput:
         lda highScoreEntryNameOffsetForLetter

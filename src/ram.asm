@@ -282,13 +282,14 @@ skipNormalPlayfieldRender: .res 1
 kbReadState: .res 1 ; $063F - used for high score entry
 kbHeldInput: .res 1 ; $0640 - high score input throttling
 kbRawInput: .res 9 ; $0641  - all 72 keys' input
+kbInputThrottle: .res 1
 
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
 highScoreEntryActive: .res 1  ; $064A
 trtLines: .res 2 ; fix for now for transition mode/trt compat
 
-menuStack: .res 32
+menuStack: .res 28
 
 ; only important in menu mode
 prevGoofy: .res 1
