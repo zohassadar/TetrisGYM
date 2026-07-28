@@ -13,7 +13,5 @@ gameMode_bootScreen: ; boot
         jsr updateAudioAndWaitForNmi
         jsr checkRegion
 
-        lda #1
-        sta gameMode
         jsr detectKeyboard
         jmp gameMode_waitScreen

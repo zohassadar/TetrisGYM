@@ -65,6 +65,7 @@
         sta gameMode
         lda #$00
         sta frameCounter+1
+        sta frameCounter
 
         jsr pollControllerButtons
         ldy #$8
