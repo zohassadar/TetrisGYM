@@ -45,8 +45,6 @@ nmiFinish:
         lda #$00
         sta oamStagingLength
         sta lagState ; clear flag after lag frame achieved
-        lda #$01
-        sta verticalBlankingInterval
         tsx
         lda stack+5,x
         sta nmiReturnAddr
@@ -55,5 +53,7 @@ nmiFinish:
         pla
         tax
 restoreA:
+        lda #$01
+        sta verticalBlankingInterval
         pla
 irq:    rti

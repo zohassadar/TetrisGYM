@@ -1,4 +1,8 @@
 gameMode_levelMenu:
+        ; lag frame for tas compatibility
+        lda #RENDER_DISABLE
+        sta renderMode
+        jsr waitForNmi
         jsr hideSpritesAndBackground
 .if INES_MAPPER <> 0
         lda #CHRBankSet0
@@ -36,6 +40,9 @@ gameMode_levelMenu:
         sta renderMode
         jsr showSpriteAndBackground
 
+        ; set sleep counter to wait 1 frame before shredding seed (tas compatibility)
+        lda #1
+        sta sleepCounter
         lda #$00
         sta originalY
         sta dropSpeed
@@ -182,6 +189,8 @@ levelMenuCheckGoBack:
 shredSeedAndContinue:
         ; seed shredder
 @chooseRandomHole_player1:
+        lda sleepCounter
+        bne @noShred ; skip first frame of seed shredding for tas compatibility
         ldx #rng_seed
         jsr generateNextPseudorandomNumber
         lda rng_seed
@@ -195,7 +204,7 @@ shredSeedAndContinue:
         and #$0F
         cmp #$0A
         bpl @chooseRandomHole_player2
-
+@noShred:
         jsr updateAudioWaitForNmiAndResetOamStaging
         jmp gameMode_levelMenu_processPlayer1Navigation
 

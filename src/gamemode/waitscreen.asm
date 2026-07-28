@@ -22,8 +22,7 @@ gameMode_waitScreen:
         sta renderMode
         jsr showSpriteAndBackground
 
-        cmp #2
-        beq waitLoopCheckStart
+@setSleepCounter:
         lda #$FF
         ldx palFlag
         ; cpx #0 ; ldx sets z flag
@@ -32,12 +31,9 @@ gameMode_waitScreen:
 @notPAL:
         sta sleepCounter
 @loop:
-        ; if second wait, skip render loop
-        lda screenStage
-        cmp #1
-        beq waitLoopCheckStart
-
         jsr updateAudioWaitForNmiAndResetOamStaging
+        lda screenStage
+        bne @checkStart
         lda #$1A
         sta spriteXOffset
         lda #$20
@@ -50,7 +46,6 @@ gameMode_waitScreen:
         lda #1
         sta byteSpriteLen
         jsr byteSprite
-
         lda qualFlag
         beq @checkStart
         jsr showQualWait
@@ -58,35 +53,29 @@ gameMode_waitScreen:
 @checkStart:
         lda newlyPressedButtons_player1
         and #BUTTON_START
-        bne @exitLoop
+        bne titleScreenSetup
 @checkSleepCounter:
         lda sleepCounter
         bne @loop
 @exitLoop:
         inc screenStage
-
-waitLoopCheckStart:
         lda screenStage
         cmp #1
-        bne @title
-        lda sleepCounter
-        beq waitLoopNext
-@title:
+        beq @setSleepCounter
+titleScreenSetup:
+        lda #1
+        sta gameMode
+        lda #0
+        sta frameCounter+1
+        stagePatchThenWaitForNmi titleNametablePatch
+titleScreenLoop:
         lda newlyPressedButtons_player1
         cmp #BUTTON_START
-        beq waitLoopNext
+        beq @exitTitle
         jsr updateAudioWaitForNmiAndResetOamStaging
-        jmp waitLoopCheckStart
-waitLoopNext:
+        jmp titleScreenLoop
+@exitTitle:
         ldx #$02
-        lda screenStage
-        cmp #2
-        beq waitLoopContinue
-        stx soundEffectSlot1Init
-        inc screenStage
-        stagePatchThenWaitForNmi titleNametablePatch
-        jmp waitLoopCheckStart
-waitLoopContinue:
         stx soundEffectSlot1Init
         inc gameMode
         rts

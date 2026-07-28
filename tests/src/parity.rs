@@ -159,7 +159,7 @@ fn run_tas_and_compare(tas_buttons: &Vec<u8>, verbose: &bool, render: &bool) -> 
     let mut gym_view = OptionalVideo::new(render);
     let mut fail_frames: usize = 0;
     gym_view.set_position(512, 30);
-    for (frame_no, buttons) in tas_buttons.iter().enumerate() {
+    for (_frame_no, buttons) in tas_buttons.iter().enumerate() {
         if fail_frames > FAILURE_LOG_FRAMES {
             break;
         }
@@ -169,8 +169,11 @@ fn run_tas_and_compare(tas_buttons: &Vec<u8>, verbose: &bool, render: &bool) -> 
         let og_values = extract_values_from_labels(&mut og);
         og_bytes.extend(og_values.clone());
 
-        if frame_no > 254 && gym_values.as_slice() != og_values.as_slice() {
+        if gym_values.as_slice() != og_values.as_slice() {
             fail_frames += 1;
+        } else {
+            // ignore minor variations during initial screen transitions
+            fail_frames = 0;
         }
 
         if *verbose {

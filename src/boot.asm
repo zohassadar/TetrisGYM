@@ -68,13 +68,12 @@
         sta frameCounter
 
         jsr pollControllerButtons
-        ldy #$8
         ; hold select to start in qual mode
         lda heldButtons_player1
         and #BUTTON_SELECT
         beq @nonQualBoot
         lda #1
         sta qualFlag
-        ldy #0
 @nonQualBoot:
+        ldy #0
         sty classicLevel
