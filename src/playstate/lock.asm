@@ -101,6 +101,8 @@ VITS_SCORE = 100000
         ldy practiseType
         cpy #MODE_TAP
         beq @storeTile
+        cpy #MODE_PRESETS
+        beq @storeTile
 ;normal tile
         lda tetriminoTileFromOrientation,x
 @storeTile:

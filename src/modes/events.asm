@@ -4,6 +4,10 @@ practiseInitGameState:
         bne @skipTap
         jmp initGameTap
 @skipTap:
+        cmp #MODE_PRESETS
+        bne @skipPresets
+        jmp advanceGamePreset
+@skipPresets:
         cmp #MODE_CHECKERBOARD
         beq @initChecker
         lda fillType
@@ -51,10 +55,6 @@ practiseEachPiece: ; only used in this file
         bne @skipTapQuantity
         jsr prepareNextTapQuantity
 @skipTapQuantity:
-        cmp #MODE_PRESETS
-        bne @skipPresets
-        jmp advanceGamePreset
-@skipPresets:
         rts
 
 practiseGameHUD:

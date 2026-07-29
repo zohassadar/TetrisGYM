@@ -1,8 +1,6 @@
 # Pending
-* tas validation
 
 # Bugs
-* setups mode clears blocktool board edits
 
 # Meh
 * block tool saved/loaded message overlaps with tetris rate
