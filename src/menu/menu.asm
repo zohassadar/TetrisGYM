@@ -3,19 +3,14 @@ MENU_VARS_PAGE = menuVars & $FF00
 
 GAME_ACTIVE = $FF
 
-; valid background chars are 0-253
 NORAM = $00
 
 MENU_TITLE_PPU = $2106
 MENU_STRIPE_WIDTH = 20
 MENU_ROWS = 17
 
-
 CURSOR_SLEEP_1 = 33
 CURSOR_SLEEP_2 = 44
-
-
-MENU_STACK = $DF ; $01C8 - $01DF intended range
 
 ; custom routines
 .enum
@@ -1305,9 +1300,3 @@ gotoEdgeCase:
 
 
 .out .sprintf("total: %d", *-menuCode)
-
-renderQueuePush:
-    ldx renderQueuePointer
-    sta stack,x
-    inc renderQueuePointer
-    rts
