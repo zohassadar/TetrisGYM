@@ -62,9 +62,19 @@ gameMode_waitScreen:
         lda screenStage
         cmp #1
         beq @setSleepCounter
+        cmp #2
+        bne titleScreenSetup
+        ; wait 4 additional frames before switching to title screen
+        lda #4
+        bne @notPAL
 titleScreenSetup:
         lda #1
         sta gameMode
+; ignore inputs for 4 frames to line up with vanilla
+        jsr waitForNmi
+        jsr waitForNmi
+        jsr waitForNmi
+        jsr waitForNmi
         lda #0
         sta frameCounter+1
         stagePatchThenWaitForNmi titleNametablePatch
