@@ -172,8 +172,6 @@ gameTypeLoopWait:
     jsr updateAudioWaitForNmiAndResetOamStaging
     jmp gameTypeLoop
 
-.out .sprintf("bg setup & loop: %d", *-gameMode_gameTypeMenu)
-
 
 enterSubMenu:
     ldy #$02
@@ -415,9 +413,6 @@ setItemCount:
     lsr
     sta pageItemCount
     rts
-
-.out .sprintf("setup: %d", *-enterSubMenu)
-
 
 collectControllerInput:
     lda #$00
@@ -679,10 +674,6 @@ addInputs:
     jsr copyVarsToSram
 @ret:
     rts
-
-
-.out .sprintf("input handling: %d", *-collectControllerInput)
-
 
 randomizeSeed:
 ; only start shuffling on newly pressed, continue on held
@@ -1118,8 +1109,6 @@ menuVramRowTable:
     .addr $2146+(i*32)
 .endrepeat
 
-.out .sprintf("stage row: %d", *-stageVRAMRow)
-
 stageCursor:
     lda seedEnabled
     beq @noSeed
@@ -1282,7 +1271,5 @@ stageCursor:
 gotoEdgeCase:
     rts
 
-.out .sprintf("cursor staging: %d", *-stageCursor)
-
-
-.out .sprintf("total: %d", *-menuCode)
+.out .sprintf("menu code: %d", *-menuCode)
+.out .sprintf("menu total: %d", *-menuDataStart)
