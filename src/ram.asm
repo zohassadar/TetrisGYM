@@ -27,7 +27,7 @@ startParity: .res 1 ; $0021 for crash
 lagState: .res 1 ; $0022 for lagged lines & score
     .res $F
 
-mainLoopWait: .res 1 ; $0032
+.res 1 ; $0032
 verticalBlankingInterval: .res 1 ; $0033
 set_seed: .res 3 ; $0034 ; rng_seed, rng_seed+1, spawnCount
 patchPtr: .res 2
@@ -99,7 +99,7 @@ lrMax: .res $1
 activeItem: .res $1
 MENU_PTR_DISTANCE = lrPointer-udPointer
 stringSetPtr: .res $2
-stackPtr: .res $1
+.res $1
 
 unpackedPageType: .res $1
 unpackedPageValue: .res $1

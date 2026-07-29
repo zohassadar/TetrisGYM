@@ -1,6 +1,4 @@
 branchOnGameModeState:
-        lda #0
-        sta mainLoopWait
         branchTo gameModeState, \
             gameModeState_initGameBackground, \
             gameModeState_initGameState, \
