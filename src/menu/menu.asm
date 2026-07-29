@@ -1114,23 +1114,9 @@ setStackOffset:
 menuVramRowTable:
 ; 17 for now (title + 16 items)
     .addr $2109
-    .addr $2146
-    .addr $2166
-    .addr $2186
-    .addr $21A6
-    .addr $21C6
-    .addr $21E6
-    .addr $2206
-    .addr $2226
-    .addr $2246
-    .addr $2266
-    .addr $2286
-    .addr $22A6
-    .addr $22C6
-    .addr $22E6
-    .addr $2306
-    .addr $2326
-
+.repeat 16,i
+    .addr $2146+(i*32)
+.endrepeat
 
 .out .sprintf("stage row: %d", *-stageVRAMRow)
 
