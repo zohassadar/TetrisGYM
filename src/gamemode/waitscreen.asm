@@ -34,6 +34,8 @@ gameMode_waitScreen:
         jsr updateAudioWaitForNmiAndResetOamStaging
         lda screenStage
         bne @checkStart
+        lda qualFlag
+        beq @checkStart
         lda #$1A
         sta spriteXOffset
         lda #$20
@@ -46,8 +48,6 @@ gameMode_waitScreen:
         lda #1
         sta byteSpriteLen
         jsr byteSprite
-        lda qualFlag
-        beq @checkStart
         jsr showQualWait
         jmp @checkSleepCounter
 @checkStart:
