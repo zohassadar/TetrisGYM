@@ -68,6 +68,8 @@ gameMode_waitScreen:
         lda #4
         bne @notPAL
 titleScreenSetup:
+        ldx #$02
+        stx soundEffectSlot1Init
         lda #1
         sta gameMode
 ; ignore inputs for 4 frames to line up with vanilla
