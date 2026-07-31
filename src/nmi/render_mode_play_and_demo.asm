@@ -2,8 +2,6 @@ render_mode_play_and_demo:
         lda playState
         cmp #$04
         bne @playStateNotDisplayLineClearingAnimation
-        lda #$04
-        sta playfieldAddr+1
         jsr updateLineClearingAnimation
         lda #$00
         sta vramRow

@@ -46,8 +46,6 @@ twoDigsToPPU:
         rts
 
 render_playfield:
-        lda #$04
-        sta playfieldAddr+1
         lda skipNormalPlayfieldRender
         beq @normalRender
         lda #0

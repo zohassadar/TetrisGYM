@@ -195,7 +195,6 @@ fn test_harddropped_piece(emu: &mut NesState, start: &str, finish: &str, piece: 
     emu.memory.iram_raw[game_mode] = 4;
     emu.memory.iram_raw[level_number] = 18;
     emu.registers.pc = main_loop;
-    emu.memory.iram_raw[labels::get("playfieldAddr") as usize + 1] = 4;
 
     playfield::clear(emu);
     util::run_n_vblanks(emu, 7);

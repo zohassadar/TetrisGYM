@@ -1,6 +1,4 @@
 gameModeState_updatePlayer1:
-        lda #$04
-        sta playfieldAddr+1
         ; copy controller from mirror
         lda newlyPressedButtons_player1
         sta newlyPressedButtons

@@ -25,7 +25,7 @@ playState_checkStartGameOver:
         sta currentPiece
 @drawCurtainRow:
         lda #$4F
-        sta (playfieldAddr),y
+        sta playfield,y
         iny
         inc generalCounter3
         lda generalCounter3
