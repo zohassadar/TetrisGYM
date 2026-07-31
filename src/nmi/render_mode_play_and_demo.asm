@@ -632,7 +632,7 @@ fullPlayfieldEnd:
     rts
 
 render_mode_dump_playfield:
-; handles 95% of the playfield
+; handles 90% of the playfield
     lda #$9C
     sta PPUCTRL
     tsx
@@ -640,16 +640,18 @@ render_mode_dump_playfield:
     ldx #$FF
     txs
     tax
-    .repeat 10,i
+    ldy #$0C
+@stripe:
     lda #$21
     sta PPUADDR
-    lda #$0C+i
-    sta PPUADDR
+    sty PPUADDR
     .repeat 18
     pla
     sta PPUDATA
     .endrepeat
-    .endrepeat
+    iny
+    cpy #$16
+    bne @stripe
     txs
     lda #RENDER_TOPROWS
     sta renderMode
