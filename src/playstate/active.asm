@@ -314,6 +314,10 @@ harddropShift:
         sta currentPiece
         lda dropSpeed
         sta fallTimer
+        ; skip drop sound if levelup sound is loaded
+        lda soundEffectSlot1Init
+        cmp #6
+        beq @ret
         lda #$7
         sta soundEffectSlot1Init
 @ret:
