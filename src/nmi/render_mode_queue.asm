@@ -3,9 +3,9 @@ render_mode_queue:
     sta tmp2
     tsx
     txa
-    tay
     ldx #$FF
     txs
+    tax
 checkQueueLength:
     lda renderQueueLength
     bne @stripe
@@ -16,8 +16,8 @@ checkQueueLength:
     pla
     sta PPUADDR
     pla ; 0 = 1 tile, max 32 tiles
-    tax
-    lda queueJumpTable,x
+    tay
+    lda queueJumpTable,y
     sta tmp1
     jmp (tmp1)
 .repeat 32,i
@@ -29,8 +29,6 @@ checkQueueLength:
     beq restoreStackPointer
     jmp checkQueueLength
 restoreStackPointer:
-    tya
-    tax
     txs
 resetRenderQueue:
     lda #0
