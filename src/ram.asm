@@ -131,10 +131,10 @@ spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
 stringAttrib: .res 1 ; $00A2
 spriteTile:
-stringLength: .res 1 ; $00A2
+stringLength: .res 1 ; $00A3
 stringIndex:
 spriteIndex: .res 1 ; can probably be the same as stringIndex
-renderFlags: .res 1 ; $00A3
+renderFlags: .res 1 ; $00A5
 ; gameplay
 ; Bit 0-lines 1-level 2-score 3-debug 4-hz 6-stats 7-high score entry letter
 ; speedtest
@@ -160,8 +160,7 @@ oamStagingLength: .res 1 ; $00B3
     .res 1
 newlyPressedButtons: .res 1 ; $00B5                 ; Active player's buttons
 heldButtons: .res 1 ; $00B6                        ; Active player's buttons
-    .res 1
-playfieldAddr: .res 2 ; $00B8                    ; HI byte is leftPlayfield in canon. Current playfield being processed: $0400 (left; 1st player) or $0500 (right; 2nd player)
+    .res 3
 allegro: .res 1 ; $00BA
 pendingGarbage: .res 1 ; $00BB                    ; Garbage waiting to be delivered to the current player. This is exchanged with pendingGarbageInactivePlayer when swapping players.
     .res 1
@@ -263,46 +262,46 @@ tqtyCurrent: .res 1 ; $621
 tqtyNext: .res 1 ; $622
 
 ; hard drop ram is pretty big, but can be reused in other modes
-; 22 bytes total
+; 23 bytes total
 completedLinesCopy: .res 1 ; $623
 lineOffset: .res 1 ; $624
-harddropBuffer: .res $14 ; $625 ; 20 bytes (!)
+harddropBuffer: .res $15 ; $625 ; 21 bytes (!)
 
-linecapState: .res 1 ; $639 ; 0 if not triggered, 1 + linecapHow otherwise, reset on game init
+linecapState: .res 1 ; $63A ; 0 if not triggered, 1 + linecapHow otherwise, reset on game init
 
-dasOnlyShiftDisabled: .res 1 ; $63A
+dasOnlyShiftDisabled: .res 1 ; $63B
 
-invisibleFlag: .res 1 ; $63B  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
-currentFloor: .res 1 ; $63C floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
-mapperId: .res 1 ; $63D ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
-hardDropGhostY: .res 1 ; ghost Y used as a shortcut for hard/sonic drop
-anydasFlag: .res 1
-seededPieces: .res 1
-killX2Flag: .res 1
-skipNormalPlayfieldRender: .res 1
+invisibleFlag: .res 1 ; $63C  ; 0 for normal mode, non-zero for Invisible playfield rendering.  Reset on game init and game over.
+currentFloor: .res 1 ; $63D floorModifier is copied here at game init.  Set to 0 otherwise and incremented when linecap floor.
+mapperId: .res 1 ; $63E ; For INES_MAPPER 1000 (autodetect).  0 = CNROM.  1 = MMC1.
+hardDropGhostY: .res 1 ; $63F ; ghost Y used as a shortcut for hard/sonic drop
+anydasFlag: .res 1 ; $640
+seededPieces: .res 1 ; $641
+killX2Flag: .res 1 ; $642
+skipNormalPlayfieldRender: .res 1 ; $643
 
-kbReadState: .res 1 ; $063F - used for high score entry
-kbHeldInput: .res 1 ; $0640 - high score input throttling
-kbRawInput: .res 9 ; $0641  - all 72 keys' input
-kbInputThrottle: .res 1
+kbReadState: .res 1 ; $644 - used for high score entry
+kbHeldInput: .res 1 ; $645 - high score input throttling
+kbRawInput: .res 9 ; $646  - all 72 keys' input
+kbInputThrottle: .res 1 ; $64F
 
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
-highScoreEntryActive: .res 1  ; $064A
-trtLines: .res 2 ; fix for now for transition mode/trt compat
+highScoreEntryActive: .res 1  ; $650
+trtLines: .res 2 ; $651 ; fix for now for transition mode/trt compat
 
-menuStack: .res 28
+menuStack: .res 28 ; $653
 
 ; only important in menu mode
-prevGoofy: .res 1
+prevGoofy: .res 1 ; $66F
 
-topRowBuffer: .res 10
+topRowBuffer: .res 10 ; $670
 
-secretGrade: .res 1
-secretGradePending: .res 1
-detectedRegion: .res 1 ; set at same time as palFlag but not user configurable
+secretGrade: .res 1 ; $67A
+secretGradePending: .res 1 ; $67B
+detectedRegion: .res 1 ; $67C ; set at same time as palFlag but not user configurable
 
-linecapLinesBinHi: .res 1 ; menu input is BCD, converted to binary and stored here
+linecapLinesBinHi: .res 1 ; $67D ; menu input is BCD, converted to binary and stored here
                           ; low byte is also BCD but is treated by game as BCD
 
 .segment "MUSIC_RAM": absolute

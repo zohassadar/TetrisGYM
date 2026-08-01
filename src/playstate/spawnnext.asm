@@ -285,3 +285,6 @@ pickTetriminoDrought:
         jmp pickTetriminoSeed
 @vanillaRng:
         jmp pickRandomTetrimino
+
+spawnTable:                                                     ; 7
+        .byte   $02,$07,$08,$0A,$0B,$0E,$12

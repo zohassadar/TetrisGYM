@@ -18,7 +18,7 @@ multOrientBegin:
 multBy10Table:                                                  ; 20
         .byte   $00,$0A,$14,$1E,$28,$32,$3C,$46
         .byte   $50,$5A,$64,$6E,$78,$82,$8C,$96
-        .byte   $A0,$AA,$B4,$BE
+        .byte   $A0,$AA,$B4,$BE,$C8
 
 multBy32Table:                                                  ; 8
         .byte   0,32,64,96,128,160,192,224
@@ -27,8 +27,6 @@ multBy100Table:                                                 ; 10
         .byte   $00,$64,$C8,$2C,$90
         .byte   $F4,$58,$BC,$20,$84
 
-spawnTable:                                                     ; 7
-        .byte   $02,$07,$08,$0A,$0B,$0E,$12
 .enum
 PIECE_T_UP
 PIECE_T_RIGHT
@@ -119,6 +117,11 @@ orientationTableX:                                              ; 84
         .byte   $FE,$FF,$00,$01 ; $12 i horizontal
         .byte   $FF,$01,$FF,$01 ; $13 split square
         .byte   $00,$00,$00,$00 ; $14 hidden
+
+; padding to keep mult10Tail aligned to end of page
+.repeat 6
+.byte 0
+.endrepeat
 
 ; needs to be last table in this page
 mult10Tail:                                                     ; 2

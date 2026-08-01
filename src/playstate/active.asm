@@ -58,7 +58,7 @@ harddrop_tetrimino:
         sta completedLines
         sta completedRow+3 ; for checkerboard clearing
 
-        ldy #$13
+        ldy #$14
 @clearBuffer:
         sta harddropBuffer,y
         dey
@@ -153,7 +153,7 @@ harddropMarkCleared:
         lda #0
         sta tmpX ; sets lower limit to row 1
 @lineLoop:
-        lda #$13
+        lda #$14
         sec
         sbc tmpY ; contains current row being checked
         cmp currentFloor
