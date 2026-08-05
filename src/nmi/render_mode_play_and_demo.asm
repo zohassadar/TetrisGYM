@@ -102,8 +102,6 @@ render_mode_play_and_demo:
         lda heightModifier
 @storeTile:
         sta PPUDATA
-        jmp @renderLevelEnd
-
 
 @renderLevelEnd:
         jsr updatePaletteForLevel
