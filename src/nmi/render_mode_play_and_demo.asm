@@ -555,6 +555,7 @@ L9996:  lda generalCounter
         rts
 
 stageFullPlayfield:
+    ldy #17
     lda invisibleFlag
     beq @notInviz
     rts
@@ -570,7 +571,6 @@ stageFullPlayfield:
         fullPlayfield180
 
 fullPlayfieldNormal:
-    ldy #17
 @loop:
     ldx multBy10Table,y
 .repeat 10,i
@@ -582,7 +582,6 @@ fullPlayfieldNormal:
     jmp fullPlayfieldEnd
 
 fullPlayfieldHoriz:
-    ldy #17
 @loop:
     ldx multBy10Table,y
 .repeat 10,i
@@ -594,7 +593,6 @@ fullPlayfieldHoriz:
     jmp fullPlayfieldEnd
 
 fullPlayfieldVert:
-    ldy #17
 @loop:
     lda #170
     sec
@@ -609,7 +607,6 @@ fullPlayfieldVert:
     bmi fullPlayfieldEnd
 
 fullPlayfield180:
-    ldy #17
 @loop:
     lda #170
     sec
