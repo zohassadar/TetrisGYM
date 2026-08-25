@@ -588,9 +588,9 @@ function MarcFile(source, onLoad){
 	this._lastRead=null;
     const num = typeof source === 'number';
     const fs = require('fs');
-    const ab = num ? new ArrayBuffer(source) : fs.readFileSync(source).buffer;
+    const ab = num ? new ArrayBuffer(source) : fs.readFileSync(source);
     this._u8array=new Uint8Array(ab);
-    this._dataView=new DataView(ab);
+    this._dataView=new DataView(this._u8array.buffer);
     this.fileName=num ? 'file.bin' : source;
     this.fileType='application/octet-stream';
     this.fileSize=num ? source : ab.byteLength;
