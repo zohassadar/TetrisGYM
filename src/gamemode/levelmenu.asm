@@ -310,7 +310,6 @@ levelControlCustomLevel:
         beq @checkLeftPressed
         lda #$0
         sta levelControlMode
-        lda #$0
         sta classicLevel
         jsr @changeLevel
 @checkLeftPressed:
@@ -416,7 +415,6 @@ levelControlNormal:
         lda #$01
         sta soundEffectSlot1Init
         lda classicLevel
-        cmp #$0 
         beq @toCustomLevel
         dec classicLevel
 @checkDownPressed:
