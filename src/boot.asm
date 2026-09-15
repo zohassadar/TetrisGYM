@@ -29,11 +29,15 @@
 
 .if SAVE_HIGHSCORES
         jsr detectSRAM
-        beq @noSRAM
+        bne @sram
+        jsr resetMenuVars
+        jmp @initMagic
+@sram:
         jsr checkSavedInit
         jsr copyScoresFromSRAM
         jsr copyVarsFromSRAM
-@noSRAM:
+@initMagic:
+
 .endif
         lda #$54
         sta initMagic
