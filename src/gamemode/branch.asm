@@ -31,7 +31,6 @@ GAMEMODE_CALIBRATE
 .include "levelmenu.asm"
 
 gameMode_playAndEndingHighScore_jmp:
-        jsr branchOnGameModeState
-        rts
+        jmp branchOnGameModeState
 
 .include "speedtest.asm"

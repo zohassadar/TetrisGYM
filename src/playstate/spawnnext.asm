@@ -7,8 +7,7 @@ playState_spawnNextTetrimino:
         cmp #$20
         bpl :+
         ldx #$82 ; -2 tap delay
-        jsr checkNegativeDelay
-        rts
+        jmp checkNegativeDelay
 
 :
 .if SPAWN_NEXT_ADDONS
@@ -213,8 +212,7 @@ pickTetriminoSeed:
 
 setSeedNextRNG:
         ldx #set_seed
-        jsr generateNextPseudorandomNumber
-        rts
+        jmp generateNextPseudorandomNumber
 
 pickTetriminoPreset:
 presetBitmask := tmp2

@@ -671,7 +671,7 @@ addInputs:
     lda #$FF
     sta vramRow
     inc soundEffectSlot1Init
-    jsr copyVarsToSram
+    jmp copyVarsToSram
 @ret:
     rts
 

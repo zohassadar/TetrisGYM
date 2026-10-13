@@ -76,7 +76,7 @@ displayModeText:
         lda b_seed_input
         jsr twoDigsToPPU
         lda b_seed_input+1
-        jsr twoDigsToPPU
+        jmp twoDigsToPPU
 @ret:
         rts
 

@@ -119,7 +119,7 @@ checkSavedInit:
         cmp #HIGH_SCORE_MAGIC3
         beq @ret
 @resetSavedVars:
-        jsr resetSavedVars
+        jmp resetSavedVars
 @ret:
         rts
 

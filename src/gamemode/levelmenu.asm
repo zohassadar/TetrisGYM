@@ -95,8 +95,7 @@ levelMenuLinecapInfo:
         sta PPUADDR
         lda #$FA
         sta PPUADDR
-        jsr render_linecap_level_lines
-        rts
+        jmp render_linecap_level_lines
 
 
 gameMode_levelMenu_processPlayer1Navigation:
@@ -455,7 +454,7 @@ levelControlNormal:
         ldx classicLevel
         lda levelToSpriteXOffset,x
         sta spriteXOffset
-        jsr loadSpriteIntoOamStaging
+        jmp loadSpriteIntoOamStaging
 @ret:
         rts
 
@@ -488,7 +487,7 @@ levelMenuRenderHearts:
         beq @skipCursor
         lda #SPRITE_HEART
         sta spriteIndex
-        jsr loadSpriteIntoOamStaging
+        jmp loadSpriteIntoOamStaging
 @skipCursor:
         rts
 
@@ -502,7 +501,7 @@ levelMenuRenderReady:
         sta spriteXOffset
         lda #SPRITE_READY
         sta spriteIndex
-        jsr loadSpriteIntoOamStaging
+        jmp loadSpriteIntoOamStaging
 @notReady:
         rts
 

@@ -147,9 +147,7 @@ scoringBackground:
         lda highscores+highScoreNameLength+2
         jsr twoDigsToPPU
         lda highscores+highScoreNameLength+3
-        jsr twoDigsToPPU
-
-        rts
+        jmp twoDigsToPPU
 
 @otherTopScore:
         ldx highscores+highScoreNameLength
@@ -164,7 +162,7 @@ scoringBackground:
         lda highscores+highScoreNameLength+2
         jsr twoDigsToPPU
         lda highscores+highScoreNameLength+3
-        jsr twoDigsToPPU
+        jmp twoDigsToPPU
 @skipTop:
         rts
 
@@ -175,7 +173,7 @@ debugNametableUI:
         lda debugFlag
         beq @notDebug
         stagePatchThenWaitForNmi savestateNametable
-        jsr saveSlotNametablePatch
+        jmp saveSlotNametablePatch
 @notDebug:
         rts
 

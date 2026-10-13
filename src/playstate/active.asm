@@ -11,7 +11,7 @@ playState_playerControlsActiveTetrimino:
         jsr shift_tetrimino
         jsr rotate_tetrimino
 
-        jsr drop_tetrimino
+        jmp drop_tetrimino
 
 playState_playerControlsActiveTetrimino_return:
         rts
@@ -382,8 +382,7 @@ drop_tetrimino:
         sta fallTimer
         jsr drop_tetrimino_actual
 @normal:
-        jsr drop_tetrimino_actual
-        rts
+        jmp drop_tetrimino_actual
 
 drop_tetrimino_actual:
         lda autorepeatY
@@ -436,7 +435,7 @@ drop_tetrimino_actual:
         sta tetriminoY
         lda #$02
         sta playState
-        jsr updatePlayfield
+        jmp updatePlayfield
 @ret:   rts
 
 @incrementAutorepeatY:
@@ -494,7 +493,7 @@ shift_tetrimino:
         sta dasOnlyShiftDisabled
         jsr shift_tetrimino
         jsr shift_tetrimino
-        jsr shift_tetrimino
+        jmp shift_tetrimino
 :
         rts
 @dasOnlyEnd:

@@ -410,7 +410,7 @@ testCrash:
         sta allegroIndex
         lda lagState
         beq @noLag ;if lag should happen, wait a frame here so that sprite staging doesn't happen.
-        jsr waitForNmi
+        jmp waitForNmi
 @noLag:	rts
 @crashGraphics:
         lda #$00

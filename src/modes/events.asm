@@ -53,7 +53,7 @@ practiseEachPiece: ; only used in this file
         lda practiseType
         cmp #MODE_TAPQTY
         bne @skipTapQuantity
-        jsr prepareNextTapQuantity
+        jmp prepareNextTapQuantity
 @skipTapQuantity:
         rts
 

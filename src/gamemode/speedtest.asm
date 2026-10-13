@@ -72,5 +72,4 @@ speedTestControl:
         sta soundEffectSlot1Init
 @noupdate:
         ; use normal controls
-        jsr hzControl
-        rts
+        jmp hzControl

@@ -23,5 +23,4 @@ render_mode_rocket:
 
 @stage2:
 @rocketEnd:
-        jsr resetScroll
-        rts
+        jmp resetScroll

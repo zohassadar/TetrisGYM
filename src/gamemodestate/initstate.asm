@@ -236,7 +236,6 @@ presetScoreFromBCD:
         sta binScore+2
         jmp setupScoreForRender
 
-
 initPlayfieldForTypeB:
 ; decide which seed to use
         lda typeBSeedFlag
