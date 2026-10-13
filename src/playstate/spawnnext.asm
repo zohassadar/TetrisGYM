@@ -139,8 +139,6 @@ pickTetriminoLongbar:
         rts
 
 pickTetriminoSeed:
-        jsr setSeedNextRNG
-
         ; SPSv3
 
         lda set_seed_input+2
@@ -149,23 +147,17 @@ pickTetriminoSeed:
         ror
         ror
         and #$F
-        ; v3
-        ; cmp #0 ; and sets z flag
         bne @notZero
+        ; v3
         lda #$10
 @notZero:
-        ; v2
-        ; cmp #0
-        ; beq @compatMode
-
-; without cmp #0, carry bit is unknown and needs set.
-        sec
-        adc #1
+        clc
+        adc #3
         sta tmp3 ; step + 1 in tmp3
+        ldx #set_seed
 @loop:
-        jsr setSeedNextRNG
+        jsr generateNextPseudorandomNumber
         dec tmp3
-        lda tmp3
         bne @loop
 @compatMode:
 
@@ -209,10 +201,6 @@ pickTetriminoSeed:
 @longbar:
         lda #PIECE_I_HORIZ
         bne @useNewSpawnID
-
-setSeedNextRNG:
-        ldx #set_seed
-        jmp generateNextPseudorandomNumber
 
 pickTetriminoPreset:
 presetBitmask := tmp2
