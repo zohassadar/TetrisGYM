@@ -22,6 +22,29 @@ LOAD_WHITE
 LOAD_BUGGED
 .endenum
 
+digitPtr = pointerAddr
+stringSetPtr = pointerAddrB
+
+udPointer = mathRAM
+udAdjust = mathRAM + 2
+udMin = mathRAM + 3
+udMax = mathRAM + 4
+; needs to be the same shape ud* above
+lrPointer = mathRAM + 5
+lrAdjust = mathRAM + 7
+lrMin = mathRAM + 8
+lrMax = mathRAM + 9
+MENU_PTR_DISTANCE = lrPointer-udPointer
+
+activeItem = mathRAM + 10
+unpackedItemType = mathRAM + 11
+unpackedItemValue = mathRAM + 12
+pageItemCount = mathRAM + 13
+originalPage = mathRAM + 14
+nybbleTemp = mathRAM + 15
+actualPage = mathRAM + 16
+
+
 menuDataStart:
 .include "menudata.asm"
 .out .sprintf("Menu data: %d", *-menuDataStart)
@@ -206,15 +229,10 @@ enterPage:
     ldx actualPage
     lda pageTypes,x
     and #VALUE_MASK
-    sta unpackedPageValue
     beq @noStorePractiseType
     sta practiseType
 
 @noStorePractiseType:
-    lda pageTypes,x
-    and #TYPE_MASK
-    sta unpackedPageType
-
     ldy activeMenu
     lda pageCountByMenu,y
     ldy #$00
@@ -222,7 +240,6 @@ enterPage:
     cmp #$1
     beq @storeRow
     dey ; start at page select row for multipage
-    ; dec unpackedPageType ; hack for now
 @storeRow:
     sty activeRow
 
@@ -266,7 +283,6 @@ setupUD:
 setupUDRowChange:
 ; ud change row 1/2 - activeColumn == 0
     ldy #$00
-    lda unpackedPageType
     ldx activeMenu
     lda pageCountByMenu,x
     tax
@@ -518,10 +534,14 @@ checkIfGameStartOrSubmenu:
 
 @checkActiveRow:
     lda activeRow
-    bpl @checkItemType
-    jmp checkPageMode
+    bpl checkItemType
 
-@checkItemType:
+setGameStartedFlag:
+    inc gameStarted
+    lda #GAME_ACTIVE
+    jmp enterSubMenu
+
+checkItemType:
     lda unpackedItemType
     cmp #TYPE_GAMEMODE
     beq startGameFromItem
@@ -530,16 +550,11 @@ checkIfGameStartOrSubmenu:
     beq goToSubMenu
 
     cmp #TYPE_CUSTOM
-    beq @goToCustom
+    beq goToCustom
 
-@checkPageMode:
-    jmp checkPageMode
-@ret:
-    rts
-@goToCustom:
-    lda newlyPressedButtons_player1
-    and #BUTTON_START
-    beq @ret
+    jmp setGameStartedFlag
+
+goToCustom:
     lda #$FF
     sta vramRow
     lda #2
@@ -590,15 +605,6 @@ startGameFromItem:
     sta practiseType
     jmp setGameStartedFlag
 
-checkPageMode:
-    lda newlyPressedButtons_player1
-    and #BUTTON_START
-    beq @noGame
-    jmp setGameStartedFlag
-
-@noGame:
-    rts
-
 checkIfExitSubmenu:
     lda newlyPressedButtons_player1
     and #BUTTON_B
@@ -633,10 +639,7 @@ doSomethingWithSelect:
     ; placeholder
     rts
 
-setGameStartedFlag:
-    inc gameStarted
-    lda #GAME_ACTIVE
-    jmp enterSubMenu
+
 
 
 addInputs:
@@ -785,8 +788,7 @@ stageVRAMRow:
     rts
 @stage:
 
-    @blankCounter = blankCounter
-    @rowCounter = rowCounter
+    @blankCounter = generalCounter3
     @stringPtr = stringSetPtr
     @itemPtr = generalCounter
     @padding = generalCounter5
@@ -875,7 +877,7 @@ stageVRAMRow:
     sta stack,x
     iny
     inx
-    dec blankCounter
+    dec @blankCounter
     dec stringLength
     bpl @copy
 @fillBlank: ; should only be entered directly when end of string reached

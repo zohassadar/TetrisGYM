@@ -81,51 +81,8 @@ byteSpriteAddr: .res 2
 byteSpriteTile: .res 1
 byteSpriteLen: .res 1
 
-; (up to) 32 bytes menu scratch ram.  can be reused in any other mode
-; can also overlap with mathram
-; this is to spread out for easier thinking
+.res 42
 
-; needs to be the same shape as lr* below
-udPointer: .res $2
-udAdjust: .res $1
-udMin: .res $1
-udMax: .res $1
-; needs to be the same shape ud* above
-lrPointer: .res $2
-lrAdjust: .res $1
-lrMin: .res $1
-lrMax: .res $1
-
-activeItem: .res $1
-MENU_PTR_DISTANCE = lrPointer-udPointer
-stringSetPtr: .res $2
-.res $1
-
-unpackedPageType: .res $1
-unpackedPageValue: .res $1
-unpackedItemType: .res $1
-unpackedItemValue: .res $1
-pageItemCount: .res 1
-digitPtr: .res $2
-originalPage: .res $1
-nybbleTemp: .res $1
-blankCounter: .res $1
-rowCounter: .res $1
-
-.res 4
-
-actualPage: .res $1
-gameStarted: .res $1
-.res $1
-
-; lr page    ; mem address never changes (activePage)
-; lr column  ; mem address never changes (activeColumn)
-; lr value   ; current item is set every time anyway
-; ud item    ; mem address never changes (activeItem)
-; ud value   ; mem address never changes (expandedDigit)
-
-
-    .res $A
 
 spriteXOffset: .res 1 ; $00A0
 spriteYOffset: .res 1 ; $00A1
@@ -400,6 +357,7 @@ activeMenu: .res 1
 activePage: .res 1
 activeRow: .res 1
 activeColumn: .res 1
+gameStarted: .res 1
 menuStackPtr: .res 1
 
 menuVars:
