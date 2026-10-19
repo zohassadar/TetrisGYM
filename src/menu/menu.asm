@@ -177,11 +177,11 @@ gameTypeLoop:
     ; todo: write down which vars are used by which func
     jsr collectControllerInput
     jsr setScratch
+    jsr stageCursor
     jsr randomizeSeed
     jsr addInputs
     jsr checkGoofy
     jsr respondToInput
-    jsr stageCursor
     ; scratch is not important anymore
     jsr stageVRAMRow
     jsr stageVRAMRow
@@ -1223,20 +1223,7 @@ stageCursor:
 @notColumn:
     lda #$1A
     sta spriteXOffset
-
-; this code is redundant
-    ldx activeMenu
-    lda startPageByMenu,x
-    clc
-    adc activePage
-    tax
-    lda activeRow
-    clc
-    adc startItemByPage,x
-    tax
-    lda itemTypes,x
-
-    and #TYPE_MASK
+    lda unpackedItemType
     cmp #TYPE_CUSTOM
     beq @noValue
     cmp #TYPE_SUBMENU
@@ -1270,8 +1257,6 @@ stageCursor:
     lda #SPRITE_MENUSTARTA
     sta spriteIndex
     jmp @stage
-gotoEdgeCase:
-    rts
 
 .out .sprintf("menu code: %d", *-menuCode)
 .out .sprintf("menu total: %d", *-menuDataStart)
