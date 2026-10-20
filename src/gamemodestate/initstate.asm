@@ -63,11 +63,11 @@ gameModeState_initGameState:
         sta invisibleFlag
         sta currentFloor
         sta crashState
-        sta trtLineCounter
-        sta trtLineCounter+1
-        sta trtScratch+5
-        sta trtLines
-        sta trtLines+1
+        sta tetrisLines+0
+        sta tetrisLines+1
+        sta tetrisLines+2
+        sta totalLines+0
+        sta totalLines+1
         sta secretGrade
         lda nextBoxStart
         sta hideNextPiece

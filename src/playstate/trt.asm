@@ -1,177 +1,79 @@
 trtCalculate:
+; lines kept in binary in totalLines (2 bytes)
+; tetris lines multipled by 400 and stored in tetrisLines (3 bytes)
+; rate stored in bcd as a percentage (1 byte)
 
-; fix for now so that trt rate & trans mode work okay together
-        lda     completedLines
+@quotient = mathRAM
+@remainder = mathRAM+3
         clc
-        adc     trtLines
-        sta     trtLines
-        and     #$0F
-        cmp     #$A
-        bcc     @noLinesCarry
-        lda     trtLines
-        clc
-        adc     #$06
-        sta     trtLines
-        cmp     #$A0
-        bcc     @noLinesCarry
-        and     #$0F
-        sta     trtLines
-        inc     trtLines+1
-@noLinesCarry:
-        ldx     completedLines
-        cpx     #$04
-        bne     @notTetris
-@addToLineCounter:
-        inc     trtLineCounter
-        lda     trtLineCounter
-        and     #$0F
-        cmp     #$0A
-        bmi     @noCarry
-        lda     trtLineCounter
-        clc
-        adc     #$06
-        sta     trtLineCounter
-        and     #$F0
-        cmp     #$A0
-        bcc     @noCarry
-        lda     trtLineCounter
-        and     #$0F
-        sta     trtLineCounter
-        inc     trtLineCounter+1
+        lda completedLines
+        adc totalLines
+        sta totalLines
+        bcc @noCarry
+        inc totalLines+1
 @noCarry:
-        dex
-        bne     @addToLineCounter
-@notTetris:
-        lda     #$00
-        ldx     #$06
-@zeroScratch:
-        sta     trtLineCounter+1,x
-        dex
-        bne     @zeroScratch
-        ldy     #$04
-        lda     trtLineCounter
-        sta     trtRam+2
-        lda     trtLineCounter+1
-        sta     trtRam+1
-LFA41:  clc
-        ldx     #$03
-LFA44:  rol     trtRam,x
-        dex
-        bne     LFA44
-        dey
-        bne     LFA41
-LFA4D:  jsr     LFADF
-        lda     trtScratch+4
-        cmp     trtRam
-        bcc     LFA6C
-        bne     LFA85
-        lda     trtScratch+3
-        cmp     trtRam+1
-        bcc     LFA6C
-        bne     LFA85
-        lda     trtScratch+2
-        cmp     trtRam+2
-        bcs     LFA85
-LFA6C:  ldx     #$03
-LFA6E:  lda     trtScratch+1,x
-        sta     trtRam+3,x
-        dex
-        bne     LFA6E
-        lda     trtScratch+5
-        adc     #$10
-        sta     trtScratch+5
-        cmp     #$A0
-        bne     LFA4D
-        beq     LFABD
-LFA85:  ldx     #$03
-LFA87:  lda     trtRam+3,x
-        sta     trtScratch+1,x
-        dex
-        bne     LFA87
-        ldy     #$04
-LFA92:  asl     trtScratch+2
-        rol     trtScratch+3
-        rol     trtScratch+4
-        dey
-        bne     LFA92
-LFA9E:  jsr     LFADF
-        inc     trtScratch+5
-        lda     trtScratch+4
-        cmp     trtLineCounter+1
-        bcc     LFAB6
-        bne     LFABD
-        lda     trtScratch+3
-        cmp     trtLineCounter
-        bcs     LFABD
-LFAB6:  lda     trtScratch+5
-        cmp     #$A0
-        bne     LFA9E
-LFABD:  lda     trtScratch+5
-        and     #$0F
-        cmp     #$0A
-        bne     LFACE
-        lda     trtScratch+5
-        adc     #$05
-        sta     trtScratch+5
-LFACE:  lda     trtScratch+5
-        cmp     #$01
-        bne     LFADA
-        lda     #$00
-        sta     trtScratch+5
-LFADA:
-        ; lda     holdDownPoints
-        ; cmp     #$02
-        rts
+        lda completedLines
+        cmp #4
+        bne @noTetris
 
-LFADF:  lda     trtLines
-        and     #$0F
-        sta     trtScratch+1
-        lda     trtScratch+2
-        and     #$0F
         clc
-        adc     trtScratch+1
+        lda #<400
+        adc tetrisLines
+        sta tetrisLines
+        lda #>400
+        adc tetrisLines+1
+        sta tetrisLines+1
+        bcc @noTetris
+        inc tetrisLines+2
+
+@noTetris:
+; no divide by 0
+        lda totalLines
+        bne @notZero
+        lda totalLines+1
+        beq @convert
+@notZero:
+
+        lda tetrisLines
+        sta @quotient
+        lda tetrisLines+1
+        sta @quotient+1
+        lda tetrisLines+2
+        sta @quotient+2
+
+; from https://www.llx.com/Neil/a2/mult.html
+        lda #0              ;initialize rem to 0
+        sta @remainder
+        sta @remainder+1
+        sta @remainder+2
+        lda #24
+        sta generalCounter
+@l1:
+        asl @quotient       ;shift hi bit of num1 into rem
+        rol @quotient+1
+        rol @quotient+2     ;(vacating the lo bit, which will be used for the quotient)
+        rol @remainder
+        rol @remainder+1
+        rol @remainder+2
+        lda @remainder
+        sec                 ;trial subtraction
+        sbc totalLines
+        tay
+        lda @remainder+1
+        sbc totalLines+1
         tax
-        lda     trtScratch+2
-        and     #$F0
-        adc     trtBCDTable,x
-        cmp     #$A0
-        bcc     LFB01
-        adc     #$5F
-        inc     trtScratch+3
-LFB01:  sta     trtScratch+2
-        lda     trtLines
-        and     #$F0
-        sta     trtScratch+1
-        lda     trtScratch+2
-        clc
-        adc     trtScratch+1
-        bcc     LFB19
-        inc     trtScratch+3
-        adc     #$5F
-LFB19:  cmp     #$A0
-        bcc     LFB22
-        adc     #$5F
-        inc     trtScratch+3
-LFB22:  sta     trtScratch+2
-        lda     trtScratch+3
-        clc
-        adc     trtLines+1
-        sta     trtScratch+3
-        and     #$0F
-        cmp     #$0A
-        bcc     LFB3C
-        lda     trtScratch+3
-        adc     #$05
-        sta     trtScratch+3
-LFB3C:  lda     trtScratch+3
-        cmp     #$A0
-        bcc     LFB48
-        adc     #$5F
-        inc     trtScratch+4
-LFB48:  sta     trtScratch+3
+        lda @remainder+2
+        sbc #0
+        bcc @l2             ;did subtraction succeed?
+        sta @remainder+2    ;if yes, save it
+        stx @remainder+1
+        sty @remainder
+        inc @quotient       ;and record a 1 in the quotient
+@l2:
+        dec generalCounter
+        bne @l1
+        ldx @quotient
+@convert:
+        lda levelDisplayTable,x
+        sta trtRate
         rts
-
-trtBCDTable:
-        .byte   $00,$01,$02,$03,$04,$05,$06,$07
-        .byte   $08,$09,$10,$11,$12,$13,$14,$15
-        .byte   $16,$17,$18

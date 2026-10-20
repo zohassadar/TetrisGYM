@@ -171,12 +171,7 @@ stack: .res $FF ; $0100
     .res 1
 oamStaging: .res $100 ; $0200                        ; format: https://wiki.nesdev.com/w/index.php/PPU_programmer_reference#OAM
 
-
-; todo:  find out which need to be preserved
-trtLineCounter: .res $2
-trtScratch: .res $6
-trtRam: .res $8
-    .res $E0
+    .res $F0
 statsByType: .res $E ; $03F0
     .res 2
 playfield: .res $c8 ; $0400
@@ -245,21 +240,23 @@ kbInputThrottle: .res 1 ; $64F
 ; used to track state of high score entry screen.  Can possibly use the address of the nmi interrupted
 ; routine in the stack to track instead
 highScoreEntryActive: .res 1  ; $650
-trtLines: .res 2 ; $651 ; fix for now for transition mode/trt compat
 
-menuStack: .res 28 ; $653
+menuStack: .res 24 ; $653
 
-; only important in menu mode
-prevGoofy: .res 1 ; $66F
+topRowBuffer: .res 10 ; $669
 
-topRowBuffer: .res 10 ; $670
+secretGrade: .res 1 ; $673
+secretGradePending: .res 1 ; $674
+detectedRegion: .res 1 ; $675 ; set at same time as palFlag but not user configurable
 
-secretGrade: .res 1 ; $67A
-secretGradePending: .res 1 ; $67B
-detectedRegion: .res 1 ; $67C ; set at same time as palFlag but not user configurable
-
-linecapLinesBinHi: .res 1 ; $67D ; menu input is BCD, converted to binary and stored here
+linecapLinesBinHi: .res 1 ; $676 ; menu input is BCD, converted to binary and stored here
                           ; low byte is also BCD but is treated by game as BCD
+
+tetrisLines: .res 3     ; $677
+totalLines: .res 2      ; $67A
+trtRate: .res 1         ; $67D
+
+
 
 .segment "MUSIC_RAM": absolute
 musicStagingSq1Lo: .res 1 ; $0680
@@ -359,6 +356,7 @@ activeRow: .res 1
 activeColumn: .res 1
 gameStarted: .res 1
 menuStackPtr: .res 1
+prevGoofy: .res 1
 
 menuVars:
 .include "menu/menuram.asm"

@@ -12,7 +12,7 @@ render_mode_play_and_demo:
 @renderLines:
         lda     trtFlag
         beq     @noTetrisRate
-        lda     trtScratch+5
+        lda     trtRate
         ldx     #$23
         stx     PPUADDR
         ldx     #$38
