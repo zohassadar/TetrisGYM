@@ -26,7 +26,7 @@ const scoringModifier = [
 ];
 
 const ghostPiece = ["TYPE_BOOL", "ghost", "ghostPieceFlag"];
-const modernLinesFlag = ["TYPE_BOOL", "modern lines", "modernLinesFlag"];
+const modernLinesFlag = ["TYPE_BOOL", "4 digit lines", "modernLinesFlag"];
 const paceModifier = ["TYPE_FF_OFF", "Pace *100k", 16, "paceModifier"];
 const hzFlag = ["TYPE_BOOL", "HZ DISPLAY", "hzFlag"];
 const inputDisplayFlag = ["TYPE_BOOL", "Input Display", "inputDisplayFlag"];
@@ -80,7 +80,7 @@ const palFlag = ["TYPE_BOOL", "pal mode", "palFlag"];
 const keyboardFlag = ["TYPE_BOOL", "keyboard", "keyboardFlag"];
 const qualFlag = ["TYPE_BOOL", "qual", "qualFlag"];
 const goofyFlag = ["TYPE_BOOL", "goofy foot", "goofyFlag"];
-const swapDutyFlag = ["TYPE_BOOL", "swap duty cycles", "swapDutyCyclesFlag"];
+const swapDutyFlag = ["TYPE_BOOL", "retron audio", "swapDutyCyclesFlag"];
 const disableScoreSaving = ["TYPE_BOOL", "no high scores", "disableScoreSaving"];
 const clearScores = ["TYPE_CUSTOM", "clear scores", "CLEAR_SCOREBOARD"];
 const resetDefaults = ["TYPE_CUSTOM", "reset defaults", "RESET_DEFAULTS"];
@@ -183,7 +183,7 @@ const garbageModifier = [
     ["tetris", "normal", "smart", "hard", "infinite"],
     "garbageModifier",
 ];
-const droughtModifier = ["TYPE_NUMBER", "modifier", 20, "droughtModifier"];
+const droughtModifier = ["TYPE_NUMBER", "modifier", 19, "droughtModifier"];
 const lowStackRowModifier = [
     "TYPE_NUMBER",
     "height",
