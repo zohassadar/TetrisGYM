@@ -300,8 +300,16 @@ levelControlCustomLevel:
 @checkDownPressed:
         lda #BUTTON_DOWN
         jsr menuThrottle
-        beq @checkLeftPressed
+        beq @checkRightPressed
         dec customLevel
+        jsr @changeLevel
+@checkRightPressed:
+        lda #BUTTON_RIGHT
+        jsr menuThrottle
+        beq @checkLeftPressed
+        lda #$0
+        sta levelControlMode
+        sta classicLevel
         jsr @changeLevel
 @checkLeftPressed:
 
@@ -312,6 +320,8 @@ levelControlCustomLevel:
         sta soundEffectSlot1Init
         lda #$0
         sta levelControlMode
+        lda #$9
+        sta classicLevel
 @ret:
         rts
 
@@ -404,7 +414,7 @@ levelControlNormal:
         lda #$01
         sta soundEffectSlot1Init
         lda classicLevel
-        beq @checkDownPressed
+        beq @toCustomLevel
         dec classicLevel
 @checkDownPressed:
         lda newlyPressedButtons
